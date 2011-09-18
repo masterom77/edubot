@@ -20,6 +20,7 @@ namespace EduBot
         {
             InitializeComponent();
             engine = new Engine();
+            
             if (engine.Initiate())
             {
                 MessageBox.Show("SUCCESS");
@@ -62,13 +63,22 @@ namespace EduBot
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             engine.Speed = trackBar1.Value;
-            label6.Text = trackBar1.Value.ToString();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             engine.Dispose();
            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            engine.TurnAngle(Convert.ToInt32(textBox1.Text));
         }
 
         

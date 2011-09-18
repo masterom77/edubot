@@ -100,17 +100,26 @@ namespace EduBotAPI
             }
         }
 
+        public void TurnAngle(int angle) {
+            for (int i = 0; i < angle/0.1125*2; i++)
+            {
+                Clock = !Clock;
+
+            }
+        }
+
         public void Stop() {
             running = false;
             clockThread = null;
         }
 
+        TimeSpan t = new TimeSpan(1);
+
         private void Tick()
         {
-            while (IsRunning)
-            {
+            for(int i = 0; i<6400; i++){
                 Clock = !Clock;
-                Thread.Sleep(new TimeSpan(speed));
+
             }
         }
         
