@@ -14,8 +14,7 @@ namespace EduBotAPI
 
         public Engine()
         {
-            usbCon = new LIBADX.LIBADX();
-            
+            usbCon = new LIBADX.LIBADX();            
         }
 
         #region Controller Variables
