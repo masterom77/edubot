@@ -76,6 +76,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HTL.Grieskirchen.Edubot.API\HTL.Grieskirchen.Edubot.API.csproj">
+      <Project>{96D26408-0C88-4C2F-9232-A66D0710E183}</Project>
+      <Name>HTL.Grieskirchen.Edubot.API</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

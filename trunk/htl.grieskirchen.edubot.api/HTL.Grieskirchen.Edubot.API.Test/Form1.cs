@@ -6,14 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using EduBotAPI;
 using System.Threading;
 
 namespace EduBot
 {
     public partial class Form1 : Form
     {
-        Engine engine;
+        /*HTL.Grieskirchen engine;
         Thread t;
 
         public Form1()
@@ -81,7 +80,7 @@ namespace EduBot
             engine.TurnAngle(Convert.ToInt32(textBox1.Text));
         }
 
-        
+        */
 
     }
 }
