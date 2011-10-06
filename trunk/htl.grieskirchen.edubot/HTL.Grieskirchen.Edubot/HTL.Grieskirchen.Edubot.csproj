@@ -36,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EduBotAPI">
-      <HintPath>..\..\htl.grieskirchen.edubot.api\HTL.Grieskirchen.Edubot.API\bin\Debug\EduBotAPI.dll</HintPath>
+    <Reference Include="HTL.Grieskirchen.Edubot.API, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\htl.grieskirchen.edubot.api\HTL.Grieskirchen.Edubot.API\bin\Debug\HTL.Grieskirchen.Edubot.API.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -69,6 +70,8 @@
     <Compile Include="Commands\CommandParser.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\MovementCommand.cs" />
+    <Compile Include="Commands\ShutdownCommand.cs" />
+    <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Commands\ToolCommand.cs" />
     <Compile Include="Exceptions\InvalidParameterException.cs" />
     <Compile Include="Exceptions\InvalidSyntaxException.cs" />

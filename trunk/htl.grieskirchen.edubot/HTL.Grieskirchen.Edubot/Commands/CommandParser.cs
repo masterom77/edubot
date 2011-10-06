@@ -16,6 +16,9 @@ namespace HTL.Grieskirchen.Edubot.Commands
             commandList = new Dictionary<string, Type>();
             commandList.Add("MOVETO", typeof(MovementCommand));
             commandList.Add("USETOOL", typeof(ToolCommand));
+            commandList.Add("START", typeof(StartCommand));
+            commandList.Add("SHUTDOWN", typeof(ShutdownCommand));
+            
         }
 
         /// <summary>
@@ -29,6 +32,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
             text = text.Replace(Environment.NewLine, string.Empty);
             string[] lines = text.Split(';');
             int lineCount = 1;
+            //Syntax check if there is only one command in the text
             if (lines.Length <= 1 && text.Trim() != string.Empty) {
                 if (text.EndsWith(";"))
                 {
@@ -38,6 +42,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
                     throw new InvalidSyntaxException("Invalid Syntax in Line " + lineCount + ": \"" + text + "\". Check if your command has a ';' at the end.");
                 }
             }
+            //General Syntax, Parameter and Command parsing
             foreach (string line in lines) {
                 line.Trim();
                 if (line != string.Empty)
@@ -67,6 +72,8 @@ namespace HTL.Grieskirchen.Edubot.Commands
             foreach (ICommand cmd in commands) {
                 cmd.Execute();
             }
+
+         
         }
 
     }

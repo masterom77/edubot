@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EduBotAPI;
+using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.Exceptions;
 
 namespace HTL.Grieskirchen.Edubot.Commands
@@ -13,7 +13,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
 
         public void Execute()
         {
-            Console.WriteLine("Moving to Position: " + x + "," + y + "," + z);         
+            API.Edubot.GetInstance().MoveTo(x, y, z);         
         }
 
 
