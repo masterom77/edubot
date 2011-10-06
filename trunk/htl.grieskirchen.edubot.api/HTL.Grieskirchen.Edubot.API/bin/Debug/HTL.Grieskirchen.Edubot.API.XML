@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HTL.Grieskirchen.Edubot.API</name>
+    </assembly>
+    <members>
+        <member name="T:HTL.Grieskirchen.Edubot.API.Edubot">
+            <summary>
+            This class represents the robot and can be used for controlling the physical robot, or simulating it's movements by using the specified events. This class is designed as Singleton, which means theres only one instance available and you can't create a new one.
+            </summary>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Edubot.GetInstance">
+            <summary>
+            Returns a unique instance of the Edubot object.
+            </summary>
+            <returns>A unique Edubot instance.</returns>
+        </member>
+        <member name="F:HTL.Grieskirchen.Edubot.API.Edubot.primaryAxis">
+            <summary>
+            The primary axis of the robot, which is located on the top of the scaffold.
+            </summary>
+        </member>
+        <member name="F:HTL.Grieskirchen.Edubot.API.Edubot.secondaryAxis">
+            <summary>
+            The secondary axis of the robot, which is located at the end of the first axis.
+            </summary>
+        </member>
+        <member name="F:HTL.Grieskirchen.Edubot.API.Edubot.verticalAxis">
+            <summary>
+            The vertical axis of the robot, which is located at the end of the second axis.
+            </summary>
+        </member>
+        <member name="F:HTL.Grieskirchen.Edubot.API.Edubot.toolAxis">
+            <summary>
+            The tool axis of the robot, which is located above the actual tool,
+            </summary>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Edubot.MoveTo(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Moves the tool to the specified 3D-Point (x,y,z).
+            </summary>
+            <param name="x">The x-coordinate.</param>
+            <param name="y">The y-coordinate.</param>
+            <param name="z">The z-coordinate.</param>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Edubot.UseTool(System.Boolean)">
+            <summary>
+            Activates or deactivates the robot's tool.
+            </summary>
+            <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Edubot.Start">
+            <summary>
+            Turns the robot on
+            </summary>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Edubot.Shutdown">
+            <summary>
+            Turns the robot off.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnStartup">
+            <summary>
+            Triggered after the robot has started.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnConnected">
+            <summary>
+            Triggered after the connection to the physical robot is established.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnDiconnected">
+            <summary>
+            Triggered after the connection to the physical robot is lost or closed.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnShutdown">
+            <summary>
+            Triggered before the robot is shutting down.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnAxisAngleChanged">
+            <summary>
+            Triggered if the angle of an axis has changed. The specific axis can be found in the event arguments.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnInterpolationChanged">
+            <summary>
+            Triggered if the interpolation type of the robot has changed.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnToolUsed">
+            <summary>
+            Triggered if the robot's tool was activated or deactivated.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.OnStateChanged">
+            <summary>
+            Triggered if the robot's state has changed.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.State">
+            <summary>
+            Gets the current state of the robot.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Edubot.Interpolation">
+            <summary>
+            Gets or sets the interpolation type, which is used for calculating the path of
+            the robot's movements.
+            </summary>
+        </member>
+        <member name="T:HTL.Grieskirchen.Edubot.API.Edubot.EdubotCreator">
+            <summary>
+            This class is used for creating the instance of Edubot object. Since the
+            Edubot class is a designed as a Singleton, there is only one instance of the
+            Edubot available.
+            </summary>
+        </member>
+        <member name="T:HTL.Grieskirchen.Edubot.API.IInterpolationType">
+            <summary>
+            This interface represents an interpolation type. Any class implementing this
+            interface can be used for path calculation.
+            </summary>
+        </member>
+        <member name="T:HTL.Grieskirchen.Edubot.API.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:HTL.Grieskirchen.Edubot.API.Axis">
+            <summary>
+            This class represents an axis of the robot, containing most of the information used for path calculation.
+            </summary>
+        </member>
+        <member name="M:HTL.Grieskirchen.Edubot.API.Axis.Rotate(System.Int64,System.Single)">
+            <summary>
+            Rotates the axis for the specified amount of ticks by using the specified 
+            speed
+            </summary>
+            <param name="ticks"></param>
+            <param name="speed"></param>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Axis.X">
+            <summary>
+            Gets the x-coordinate of the axis
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Axis.Y">
+            <summary>
+            Gets the y-coordinate of the axis
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Axis.Z">
+            <summary>
+            Gets the z-coordinate of the axis
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Axis.Length">
+            <summary>
+            Gets the length of the axis
+            </summary>
+        </member>
+        <member name="P:HTL.Grieskirchen.Edubot.API.Axis.Angle">
+            <summary>
+            Gets the angle of the engine, which is related to this axis
+            </summary>
+        </member>
+    </members>
+</doc>
