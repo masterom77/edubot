@@ -1,0 +1,15 @@
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\HTL.Grieskirchen.Edubot.exe
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\HTL.Grieskirchen.Edubot.pdb
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\MainWindow.baml
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\MainWindow.g.cs
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\App.g.cs
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot_MarkupCompile.cache
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot.g.resources
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot.Properties.Resources.resources
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot.exe
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot.pdb
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\EduBotAPI.dll
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\EduBotAPI.pdb
