@@ -12,7 +12,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
 
         public void Execute()
         {
-            Console.WriteLine(activate ? "Activating Tool" : "Deactivating Tool");
+            API.Edubot.GetInstance().UseTool(activate); 
         }
 
         public void SetArguments(string[] args)

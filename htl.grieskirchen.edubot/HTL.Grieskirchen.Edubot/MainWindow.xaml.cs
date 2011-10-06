@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HTL.Grieskirchen.Edubot.Commands;
+using HTL.Grieskirchen.Edubot.API;
+using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -26,6 +28,43 @@ namespace HTL.Grieskirchen.Edubot
         {
             InitializeComponent();
             parser = new CommandParser();
+            API.Edubot edubot = API.Edubot.GetInstance();
+            edubot.OnAxisAngleChanged += new API.Edubot.Event(ShowEventArgsInfo);
+            edubot.OnStateChanged += new API.Edubot.Event(ShowEventArgsInfo);
+            edubot.OnInterpolationChanged += new API.Edubot.Event(ShowEventArgsInfo);
+            edubot.OnToolUsed += new API.Edubot.Event(ShowEventArgsInfo);
+            
+        }
+
+        private void ShowEventArgsInfo(object sender, EventArgs e) {
+            Console.WriteLine("--------------------------");
+            Console.WriteLine(e.GetType().Name);
+            if (e is AngleChangedEventArgs) {
+                AngleChangedEventArgs ace = e as AngleChangedEventArgs;
+                Console.WriteLine("Ticks: " + ace.Ticks);
+                Console.WriteLine("Speed: " + ace.Speed);
+                Console.WriteLine("Angle: " + ace.Angle+"°");
+                Console.WriteLine("AxisType: " + ace.AxisType.ToString());
+            } 
+            if (e is StateChangedEventArgs)
+            {
+                StateChangedEventArgs sce = e as StateChangedEventArgs;
+                Console.WriteLine("Old State: " + sce.OldState.ToString());
+                Console.WriteLine("New State: " + sce.NewState.ToString());
+            } if (e is InterpolationChangedEventArgs)
+            {
+                InterpolationChangedEventArgs ice = e as InterpolationChangedEventArgs;
+                Console.WriteLine("Old State: " + ice.OldValue != null ? ice.OldValue.ToString():"null");
+                Console.WriteLine("New State: " + ice.NewValue != null ? ice.NewValue.ToString():"null");
+
+            } if (e is ToolEventArgs)
+            {
+                ToolEventArgs tce = e as ToolEventArgs;
+                Console.WriteLine("Activated: " + tce.Activated);
+            }
+            Console.WriteLine("--------------------------");
+            
+           
         }
 
         private void btExecute_Click(object sender, RoutedEventArgs e)
