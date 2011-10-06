@@ -29,12 +29,21 @@ namespace HTL.Grieskirchen.Edubot.Commands
             text = text.Replace(Environment.NewLine, string.Empty);
             string[] lines = text.Split(';');
             int lineCount = 1;
+            if (lines.Length <= 1 && text.Trim() != string.Empty) {
+                if (text.EndsWith(";"))
+                {
+                    lines = new string[] { text };
+                }
+                else {
+                    throw new InvalidSyntaxException("Invalid Syntax in Line " + lineCount + ": \"" + text + "\". Check if your command has a ';' at the end.");
+                }
+            }
             foreach (string line in lines) {
                 line.Trim();
-                if (line != "")
+                if (line != string.Empty)
                 {
                     if (!line.Contains("(") || !line.Contains(")")) {
-                        throw new InvalidSyntaxException("Invalid Syntax in Line "+lineCount+": "+line+". Check if your command has a ';' at the end.");
+                        throw new InvalidSyntaxException("Invalid Syntax in Line "+lineCount+": \""+line+"\". Check if your command has a ';' at the end.");
                     }
                     string cmd = line.Substring(0, line.IndexOf("("));
                     string parameters = line.Substring(line.IndexOf("(") + 1);
@@ -49,7 +58,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
                     }
                     else
                     {
-                        throw new UnknownCommandException("Unknown Command: " + cmd + ". Check the command reference if you don't know the command");
+                        throw new UnknownCommandException("Unknown Command: \"" + cmd + "\". Check the command reference if you don't know the command");
                     }
                 }
                 lineCount++;

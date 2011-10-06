@@ -18,7 +18,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
         public void SetArguments(string[] args)
         {
             if(!bool.TryParse(args[0],out activate)){
-                throw new InvalidParameterException("Ungültiger Parameter: activate. Cannot cast "+args[0]+" into bool");
+                throw new InvalidParameterException("Ungültiger Parameter: activate. Cannot cast \""+args[0]+"\" into bool");
             }
         }
     }

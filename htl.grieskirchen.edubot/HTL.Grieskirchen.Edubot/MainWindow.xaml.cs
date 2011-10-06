@@ -30,6 +30,7 @@ namespace HTL.Grieskirchen.Edubot
 
         private void btExecute_Click(object sender, RoutedEventArgs e)
         {
+            tbConsole.Clear();
             try
             {
                 tbConsole.AppendText(">Building...\n");
