@@ -29,10 +29,11 @@ namespace HTL.Grieskirchen.Edubot
             InitializeComponent();
             parser = new CommandParser();
             API.Edubot edubot = API.Edubot.GetInstance();
-            edubot.OnAxisAngleChanged += new API.Edubot.Event(ShowEventArgsInfo);
-            edubot.OnStateChanged += new API.Edubot.Event(ShowEventArgsInfo);
-            edubot.OnInterpolationChanged += new API.Edubot.Event(ShowEventArgsInfo);
-            edubot.OnToolUsed += new API.Edubot.Event(ShowEventArgsInfo);
+           
+            edubot.OnAxisAngleChanged += ShowEventArgsInfo;
+            edubot.OnStateChanged += ShowEventArgsInfo;
+            edubot.OnInterpolationChanged += ShowEventArgsInfo;
+            edubot.OnToolUsed += ShowEventArgsInfo;
             
         }
 
