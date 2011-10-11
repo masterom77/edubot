@@ -5,6 +5,9 @@ using System.Text;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
+    /// <summary>
+    /// Defines the different axis Types
+    /// </summary>
     public enum AxisType
     {
         PRIMARY,
