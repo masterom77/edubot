@@ -83,6 +83,7 @@ namespace HTL.Grieskirchen.Edubot
                 tbConsole.AppendText(">Build failed\n");
                 tbConsole.AppendText(">"+ex.Message + "\n");
             }
+          
         }
     }
 }
