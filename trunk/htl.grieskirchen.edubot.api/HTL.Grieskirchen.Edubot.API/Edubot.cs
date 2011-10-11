@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using HTL.Grieskirchen.Edubot.API.Exceptions;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
@@ -12,8 +14,10 @@ namespace HTL.Grieskirchen.Edubot.API
     public class Edubot
     {
         private Edubot() {
-            state = State.DISCONNECTED;
+            state = State.SHUTDOWN;
+            Connect();
         }
+
 
         /// <summary>
         /// Returns a unique instance of the Edubot object.
@@ -39,6 +43,7 @@ namespace HTL.Grieskirchen.Edubot.API
 
         public delegate void Event(object sender, System.EventArgs args);
 
+        #region ------------------Events----------------------
         Event onStartup;
         /// <summary>
         /// Triggered after the robot has started.
@@ -118,7 +123,9 @@ namespace HTL.Grieskirchen.Edubot.API
             get { return onStateChanged; }
             set { onStateChanged = value; }
         }
+        #endregion
 
+        #region ------------------Public Properties-----------------------
         State state;
         /// <summary>
         /// Gets the current state of the robot.
@@ -136,6 +143,36 @@ namespace HTL.Grieskirchen.Edubot.API
             }
         }
 
+        bool isConnected;
+        /// <summary>
+        /// Gets the state of the physical connection. True means that the robot is physically connected.
+        /// </summary>
+        public bool IsConnected
+        {
+            get { return isConnected; }
+        }
+
+        IInterpolationType interpolation;
+        /// <summary>
+        /// Gets or sets the interpolation type, which is used for calculating the path of
+        /// the robot's movements.
+        /// </summary>
+        public IInterpolationType Interpolation
+        {
+            get { return interpolation; }
+            set
+            {
+                IInterpolationType old = interpolation;
+                interpolation = value;
+                if (onInterpolationChanged != null)
+                {
+                    OnInterpolationChanged(null, new InterpolationChangedEventArgs(old, value));
+                }
+            }
+        }
+        #endregion
+
+        #region ------------------Private Properties----------------------
         /// <summary>
         /// The primary axis of the robot, which is located on the top of the scaffold.
         /// </summary>
@@ -152,25 +189,9 @@ namespace HTL.Grieskirchen.Edubot.API
         /// The tool axis of the robot, which is located above the actual tool,
         /// </summary>
         Axis toolAxis;
+        #endregion
 
-        IInterpolationType interpolation;
-        /// <summary>
-        /// Gets or sets the interpolation type, which is used for calculating the path of
-        /// the robot's movements.
-        /// </summary>
-        public IInterpolationType Interpolation
-        {
-            get { return interpolation; }
-            set
-            {
-                IInterpolationType old = interpolation; 
-                interpolation = value;
-                if (onInterpolationChanged != null)
-                {
-                    OnInterpolationChanged(null, new InterpolationChangedEventArgs(old, value));
-                }
-            }
-        }
+        #region ------------------Public Methods-------------------
 
         /// <summary>
         /// Moves the tool to the specified 3D-Point (x,y,z).
@@ -204,7 +225,8 @@ namespace HTL.Grieskirchen.Edubot.API
         /// Activates or deactivates the robot's tool.
         /// </summary>
         /// <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
-        public void UseTool(bool activate) {
+        public void UseTool(bool activate)
+        {
             State = State.MOVING;
             Console.WriteLine("Setting pin of tool to: " + (activate ? "1" : "0"));
             State = State.READY;
@@ -212,13 +234,19 @@ namespace HTL.Grieskirchen.Edubot.API
             {
                 OnToolUsed(null, new ToolEventArgs(activate));
             }
+
+
         }
 
 
         /// <summary>
         /// Turns the robot on
         /// </summary>
-        public void Start() {
+        public void Start()
+        {
+            if (State == State.SHUTDOWN)
+            {
+                State = State.STARTING;
                 Console.WriteLine("Starting engines...");
                 Console.WriteLine("Setting enabled-pin of primary engine to 0");
                 Console.WriteLine("Setting enabled-pin of secondary engine to 0");
@@ -229,6 +257,10 @@ namespace HTL.Grieskirchen.Edubot.API
                 {
                     OnStartup(null, new System.EventArgs());
                 }
+            }
+            else {
+                throw new InvalidStateException("Starting the robot isn't possible since it's current state is: " + State);
+            }
         }
 
         /// <summary>
@@ -236,16 +268,68 @@ namespace HTL.Grieskirchen.Edubot.API
         /// </summary>
         public void Shutdown()
         {
-            if (OnShutdown != null)
+            if (State != State.SHUTDOWN)
             {
-                OnShutdown(null, new System.EventArgs());
+                State = State.SHUTTING_DOWN;
+                if (OnShutdown != null)
+                {
+                    OnShutdown(null, new System.EventArgs());
+                }
+                Console.WriteLine("Shutting down engines...");
+                Console.WriteLine("Setting enabled-pin of primary engine to 1");
+                Console.WriteLine("Setting enabled-pin of secondary engine to 1");
+                Console.WriteLine("Setting enabled-pin of vertical engine to 1");
+                Console.WriteLine("Setting enabled-pin of tool engine to 1");
+                State = State.SHUTDOWN;
             }
-            Console.WriteLine("Shutting down engines...");
-            Console.WriteLine("Setting enabled-pin of primary engine to 1");
-            Console.WriteLine("Setting enabled-pin of secondary engine to 1");
-            Console.WriteLine("Setting enabled-pin of vertical engine to 1");
-            Console.WriteLine("Setting enabled-pin of tool engine to 1");
-            State = State.SHUTDOWN;
+            else {
+                throw new InvalidStateException("Shutting down the robot isn't possible since it's current state is: " + State);
+            }
         }
+
+
+        /// <summary>
+        /// Trys to connect to the physical robot
+        /// </summary>
+        /// <returns>Returns true if the connections was successfully established, else returns false</returns>
+        public bool Connect()
+        {
+            if (new Random().Next(2) == 0/*try to connect by using the Controller class*/)
+            {
+                isConnected = true;
+                if (OnConnected != null)
+                {
+                    OnConnected(null, new System.EventArgs());
+                }
+            }
+            else
+            {
+                isConnected = false;
+            }
+            return isConnected;
+        }
+
+        /// <summary>
+        /// Trys to disconnect the physical robot
+        /// </summary>
+        /// <returns>Returns true if the connections was successfully established, else returns false</returns>
+        public bool Disconnect()
+        {
+            if (new Random().Next(2) == 0/*try to disconnect by using the Controller class*/)
+            {
+                isConnected = false;
+                if (OnDiconnected != null)
+                {
+                    OnDiconnected(null, new System.EventArgs());
+                }
+            }
+            else
+            {
+                isConnected = true;
+            }
+            return isConnected;
+        }
+
+        #endregion
     }
 }
