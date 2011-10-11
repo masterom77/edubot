@@ -41,7 +41,7 @@ namespace HTL.Grieskirchen.Edubot {
     public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
         
-        #line 22 "..\..\..\MainWindow.xaml"
+        #line 23 "..\..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox tbCodeArea;
         
@@ -49,7 +49,7 @@ namespace HTL.Grieskirchen.Edubot {
         #line hidden
         
         
-        #line 23 "..\..\..\MainWindow.xaml"
+        #line 24 "..\..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btExecute;
         
@@ -57,7 +57,7 @@ namespace HTL.Grieskirchen.Edubot {
         #line hidden
         
         
-        #line 24 "..\..\..\MainWindow.xaml"
+        #line 25 "..\..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox tbConsole;
         
@@ -65,7 +65,7 @@ namespace HTL.Grieskirchen.Edubot {
         #line hidden
         
         
-        #line 31 "..\..\..\MainWindow.xaml"
+        #line 32 "..\..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Canvas cvPerspective1;
         
@@ -73,7 +73,7 @@ namespace HTL.Grieskirchen.Edubot {
         #line hidden
         
         
-        #line 32 "..\..\..\MainWindow.xaml"
+        #line 33 "..\..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Canvas cvPerspective2;
         
@@ -114,7 +114,7 @@ namespace HTL.Grieskirchen.Edubot {
             case 2:
             this.btExecute = ((System.Windows.Controls.Button)(target));
             
-            #line 23 "..\..\..\MainWindow.xaml"
+            #line 24 "..\..\..\MainWindow.xaml"
             this.btExecute.Click += new System.Windows.RoutedEventHandler(this.btExecute_Click);
             
             #line default

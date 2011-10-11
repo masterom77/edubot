@@ -13,3 +13,4 @@ C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieski
 C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot.pdb
 C:\src\HTL.Grieskirchen.Edubot\HTL.Grieskirchen.Edubot\bin\Debug\HTL.Grieskirchen.Edubot.API.pdb
 C:\src\HTL.Grieskirchen.Edubot\HTL.Grieskirchen.Edubot\bin\Debug\HTL.Grieskirchen.Edubot.API.xml
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\HTL.Grieskirchen.Edubot.API.dll

@@ -18,6 +18,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
             commandList.Add("USETOOL", typeof(ToolCommand));
             commandList.Add("START", typeof(StartCommand));
             commandList.Add("SHUTDOWN", typeof(ShutdownCommand));
+            commandList.Add("SET_INTERPOLATION", typeof(InterpolationChangeCommand));
             
         }
 
