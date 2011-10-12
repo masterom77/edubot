@@ -46,6 +46,18 @@ namespace HTL.Grieskirchen.Edubot
                 Console.WriteLine("Speed: " + ace.Speed);
                 Console.WriteLine("Angle: " + ace.Angle+"°");
                 Console.WriteLine("AxisType: " + ace.AxisType.ToString());
+
+
+                //Update Visualisation
+
+                if (ace.AxisType == AxisType.PRIMARY) {
+                    visualisation3D.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
+                    
+                }
+                if (ace.AxisType == AxisType.SECONDARY) {
+                    visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                }
+
             } 
             if (e is StateChangedEventArgs)
             {
