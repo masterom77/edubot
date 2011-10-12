@@ -60,6 +60,7 @@
     <Compile Include="EventArgs\InterpolationChangedEventArgs.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />
     <Compile Include="Interpolation\IInterpolationType.cs" />
+    <Compile Include="Interpolation\InterpolationResult.cs" />
     <Compile Include="Interpolation\LinearInterpolation.cs" />
     <Compile Include="Interpolation\SplineInterpolation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
