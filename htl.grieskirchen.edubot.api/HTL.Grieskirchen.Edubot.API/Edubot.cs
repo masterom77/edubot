@@ -14,10 +14,18 @@ namespace HTL.Grieskirchen.Edubot.API
     public class Edubot
     {
         private Edubot() {
+
+            InitAxis();
             state = State.SHUTDOWN;
-            Connect();
+            
         }
 
+        private void InitAxis() {
+            primaryAxis = new Axis(0, 40, 0, 0);
+            secondaryAxis = new Axis(30, 40, 0, 0);
+            verticalAxis = new Axis(60, 40, 0, 0);
+            toolAxis = new Axis(60, 20, 0, 0);
+        }
 
         /// <summary>
         /// Returns a unique instance of the Edubot object.
@@ -201,22 +209,39 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="z">The z-coordinate.</param>
         public void MoveTo(int x, int y, int z) {
             Console.WriteLine("Calculating rotation-movements by using current interpolation type...");
+            List<InterpolationResult> results = interpolation.CalculatePath(primaryAxis, secondaryAxis, verticalAxis, toolAxis, x, y, z);
             State = State.MOVING;
+            InterpolationResult result = results.ElementAt(0);
             Console.WriteLine("Rotating primary engine");
+            primaryAxis.Rotate(result, isConnected);
             if (OnAxisAngleChanged != null)
             {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.PRIMARY, 1000, 5f));
+                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.PRIMARY, result));
             }
+
+            result = results.ElementAt(1);
             Console.WriteLine("Rotating secondary engine");
+            secondaryAxis.Rotate(result, isConnected);
+            if (IsConnected) { 
+            
+            }
             if (OnAxisAngleChanged != null)
             {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.SECONDARY, 1500, 7.5f));
+                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.SECONDARY, result));
             }
+
+            result = results.ElementAt(2);
             Console.WriteLine("Rotating vertical engine");
+            verticalAxis.Rotate(result, isConnected);
+            if (IsConnected)
+            {
+
+            }
             if (OnAxisAngleChanged != null)
             {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.VERTICAL, 500, 2.5f));
+                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.VERTICAL, result));
             }
+
             Console.WriteLine("Movement completed");
             State = State.READY;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
@@ -11,6 +12,6 @@ namespace HTL.Grieskirchen.Edubot.API
     /// </summary>
     public interface IInterpolationType
     {
-
+        List<InterpolationResult> CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z);
     }
 }

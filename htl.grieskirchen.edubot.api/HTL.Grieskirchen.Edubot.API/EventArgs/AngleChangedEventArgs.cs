@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot.API.EventArgs
 {
@@ -10,21 +11,15 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
         
         public float Angle
         {
-            get { return ticks/2*0.1125f; }
+            get { return result.Ticks/2*0.1125f; }
         }
 
-        long ticks;
+        InterpolationResult result;
 
-        public long Ticks
+        public InterpolationResult Result
         {
-            get { return ticks; }
-        }
-
-        float speed;
-
-        public float Speed
-        {
-            get { return speed; }
+            get { return result; }
+            set { result = value; }
         }
 
         AxisType axisType;
@@ -34,10 +29,9 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
             get { return axisType; }
         }
 
-        public AngleChangedEventArgs(AxisType axisType, long ticks, float speed) : base() {
+        public AngleChangedEventArgs(AxisType axisType, InterpolationResult result) : base() {
             this.axisType = axisType;
-            this.ticks = ticks;
-            this.speed = speed;
+            this.result = result;
         }
     }
 }

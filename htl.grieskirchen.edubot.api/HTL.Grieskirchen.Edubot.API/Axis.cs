@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
     /// <summary>
     /// This class represents an axis of the robot, containing most of the information used for path calculation.
     /// </summary>
-    class Axis
+    public class Axis
     {
+
+        public Axis(int x, int y, int z, float angle) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.angle = angle;
+            engine = new Engine();
+        }
+
         int x;
         /// <summary>
         /// Gets the x-coordinate of the axis
@@ -63,8 +73,12 @@ namespace HTL.Grieskirchen.Edubot.API
         /// </summary>
         /// <param name="ticks"></param>
         /// <param name="speed"></param>
-        public void Rotate(long ticks, float speed) {
+        public void Rotate(InterpolationResult result, bool isConnected) {
+            this.angle += result.Angle;
             
+            if (isConnected) {
+                engine.TurnAngle(result.Ticks, result.Speed);
+            }
         }
     }
 }

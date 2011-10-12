@@ -14,7 +14,7 @@ namespace HTL.Grieskirchen.Edubot.API
 
         public Engine()
         {
-            usbCon = new LIBADX.LIBADX();            
+            usbCon = new LIBADX.LIBADX();
         }
 
         #region Controller Variables
@@ -99,12 +99,12 @@ namespace HTL.Grieskirchen.Edubot.API
             }
         }
 
-        public void TurnAngle(int angle) {
-            for (int i = 0; i < angle/0.1125*2; i++)
+        public void TurnAngle(long ticks, float speed) {
+           /* for (int i = 0; i < angle/0.1125*2; i++)
             {
                 Clock = !Clock;
 
-            }
+            }*/
         }
 
         public void Stop() {
