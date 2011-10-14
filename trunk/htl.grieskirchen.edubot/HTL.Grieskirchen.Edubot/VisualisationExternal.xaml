@@ -1,0 +1,13 @@
+﻿<Window x:Class="HTL.Grieskirchen.Edubot.VisualisationExternal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VisualisationExternal" Height="300" Width="300" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="152*" />
+            <ColumnDefinition Width="126*" />
+        </Grid.ColumnDefinitions>
+        <my:Visualisation3D Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" x:Name="visualisation3D" Width="Auto" />
+        <my:VisualisationAbove Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="visualisationAbove" VerticalAlignment="Stretch" />
+    </Grid>
+</Window>
