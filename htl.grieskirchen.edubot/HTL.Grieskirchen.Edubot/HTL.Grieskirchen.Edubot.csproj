@@ -59,9 +59,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VisualisationAbove.xaml.cs">
+      <DependentUpon>VisualisationAbove.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Visualisation3D.xaml.cs">
       <DependentUpon>Visualisation3D.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualisationExternal.xaml.cs">
+      <DependentUpon>VisualisationExternal.xaml</DependentUpon>
+    </Compile>
+    <Page Include="VisualisationAbove.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -85,6 +95,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Visualisation3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualisationExternal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

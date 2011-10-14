@@ -18,3 +18,7 @@ C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\Visualisati
 C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\Visualisation3D.g.cs
 C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
 C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\HTL.Grieskirchen.Edubot_MarkupCompile.lref
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\VisualisationExternal.g.cs
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\VisualisationExternal.baml
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\VisualisationAbove.baml
+C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\obj\x86\Debug\VisualisationAbove.g.cs
