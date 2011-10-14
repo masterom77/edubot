@@ -40,7 +40,7 @@ namespace HTL.Grieskirchen.Edubot
 
 
         public void MoveAnglePrimaryAxis(long ticks, float speed) {
-            primaryAxisSpeed = speed / 16;
+            primaryAxisSpeed = speed*40 / 16;
             primaryAxisTicks = ticks / 16;
 
             new System.Threading.Thread(MoveAnglePrimaryAxisAsync).Start();
@@ -48,7 +48,7 @@ namespace HTL.Grieskirchen.Edubot
 
         public void MoveAngleSecondaryAxis(long ticks, float speed)
         {
-            secondaryAxisSpeed = speed / 16;
+            secondaryAxisSpeed = speed*40 / 16;
             secondaryAxisTicks = ticks / 16;
 
             new System.Threading.Thread(MoveAngleSecondaryAxisAsync).Start();
@@ -56,11 +56,12 @@ namespace HTL.Grieskirchen.Edubot
 
         private void MoveAnglePrimaryAxisAsync() {
             updateCallback updateAngle = new updateCallback(UpdatePrimaryAxis);
+           
             for (int i = 0; i < primaryAxisTicks; i++)
             {
                 
                 Dispatcher.Invoke(updateAngle);
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(Convert.ToInt32(1/primaryAxisSpeed*1000));
             }
         }
 
@@ -71,7 +72,7 @@ namespace HTL.Grieskirchen.Edubot
             {
 
                 Dispatcher.Invoke(updateAngle);
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(Convert.ToInt32(1 / secondaryAxisSpeed * 1000));
             }
         }
 

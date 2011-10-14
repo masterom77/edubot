@@ -23,10 +23,12 @@ namespace HTL.Grieskirchen.Edubot
     public partial class MainWindow : Window
     {
         CommandParser parser;
+        VisualisationExternal windowVisualisation;
 
         public MainWindow()
         {
             InitializeComponent();
+            windowVisualisation = new VisualisationExternal();
             parser = new CommandParser();
             API.Edubot edubot = API.Edubot.GetInstance();
            
@@ -53,9 +55,16 @@ namespace HTL.Grieskirchen.Edubot
                 if (ace.AxisType == AxisType.PRIMARY) {
                     visualisation3D.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
                     
+                        windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
+                        windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
+                    
                 }
                 if (ace.AxisType == AxisType.SECONDARY) {
                     visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                    
+                        windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                        windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                    
                 }
 
             } 
@@ -97,5 +106,14 @@ namespace HTL.Grieskirchen.Edubot
             }
           
         }
+
+        private void ExtVis_Click(object sender, RoutedEventArgs e)
+        {
+            windowVisualisation.Show();
+        }
+
+        
+
+        
     }
 }
