@@ -4,6 +4,7 @@
         Title="Edubot" Height="350" Width="525" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
@@ -12,7 +13,17 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TabControl Grid.RowSpan="2">
+        <Menu Grid.ColumnSpan="2">
+            <MenuItem Header="Datei" Name="miFile">
+                    <MenuItem Header="Neu..." Name="miNew" Click="miNew_Click"></MenuItem>
+                    <MenuItem Header="Öffnen..." Name="miOpen" Click="miOpen_Click"></MenuItem>
+                    <MenuItem Header="Speichern" Name="miSave" Click="miSave_Click"></MenuItem>
+                    <MenuItem Header="Speichern unter..." Name="miSaveAs" Click="miSaveAs_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Bearbeiten"></MenuItem>
+            <MenuItem Header="Ansicht"></MenuItem>
+        </Menu>
+        <TabControl Grid.RowSpan="2" Grid.Row="1">
             <TabItem Header="CLI">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -20,18 +31,37 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" Name="tbCodeArea"></TextBox>
+                    <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" Name="tbCodeArea" TextChanged="tbCodeArea_TextChanged"></TextBox>
                     <Button Grid.Row="1" Height="20" Content="Ausführen" Name="btExecute" Click="btExecute_Click"></Button>
                     <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Grid.Row="2" Margin="0,0,0,0" Name="tbConsole"></TextBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Zeichenfläche"></TabItem>
+            <TabItem Header="Zeichenfläche">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <ToolBarTray Grid.RowSpan="2" Orientation="Vertical" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ToolBar Band="1" BandIndex="1">
+                            <Button>ddd</Button>
+                            <Button>ddd</Button>
+                            <Button>ddd</Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                </Grid>
+
+            </TabItem>
             <TabItem Header="Einstellungen"></TabItem>
             <TabItem Header="Handbuch"></TabItem>
         </TabControl>
-        <Canvas Grid.Column="1" Grid.Row="1" Width="Auto" HorizontalAlignment="Stretch" Margin="5,102,5,5" Name="cvPerspective2" VerticalAlignment="Stretch" />
-        <StatusBar Grid.ColumnSpan="2" Grid.Row="3"></StatusBar>
-        <my:Visualisation3D Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D" VerticalAlignment="Stretch" Width="Auto" />
-        <Button Content="Visualisierung in eigenem Fenster anzeigen" Grid.Column="1" Grid.Row="1" Height="33" HorizontalAlignment="Left" Margin="5,63,0,0" Name="ExtVis" VerticalAlignment="Top" Width="157" Click="ExtVis_Click" />
+        <my:VisualisationAbove Grid.Column="1" Grid.Row="2" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></my:VisualisationAbove>
+        <StatusBar Grid.ColumnSpan="2" Grid.Row="4"></StatusBar>
+        <my:Visualisation3D Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D" VerticalAlignment="Stretch" Width="Auto" />
+        <Button Content="Visualisierung in eigenem Fenster anzeigen" Grid.Column="1" Grid.Row="1" Height="33" HorizontalAlignment="Left" Margin="4,97,0,0" Name="ExtVis" VerticalAlignment="Top" Width="157" Click="ExtVis_Click" />
     </Grid>
 </Window>

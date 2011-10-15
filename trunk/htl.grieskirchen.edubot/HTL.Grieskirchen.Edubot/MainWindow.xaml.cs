@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using HTL.Grieskirchen.Edubot.Commands;
 using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using System.IO;
+using Microsoft.Win32;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -23,6 +25,8 @@ namespace HTL.Grieskirchen.Edubot
     public partial class MainWindow : Window
     {
         CommandParser parser;
+        string currentFile;
+        bool saved;
         VisualisationExternal windowVisualisation;
 
         public MainWindow()
@@ -31,12 +35,12 @@ namespace HTL.Grieskirchen.Edubot
             windowVisualisation = new VisualisationExternal();
             parser = new CommandParser();
             API.Edubot edubot = API.Edubot.GetInstance();
-           
             edubot.OnAxisAngleChanged += ShowEventArgsInfo;
             edubot.OnStateChanged += ShowEventArgsInfo;
             edubot.OnInterpolationChanged += ShowEventArgsInfo;
             edubot.OnToolUsed += ShowEventArgsInfo;
-            
+            currentFile = null;
+            saved = true;
         }
 
         private void ShowEventArgsInfo(object sender, EventArgs e) {
@@ -44,26 +48,26 @@ namespace HTL.Grieskirchen.Edubot
             Console.WriteLine(e.GetType().Name);
             if (e is AngleChangedEventArgs) {
                 AngleChangedEventArgs ace = e as AngleChangedEventArgs;
-                Console.WriteLine("Ticks: " + ace.Ticks);
-                Console.WriteLine("Speed: " + ace.Speed);
-                Console.WriteLine("Angle: " + ace.Angle+"°");
+                Console.WriteLine("Ticks: " + ace.Result.Ticks);
+                Console.WriteLine("Speed: " + ace.Result.Speed);
+                Console.WriteLine("Angle: " + ace.Result.Angle+"°");
                 Console.WriteLine("AxisType: " + ace.AxisType.ToString());
 
 
                 //Update Visualisation
 
                 if (ace.AxisType == AxisType.PRIMARY) {
-                    visualisation3D.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
+                    visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     
-                        windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
-                        windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Ticks, ace.Speed);
+                        windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
+                        windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     
                 }
                 if (ace.AxisType == AxisType.SECONDARY) {
-                    visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                    visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     
-                        windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
-                        windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
+                        windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
+                        windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     
                 }
 
@@ -89,6 +93,75 @@ namespace HTL.Grieskirchen.Edubot
            
         }
 
+        private void SaveAs()
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = ".txt";
+            dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
+
+            if ((bool)dialog.ShowDialog())
+            {
+                Save(dialog.FileName);
+                currentFile = dialog.FileName;
+            }
+        }
+
+        private void Save(string fileName)
+        {
+            StreamWriter writer = new StreamWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write));
+            writer.WriteLine(tbCodeArea.Text);
+            writer.Close();
+            saved = true;
+        }
+
+        private void Open()
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = ".txt";
+            dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
+
+            if ((bool)dialog.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read));
+                while (!reader.EndOfStream)
+                {
+                    tbCodeArea.AppendText(reader.ReadLine()+Environment.NewLine);
+                }
+                reader.Close();
+                currentFile = dialog.FileName;
+            }
+        }
+
+        private void SaveChanges() {
+            if (!saved) {
+                MessageBoxResult response = MessageBox.Show("Möchten Sie die Änderungen in \"" + currentFile.Substring(currentFile.LastIndexOf('\\')+1)+"\" speichern?", "Edubot", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+                if (response == MessageBoxResult.Yes) {
+                    if (currentFile == null)
+                    {
+                        SaveAs();
+                    }
+                    else {
+                        Save(currentFile);
+                    }
+                }
+                if (response == MessageBoxResult.No) {
+                    saved = true;
+                }
+                if (response == MessageBoxResult.Cancel) {
+                    saved = false;
+                }
+            }
+        }
+
+        private void Create()
+        {
+            tbCodeArea.Clear();
+            currentFile = null;
+        }
+
         private void btExecute_Click(object sender, RoutedEventArgs e)
         {
             tbConsole.Clear();
@@ -110,6 +183,50 @@ namespace HTL.Grieskirchen.Edubot
         private void ExtVis_Click(object sender, RoutedEventArgs e)
         {
             windowVisualisation.Show();
+        }
+
+        private void miSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs();
+            
+        }
+
+        private void miSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentFile == null)
+            {
+                SaveAs();
+            }
+            else {
+                Save(currentFile);
+            }
+        }
+
+        private void miOpen_Click(object sender, RoutedEventArgs e)
+        {
+            SaveChanges();
+            if (saved)
+            {
+                Open();
+            }
+
+        }
+
+        private void miNew_Click(object sender, RoutedEventArgs e)
+        {
+            SaveChanges();
+            if (saved)
+            {
+                Create();
+            }
+        }
+
+       
+
+        private void tbCodeArea_TextChanged(object sender, TextChangedEventArgs e)
+        {
+          
+            saved = false;
         }
 
         

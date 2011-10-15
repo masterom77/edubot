@@ -16,14 +16,17 @@ namespace HTL.Grieskirchen.Edubot.API
         private Edubot() {
 
             InitAxis();
+            interpolation = new LinearInterpolation();
             state = State.SHUTDOWN;
             
         }
-
+        /// <summary>
+        /// Initializes the robot's axis
+        /// </summary>
         private void InitAxis() {
-            primaryAxis = new Axis(0, 40, 0, 0);
-            secondaryAxis = new Axis(30, 40, 0, 0);
-            verticalAxis = new Axis(60, 40, 0, 0);
+            primaryAxis = new Axis(0, 40, 0, 45);
+            secondaryAxis = new Axis(30, 40, 0, 45);
+            verticalAxis = new Axis(60, 40, 0, 45);
             toolAxis = new Axis(60, 20, 0, 0);
         }
 
