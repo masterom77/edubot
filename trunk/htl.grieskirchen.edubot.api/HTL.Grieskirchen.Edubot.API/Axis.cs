@@ -17,6 +17,7 @@ namespace HTL.Grieskirchen.Edubot.API
             this.y = y;
             this.z = z;
             this.angle = angle;
+            this.length = 150;
             engine = new Engine();
         }
 
@@ -27,6 +28,7 @@ namespace HTL.Grieskirchen.Edubot.API
         public int X
         {
             get { return x; }
+            set { x = value; }
         }
         
         int y;
@@ -36,6 +38,7 @@ namespace HTL.Grieskirchen.Edubot.API
         public int Y
         {
             get { return y; }
+            set { y = value; }
         }
 
         int z;
@@ -45,6 +48,7 @@ namespace HTL.Grieskirchen.Edubot.API
         public int Z
         {
             get { return z; }
+            set { z = value; }
         }
 
         float length;
@@ -63,6 +67,7 @@ namespace HTL.Grieskirchen.Edubot.API
         public float Angle
         {
             get { return angle; }
+            set { angle = value; }
         }
 
         Engine engine;

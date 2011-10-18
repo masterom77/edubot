@@ -7,29 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using HTL.Grieskirchen.Edubot.API;
 
 namespace EduBot
 {
     public partial class Form1 : Form
     {
-        /*HTL.Grieskirchen engine;
-        Thread t;
+        
 
         public Form1()
         {
             InitializeComponent();
-            engine = new Engine();
+            Edubot.GetInstance().MoveTo(150, 150,0);
             
-            if (engine.Initiate())
-            {
-                MessageBox.Show("SUCCESS");
-            }
-            else
-            {
-                MessageBox.Show("FAILED");
-            }
         }
-
+        /*
         private void button1_Click(object sender, EventArgs e)
         {
             engine.Enabled = !engine.Enabled;

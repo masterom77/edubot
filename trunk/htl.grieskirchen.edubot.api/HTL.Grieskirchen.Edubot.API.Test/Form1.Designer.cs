@@ -52,7 +52,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Enable/Disable";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            //this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -62,7 +62,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Left/Right";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            //this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -73,7 +73,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "Takt ein / aus";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            //this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label1
             // 
@@ -112,7 +112,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Stromabfall";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            //this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label4
             // 
@@ -134,7 +134,7 @@
             this.trackBar1.Size = new System.Drawing.Size(138, 45);
             this.trackBar1.TabIndex = 6;
             this.trackBar1.Value = 1;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            //this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // label5
             // 
@@ -170,7 +170,7 @@
             this.button5.TabIndex = 10;
             this.button5.Text = "Ausführen";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            //this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
@@ -192,8 +192,8 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            //this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
