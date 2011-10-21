@@ -79,10 +79,10 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="ticks"></param>
         /// <param name="speed"></param>
         public void Rotate(InterpolationResult result, bool isConnected) {
-            this.angle += result.Angle;
+            //this.angle += result.Angle;
             
             if (isConnected) {
-                engine.TurnAngle(result.Ticks, result.Speed);
+                //engine.TurnAngle(result.Ticks, result.Speed);
             }
         }
     }

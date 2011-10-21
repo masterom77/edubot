@@ -12,6 +12,6 @@ namespace HTL.Grieskirchen.Edubot.API
     /// </summary>
     public interface IInterpolationType
     {
-        float[,] CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z);
+        InterpolationResult CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z);
     }
 }

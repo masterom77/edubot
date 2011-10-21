@@ -19,18 +19,28 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         public static long ConvertToTicks(float degrees) {
-            return (long) degrees * 6400;
+            return (long) degrees * 3200;
         }
 
         public static float ConvertToDegrees(long ticks)
         {
-            return ticks / 6400;
+            return ticks / 3200;
         }
 
         public static Point CalculateCoordinates(float alpha1, float alpha2, float length) {
             int x = (int) Math.Round(length * Math.Cos(ConvertToRadians(alpha1)) + length * Math.Cos(ConvertToRadians(alpha1 + alpha2)));
             int y = (int) Math.Round(length * Math.Sin(ConvertToRadians(alpha1)) + length * Math.Sin(ConvertToRadians(alpha1 + alpha2)));
             return new Point(x, y);
+        }
+
+        public static float CalculateDistance(float num1, float num2) {
+            if (num2 > num1)
+            {
+                return num2 - num1;
+            }
+            else {
+                return num1 - num2;
+            }
         }
     }
 }

@@ -213,9 +213,9 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="z">The z-coordinate.</param>
         public void MoveTo(int x, int y, int z) {
             Console.WriteLine("Calculating rotation-movements by using current interpolation type...");
-            float[,] results = interpolation.CalculatePath(primaryAxis, secondaryAxis, verticalAxis, toolAxis, x, y, z);
+            InterpolationResult result = interpolation.CalculatePath(primaryAxis, secondaryAxis, verticalAxis, toolAxis, x, y, z);
             State = State.MOVING;
-            InterpolationResult result = null;
+           
             Console.WriteLine("Rotating primary engine");
             primaryAxis.Rotate(result, isConnected);
             if (OnAxisAngleChanged != null)
