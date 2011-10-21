@@ -9,11 +9,6 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
     public class AngleChangedEventArgs : System.EventArgs
     {
         
-        public float Angle
-        {
-            get { return result.Ticks/2*0.1125f; }
-        }
-
         InterpolationResult result;
 
         public InterpolationResult Result

@@ -8,92 +8,41 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class LinearInterpolation : IInterpolationType
     {
-        public float[,] CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z)
+        public InterpolationResult CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z)
         {
-            float toolX = secondaryAxis.X;
+            int steps = 100;
+            float toolX = secondaryAxis.X+150;
             float toolY = secondaryAxis.Y;
+            float incrX = (x-toolX)/steps;
+            float incrY = (y-toolY)/steps;
             float length = secondaryAxis.Length;
 
-            //Calc distance between 0/0 and tool-Point
-            float distance = (float) Math.Sqrt(x * x + y * y);
-            //Calc angle between primary and secondary axis
-            float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
-            
-            //float tmpAlpha2 = (float)(Math.Asin((distance / 2) / secondaryAxis.Length) * 180 / Math.PI);
+            float[,] angles = new float[2, steps];
+            float[] speeds = new float[2];
 
-            float alpha2 = 180 - tmpAlpha2;
+            speeds[0] = incrX / incrY;
+            speeds[1] = incrY / incrX;
+            
+            for (int i = 0; i < steps; i++) {
+                toolX += incrX;
+                toolY += incrY;
+              
+                CalculateAngleForPoint(toolX, toolY, length,out angles[0, i],out angles[1, i]);
+            }
+            return new InterpolationResult(angles,speeds);
+            
+        }
+
+        private void CalculateAngleForPoint(float x, float y, float length, out float alpha1, out float alpha2) {
+            float distance = (float)Math.Sqrt(x * x + y * y);
+            float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
+            alpha2 = 180 - tmpAlpha2;
             float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
 
-            float alpha1 = MathHelper.ConvertToDegrees(Math.Atan(y/x)) - tmpAlpha1;
+            alpha1 = MathHelper.ConvertToDegrees(Math.Atan(y / x)) - tmpAlpha1;
 
-            float difAlpha1;
-            if (alpha1 > primaryAxis.Angle)
-            {
-                difAlpha1 = alpha1 - primaryAxis.Angle;
-            }
-            else {
-                difAlpha1 = primaryAxis.Angle - alpha1;
-            }
-
-            float difAlpha2;
-            if (alpha2 > secondaryAxis.Angle)
-            {
-                difAlpha2 = alpha2 - secondaryAxis.Angle;
-            }
-            else
-            {
-                difAlpha2 = secondaryAxis.Angle - alpha2;
-            }
-
-            float primSpeed = difAlpha1 / difAlpha2;
-            float secSpeed = difAlpha2 / difAlpha1;
-
-            float[,] results = Interpolate(primaryAxis.Angle, secondaryAxis.Angle, difAlpha1, difAlpha2, secondaryAxis.Length, 100);
-
-            primaryAxis.Angle = alpha1;
-            secondaryAxis.Angle = alpha2;
-            secondaryAxis.X = x;
-            secondaryAxis.Y = y;
-            secondaryAxis.Z = z;
-
-            return results;
-
-            /*long primTicks = MathHelper.ConvertToTicks(alpha1);
-            long secTicks = MathHelper.ConvertToTicks(alpha2);
-            */
-
-            //Point p = MathHelper.CalculateCoordinates(alpha1, alpha2, length);
-            
-            
         }
 
-        private float[,] Interpolate(float startAngle1, float startAngle2, float dif1, float dif2, float length, int steps) {
-            float[,] results = new float[2, steps];
-            float alpha1Incr = dif1 / steps;
-            float alpha2Incr = dif2 / steps;
-            float alpha1 = startAngle1;
-            float alpha2 = startAngle2;
-            float tmpAlpha1;
-            float tmpAlpha2;
-            float distance;
-
-            for (int i = 0; i < steps; i++)
-            {
-                alpha1 += alpha1Incr;
-                alpha2 += alpha2Incr;
-                Point nextPoint = MathHelper.CalculateCoordinates(alpha1, alpha2, length);
-                distance = (float)Math.Sqrt(Math.Pow(nextPoint.X, 2) + Math.Pow(nextPoint.Y, 2));
-                //Calc angle between primary and secondary axis
-                tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
-
-                //float tmpAlpha2 = (float)(Math.Asin((distance / 2) / secondaryAxis.Length) * 180 / Math.PI);
-
-                tmpAlpha1 = 90 - (tmpAlpha2 / 2);
-                results[0, i] = MathHelper.ConvertToDegrees(Math.Atan(nextPoint.Y / nextPoint.X)) - tmpAlpha1;
-                results[1, i] = 180 - tmpAlpha2;
-            }
-
-            return results;
-        }
+        
     }
 }
