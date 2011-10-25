@@ -7,7 +7,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class SplineInterpolation : IInterpolationType
     {
-        public InterpolationResult CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z)
+        public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
             List<InterpolationResult> results = new List<InterpolationResult>();
             return null;

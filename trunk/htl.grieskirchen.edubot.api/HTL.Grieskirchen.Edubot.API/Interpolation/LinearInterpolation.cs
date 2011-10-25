@@ -4,32 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
+
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class LinearInterpolation : IInterpolationType
     {
-        public InterpolationResult CalculatePath(Axis primaryAxis, Axis secondaryAxis, Axis verticalAxis, Axis toolAxis, int x, int y, int z)
+        
+        public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
             int steps = 100;
-            float toolX = secondaryAxis.X+150;
-            float toolY = secondaryAxis.Y;
+            float toolX = tool.X;
+            float toolY = tool.Y;
             float incrX = (x-toolX)/steps;
             float incrY = (y-toolY)/steps;
-            float length = secondaryAxis.Length;
 
-            float[,] angles = new float[2, steps];
+            float[] primaryAngles = new float[steps];
+            float[] secondaryAngles = new float[steps];
             float[] speeds = new float[2];
 
-            speeds[0] = incrX / incrY;
-            speeds[1] = incrY / incrX;
+            float primarySpeed = incrX / incrY;
+            float secondarySpeed = incrY / incrX;
+
+            InterpolationResult result = new InterpolationResult();
             
+
             for (int i = 0; i < steps; i++) {
                 toolX += incrX;
-                toolY += incrY;
-              
-                CalculateAngleForPoint(toolX, toolY, length,out angles[0, i],out angles[1, i]);
+                toolY += incrY;              
+                CalculateAngleForPoint(toolX, toolY, length,out primaryAngles[i],out secondaryAngles[i]);
             }
-            return new InterpolationResult(angles,speeds);
+
+            result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
+            result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));
+            return result;
             
         }
 
