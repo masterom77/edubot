@@ -7,36 +7,21 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class InterpolationResult
     {
-        public InterpolationResult(float[,] angles, float[] speeds) {
-            this.angles = angles;
-            this.speeds = speeds;
-        }
-
-        float[,] angles;
-
-        public long[,] Ticks
+        public InterpolationResult()
         {
-            get
-            {
-                long[,] ticks = new long[2, angles.Length];
-                for(int i = 0; i < ticks.Length; i++){
-                    ticks[0,i] = (long) angles[0,i] * 6400;
-                    ticks[1,i] = (long) angles[1,i] * 6400;
-                }
-                return ticks;
-            }
+            result = new Dictionary<AxisType, AxisData>();
         }
 
-        float[] speeds;
+        Dictionary<AxisType, AxisData> result;
 
-        public float[] Speeds
+        public Dictionary<AxisType, AxisData> Result
         {
-            get { return speeds; }
+            get { return result; }
+            set { result = value; }
         }
 
-        public float[,] Angles {
-            get { return angles; }
-        }
+
+       
 
 
     }

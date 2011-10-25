@@ -18,7 +18,7 @@ namespace EduBot
         public Form1()
         {
             InitializeComponent();
-            Edubot.GetInstance().MoveTo(225, 0,0);
+            Edubot.GetInstance().MoveTo(150, 150,0);
             
         }
         /*

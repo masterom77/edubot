@@ -29,6 +29,10 @@ namespace HTL.Grieskirchen.Edubot.API
             secondaryAxis = new Axis((int)length*10, 0, 60, 0);
             verticalAxis = new Axis((int)length*20, 0, 40, 0);
             toolAxis = new Axis(60, 20, 0, 0);
+            tool = new VirtualTool();
+            tool.X = 300;
+            tool.Y = 0;
+            tool.Y = 0;
         }
 
         /// <summary>
@@ -201,6 +205,12 @@ namespace HTL.Grieskirchen.Edubot.API
         /// The tool axis of the robot, which is located above the actual tool,
         /// </summary>
         Axis toolAxis;
+
+        /// <summary>
+        /// The tool of the robot
+        /// </summary>
+        ITool tool;
+
         #endregion
 
         #region ------------------Public Methods-------------------
@@ -212,19 +222,13 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="y">The y-coordinate.</param>
         /// <param name="z">The z-coordinate.</param>
         public void MoveTo(int x, int y, int z) {
-            Console.WriteLine("Calculating rotation-movements by using current interpolation type...");
-            InterpolationResult result = interpolation.CalculatePath(primaryAxis, secondaryAxis, verticalAxis, toolAxis, x, y, z);
+            InterpolationResult result = interpolation.CalculatePath(tool, x, y, z,primaryAxis.Length);
             State = State.MOVING;
-           
-            Console.WriteLine("Rotating primary engine");
             primaryAxis.Rotate(result, isConnected);
             if (OnAxisAngleChanged != null)
             {
                 OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.PRIMARY, result));
             }
-
-            result = null;
-            Console.WriteLine("Rotating secondary engine");
             secondaryAxis.Rotate(result, isConnected);
             if (IsConnected) { 
             
@@ -233,9 +237,6 @@ namespace HTL.Grieskirchen.Edubot.API
             {
                 OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.SECONDARY, result));
             }
-
-            result = null;
-            Console.WriteLine("Rotating vertical engine");
             verticalAxis.Rotate(result, isConnected);
             if (IsConnected)
             {
