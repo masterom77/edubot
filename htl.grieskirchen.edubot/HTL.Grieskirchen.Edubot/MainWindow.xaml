@@ -48,11 +48,18 @@
                     </Grid.ColumnDefinitions>
                     <ToolBarTray Grid.RowSpan="2" Orientation="Vertical" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <ToolBar Band="1" BandIndex="1">
-                            <Button>ddd</Button>
-                            <Button>ddd</Button>
-                            <Button>ddd</Button>
+                            <Button>
+                                <Image></Image>
+                            </Button>
+                            <Button>
+                                <Image></Image>
+                            </Button>
+                            <Button>
+                                <Image></Image>
+                            </Button>
                         </ToolBar>
                     </ToolBarTray>
+                    <my:DrawingPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5"></my:DrawingPanel>
                 </Grid>
 
             </TabItem>
