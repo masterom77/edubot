@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DrawingPanel.xaml.cs">
+      <DependentUpon>DrawingPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualisationAbove.xaml.cs">
       <DependentUpon>VisualisationAbove.xaml</DependentUpon>
     </Compile>
@@ -68,6 +71,10 @@
     <Compile Include="VisualisationExternal.xaml.cs">
       <DependentUpon>VisualisationExternal.xaml</DependentUpon>
     </Compile>
+    <Page Include="DrawingPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VisualisationAbove.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
