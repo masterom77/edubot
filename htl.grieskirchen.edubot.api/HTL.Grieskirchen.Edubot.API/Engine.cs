@@ -10,38 +10,38 @@ namespace HTL.Grieskirchen.Edubot.API
     {
         private Thread clockThread;
         private bool running;
-        private LIBADX.LIBADX usbCon;
+        //private LIBADX.LIBADX usbCon;
 
         public Engine()
         {
-            usbCon = new LIBADX.LIBADX();
+            //usbCon = new LIBADX.LIBADX();
         }
 
         #region Controller Variables
-        public bool Enabled
-        {
-            get { return usbCon.get_DigitalOutLine(1,0); }
-            set { usbCon.set_DigitalOutLine(1,0, value); }
-        }
+        //public bool Enabled
+        //{
+        //    get { return usbCon.get_DigitalOutLine(1,0); }
+        //    set { usbCon.set_DigitalOutLine(1,0, value); }
+        //}
 
-        public bool Direction
-        {
-            get { return usbCon.get_DigitalOutLine(1, 1); }
-            set { usbCon.set_DigitalOutLine(1, 1, value); }
-        }
+        //public bool Direction
+        //{
+        //    get { return usbCon.get_DigitalOutLine(1, 1); }
+        //    set { usbCon.set_DigitalOutLine(1, 1, value); }
+        //}
 
-        bool clock;
-        public bool Clock
-        {
-            get {return usbCon.get_DigitalOutLine(1, 2); }
-            set { usbCon.set_DigitalOutLine(1, 2, value); }
-        }
+        //bool clock;
+        //public bool Clock
+        //{
+        //    get {return usbCon.get_DigitalOutLine(1, 2); }
+        //    set { usbCon.set_DigitalOutLine(1, 2, value); }
+        //}
 
-        public bool CurrencyProtection
-        {
-            get { return usbCon.get_DigitalOutLine(1, 3); }
-            set { usbCon.set_DigitalOutLine(1, 3, value); }
-        }
+        //public bool CurrencyProtection
+        //{
+        //    get { return usbCon.get_DigitalOutLine(1, 3); }
+        //    set { usbCon.set_DigitalOutLine(1, 3, value); }
+        //}
         #endregion
 
         public bool IsRunning
@@ -56,33 +56,35 @@ namespace HTL.Grieskirchen.Edubot.API
             set { speed = value; }
         }
 
+        
         public bool Initiate() {
-            if (usbCon.Open("usb-pio"))
-            {
-                usbCon.set_DigitalDirection(1, 0x0000);
-                usbCon.set_DigitalDirection(2, 0x0000);
-                usbCon.set_DigitalDirection(3, 0x0000);
-                Enabled = false;
-                Direction = true;
-                CurrencyProtection = false;
-                running = false;
-                speed = 10;
-                return true;
-            }
-            else {
-                return false;
-            }
+            //if (usbCon.Open("usb-pio"))
+            //{
+            //    usbCon.set_DigitalDirection(1, 0x0000);
+            //    usbCon.set_DigitalDirection(2, 0x0000);
+            //    usbCon.set_DigitalDirection(3, 0x0000);
+            //    Enabled = false;
+            //    Direction = true;
+            //    CurrencyProtection = false;
+            //    running = false;
+            //    speed = 10;
+            //    return true;
+            //}
+            //else {
+            //    return false;
+            //}
+            return true;
         }
 
         public bool Dispose() {
             try
             {
                 Stop();
-                Enabled = true;
-                Direction = true;
-                CurrencyProtection = false;
-                speed = 10;
-                usbCon.Close();
+                //Enabled = true;
+                //Direction = true;
+                //CurrencyProtection = false;
+                //speed = 10;
+                //usbCon.Close();
                 return true;
             }
             catch {
@@ -117,7 +119,7 @@ namespace HTL.Grieskirchen.Edubot.API
         private void Tick()
         {
             for(int i = 0; i<6400; i++){
-                Clock = !Clock;
+                //Clock = !Clock;
 
             }
         }
