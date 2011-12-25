@@ -7,6 +7,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class InterpolationResult
     {
+        int[, ,] angles;
         public InterpolationResult()
         {
             result = new Dictionary<AxisType, AxisData>();

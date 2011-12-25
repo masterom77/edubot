@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
 using HTL.Grieskirchen.Edubot.API.Exceptions;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
+using HTL.Grieskirchen.Edubot.API.Adapters;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
@@ -56,6 +58,8 @@ namespace HTL.Grieskirchen.Edubot.API
             }
 
         }
+
+        Dictionary<AdapterType, IAdapter> registeredAdapters;
 
         public delegate void Event(object sender, System.EventArgs args);
 
@@ -186,6 +190,8 @@ namespace HTL.Grieskirchen.Edubot.API
                 }
             }
         }
+
+
         #endregion
 
         #region ------------------Private Properties----------------------
@@ -222,32 +228,44 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="y">The y-coordinate.</param>
         /// <param name="z">The z-coordinate.</param>
         public void MoveTo(int x, int y, int z) {
-            InterpolationResult result = interpolation.CalculatePath(tool, x, y, z,primaryAxis.Length);
+            Thread thread = new Thread(MoveTo);
+            int[] coordinates = new int[] { x, y, z };
+            thread.Start(coordinates);
+        }
+
+        private void MoveTo(object coordinates) {
+            int[] coords = (int[])coordinates;
+            int x = coords[0];
+            int y = coords[1];
+            int z = coords[2];
+            InterpolationResult result = null;
             State = State.MOVING;
-            primaryAxis.Rotate(result, isConnected);
-            if (OnAxisAngleChanged != null)
+            if(registeredAdapters.Count == 0)
+                throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
+            foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
             {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.PRIMARY, result));
-            }
-            secondaryAxis.Rotate(result, isConnected);
-            if (IsConnected) { 
-            
-            }
-            if (OnAxisAngleChanged != null)
-            {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.SECONDARY, result));
-            }
-            verticalAxis.Rotate(result, isConnected);
-            if (IsConnected)
-            {
+                if (entry.Value.RequiresPrecalculation)
+                {
+                    if (result == null)
+                        result = interpolation.CalculatePath(tool, x, y, z, entry.Value.Length);
+                    entry.Value.SetInterpolationResult(result);
+                }
+                
+                entry.Value.MoveTo(x, y, z);
+                if (OnAxisAngleChanged != null)
+                {
+                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.PRIMARY, result));
+                }
+                if (OnAxisAngleChanged != null)
+                {
+                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.SECONDARY, result));
+                }
+                if (OnAxisAngleChanged != null)
+                {
+                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.VERTICAL, result));
+                }
 
             }
-            if (OnAxisAngleChanged != null)
-            {
-                OnAxisAngleChanged(null, new AngleChangedEventArgs(AxisType.VERTICAL, result));
-            }
-
-            Console.WriteLine("Movement completed");
             State = State.READY;
         }
 
@@ -257,15 +275,25 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
         public void UseTool(bool activate)
         {
+            Thread thread = new Thread(UseTool);
+            thread.Start(activate);
+
+
+        }
+
+        private void UseTool(object activate) {
             State = State.MOVING;
-            Console.WriteLine("Setting pin of tool to: " + (activate ? "1" : "0"));
-            State = State.READY;
-            if (OnToolUsed != null)
+            if (registeredAdapters.Count == 0)
+                throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
+            foreach (KeyValuePair<AdapterType, IAdapter> adapter in registeredAdapters)
             {
-                OnToolUsed(null, new ToolEventArgs(activate));
+                adapter.Value.UseTool((bool)activate);
+                if (OnToolUsed != null)
+                {
+                    OnToolUsed(adapter.Key, new ToolEventArgs((bool)activate));
+                }
             }
-
-
+            State = State.READY;
         }
 
 
@@ -318,46 +346,64 @@ namespace HTL.Grieskirchen.Edubot.API
         }
 
 
-        /// <summary>
-        /// Trys to connect to the physical robot
-        /// </summary>
-        /// <returns>Returns true if the connections was successfully established, else returns false</returns>
-        public bool Connect()
+        ///// <summary>
+        ///// Trys to connect to the physical robot
+        ///// </summary>
+        ///// <returns>Returns true if the connections was successfully established, else returns false</returns>
+        //public bool Connect()
+        //{
+        //    if (new Random().Next(2) == 0/*try to connect by using the Controller class*/)
+        //    {
+        //        isConnected = true;
+        //        if (OnConnected != null)
+        //        {
+        //            OnConnected(null, new System.EventArgs());
+        //        }
+        //    }
+        //    else
+        //    {
+        //        isConnected = false;
+        //    }
+        //    return isConnected;
+        //}
+
+        ///// <summary>
+        ///// Trys to disconnect the physical robot
+        ///// </summary>
+        ///// <returns>Returns true if the connections was successfully established, else returns false</returns>
+        //public bool Disconnect()
+        //{
+        //    if (new Random().Next(2) == 0/*try to disconnect by using the Controller class*/)
+        //    {
+        //        isConnected = false;
+        //        if (OnDiconnected != null)
+        //        {
+        //            OnDiconnected(null, new System.EventArgs());
+        //        }
+        //    }
+        //    else
+        //    {
+        //        isConnected = true;
+        //    }
+        //    return isConnected;
+        //}
+
+        public void RegisterAdapter(AdapterType adapter)
         {
-            if (new Random().Next(2) == 0/*try to connect by using the Controller class*/)
+            if (registeredAdapters == null)
             {
-                isConnected = true;
-                if (OnConnected != null)
-                {
-                    OnConnected(null, new System.EventArgs());
-                }
+                registeredAdapters = new Dictionary<AdapterType, IAdapter>();
             }
-            else
-            {
-                isConnected = false;
-            }
-            return isConnected;
+            if (registeredAdapters.ContainsKey(adapter))
+                throw new AdapterException(adapter, "Der Adapter ist bereits registriert: \"" + adapter.ToString() + "\"");
+
+            registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
         }
 
-        /// <summary>
-        /// Trys to disconnect the physical robot
-        /// </summary>
-        /// <returns>Returns true if the connections was successfully established, else returns false</returns>
-        public bool Disconnect()
+        public void DeregisterAdapter(AdapterType adapter)
         {
-            if (new Random().Next(2) == 0/*try to disconnect by using the Controller class*/)
-            {
-                isConnected = false;
-                if (OnDiconnected != null)
-                {
-                    OnDiconnected(null, new System.EventArgs());
-                }
-            }
-            else
-            {
-                isConnected = true;
-            }
-            return isConnected;
+            if (!registeredAdapters.Remove(adapter))
+                throw new AdapterException(adapter, "Der Adapter ist nicht registriert: \"" + adapter.ToString() + "\"");
         }
 
         #endregion

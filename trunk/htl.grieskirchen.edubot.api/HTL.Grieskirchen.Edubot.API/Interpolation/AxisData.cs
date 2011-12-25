@@ -20,13 +20,13 @@ namespace HTL.Grieskirchen.Edubot.API
             get { return angles; }
         }
 
-        long[] ticks;
+        //long[] ticks;
 
-        public long[] Ticks
-        {
-            get { return (from angle in angles
-                             select (long) angle *3200).ToArray<long>(); }
-        }
+        //public long[] Ticks
+        //{
+        //    get { return (from angle in angles
+        //                     select (long) angle *3200).ToArray<long>(); }
+        //}
 
         float speed;
 
