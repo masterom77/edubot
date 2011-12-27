@@ -33,20 +33,22 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float[] secondaryAngles = new float[steps];
             float[] speeds = new float[2];
 
-            float primarySpeed = incrX / incrY;
-            float secondarySpeed = incrY / incrX;
+            float primaryVelocity = incrX / incrY;
+            float secondaryVelocity = incrY / incrX;
 
-            InterpolationResult result = new InterpolationResult();
+            InterpolationResult result = new InterpolationResult(steps,2);
             
 
             for (int i = 0; i < steps; i++) {
                 toolX += incrX;
-                toolY += incrY;              
-                CalculateAngleForPoint(toolX, toolY, length,out primaryAngles[i],out secondaryAngles[i]);
+                toolY += incrY;
+                CalculateAngleForPoint(toolX, toolY, length, out result.Angles[i, 0], out result.Angles[i,1]);
             }
 
-            result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
-            result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));
+            result.Velocities[0] = primaryVelocity;
+            result.Velocities[1] = secondaryVelocity;
+            //result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
+            //result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));
             return result;
             
         }

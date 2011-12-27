@@ -17,24 +17,26 @@ namespace HTL.Grieskirchen.Edubot.API
     {
         private Edubot() {
 
-            InitAxis();
+            //InitAxis();
             interpolation = new LinearInterpolation();
+            registeredAdapters = new Dictionary<AdapterType, IAdapter>();
             state = State.SHUTDOWN;
+            tool = new VirtualTool();
+            tool.X = 300;
+            tool.Y = 0;
+            tool.Y = 0;
             
         }
         /// <summary>
         /// Initializes the robot's axis
         /// </summary>
         private void InitAxis() {
-            float length = 15f;
-            primaryAxis = new Axis(0 ,0 ,50, 0);
-            secondaryAxis = new Axis((int)length*10, 0, 60, 0);
-            verticalAxis = new Axis((int)length*20, 0, 40, 0);
-            toolAxis = new Axis(60, 20, 0, 0);
-            tool = new VirtualTool();
-            tool.X = 300;
-            tool.Y = 0;
-            tool.Y = 0;
+            //float length = 15f;
+            //primaryAxis = new Axis(0 ,0 ,50, 0);
+            //secondaryAxis = new Axis((int)length*10, 0, 60, 0);
+            //verticalAxis = new Axis((int)length*20, 0, 40, 0);
+            //toolAxis = new Axis(60, 20, 0, 0);
+            
         }
 
         /// <summary>
@@ -60,6 +62,11 @@ namespace HTL.Grieskirchen.Edubot.API
         }
 
         Dictionary<AdapterType, IAdapter> registeredAdapters;
+
+        public Dictionary<AdapterType, IAdapter> RegisteredAdapters
+        {
+            get { return registeredAdapters; }
+        }
 
         public delegate void Event(object sender, System.EventArgs args);
 
@@ -267,6 +274,9 @@ namespace HTL.Grieskirchen.Edubot.API
 
             }
             State = State.READY;
+            tool.X = x;
+            tool.Y = y;
+            tool.Z = z;
         }
 
         /// <summary>
@@ -390,10 +400,6 @@ namespace HTL.Grieskirchen.Edubot.API
 
         public void RegisterAdapter(AdapterType adapter)
         {
-            if (registeredAdapters == null)
-            {
-                registeredAdapters = new Dictionary<AdapterType, IAdapter>();
-            }
             if (registeredAdapters.ContainsKey(adapter))
                 throw new AdapterException(adapter, "Der Adapter ist bereits registriert: \"" + adapter.ToString() + "\"");
 
