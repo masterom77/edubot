@@ -18,8 +18,9 @@ namespace EduBot
         public Form1()
         {
             InitializeComponent();
-            Edubot.GetInstance().MoveTo(150, 150,0);
-            
+            Edubot edubot = Edubot.GetInstance();
+            edubot.RegisterAdapter(HTL.Grieskirchen.Edubot.API.Adapters.AdapterType.VIRTUAL);
+            edubot.MoveTo(140, 90, 0);
         }
         /*
         private void button1_Click(object sender, EventArgs e)
