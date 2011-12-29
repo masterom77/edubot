@@ -49,7 +49,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         {
             string result = "";
             foreach (InterpolationStep step in steps) {
-                result += step.Alpha1 + ";" + step.Alpha2 + ";" + step.Alpha3 + "&";
+                result += step.ToString() + "&";
             }
             result = result.Remove(result.Length - 1);
             return result;
