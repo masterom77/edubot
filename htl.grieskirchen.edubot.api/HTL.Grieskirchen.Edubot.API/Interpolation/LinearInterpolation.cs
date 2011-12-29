@@ -23,24 +23,24 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
-            int steps = 100;
+            int steps = 1000;
             float toolX = tool.X;
             float toolY = tool.Y;
             float difX = x - toolX;
-            if ((x >= 0 && toolX <= 0)||(x <= 0 && toolX >= 0)){
-                difX = Math.Abs(x) + Math.Abs(toolX);
-                if (x < toolX) {
-                    difX *= -1;
-                }
-            }
+            //if ((x >= 0 && toolX <= 0)||(x <= 0 && toolX >= 0)){
+            //    difX = Math.Abs(x) + Math.Abs(toolX);
+            //    if (x < toolX) {
+            //        difX *= -1;
+            //    }
+            //}
             float difY = y - toolY;
-            if ((y >= 0 && toolY <= 0)||(y <= 0 && toolY >= 0)){
-                difY = Math.Abs(y) + Math.Abs(toolY);
-                if (y < toolY)
-                {
-                    difY *= -1;
-                }
-            }
+            //if ((y >= 0 && toolY <= 0)||(y <= 0 && toolY >= 0)){
+            //    difY = Math.Abs(y) + Math.Abs(toolY);
+            //    if (y < toolY)
+            //    {
+            //        difY *= -1;
+            //    }
+            //}
 
             float incrX = difX / steps;
             float incrY = difY / steps;
@@ -50,14 +50,17 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float[] speeds = new float[2];
 
             InterpolationResult result = new InterpolationResult();
-
+            InterpolationStep step = CalculateStepForPoint(toolX, toolY, length);
             result.PrimarySpeed = incrX / incrY;
             result.SecondarySpeed = incrY / incrX;
 
-            for (int i = 0; i < steps; i++) {
+            for (int i = 0; i < steps; i++)
+            {
+                
                 toolX += incrX;
-                toolY += incrY;
-                result.Steps.Add(CalculateStepForPoint(toolX, toolY, length));
+                toolY += incrY; 
+                step = CalculateStepForPoint(toolX, toolY, length) - step;
+                result.Steps.Add(step);
             }
             //result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
             //result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));
@@ -78,7 +81,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             //float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
             //alpha2 = 180 - tmpAlpha2;
             //float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
-
+            
             //alpha1 = MathHelper.ConvertToDegrees(Math.Atan(y / x)) - tmpAlpha1;
             float distance = (float)Math.Sqrt(x * x + y * y);
             float tmpAlpha2 = MathHelper.ConvertToDegrees(2 * Math.Asin((distance / 2) / length));
