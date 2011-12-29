@@ -42,5 +42,15 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 return num1 - num2;
             }
         }
+
+        public static int GetQuadrant(int x, int y) {
+            if (x >= 0 && y >= 0)
+                return 1;
+            if (x <= 0 && y >= 0)
+                return 2;
+            if (x <= 0 && y <= 0)
+                return 3;
+            return 4;
+        }
     }
 }

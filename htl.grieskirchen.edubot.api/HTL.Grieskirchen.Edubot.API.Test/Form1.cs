@@ -20,7 +20,7 @@ namespace EduBot
             InitializeComponent();
             Edubot edubot = Edubot.GetInstance();
             edubot.RegisterAdapter(HTL.Grieskirchen.Edubot.API.Adapters.AdapterType.VIRTUAL);
-            edubot.MoveTo(140, 90, 0);
+            edubot.MoveTo(-300, 0, 0);
         }
         /*
         private void button1_Click(object sender, EventArgs e)
