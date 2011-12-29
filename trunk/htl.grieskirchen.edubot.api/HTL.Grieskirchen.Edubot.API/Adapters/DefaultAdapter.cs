@@ -26,14 +26,16 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void MoveTo(int x, int y, int z)
         {
             socket.Connect(endpoint);
-            
+            socket.Send(Encoding.UTF8.GetBytes(result.ToString()));
             socket.Disconnect(true);
         }
 
         public override void UseTool(bool activate)
         {
+            byte[] buffer = new byte[1];
+            buffer[0] = Convert.ToByte(activate);
             socket.Connect(endpoint);
-
+            socket.Send(buffer);
             socket.Disconnect(true);
         }
 
@@ -42,5 +44,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             this.result = result;
         }
+
+      
     }
 }
