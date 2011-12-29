@@ -24,7 +24,6 @@ namespace HTL.Grieskirchen.Edubot.API
             tool = new VirtualTool();
             tool.X = 300;
             tool.Y = 0;
-            tool.Y = 0;
             
         }
         /// <summary>

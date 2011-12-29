@@ -26,8 +26,24 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             int steps = 100;
             float toolX = tool.X;
             float toolY = tool.Y;
-            float incrX = (x-toolX)/steps;
-            float incrY = (y-toolY)/steps;
+            float difX = x - toolX;
+            if ((x >= 0 && toolX <= 0)||(x <= 0 && toolX >= 0)){
+                difX = Math.Abs(x) + Math.Abs(toolX);
+                if (x < toolX) {
+                    difX *= -1;
+                }
+            }
+            float difY = y - toolY;
+            if ((y >= 0 && toolY <= 0)||(y <= 0 && toolY >= 0)){
+                difY = Math.Abs(y) + Math.Abs(toolY);
+                if (y < toolY)
+                {
+                    difY *= -1;
+                }
+            }
+
+            float incrX = difX / steps;
+            float incrY = difY / steps;
 
             float[] primaryAngles = new float[steps];
             float[] secondaryAngles = new float[steps];
@@ -77,6 +93,24 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         }
 
+        //private int CalculateDistance(int toolX, int toolY, int x, int y) {
+        //    int originQuadrant = MathHelper.GetQuadrant(toolX, toolY);
+        //    int targetQuadrant = MathHelper.GetQuadrant(x, y);
+        //    if (originQuadrant == targetQuadrant) {
+        //        return x - toolX;
+        //    }
+        //    switch (originQuadrant) {
+        //        case 1: if (targetQuadrant == 2 || targetQuadrant == 3)
+        //                return x + toolX;
+        //            else return x - toolX;
+        //            break;
+        //        case 2: if (targetQuadrant == 
+
+              
+        //    }
+        //}
+
+        
         
     }
 }
