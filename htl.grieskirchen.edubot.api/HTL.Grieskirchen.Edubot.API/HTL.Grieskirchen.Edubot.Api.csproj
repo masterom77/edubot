@@ -68,6 +68,7 @@
     <Compile Include="Exceptions\InvalidStateException.cs" />
     <Compile Include="Interpolation\IInterpolationType.cs" />
     <Compile Include="Interpolation\InterpolationResult.cs" />
+    <Compile Include="Interpolation\InterpolationStep.cs" />
     <Compile Include="Interpolation\LinearInterpolation.cs" />
     <Compile Include="Interpolation\MathHelper.cs" />
     <Compile Include="Interpolation\SplineInterpolation.cs" />

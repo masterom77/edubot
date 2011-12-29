@@ -7,37 +7,54 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class InterpolationResult
     {
-        float[,] angles;
+        List<InterpolationStep> steps;
 
-        public float[,] Angles
+        public List<InterpolationStep> Steps
         {
-            get { return angles; }
-            set { angles = value; }
+            get { return steps; }
+            set { steps = value; }
         }
 
-        float[] velocities;
+        float primarySpeed;
 
-        public float[] Velocities
+        public float PrimarySpeed
         {
-            get { return velocities; }
-            set { velocities = value; }
+            get { return primarySpeed; }
+            set { primarySpeed = value; }
         }
 
+        float secondarySpeed;
 
-        public InterpolationResult(int steps, int dimensions)
+        public float SecondarySpeed
         {
-            angles = new float[steps, dimensions];
-            velocities = new float[dimensions];
-            //result = new Dictionary<AxisType, AxisData>();
+            get { return secondarySpeed; }
+            set { secondarySpeed = value; }
         }
 
-        //Dictionary<AxisType, AxisData> result;
+        float tertiarySpeed;
 
-        //public Dictionary<AxisType, AxisData> Result
-        //{
-        //    get { return result; }
-        //    set { result = value; }
-        //}
+        public float TertiarySpeed
+        {
+            get { return tertiarySpeed; }
+            set { tertiarySpeed = value; }
+        }
+        
+
+        public InterpolationResult()
+        {
+            steps = new List<InterpolationStep>();
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            foreach (InterpolationStep step in steps) {
+                result += step.Alpha1 + ";" + step.Alpha2 + ";" + step.Alpha3 + "&";
+            }
+            result = result.Remove(result.Length - 1);
+            return result;
+        }
+
 
 
        
