@@ -36,10 +36,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void UseTool(bool activate)
         {
             
-            byte[] buffer = new byte[1];
-            buffer[0] = Convert.ToByte(activate);
+            //byte[] buffer = new byte[1];
+            //buffer[0] = Convert.ToByte(activate);
             socket.Connect(endpoint);
-            socket.Send(buffer);
+            socket.Send(Encoding.UTF8.GetBytes("activate:"+activate.ToString()));
             socket.Disconnect(true);
 
         }
@@ -54,10 +54,16 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Start()
         {
+            socket.Connect(endpoint);
+            socket.Send(Encoding.UTF8.GetBytes("start"));
+            socket.Disconnect(true);
         }
 
         public override void Shutdown()
         {
+            socket.Connect(endpoint);
+            socket.Send(Encoding.UTF8.GetBytes("shutdown"));
+            socket.Disconnect(true);
         }
     }
 }
