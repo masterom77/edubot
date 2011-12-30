@@ -8,14 +8,12 @@ namespace HTL.Grieskirchen.Edubot.API
     public class VirtualTool : ITool
     {
 
-        public override void Activate(bool isConnected)
-        {
-            throw new NotImplementedException();
-        }
+        //public override void Activate()
+        //{
+        //}
 
-        public override void Deactivate(bool isConnected)
-        {
-            throw new NotImplementedException();
-        }
+        //public override void Deactivate()
+        //{
+        //}
     }
 }

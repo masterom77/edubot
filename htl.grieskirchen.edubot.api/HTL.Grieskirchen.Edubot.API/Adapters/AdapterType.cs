@@ -9,7 +9,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         DEFAULT,
         VIRTUAL,
-        KEBA,
-        NONE
+        KEBA
     }
 }

@@ -21,9 +21,9 @@ namespace HTL.Grieskirchen.Edubot.API
             interpolation = new LinearInterpolation();
             registeredAdapters = new Dictionary<AdapterType, IAdapter>();
             state = State.SHUTDOWN;
-            tool = new VirtualTool();
-            tool.X = 300;
-            tool.Y = 0;
+            //tool = new VirtualTool();
+            //tool.X = 300;
+            //tool.Y = 0;
             
         }
         /// <summary>
@@ -218,10 +218,10 @@ namespace HTL.Grieskirchen.Edubot.API
         /// </summary>
         Axis toolAxis;
 
-        /// <summary>
-        /// The tool of the robot
-        /// </summary>
-        ITool tool;
+        ///// <summary>
+        ///// The tool of the robot
+        ///// </summary>
+        //ITool tool;
 
         #endregion
 
@@ -250,32 +250,38 @@ namespace HTL.Grieskirchen.Edubot.API
                 throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
             foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
             {
-                if (entry.Value.RequiresPrecalculation)
+                IAdapter currentAdapter = entry.Value;
+                if (currentAdapter.RequiresPrecalculation)
                 {
                     if (result == null)
-                        result = interpolation.CalculatePath(tool, x, y, z, entry.Value.Length);
-                    entry.Value.SetInterpolationResult(result);
+                        result = interpolation.CalculatePath(currentAdapter.Tool, x, y, z, currentAdapter.Length);
+                    currentAdapter.SetInterpolationResult(result);
                 }
+
+                if (OnAxisAngleChanged != null)
+                {
+                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(result));
+                }
+
+                currentAdapter.MoveTo(x, y, z);
                 
-                entry.Value.MoveTo(x, y, z);
-                if (OnAxisAngleChanged != null)
-                {
-                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.PRIMARY, result));
-                }
-                if (OnAxisAngleChanged != null)
-                {
-                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.SECONDARY, result));
-                }
-                if (OnAxisAngleChanged != null)
-                {
-                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.VERTICAL, result));
-                }
+                //if (OnAxisAngleChanged != null)
+                //{
+                //    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.SECONDARY, result));
+                //}
+                //if (OnAxisAngleChanged != null)
+                //{
+                //    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.VERTICAL, result));
+                //}
+                currentAdapter.Tool.X = x;
+                currentAdapter.Tool.Y = x;
+                currentAdapter.Tool.Z = x;
 
             }
             State = State.READY;
-            tool.X = x;
-            tool.Y = y;
-            tool.Z = z;
+            //tool.X = x;
+            //tool.Y = y;
+            //tool.Z = z;
         }
 
         /// <summary>
@@ -314,16 +320,17 @@ namespace HTL.Grieskirchen.Edubot.API
             if (State == State.SHUTDOWN)
             {
                 State = State.STARTING;
-                Console.WriteLine("Starting engines...");
-                Console.WriteLine("Setting enabled-pin of primary engine to 0");
-                Console.WriteLine("Setting enabled-pin of secondary engine to 0");
-                Console.WriteLine("Setting enabled-pin of vertical engine to 0");
-                Console.WriteLine("Setting enabled-pin of tool engine to 0");
-                State = State.READY;
-                if (OnStartup != null)
+                foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
                 {
-                    OnStartup(null, new System.EventArgs());
+
+                    IAdapter currentAdapter = entry.Value;
+                    currentAdapter.Start();
+                    if (OnStartup != null)
+                    {
+                        OnStartup(entry.Key, new System.EventArgs());
+                    }
                 }
+                State = State.READY;
             }
             else {
                 throw new InvalidStateException("Starting the robot isn't possible since it's current state is: " + State);
@@ -338,15 +345,17 @@ namespace HTL.Grieskirchen.Edubot.API
             if (State != State.SHUTDOWN)
             {
                 State = State.SHUTTING_DOWN;
-                if (OnShutdown != null)
+                
+                foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
                 {
-                    OnShutdown(null, new System.EventArgs());
+                    IAdapter currentAdapter = entry.Value;
+                    if (OnShutdown != null)
+                    {
+                        OnShutdown(entry.Key, new System.EventArgs());
+                    }
+                    currentAdapter.Shutdown();
+                    
                 }
-                Console.WriteLine("Shutting down engines...");
-                Console.WriteLine("Setting enabled-pin of primary engine to 1");
-                Console.WriteLine("Setting enabled-pin of secondary engine to 1");
-                Console.WriteLine("Setting enabled-pin of vertical engine to 1");
-                Console.WriteLine("Setting enabled-pin of tool engine to 1");
                 State = State.SHUTDOWN;
             }
             else {

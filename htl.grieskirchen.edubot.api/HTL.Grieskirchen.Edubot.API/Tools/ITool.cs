@@ -27,8 +27,8 @@ namespace HTL.Grieskirchen.Edubot.API
             set { z = value; }
         }
 
-        public abstract void Activate(bool isConnected);
-        public abstract void Deactivate(bool isConnected);
+        //public abstract void Activate();
+        //public abstract void Deactivate();
 
     }
 }
