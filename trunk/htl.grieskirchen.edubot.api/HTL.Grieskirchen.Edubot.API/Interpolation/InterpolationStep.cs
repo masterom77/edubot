@@ -23,7 +23,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         float alpha1;
-
+        /// <summary>
+        /// The alpha1-angle
+        /// </summary>
         public float Alpha1
         {
             get { return alpha1; }
@@ -31,7 +33,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         float alpha2;
-
+        /// <summary>
+        /// The alpha2-angle
+        /// </summary>
         public float Alpha2
         {
             get { return alpha2; }
@@ -39,13 +43,19 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         float alpha3;
-
+        /// <summary>
+        /// The alpha3-angle
+        /// </summary>
         public float Alpha3
         {
             get { return alpha3; }
             set { alpha3 = value; }
         }
 
+        /// <summary>
+        /// Converts the content into a sendable format
+        /// </summary>
+        /// <returns>A string with format "alpha1;alpha2;alpha3"</returns>
         public override string ToString()
         {
             return alpha1+";"+alpha2+";"+alpha3;

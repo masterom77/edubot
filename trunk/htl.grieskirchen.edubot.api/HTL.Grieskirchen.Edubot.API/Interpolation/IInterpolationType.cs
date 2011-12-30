@@ -12,6 +12,15 @@ namespace HTL.Grieskirchen.Edubot.API
     /// </summary>
     public interface IInterpolationType
     {
+        /// <summary>
+        /// Calculates the path by using the specified parameters
+        /// </summary>
+        /// <param name="tool">The tool of the robot</param>
+        /// <param name="x">The target-X coordinate</param>
+        /// <param name="y">The target-Y coordinate</param>
+        /// <param name="z">The target-Z coordinate</param>
+        /// <param name="length">The length of both axis</param>
+        /// <returns></returns>
         InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length);
     }
 }
