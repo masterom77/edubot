@@ -13,13 +13,13 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     public class LinearInterpolation : IInterpolationType
     {
         /// <summary>
-        /// Calculates the path by using the specified parameters
+        /// Calculates the path by using the specified parameters and linear interpolation.
         /// </summary>
-        /// <param name="tool"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
-        /// <param name="length"></param>
+        /// <param name="tool">The tool of the robot</param>
+        /// <param name="x">The target-X coordinate</param>
+        /// <param name="y">The target-Y coordinate</param>
+        /// <param name="z">The target-Z coordinate</param>
+        /// <param name="length">The length of both axis</param>
         /// <returns></returns>
         public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
@@ -58,8 +58,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             {
                 
                 toolX += incrX;
-                toolY += incrY; 
-                step = CalculateStepForPoint(toolX, toolY, length) - step;
+                toolY += incrY;
+                step = CalculateStepForPoint(toolX, toolY, length); //- step;
                 result.Steps.Add(step);
             }
             //result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
@@ -74,8 +74,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <param name="x">The x-coordinate of the tool</param>
         /// <param name="y">The y-coordinate of the tool</param>
         /// <param name="length">The length of both axis</param>
-        /// <param name="alpha1">The calculated alpha1 angle</param>
-        /// <param name="alpha2">The calculated alpha2 angle</param>
         private InterpolationStep CalculateStepForPoint(float x, float y, float length) {
             //float distance = (float)Math.Sqrt(x * x + y * y);
             //float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
