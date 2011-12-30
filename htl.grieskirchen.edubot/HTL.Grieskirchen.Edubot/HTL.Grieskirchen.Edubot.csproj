@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Util\Animator.cs" />
     <Compile Include="DrawingPanel.xaml.cs">
       <DependentUpon>DrawingPanel.xaml</DependentUpon>
     </Compile>

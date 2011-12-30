@@ -59,7 +59,7 @@
                             </Button>
                         </ToolBar>
                     </ToolBarTray>
-                    <my:DrawingPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5"></my:DrawingPanel>
+                    <!--<my:DrawingPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5"></my:DrawingPanel>-->
                 </Grid>
 
             </TabItem>

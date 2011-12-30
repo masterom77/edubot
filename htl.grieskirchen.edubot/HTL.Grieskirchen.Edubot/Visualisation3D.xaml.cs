@@ -36,52 +36,78 @@ namespace HTL.Grieskirchen.Edubot
         private long primaryAxisTicks;
         private float secondaryAxisSpeed;
         private long secondaryAxisTicks;
-        delegate void updateCallback();
+        private float[,] angles;
 
-
-        public void MoveAnglePrimaryAxis(long ticks, float speed) {
-            primaryAxisSpeed = speed*40 / 16;
-            primaryAxisTicks = ticks / 16;
-
-            new System.Threading.Thread(MoveAnglePrimaryAxisAsync).Start();
-        }
-
-        public void MoveAngleSecondaryAxis(long ticks, float speed)
+        public float[,] Angles
         {
-            secondaryAxisSpeed = speed*40 / 16;
-            secondaryAxisTicks = ticks / 16;
-
-            new System.Threading.Thread(MoveAngleSecondaryAxisAsync).Start();
-        }
-
-        private void MoveAnglePrimaryAxisAsync() {
-            updateCallback updateAngle = new updateCallback(UpdatePrimaryAxis);
-           
-            for (int i = 0; i < primaryAxisTicks; i++)
-            {
-                
-                Dispatcher.Invoke(updateAngle);
-                System.Threading.Thread.Sleep(Convert.ToInt32(1/primaryAxisSpeed*1000));
+            get { return angles; }
+            set { angles = value;
+            startAnimation();
             }
         }
 
-        private void MoveAngleSecondaryAxisAsync()
-        {
-            updateCallback updateAngle = new updateCallback(UpdateSecondaryAxis);
-            for (int i = 0; i < secondaryAxisTicks; i++)
-            {
-
-                Dispatcher.Invoke(updateAngle);
-                System.Threading.Thread.Sleep(Convert.ToInt32(1 / secondaryAxisSpeed * 1000));
+        private void startAnimation() {
+            updateCallback updatePrimaryAngle = new updateCallback(UpdatePrimaryAxis);
+            updateCallback updateSecondaryAngle = new updateCallback(UpdateSecondaryAxis);
+            
+            for(int i = 0; i<Angles.GetLength(0);i++){
+                System.Threading.Thread.Sleep(50);
+                Dispatcher.Invoke(updatePrimaryAngle, Angles[i,0]);
+                Dispatcher.Invoke(updateSecondaryAngle, Angles[i, 1]);
             }
+            
+            
+        
         }
 
-        private void UpdatePrimaryAxis() {
-            AnglePrimaryAxis += 0.9;
-        }
-        private void UpdateSecondaryAxis()
+        delegate void updateCallback(float val);
+
+
+        //public void MoveAnglePrimaryAxis(long ticks, float speed) {
+        //    primaryAxisSpeed = speed*40 / 16;
+        //    primaryAxisTicks = ticks / 16;
+
+        //    new System.Threading.Thread(MoveAnglePrimaryAxisAsync).Start();
+        //}
+
+        //public void MoveAngleSecondaryAxis(long ticks, float speed)
+        //{
+        //    secondaryAxisSpeed = speed*40 / 16;
+        //    secondaryAxisTicks = ticks / 16;
+
+        //    new System.Threading.Thread(MoveAngleSecondaryAxisAsync).Start();
+        //}
+
+        //private void MoveAnglePrimaryAxisAsync()
+        //{
+        //    updateCallback updateAngle = new updateCallback(UpdatePrimaryAxis);
+
+        //    for (int i = 0; i < primaryAxisTicks; i++)
+        //    {
+
+        //        Dispatcher.Invoke(updateAngle);
+        //        System.Threading.Thread.Sleep(Convert.ToInt32(1 / primaryAxisSpeed * 1000));
+        //    }
+        //}
+
+        //private void MoveAngleSecondaryAxisAsync()
+        //{
+        //    updateCallback updateAngle = new updateCallback(UpdateSecondaryAxis);
+        //    for (int i = 0; i < secondaryAxisTicks; i++)
+        //    {
+
+        //        Dispatcher.Invoke(updateAngle);
+        //        System.Threading.Thread.Sleep(Convert.ToInt32(1 / secondaryAxisSpeed * 1000));
+        //    }
+        //}
+
+        private void UpdatePrimaryAxis(float val)
         {
-            AngleSecondaryAxis += 0.9;
+            AnglePrimaryAxis = val;
+        }
+        private void UpdateSecondaryAxis(float val)
+        {
+            AngleSecondaryAxis = val;
         }
      
 
@@ -97,7 +123,7 @@ namespace HTL.Grieskirchen.Edubot
                 MeshPrimaryAxis.Transform = transformGroup;
                 MeshSecondaryEngine.Transform = transformGroup;
                 MeshPen.Transform = transformGroup;
-                MeshPen2.Transform = transformGroup;
+                //MeshPen2.Transform = transformGroup;
                 MeshSecondaryAxis.Transform = transformGroup;
 
 
@@ -123,7 +149,7 @@ namespace HTL.Grieskirchen.Edubot
 
 
                 MeshPen.Transform = transformGroup;
-                MeshPen2.Transform = transformGroup;
+                //MeshPen2.Transform = transformGroup;
                 MeshSecondaryAxis.Transform = transformGroup;
 
                 angleSecondaryAxis = value;

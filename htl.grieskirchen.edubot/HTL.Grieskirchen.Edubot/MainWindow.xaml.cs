@@ -41,7 +41,11 @@ namespace HTL.Grieskirchen.Edubot
             edubot.OnToolUsed += ShowEventArgsInfo;
             currentFile = null;
             saved = true;
+
+            edubot.RegisterAdapter(API.Adapters.AdapterType.VIRTUAL);
         }
+
+        
 
         private void ShowEventArgsInfo(object sender, EventArgs e) {
             Console.WriteLine("--------------------------");
@@ -55,24 +59,25 @@ namespace HTL.Grieskirchen.Edubot
                 //Console.WriteLine("Angle: " + ace.Result.Angle+"°");
                 //Console.WriteLine("AxisType: " + ace.AxisType.ToString());
 
-                AxisData d;
-                
+                //AxisData d;
+
                 //Update Visualisation
 
-                if (ace.AxisType == AxisType.PRIMARY) {
-                    //visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                    
+                if (ace.AxisType == AxisType.PRIMARY)
+                {
+                    visualisation3D.Angles = ace.Result.Angles;
+
                     //    windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     //    windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                    
+
                 }
-                if (ace.AxisType == AxisType.SECONDARY) {
-                    //visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
+                //if (ace.AxisType == AxisType.SECONDARY) {
+                //    visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
                     
-                    //    windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                    //    windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
+                //    //    windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
+                //    //    windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     
-                }
+                //}
 
             } 
             if (e is StateChangedEventArgs)
