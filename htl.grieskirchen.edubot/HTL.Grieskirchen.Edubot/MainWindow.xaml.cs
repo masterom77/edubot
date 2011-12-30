@@ -66,6 +66,7 @@ namespace HTL.Grieskirchen.Edubot
                 if (ace.AxisType == AxisType.PRIMARY)
                 {
                     visualisation3D.Angles = ace.Result.Angles;
+                    visualisationAbove.Angles = ace.Result.Angles;
 
                     //    windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     //    windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
