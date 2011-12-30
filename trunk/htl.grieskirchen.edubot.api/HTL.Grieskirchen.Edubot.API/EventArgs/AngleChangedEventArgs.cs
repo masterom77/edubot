@@ -17,15 +17,15 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
             set { result = value; }
         }
 
-        AxisType axisType;
+        //AxisType axisType;
 
-        public AxisType AxisType
-        {
-            get { return axisType; }
-        }
+        //public AxisType AxisType
+        //{
+        //    get { return axisType; }
+        //}
 
-        public AngleChangedEventArgs(AxisType axisType, InterpolationResult result) : base() {
-            this.axisType = axisType;
+        public AngleChangedEventArgs(InterpolationResult result) : base() {
+            //this.axisType = axisType;
             this.result = result;
         }
     }

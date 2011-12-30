@@ -10,8 +10,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
 
 
-        public VirtualAdapter(float length, bool requiresPrecalculation)
+        public VirtualAdapter(ITool tool, float length, bool requiresPrecalculation)
         {
+            this.tool = tool;
             this.length = length;
             this.requiresPrecalculation = requiresPrecalculation;
         }
@@ -29,6 +30,16 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void SetInterpolationResult(InterpolationResult result)
         {
            
+        }
+
+        public override void Start()
+        {
+            
+        }
+
+        public override void Shutdown()
+        {
+            
         }
     }
 }
