@@ -42,7 +42,7 @@ namespace HTL.Grieskirchen.Edubot
         {
             get { return angles; }
             set { angles = value;
-            startAnimation();
+            new System.Threading.Thread(startAnimation).Start();
             }
         }
 
