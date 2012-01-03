@@ -13,6 +13,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public VirtualAdapter(ITool tool, float length, bool requiresPrecalculation)
         {
             this.tool = tool;
+            tool.X = (int)length * 2;
+            tool.Y = 0;
             this.length = length;
             this.requiresPrecalculation = requiresPrecalculation;
         }
