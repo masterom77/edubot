@@ -52,13 +52,29 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { alpha3 = value; }
         }
 
+        int alpha1Sleep;
+
+        public int Alpha1Sleep
+        {
+            get { return alpha1Sleep; }
+            set { alpha1Sleep = value; }
+        }
+
+        int alpha2Sleep;
+
+        public int Alpha2Sleep
+        {
+            get { return alpha2Sleep; }
+            set { alpha2Sleep = value; }
+        }
+        
         /// <summary>
         /// Converts the content into a sendable format
         /// </summary>
         /// <returns>A string with format "alpha1;alpha2;alpha3"</returns>
         public override string ToString()
         {
-            return Convert.ToInt32(alpha1 / 0.1125) + ";" + Convert.ToInt32(alpha2 / 0.1125) + ";" + Convert.ToInt32(alpha3 / 0.1125);
+            return Convert.ToInt32(Math.Round(alpha1 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha2 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha3 / 0.1125));
         }
 
     }

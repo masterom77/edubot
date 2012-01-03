@@ -23,7 +23,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
-            int steps = 1000;
+            int steps = 500;
             float toolX = tool.X;
             float toolY = tool.Y;
             float difX = x - toolX;
@@ -65,8 +65,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 result.Steps.Add(step-prevStep);
                 prevStep = step;
             }
-            //result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
-            //result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));
+            
             return result;
             
         }
@@ -92,25 +91,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float alpha1 = MathHelper.ConvertToDegrees(Math.Asin(y / distance)) - tmpAlpha1;
             if (alpha1 == float.NaN || alpha2 == float.NaN)
                 throw new NotFiniteNumberException();
+            
             return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
         }
 
-        //private int CalculateDistance(int toolX, int toolY, int x, int y) {
-        //    int originQuadrant = MathHelper.GetQuadrant(toolX, toolY);
-        //    int targetQuadrant = MathHelper.GetQuadrant(x, y);
-        //    if (originQuadrant == targetQuadrant) {
-        //        return x - toolX;
-        //    }
-        //    switch (originQuadrant) {
-        //        case 1: if (targetQuadrant == 2 || targetQuadrant == 3)
-        //                return x + toolX;
-        //            else return x - toolX;
-        //            break;
-        //        case 2: if (targetQuadrant == 
-
-              
-        //    }
-        //}
 
         
         
