@@ -50,7 +50,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float[] speeds = new float[2];
 
             InterpolationResult result = new InterpolationResult();
-            InterpolationStep step = CalculateStepForPoint(toolX, toolY, length);
+            InterpolationStep prevStep = CalculateStepForPoint(toolX, toolY, length);
+            InterpolationStep step;
             result.PrimarySpeed = incrX / incrY;
             result.SecondarySpeed = incrY / incrX;
 
@@ -60,7 +61,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 toolX += incrX;
                 toolY += incrY;
                 step = CalculateStepForPoint(toolX, toolY, length);// -step;
-                result.Steps.Add(step);
+                result.Angles.Add(step);
+                result.Steps.Add(step-prevStep);
+                prevStep = step;
             }
             //result.Result.Add(AxisType.PRIMARY,new AxisData(primaryAngles,primarySpeed));
             //result.Result.Add(AxisType.SECONDARY,new AxisData(secondaryAngles,secondarySpeed));

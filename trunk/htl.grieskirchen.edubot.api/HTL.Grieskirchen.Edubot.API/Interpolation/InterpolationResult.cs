@@ -7,6 +7,17 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class InterpolationResult
     {
+        List<InterpolationStep> angles;
+
+        /// <summary>
+        /// The calculated interpolation-steps
+        /// </summary>
+        public List<InterpolationStep> Angles
+        {
+            get { return angles; }
+            set { angles = value; }
+        }
+
         List<InterpolationStep> steps;
 
         /// <summary>
@@ -56,6 +67,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// </summary>
         public InterpolationResult()
         {
+            angles = new List<InterpolationStep>();
             steps = new List<InterpolationStep>();
         }
 

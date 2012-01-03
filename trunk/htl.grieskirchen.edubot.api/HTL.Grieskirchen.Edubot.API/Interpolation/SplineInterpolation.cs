@@ -9,7 +9,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     {
         public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
-            List<InterpolationResult> results = new List<InterpolationResult>();
+            
             return null;
         }
     }

@@ -253,8 +253,7 @@ namespace HTL.Grieskirchen.Edubot.API
                 IAdapter currentAdapter = entry.Value;
                 if (currentAdapter.RequiresPrecalculation)
                 {
-                    if (result == null)
-                        result = interpolation.CalculatePath(currentAdapter.Tool, x, y, z, currentAdapter.Length);
+                    result = interpolation.CalculatePath(currentAdapter.Tool, x, y, z, currentAdapter.Length);
                     currentAdapter.SetInterpolationResult(result);
                 }
 
