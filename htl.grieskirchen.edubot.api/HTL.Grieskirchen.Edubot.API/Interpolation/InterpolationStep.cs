@@ -32,6 +32,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { alpha1 = value; }
         }
 
+        float alpha1Dif;
+
         float alpha2;
         /// <summary>
         /// The alpha2-angle
