@@ -58,7 +58,11 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns>A string with format "alpha1;alpha2;alpha3"</returns>
         public override string ToString()
         {
-            return alpha1+";"+alpha2+";"+alpha3;
+            return alpha1+ ";" + alpha2 + ";" + alpha3;
+        }
+
+        private string ToTickString() {
+            return Convert.ToInt32(alpha1 / 0.1125 / 2) + ";" + Convert.ToInt32(alpha2 / 0.1125 / 2) + ";" + Convert.ToInt32(alpha3 / 0.1125 / 2);
         }
     }
 }
