@@ -29,7 +29,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void MoveTo(int x, int y, int z)
         {
             socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes(result.ToString()));
+            socket.SendBufferSize = Int32.MaxValue;
+            byte[] content = Encoding.UTF8.GetBytes(result.ToString());
+            socket.Send(content);
             socket.Disconnect(true);
         }
 

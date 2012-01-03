@@ -201,22 +201,22 @@ namespace HTL.Grieskirchen.Edubot.API
         #endregion
 
         #region ------------------Private Properties----------------------
-        /// <summary>
-        /// The primary axis of the robot, which is located on the top of the scaffold.
-        /// </summary>
-        Axis primaryAxis;
-        /// <summary>
-        /// The secondary axis of the robot, which is located at the end of the first axis.
-        /// </summary>
-        Axis secondaryAxis;
-        /// <summary>
-        /// The vertical axis of the robot, which is located at the end of the second axis.
-        /// </summary>
-        Axis verticalAxis;
-        /// <summary>
-        /// The tool axis of the robot, which is located above the actual tool,
-        /// </summary>
-        Axis toolAxis;
+        ///// <summary>
+        ///// The primary axis of the robot, which is located on the top of the scaffold.
+        ///// </summary>
+        //Axis primaryAxis;
+        ///// <summary>
+        ///// The secondary axis of the robot, which is located at the end of the first axis.
+        ///// </summary>
+        //Axis secondaryAxis;
+        ///// <summary>
+        ///// The vertical axis of the robot, which is located at the end of the second axis.
+        ///// </summary>
+        //Axis verticalAxis;
+        ///// <summary>
+        ///// The tool axis of the robot, which is located above the actual tool,
+        ///// </summary>
+        //Axis toolAxis;
 
         ///// <summary>
         ///// The tool of the robot
@@ -264,23 +264,12 @@ namespace HTL.Grieskirchen.Edubot.API
 
                 currentAdapter.MoveTo(x, y, z);
                 
-                //if (OnAxisAngleChanged != null)
-                //{
-                //    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.SECONDARY, result));
-                //}
-                //if (OnAxisAngleChanged != null)
-                //{
-                //    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(AxisType.VERTICAL, result));
-                //}
                 currentAdapter.Tool.X = x;
-                currentAdapter.Tool.Y = x;
-                currentAdapter.Tool.Z = x;
+                currentAdapter.Tool.Y = y;
+                currentAdapter.Tool.Z = z;
 
             }
             State = State.READY;
-            //tool.X = x;
-            //tool.Y = y;
-            //tool.Z = z;
         }
 
         /// <summary>
