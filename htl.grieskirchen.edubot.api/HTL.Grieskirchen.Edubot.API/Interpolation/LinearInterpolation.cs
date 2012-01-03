@@ -86,7 +86,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float alpha2 = 180 - tmpAlpha2;
             float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
 
-            float alpha1 = MathHelper.ConvertToDegrees(Math.Asin(y / distance)) + tmpAlpha1;
+            float alpha1 = MathHelper.ConvertToDegrees(Math.Asin(y / distance)) - tmpAlpha1;
             if (alpha1 == float.NaN || alpha2 == float.NaN)
                 throw new NotFiniteNumberException();
             return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
