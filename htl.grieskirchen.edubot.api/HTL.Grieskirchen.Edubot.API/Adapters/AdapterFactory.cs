@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
@@ -9,11 +10,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         public static IAdapter GetAdapter(AdapterType adapter) {
             switch (adapter) {
-                case AdapterType.KEBA: return new KebaAdapter(new VirtualTool(), 500, false, null,0);
-                    break;
+                case AdapterType.KEBA: return new KebaAdapter(new VirtualTool(), 500, false, IPAddress.Parse("192.168.0.40"),12000);
                 case AdapterType.VIRTUAL: return new VirtualAdapter(new VirtualTool(), 150, true);
-                    break;
-                case AdapterType.DEFAULT: return new DefaultAdapter(new VirtualTool(), 150, true, null, 0);
+                case AdapterType.DEFAULT: return new DefaultAdapter(new VirtualTool(), 150, true, IPAddress.Parse("192.168.0.40"), 12000);
             }
             return null;
         }
