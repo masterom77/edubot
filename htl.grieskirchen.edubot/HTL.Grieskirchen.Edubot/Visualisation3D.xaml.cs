@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -36,9 +37,9 @@ namespace HTL.Grieskirchen.Edubot
         private long primaryAxisTicks;
         private float secondaryAxisSpeed;
         private long secondaryAxisTicks;
-        private float[,] angles;
+        private List<InterpolationStep> angles;
 
-        public float[,] Angles
+        public List<InterpolationStep> Angles
         {
             get { return angles; }
             set { angles = value;
@@ -49,12 +50,14 @@ namespace HTL.Grieskirchen.Edubot
         private void startAnimation() {
             updateCallback updatePrimaryAngle = new updateCallback(UpdatePrimaryAxis);
             updateCallback updateSecondaryAngle = new updateCallback(UpdateSecondaryAxis);
-            
-            for(int i = 0; i<Angles.GetLength(0);i++){
-                System.Threading.Thread.Sleep(50);
-                Dispatcher.Invoke(updatePrimaryAngle, Angles[i,0]);
-                Dispatcher.Invoke(updateSecondaryAngle, Angles[i, 1]);
+
+            foreach (InterpolationStep step in angles) {
+                System.Threading.Thread.Sleep(10);
+                Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
             }
+
+            
             
             
         

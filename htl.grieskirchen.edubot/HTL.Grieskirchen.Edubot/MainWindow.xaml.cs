@@ -16,6 +16,8 @@ using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
 using System.IO;
 using Microsoft.Win32;
+using System.Net.Sockets;
+using System.Net;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -43,6 +45,7 @@ namespace HTL.Grieskirchen.Edubot
             saved = true;
 
             edubot.RegisterAdapter(API.Adapters.AdapterType.VIRTUAL);
+            edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
         
@@ -63,12 +66,24 @@ namespace HTL.Grieskirchen.Edubot
 
                 //Update Visualisation
 
-                if (ace.AxisType == AxisType.PRIMARY)
+                if (true)
                 {
-                    //visualisation3D.Angles = ace.Result.
+                    visualisation3D.Angles = ace.Result.Angles;
                     //visualisationAbove.Angles = ace.Result.Steps;
 
-                    Console.WriteLine(ace.Result.ToString());
+                    
+
+                    //Socket sock = new Socket(AddressFamily.InterNetwork,
+                    //     SocketType.Stream,
+                    //     ProtocolType.Tcp);
+                    //const int Port = 12000;
+                    //const string IPv4 = "192.168.0.40";
+
+                    //IPAddress ipo = IPAddress.Parse(IPv4);
+                    //IPEndPoint ipEo = new IPEndPoint(ipo, Port);
+                    //sock.Connect(ipEo);
+                    //sock.Send(Encoding.UTF8.GetBytes(ace.Result.ToString()));
+                    //sock.Close();
 
                     //    windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
                     //    windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
