@@ -19,12 +19,12 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         public static long ConvertToTicks(float degrees) {
-            return (long) degrees * 3200;
+            return (long) (degrees / Configuration.AnglePerStep);
         }
 
-        public static float ConvertToDegrees(long ticks)
+        public static float ConvertToDegrees(long steps)
         {
-            return ticks / 3200;
+            return steps * Configuration.AnglePerStep;
         }
 
         public static Point CalculateCoordinates(float alpha1, float alpha2, float length) {
