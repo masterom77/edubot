@@ -23,7 +23,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
         {
-            int steps = 500;
+            int steps = Configuration.InterpolationSteps;
             float toolX = tool.X;
             float toolY = tool.Y;
             float difX = x - toolX;

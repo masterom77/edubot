@@ -8,7 +8,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
     public class VirtualAdapter : IAdapter
     {
-
+        InterpolationResult result;
 
         public VirtualAdapter(ITool tool, float length, bool requiresPrecalculation)
         {
@@ -31,7 +31,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void SetInterpolationResult(InterpolationResult result)
         {
-           
+            this.result = result;  
         }
 
         public override void Start()

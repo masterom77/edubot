@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using HTL.Grieskirchen.Edubot.API;
+using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace EduBot
 {
@@ -21,6 +22,11 @@ namespace EduBot
             Edubot edubot = Edubot.GetInstance();
             edubot.RegisterAdapter(HTL.Grieskirchen.Edubot.API.Adapters.AdapterType.DEFAULT);
             edubot.MoveTo(10, 290, 0);
+            edubot.OnAxisAngleChanged += React; 
+        }
+
+        private void React(object src,  EventArgs args) {
+            Console.WriteLine((args as AngleChangedEventArgs).Result.ToString());
         }
         /*
         private void button1_Click(object sender, EventArgs e)

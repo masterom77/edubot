@@ -57,6 +57,7 @@
     <Compile Include="Adapters\DefaultAdapter.cs" />
     <Compile Include="Adapters\VirtualAdapter.cs" />
     <Compile Include="Axis.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Exceptions\AdapterException.cs" />
     <Compile Include="AxisType.cs" />
     <Compile Include="Edubot.cs" />
