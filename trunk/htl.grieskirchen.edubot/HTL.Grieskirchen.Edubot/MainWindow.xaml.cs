@@ -18,6 +18,9 @@ using System.IO;
 using Microsoft.Win32;
 using System.Net.Sockets;
 using System.Net;
+using System.Windows.Ink;
+using System.Threading;
+using HTL.Grieskirchen.Edubot.API.Adapters;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -29,32 +32,54 @@ namespace HTL.Grieskirchen.Edubot
         CommandParser parser;
         string currentFile;
         bool saved;
+        bool running;
         VisualisationExternal windowVisualisation;
+        
+        API.Edubot edubot;
 
         public MainWindow()
         {
             InitializeComponent();
+            InitializeEdubot();
+            InitializeEnvironmentVariables();
+            InitializeLists();
             windowVisualisation = new VisualisationExternal();
-            parser = new CommandParser();
-            API.Edubot edubot = API.Edubot.GetInstance();
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f);
+            visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
+            visualisation3D.VisualisationAdapter = visualisationAdapter;
+            edubot.RegisterAdapter(visualisationAdapter);
+            InitializeLists();
+            //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
+        }
+
+        public void InitializeEdubot() {
+            edubot = API.Edubot.GetInstance();
             edubot.OnAxisAngleChanged += ShowEventArgsInfo;
             edubot.OnStateChanged += ShowEventArgsInfo;
             edubot.OnInterpolationChanged += ShowEventArgsInfo;
             edubot.OnToolUsed += ShowEventArgsInfo;
-            currentFile = null;
-            saved = true;
-
-            edubot.RegisterAdapter(API.Adapters.AdapterType.VIRTUAL);
-            edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
-        
+        public void InitializeEnvironmentVariables() {
+            parser = new CommandParser();
+            currentFile = null;
+            saved = true;
+            running = false;
+        }
+
+        public void InitializeLists() {
+            lbRegisteredAdapters.ItemsSource = edubot.RegisteredAdapters.Keys;
+            List<AdapterType> allTypes = new List<AdapterType>();
+            foreach (AdapterType type in (Enum.GetValues(typeof(AdapterType)).AsQueryable()))
+                allTypes.Add(type);
+            lbAvailableAdapters.ItemsSource = allTypes.Except(edubot.RegisteredAdapters.Keys);
+        }
 
         private void ShowEventArgsInfo(object sender, EventArgs e) {
             Console.WriteLine("--------------------------");
             Console.WriteLine(e.GetType().Name);
-            if (e is AngleChangedEventArgs) {
-                AngleChangedEventArgs ace = e as AngleChangedEventArgs;
+            if (e is MovementStartedEventArgs) {
+                MovementStartedEventArgs mse = e as MovementStartedEventArgs;
                 
                 
                 //Console.WriteLine("Ticks: " + );
@@ -68,7 +93,7 @@ namespace HTL.Grieskirchen.Edubot
 
                 if (true)
                 {
-                    visualisation3D.Angles = ace.Result.Angles;
+                    visualisation3D.Angles = mse.Result.Angles;
                     //visualisationAbove.Angles = ace.Result.Steps;
 
                     
@@ -190,13 +215,16 @@ namespace HTL.Grieskirchen.Edubot
 
         private void btExecute_Click(object sender, RoutedEventArgs e)
         {
-            tbConsole.Clear();
+            
             try
             {
                 tbConsole.AppendText(">Building...\n");
-                parser.Parse(tbCodeArea.Text);
+                List<HTL.Grieskirchen.Edubot.API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
                 tbConsole.AppendText(">Build succeeded\n");
                 tbConsole.AppendText(">Executing...");
+                foreach (HTL.Grieskirchen.Edubot.API.Commands.ICommand command in commands) {
+                    edubot.Execute(command);
+                }
             }
             catch (Exception ex)
             {
@@ -204,6 +232,10 @@ namespace HTL.Grieskirchen.Edubot
                 tbConsole.AppendText(">"+ex.Message + "\n");
             }
           
+        }
+
+        private void Execute(object cmd) {
+            
         }
 
         private void ExtVis_Click(object sender, RoutedEventArgs e)
@@ -253,6 +285,22 @@ namespace HTL.Grieskirchen.Edubot
         {
           
             saved = false;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btRegister_Click(object sender, RoutedEventArgs e)
+        {
+            AdapterType selected = (AdapterType) lbAvailableAdapters.SelectedItem;
+            if (selected != null) {
+                switch (selected) {
+                    case AdapterType.DEFAULT: new Controls.NetworkInputDialog().ShowDialog();
+                        break;
+                }
+            }
         }
 
         

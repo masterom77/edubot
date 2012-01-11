@@ -7,6 +7,7 @@ using HTL.Grieskirchen.Edubot.API.EventArgs;
 using HTL.Grieskirchen.Edubot.API.Exceptions;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.API.Adapters;
+using HTL.Grieskirchen.Edubot.API.Commands;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
@@ -67,7 +68,9 @@ namespace HTL.Grieskirchen.Edubot.API
             get { return registeredAdapters; }
         }
 
-        public delegate void Event(object sender, System.EventArgs args);
+        //List<IAdapter> registeredAdapters;
+
+        //public delegate void Event(object sender, System.EventArgs args);
 
         #region ------------------Events----------------------
         Event onStartup;
@@ -222,134 +225,144 @@ namespace HTL.Grieskirchen.Edubot.API
         ///// The tool of the robot
         ///// </summary>
         //ITool tool;
+        Queue<Point3D> targetCoordinates;
+       
 
         #endregion
 
         #region ------------------Public Methods-------------------
 
-        /// <summary>
-        /// Moves the tool to the specified 3D-Point (x,y,z).
-        /// </summary>
-        /// <param name="x">The x-coordinate.</param>
-        /// <param name="y">The y-coordinate.</param>
-        /// <param name="z">The z-coordinate.</param>
-        public void MoveTo(int x, int y, int z) {
-            Thread thread = new Thread(MoveTo);
-            int[] coordinates = new int[] { x, y, z };
-            thread.Start(coordinates);
-        }
-
-        private void MoveTo(object coordinates) {
-            int[] coords = (int[])coordinates;
-            int x = coords[0];
-            int y = coords[1];
-            int z = coords[2];
-            InterpolationResult result = null;
-            State = State.MOVING;
-            if(registeredAdapters.Count == 0)
-                throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
+        public void Execute(ICommand cmd) {
             foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
             {
                 IAdapter currentAdapter = entry.Value;
-                if (currentAdapter.RequiresPrecalculation)
-                {
-                    result = interpolation.CalculatePath(currentAdapter.Tool, x, y, z, currentAdapter.Length);
-                    currentAdapter.SetInterpolationResult(result);
-                }
+                currentAdapter.Execute(cmd);
+            }
+        }
+        ///// <summary>
+        ///// Moves the tool to the specified 3D-Point (x,y,z).
+        ///// </summary>
+        ///// <param name="x">The x-coordinate.</param>
+        ///// <param name="y">The y-coordinate.</param>
+        ///// <param name="z">The z-coordinate.</param>
+        //public void MoveTo(int x, int y, int z) {
+            
+        //        Thread thread = new Thread(MoveTo);
+        //        thread.Start(new Point3D(x, y, z));
+        //}
+         
+        //private void MoveTo(object coordinates) {
+        //    //int[] coords = (int[])coordinates;
+        //    //int x = coords[0];
+        //    //int y = coords[1];
+        //    //int z = coords[2];
+        //    Point3D target = (Point3D) coordinates;
+        //    InterpolationResult result = null;
+        //    State = State.MOVING;
+        //    if(registeredAdapters.Count == 0)
+        //        throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
+        //    foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
+        //    {
+        //        IAdapter currentAdapter = entry.Value;
+        //        if (currentAdapter.RequiresPrecalculation)
+        //        {
+        //            result = interpolation.CalculatePath(currentAdapter.Tool, target, currentAdapter.Length);
+        //            currentAdapter.SetInterpolationResult(result);
+        //        }
 
-                if (OnAxisAngleChanged != null)
-                {
-                    OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(result));
-                }
+        //        if (OnAxisAngleChanged != null)
+        //        {
+        //            OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(result));
+        //        }
 
-                currentAdapter.MoveTo(x, y, z);
+        //        currentAdapter.MoveTo(target);
                 
-                currentAdapter.Tool.X = x;
-                currentAdapter.Tool.Y = y;
-                currentAdapter.Tool.Z = z;
+        //        currentAdapter.Tool.X = target.X;
+        //        currentAdapter.Tool.Y = target.Y;
+        //        currentAdapter.Tool.Z = target.Z;
 
-            }
-            State = State.READY;
-        }
+        //    }
+        //    State = State.READY;
+        //}
 
-        /// <summary>
-        /// Activates or deactivates the robot's tool.
-        /// </summary>
-        /// <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
-        public void UseTool(bool activate)
-        {
-            Thread thread = new Thread(UseTool);
-            thread.Start(activate);
-
-
-        }
-
-        private void UseTool(object activate) {
-            State = State.MOVING;
-            if (registeredAdapters.Count == 0)
-                throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
-            foreach (KeyValuePair<AdapterType, IAdapter> adapter in registeredAdapters)
-            {
-                adapter.Value.UseTool((bool)activate);
-                if (OnToolUsed != null)
-                {
-                    OnToolUsed(adapter.Key, new ToolEventArgs((bool)activate));
-                }
-            }
-            State = State.READY;
-        }
+        ///// <summary>
+        ///// Activates or deactivates the robot's tool.
+        ///// </summary>
+        ///// <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
+        //public void UseTool(bool activate)
+        //{
+        //    Thread thread = new Thread(UseTool);
+        //    thread.Start(activate);
 
 
-        /// <summary>
-        /// Turns the robot on
-        /// </summary>
-        public void Start()
-        {
-            if (State == State.SHUTDOWN)
-            {
-                State = State.STARTING;
-                foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
-                {
+        //}
 
-                    IAdapter currentAdapter = entry.Value;
-                    currentAdapter.Start();
-                    if (OnStartup != null)
-                    {
-                        OnStartup(entry.Key, new System.EventArgs());
-                    }
-                }
-                State = State.READY;
-            }
-            else {
-                throw new InvalidStateException("Starting the robot isn't possible since it's current state is: " + State);
-            }
-        }
+        //private void UseTool(object activate) {
+        //    State = State.MOVING;
+        //    if (registeredAdapters.Count == 0)
+        //        throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
+        //    foreach (KeyValuePair<AdapterType, IAdapter> adapter in registeredAdapters)
+        //    {
+        //        adapter.Value.UseTool((bool)activate);
+        //        if (OnToolUsed != null)
+        //        {
+        //            OnToolUsed(adapter.Key, new ToolEventArgs((bool)activate));
+        //        }
+        //    }
+        //    State = State.READY;
+        //}
 
-        /// <summary>
-        /// Turns the robot off.
-        /// </summary>
-        public void Shutdown()
-        {
-            if (State != State.SHUTDOWN)
-            {
-                State = State.SHUTTING_DOWN;
+
+        ///// <summary>
+        ///// Turns the robot on
+        ///// </summary>
+        //public void Start()
+        //{
+        //    if (State == State.SHUTDOWN)
+        //    {
+        //        State = State.STARTING;
+        //        foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
+        //        {
+
+        //            IAdapter currentAdapter = entry.Value;
+        //            currentAdapter.Start();
+        //            if (OnStartup != null)
+        //            {
+        //                OnStartup(entry.Key, new System.EventArgs());
+        //            }
+        //        }
+        //        State = State.READY;
+        //    }
+        //    else {
+        //        throw new InvalidStateException("Starting the robot isn't possible since it's current state is: " + State);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Turns the robot off.
+        ///// </summary>
+        //public void Shutdown()
+        //{
+        //    if (State != State.SHUTDOWN)
+        //    {
+        //        State = State.SHUTTING_DOWN;
                 
-                foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
-                {
-                    IAdapter currentAdapter = entry.Value;
-                    if (OnShutdown != null)
-                    {
-                        OnShutdown(entry.Key, new System.EventArgs());
-                    }
-                    currentAdapter.Shutdown();
+        //        foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
+        //        {
+        //            IAdapter currentAdapter = entry.Value;
+        //            if (OnShutdown != null)
+        //            {
+        //                OnShutdown(entry.Key, new System.EventArgs());
+        //            }
+        //            currentAdapter.Shutdown();
                     
-                }
-                State = State.SHUTDOWN;
-            }
-            else {
-                throw new InvalidStateException("Shutting down the robot isn't possible since it's current state is: " + State);
-            }
-        }
+        //        }
+        //        State = State.SHUTDOWN;
+        //    }
+        //    else {
+        //        throw new InvalidStateException("Shutting down the robot isn't possible since it's current state is: " + State);
+        //    }
+        //}
 
 
         ///// <summary>
@@ -394,18 +407,26 @@ namespace HTL.Grieskirchen.Edubot.API
         //    return isConnected;
         //}
 
-        public void RegisterAdapter(AdapterType adapter)
-        {
-            if (registeredAdapters.ContainsKey(adapter))
-                throw new AdapterException(adapter, "Der Adapter ist bereits registriert: \"" + adapter.ToString() + "\"");
+        //public void RegisterAdapter(AdapterType adapter)
+        //{
+        //    if (registeredAdapters.ContainsKey(adapter))
+        //        throw new AdapterException(adapter, "Der Adapter ist bereits registriert: \"" + adapter.ToString() + "\"");
 
-            registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
+        //    registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
+        //}
+
+        public void RegisterAdapter(IAdapter adapter)
+        {
+            if (registeredAdapters.ContainsValue(adapter))
+                throw new AdapterException(adapter.Type, "Der Adapter ist bereits registriert: \"" + adapter.GetType().Name + "\"");
+
+            registeredAdapters.Add(adapter.Type, adapter);
         }
 
-        public void DeregisterAdapter(AdapterType adapter)
+        public void DeregisterAdapter(IAdapter adapter)
         {
-            if (!registeredAdapters.Remove(adapter))
-                throw new AdapterException(adapter, "Der Adapter ist nicht registriert: \"" + adapter.ToString() + "\"");
+            if (!registeredAdapters.Remove(adapter.Type))
+                throw new AdapterException(adapter.Type, "Der Adapter ist nicht registriert: \"" + adapter.ToString() + "\"");
         }
 
         #endregion

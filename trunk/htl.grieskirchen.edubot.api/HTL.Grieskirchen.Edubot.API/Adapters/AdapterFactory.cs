@@ -10,9 +10,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         public static IAdapter GetAdapter(AdapterType adapter) {
             switch (adapter) {
-                case AdapterType.KEBA: return new KebaAdapter(new VirtualTool(), 500, false, IPAddress.Parse("192.168.0.40"),12000);
-                case AdapterType.VIRTUAL: return new VirtualAdapter(new VirtualTool(), 150, true);
-                case AdapterType.DEFAULT: return new DefaultAdapter(new VirtualTool(), 150, true, IPAddress.Parse("192.168.0.40"), 12000);
+                case AdapterType.KEBA: return new KebaAdapter(new VirtualTool(), 500, IPAddress.Parse("192.168.0.40"),12000);
+                case AdapterType.VIRTUAL: return new VirtualAdapter(new VirtualTool(), 150);
+                case AdapterType.DEFAULT: return new DefaultAdapter(new VirtualTool(), 150, IPAddress.Parse("192.168.0.40"), 12000);
             }
             return null;
         }

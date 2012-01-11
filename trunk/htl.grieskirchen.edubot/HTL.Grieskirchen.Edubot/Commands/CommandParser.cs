@@ -3,24 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HTL.Grieskirchen.Edubot.Exceptions;
+using HTL.Grieskirchen.Edubot.API.Commands;
 
 namespace HTL.Grieskirchen.Edubot.Commands
 {
     class CommandParser
     {
-        List<ICommand> commands;
-        Dictionary<string, Type> commandList;
-
-        public CommandParser() {
-            commands = new List<ICommand>();
-            commandList = new Dictionary<string, Type>();
-            commandList.Add("MOVETO", typeof(MovementCommand));
-            commandList.Add("USETOOL", typeof(ToolCommand));
-            commandList.Add("START", typeof(StartCommand));
-            commandList.Add("SHUTDOWN", typeof(ShutdownCommand));
-            commandList.Add("SET_INTERPOLATION", typeof(InterpolationChangeCommand));
-            
-        }
 
         /// <summary>
         /// Parses the given code and executes it
@@ -28,7 +16,8 @@ namespace HTL.Grieskirchen.Edubot.Commands
         /// <param name="text">The code to be executed</param>
         /// <exception cref="InvalidParameterExeption"></exception>
         /// <exception cref="UnknownCommandException"></exception>
-        public void Parse(string text) {
+        public static List<ICommand> Parse(string text) {
+            List<ICommand> commands = new List<ICommand>();
             commands.Clear();
             text = text.Replace(Environment.NewLine, string.Empty);
             string[] lines = text.Split(';');
@@ -51,14 +40,13 @@ namespace HTL.Grieskirchen.Edubot.Commands
                     if (!line.Contains("(") || !line.Contains(")")) {
                         throw new InvalidSyntaxException("Invalid Syntax in Line "+lineCount+": \""+line+"\". Check if your command has a ';' at the end.");
                     }
-                    string cmd = line.Substring(0, line.IndexOf("("));
+                    string cmd = line.Substring(0, line.IndexOf("(")).ToUpper();
                     string parameters = line.Substring(line.IndexOf("(") + 1);
                     parameters = parameters.Remove(parameters.Length - 1);
-                    Type cmdType;
-                    if (commandList.TryGetValue(cmd.ToUpper(), out cmdType))
+
+                    if (Enum.GetNames(typeof(Commands)).Contains(cmd))
                     {
-                        ICommand command = ((ICommand)Activator.CreateInstance(cmdType));
-                        command.SetArguments(parameters.Contains(',') ? parameters.Split(',') : new string[]{parameters});
+                        ICommand command = CommandBuilder.BuildCommand(cmd, parameters.Contains(',') ? parameters.Split(',') : new string[]{parameters});
                         commands.Add(command);
 
                     }
@@ -69,13 +57,14 @@ namespace HTL.Grieskirchen.Edubot.Commands
                 }
                 lineCount++;
             }
+            return commands;
 
-            foreach (ICommand cmd in commands) {
-                cmd.Execute();
-            }
+            
 
          
         }
+
+        
 
     }
 }
