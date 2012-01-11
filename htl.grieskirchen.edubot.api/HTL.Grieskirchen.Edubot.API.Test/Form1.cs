@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Threading;
 using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using HTL.Grieskirchen.Edubot.API.Adapters;
+using HTL.Grieskirchen.Edubot.API.Commands;
 
 namespace EduBot
 {
@@ -20,9 +22,24 @@ namespace EduBot
         {
             InitializeComponent();
             Edubot edubot = Edubot.GetInstance();
-            edubot.RegisterAdapter(HTL.Grieskirchen.Edubot.API.Adapters.AdapterType.DEFAULT);
-            edubot.MoveTo(10, 290, 0);
+            edubot.RegisterAdapter(new VirtualAdapter(new VirtualTool(), 150f));
+            List<ICommand> commands = new List<ICommand>();
+            commands.Add(new StartCommand());
+            commands.Add(new MoveCommand(new Point3D(100, 50, 0)));
+            commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
+            commands.Add(new MoveCommand(new Point3D(50, 100, 0)));
+            commands.Add(new UseToolCommand(false));
+            commands.Add(new MoveCommand(new Point3D(50, 50, 0)));
+            commands.Add(new ShutdownCommand());
+            commands.Add(new StartCommand());
+            commands.Add(new UseToolCommand(true));
+            commands.Add(new MoveCommand(new Point3D(100, 50, 0)));
+            commands.Add(new ShutdownCommand());
             edubot.OnAxisAngleChanged += React; 
+            foreach (ICommand cmd in commands) {
+                edubot.Execute(cmd);
+            }
+            
         }
 
         private void React(object src,  EventArgs args) {

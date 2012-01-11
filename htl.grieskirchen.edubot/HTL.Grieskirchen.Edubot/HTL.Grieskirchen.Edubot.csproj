@@ -59,10 +59,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandBuilder.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Controls\NetworkInputDialog.xaml.cs">
+      <DependentUpon>NetworkInputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\Animator.cs" />
     <Compile Include="DrawingPanel.xaml.cs">
       <DependentUpon>DrawingPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\IPAdressValidationRule.cs" />
+    <Compile Include="Validation\StringEmptyValidationRule.cs" />
+    <Compile Include="Validation\IntegerValidationRule.cs" />
     <Compile Include="VisualisationAbove.xaml.cs">
       <DependentUpon>VisualisationAbove.xaml</DependentUpon>
     </Compile>
@@ -72,6 +80,10 @@
     <Compile Include="VisualisationExternal.xaml.cs">
       <DependentUpon>VisualisationExternal.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\NetworkInputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DrawingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,12 +101,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\CommandParser.cs" />
-    <Compile Include="Commands\InterpolationChangeCommand.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\MovementCommand.cs" />
-    <Compile Include="Commands\ShutdownCommand.cs" />
-    <Compile Include="Commands\StartCommand.cs" />
-    <Compile Include="Commands\ToolCommand.cs" />
     <Compile Include="Exceptions\InvalidParameterException.cs" />
     <Compile Include="Exceptions\InvalidSyntaxException.cs" />
     <Compile Include="Exceptions\UnknownCommandException.cs" />
@@ -135,6 +141,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

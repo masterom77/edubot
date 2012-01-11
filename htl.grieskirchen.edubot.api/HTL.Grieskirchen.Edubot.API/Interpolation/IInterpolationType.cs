@@ -21,6 +21,6 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <param name="z">The target-Z coordinate</param>
         /// <param name="length">The length of both axis</param>
         /// <returns></returns>
-        InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length);
+        InterpolationResult CalculatePath(ITool tool, Point3D target, float length);
     }
 }

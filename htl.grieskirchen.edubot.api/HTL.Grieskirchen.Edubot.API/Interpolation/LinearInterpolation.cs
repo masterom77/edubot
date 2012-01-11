@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using HTL.Grieskirchen.Edubot.API.Exceptions;
 
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
@@ -21,19 +22,19 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <param name="z">The target-Z coordinate</param>
         /// <param name="length">The length of both axis</param>
         /// <returns></returns>
-        public InterpolationResult CalculatePath(ITool tool, int x, int y, int z, float length)
+        public InterpolationResult CalculatePath(ITool tool, Point3D target, float length)
         {
             int steps = Configuration.InterpolationSteps;
             float toolX = tool.X;
             float toolY = tool.Y;
-            float difX = x - toolX;
+            float difX = target.X - toolX;
             //if ((x >= 0 && toolX <= 0)||(x <= 0 && toolX >= 0)){
             //    difX = Math.Abs(x) + Math.Abs(toolX);
             //    if (x < toolX) {
             //        difX *= -1;
             //    }
             //}
-            float difY = y - toolY;
+            float difY = target.Y - toolY;
             //if ((y >= 0 && toolY <= 0)||(y <= 0 && toolY >= 0)){
             //    difY = Math.Abs(y) + Math.Abs(toolY);
             //    if (y < toolY)
@@ -81,6 +82,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             //float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
             //alpha2 = 180 - tmpAlpha2;
             //float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
+            if (Math.Sqrt(x * x + y * y) > length * 2)
+                throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + x + "," + y + ",0) befindet sich außerhalb der Reichweite des Roboters");
             
             //alpha1 = MathHelper.ConvertToDegrees(Math.Atan(y / x)) - tmpAlpha1;
             float distance = (float)Math.Sqrt(x * x + y * y);

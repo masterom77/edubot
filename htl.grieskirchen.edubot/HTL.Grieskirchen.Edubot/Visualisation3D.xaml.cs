@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
+using HTL.Grieskirchen.Edubot.API.Adapters;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -37,6 +38,14 @@ namespace HTL.Grieskirchen.Edubot
         private long primaryAxisTicks;
         private float secondaryAxisSpeed;
         private long secondaryAxisTicks;
+        private VirtualAdapter visualisationAdapter;
+
+        public VirtualAdapter VisualisationAdapter
+        {
+            get { return visualisationAdapter; }
+            set { visualisationAdapter = value; }
+        }
+
         private List<InterpolationStep> angles;
 
         public List<InterpolationStep> Angles
@@ -57,7 +66,7 @@ namespace HTL.Grieskirchen.Edubot
                 Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
             }
 
-            
+            visualisationAdapter.State = API.State.READY;
             
             
         
