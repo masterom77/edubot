@@ -155,6 +155,7 @@ namespace HTL.Grieskirchen.Edubot
             get { return angleSecondaryAxis; }
             set
             {
+                //int dir = value < 0 ? -1 : 1;
                 Transform3DGroup transformGroup = new Transform3DGroup();
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));

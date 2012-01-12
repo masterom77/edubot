@@ -218,6 +218,7 @@ namespace HTL.Grieskirchen.Edubot
             
             try
             {
+                tbConsole.Clear();
                 tbConsole.AppendText(">Building...\n");
                 List<HTL.Grieskirchen.Edubot.API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
                 tbConsole.AppendText(">Build succeeded\n");
