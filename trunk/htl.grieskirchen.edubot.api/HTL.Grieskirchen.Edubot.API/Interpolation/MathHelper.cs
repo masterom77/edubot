@@ -43,7 +43,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             }
         }
 
-        public static int GetQuadrant(int x, int y) {
+        public static int GetQuadrant(float x, float y)
+        {
             if (x >= 0 && y >= 0)
                 return 1;
             if (x <= 0 && y >= 0)

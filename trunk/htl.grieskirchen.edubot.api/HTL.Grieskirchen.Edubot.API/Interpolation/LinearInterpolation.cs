@@ -66,6 +66,14 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 result.Steps.Add(step-prevStep);
                 prevStep = step;
             }
+
+            Console.WriteLine("a1 \t a2");
+            int count = 0;
+            foreach (InterpolationStep s in result.Angles)
+            {
+                Console.WriteLine("[" + count + "]\t" + s.Alpha1 + "\t" + s.Alpha2);
+                count++;
+            }
             
             return result;
             
@@ -82,19 +90,40 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             //float tmpAlpha2 = MathHelper.ConvertToDegrees(Math.Acos(-((Math.Pow(distance, 2) - Math.Pow(length, 2) - Math.Pow(length, 2)) / (2 * length * length))));
             //alpha2 = 180 - tmpAlpha2;
             //float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
-            if (Math.Sqrt(x * x + y * y) > length * 2)
+            if (Math.Sqrt(Math.Round(x) * Math.Round(x) + Math.Round(y) * Math.Round(y)) > (length * 2))
                 throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + x + "," + y + ",0) befindet sich außerhalb der Reichweite des Roboters");
-            
+
+            int quadrant = MathHelper.GetQuadrant(x, y);
             //alpha1 = MathHelper.ConvertToDegrees(Math.Atan(y / x)) - tmpAlpha1;
             float distance = (float)Math.Sqrt(x * x + y * y);
             float tmpAlpha2 = MathHelper.ConvertToDegrees(2 * Math.Asin((distance / 2) / length));
             float alpha2 = 180 - tmpAlpha2;
             float tmpAlpha1 = 90 - (tmpAlpha2 / 2);
 
+            switch (quadrant)
+            {
+                case 2: tmpAlpha1 = 180 - tmpAlpha1;
+                    break;
+                case 3: tmpAlpha1 = 180 + tmpAlpha1;
+                    break;
+                //case 4: tmpAlpha1 = 360 - tmpAlpha1;
+                //    break;
+            }
             float alpha1 = MathHelper.ConvertToDegrees(Math.Asin(y / distance)) - tmpAlpha1;
+            switch (quadrant)
+            {
+                case 2: alpha1 *= -1;
+                    break;
+                case 3: alpha1 = 180 + alpha1;
+                    break;
+                //case 4: alpha1 = (360 + alpha1) * -1;
+                //    break;
+            }
             if (alpha1 == float.NaN || alpha2 == float.NaN)
                 throw new NotFiniteNumberException();
-            
+
+           
+
             return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
         }
 
