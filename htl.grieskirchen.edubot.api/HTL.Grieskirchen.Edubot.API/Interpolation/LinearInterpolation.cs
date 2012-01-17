@@ -114,7 +114,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             {
                 case 2: alpha1 *= -1;
                     break;
-                case 3: alpha1 = 180 + alpha1;
+                case 3: alpha1 =  (330+(180 + alpha1))*-1;
                     break;
                 //case 4: alpha1 = (360 + alpha1) * -1;
                 //    break;

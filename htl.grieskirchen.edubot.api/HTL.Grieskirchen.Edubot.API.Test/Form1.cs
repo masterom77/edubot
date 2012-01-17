@@ -26,14 +26,14 @@ namespace EduBot
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
             commands.Add(new MoveCommand(new Point3D(-100, -100, 0)));
-            commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
-            commands.Add(new MoveCommand(new Point3D(50, 100, 0)));
-            commands.Add(new UseToolCommand(false));
-            commands.Add(new MoveCommand(new Point3D(50, 50, 0)));
-            commands.Add(new ShutdownCommand());
-            commands.Add(new StartCommand());
-            commands.Add(new UseToolCommand(true));
-            commands.Add(new MoveCommand(new Point3D(100, 50, 0)));
+            //commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
+            //commands.Add(new MoveCommand(new Point3D(50, 100, 0)));
+            //commands.Add(new UseToolCommand(false));
+            //commands.Add(new MoveCommand(new Point3D(50, 50, 0)));
+            //commands.Add(new ShutdownCommand());
+            //commands.Add(new StartCommand());
+            //commands.Add(new UseToolCommand(true));
+            //commands.Add(new MoveCommand(new Point3D(100, 50, 0)));
             commands.Add(new ShutdownCommand());
             edubot.OnAxisAngleChanged += React; 
             foreach (ICommand cmd in commands) {
