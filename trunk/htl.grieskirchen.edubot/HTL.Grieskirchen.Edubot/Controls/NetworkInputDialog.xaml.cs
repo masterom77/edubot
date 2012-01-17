@@ -41,13 +41,20 @@ namespace HTL.Grieskirchen.Edubot.Controls
         public NetworkInputDialog()
         {
             InitializeComponent();
+            
+            //DataContext = this;
+            //tbPort.DataContext = this;
+            //tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            //btApply.DataContext = this;
+          
+            //btApply.GetBindingExpression(Button.IsEnabledProperty).UpdateSource();
         }
 
         private void btApply_Click(object sender, RoutedEventArgs e)
         {
-           int i = tbIpAdress.BindingGroup.BindingExpressions.Count;
                 this.DialogResult = true;
                 this.Close();
+           
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
@@ -57,12 +64,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            tbIpAdress.DataContext = this;
-            tbIpAdress.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            tbPort.DataContext = this;
-            tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            btApply.DataContext = this;
-            btApply.GetBindingExpression(Button.IsEnabledProperty).UpdateSource();
         }
     }
 }
