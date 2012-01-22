@@ -19,6 +19,8 @@ namespace HTL.Grieskirchen.Edubot.Validation
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
             int result;
+            if (value == null)
+                return new ValidationResult(false, errorMessage);
             if (int.TryParse(value.ToString(), out result))
             {
                 return new ValidationResult(true, null);

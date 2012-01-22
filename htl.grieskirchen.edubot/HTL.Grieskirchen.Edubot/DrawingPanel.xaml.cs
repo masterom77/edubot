@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -23,19 +24,40 @@ namespace HTL.Grieskirchen.Edubot
         Pen drawPen = new Pen(Brushes.Blue, 3);
         double lineWidth = 10;
         double lineHeight = 10;
+        int changesLimit = 10;
+        int changes = 0;
         List<Point> points = new List<Point>();
+        System.Threading.Thread addingThread;
+        bool dragging;
+
 
         public DrawingPanel()
         {
             InitializeComponent();
             SnapsToDevicePixels = true;
-            points.Add(new Point(50, 50));
-            points.Add(new Point(70, 20));
+            Cursor = Cursors.Pen;
+            //addingThread = new System.Threading.Thread(AddPoint);
         }
+
+        //public static void AddPoint() {
+        //    while(dragging){
+            
+        //        Mouse.get
+        //        this.Dispatcher.Invoke(
+        //  System.Windows.Threading.DispatcherPriority.Normal,
+        //  new Action(
+        //    delegate()
+        //    {
+        //        InvalidateVisual();
+        //    }
+        //));
+        //    }
+        //}
 
         protected override void OnRender(DrawingContext drawingContext)
         {           
             base.OnRender(drawingContext);
+            drawingContext.DrawRectangle(Brushes.White, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
             RenderGrid(drawingContext);
             RenderDrawing(drawingContext);
             if (this.IsMouseOver) {
@@ -43,11 +65,14 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
+        /// <summary>
+        /// Render the mouse-cursor
+        /// </summary>
+        /// <param name="drawingContext"></param>
         protected void RenderMouse(DrawingContext drawingContext) {
             double mouseX = Mouse.GetPosition(this).X;
             double mouseY = Mouse.GetPosition(this).Y;
-         
-            drawingContext.DrawLine(drawPen, new Point(mouseX, mouseY), new Point(mouseX+2, mouseY+2));
+            drawingContext.DrawRectangle(Brushes.LightGray, drawPen, new Rect(mouseX, mouseY, 1, 1));
         }
 
         /// <summary>
@@ -68,34 +93,40 @@ namespace HTL.Grieskirchen.Edubot
         protected void RenderDrawing(DrawingContext drawingContext)
         {
             foreach (Point point in points) {
-                drawingContext.DrawLine(drawPen, point, new Point(point.X+2,point.Y+2));
+                drawingContext.DrawRectangle(Brushes.LightGray, drawPen, new Rect(point.X, point.Y, 1, 1));
             }
-        }
-
-        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            //this.InvalidateVisual();
         }
 
         private void UserControl_DragOver(object sender, DragEventArgs e)
         {
-            //Console.WriteLine("2");
         }
 
-        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+
         }
 
-        private void UserControl_MouseMove(object sender, MouseEventArgs e)
+        private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            dragging = true;
+        }
+
+        private void UserControl_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
             {
-                if (!points.Contains(Mouse.GetPosition(this)))
-                {
-                    points.Add(Mouse.GetPosition(this));
-                }
+                Point[] nPoints = new Point[64];
+                int count = Mouse.GetIntermediatePoints(this, nPoints);
+                
+                points = points.Union(nPoints.ToList().GetRange(0,count)).ToList();
             }
-            this.InvalidateVisual();
         }
+
+        private void UserControl_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            dragging = false;
+            InvalidateVisual();
+        }
+
     }
 }

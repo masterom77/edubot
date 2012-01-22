@@ -68,6 +68,9 @@
     <Compile Include="DrawingPanel.xaml.cs">
       <DependentUpon>DrawingPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\Converter\ErrorToMessageConverter.cs" />
+    <Compile Include="Validation\Converter\MultiStringConverter.cs" />
+    <Compile Include="Validation\PortValidationRule.cs" />
     <Compile Include="Validation\IPAdressValidationRule.cs" />
     <Compile Include="Validation\StringEmptyValidationRule.cs" />
     <Compile Include="Validation\IntegerValidationRule.cs" />
@@ -144,6 +147,7 @@
   <ItemGroup>
     <Resource Include="Images\Logo512.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
