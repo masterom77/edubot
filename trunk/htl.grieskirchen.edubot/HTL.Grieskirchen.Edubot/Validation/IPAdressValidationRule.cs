@@ -9,24 +9,29 @@ namespace HTL.Grieskirchen.Edubot.Validation
 {
     public class IPAdressValidationRule : ValidationRule
     {
-        string errorMessage;
-
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { errorMessage = value; }
-        }
+        
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
+            if(value == null || value.ToString() == String.Empty)
+                return new ValidationResult(false, "Bitte geben Sie eine IP-Adresse ein");
+
             string input = value.ToString();
-            IPAddress result;
-            
-            if (input.Split('.').Count() == 4 &&IPAddress.TryParse(input.ToString(), out result))
-            {
-                return new ValidationResult(true, null);
+            string[] octets = input.Split('.');
+            int result;
+            if (octets.Length != 4) {
+                return new ValidationResult(false, "Die IP-Adresse muss aus 4 Oktets getrennt durch einen \".\" bestehen");
             }
-            return new ValidationResult(false, errorMessage);
+            foreach (string octet in octets) { 
+                if(!int.TryParse(octet, out result))
+                    return new ValidationResult(false, "Jedes Oktet muss eine Zahl sein");
+                if (!(result >= 0 && result <= 255)) {
+                    return new ValidationResult(false, "Jedes Oktet muss eine Zahl zwischen 0 und 255 sein");
+                }
+
+            }
+            
+            return new ValidationResult(true, String.Empty);
         }
     }
 }

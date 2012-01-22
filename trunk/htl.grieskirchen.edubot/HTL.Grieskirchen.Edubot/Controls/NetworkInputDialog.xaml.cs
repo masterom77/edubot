@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace HTL.Grieskirchen.Edubot.Controls
 {
@@ -18,25 +19,33 @@ namespace HTL.Grieskirchen.Edubot.Controls
     /// </summary>
     public partial class NetworkInputDialog : Window
     {
-        private string ipAdress;
+        public static readonly DependencyProperty IPAddressProperty =
+      DependencyProperty.Register("IPAddress", typeof(string), typeof(NetworkInputDialog));
+
+        public static readonly DependencyProperty PortProperty =
+      DependencyProperty.Register("Port", typeof(string), typeof(NetworkInputDialog));
 
         public string IpAdress
         {
-            get { return ipAdress; }
-            set { ipAdress = value; }
+            get { return (string) GetValue(IPAddressProperty) ; }
+            set
+            {
+                BindingExpression b;
+                
+                SetValue(IPAddressProperty, value);
+            }
         }
-
-        private string port;
 
         public string Port
         {
-            get { return port; }
-            set { port = value; }
+            get { return (string)GetValue(PortProperty); }
+            set
+            {
+                SetValue(PortProperty, value);
+            }
         }
 
-        public bool Valid {
-            get { return !System.Windows.Controls.Validation.GetHasError(tbIpAdress) && !System.Windows.Controls.Validation.GetHasError(tbPort); }
-        }
+
 
         public NetworkInputDialog()
         {
@@ -44,11 +53,13 @@ namespace HTL.Grieskirchen.Edubot.Controls
             
             //DataContext = this;
             //tbPort.DataContext = this;
-            //tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            //btApply.DataContext = this;
+            tbIpAdress.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            
           
             //btApply.GetBindingExpression(Button.IsEnabledProperty).UpdateSource();
         }
+
 
         private void btApply_Click(object sender, RoutedEventArgs e)
         {
@@ -65,5 +76,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }
+
     }
 }

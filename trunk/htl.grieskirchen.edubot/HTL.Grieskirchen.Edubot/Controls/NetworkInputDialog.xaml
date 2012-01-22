@@ -1,9 +1,16 @@
 ﻿<Window x:Class="HTL.Grieskirchen.Edubot.Controls.NetworkInputDialog"
+        x:Name="This"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:validators="clr-namespace:HTL.Grieskirchen.Edubot.Validation" 
+        xmlns:converters="clr-namespace:HTL.Grieskirchen.Edubot.Validation.Converter"
         xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls" 
         Title="Adapter registrieren" Height="Auto" Width="300" SizeToContent="Height" Loaded="Window_Loaded">
+    <Window.Resources>
+
+        <converters:ErrorToMessageConverter x:Key="eToMConverter"></converters:ErrorToMessageConverter>
+        <converters:MultiStringConverter x:Key="mStringConverter"></converters:MultiStringConverter>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -11,38 +18,72 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="5" TextWrapping="Wrap" Grid.ColumnSpan="2">Geben Sie die IP-Adresse und Port, die der Steuerung des Roboters zugeteilt sind, ein.</TextBlock>
-        <Label Grid.Row="1">IP-Adresse:</Label>
-        <Label Grid.Row="2">Port:</Label>
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Name="tbIpAdress">
+        <TextBlock Margin="5" TextWrapping="Wrap"  Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Name="tbErrorMessage" Foreground="#FFFF0A0A">
+            <TextBlock.Text>
+                <MultiBinding Converter="{StaticResource mStringConverter}">
+                    <Binding ElementName="tbIpAdress" Path="(Validation.Errors)[0].ErrorContent" Converter="{StaticResource eToMConverter}"/>
+                    <Binding ElementName="tbPort" Path="(Validation.Errors)[0].ErrorContent" Converter="{StaticResource eToMConverter}"/>
+                </MultiBinding>
+            </TextBlock.Text>
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Content, RelativeSource={RelativeSource Self}}" Value="">
+                                <Setter Property="Height" Value="0"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Label Grid.Row="2">IP-Adresse:</Label>
+        <Label Grid.Row="3">Port:</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Name="tbIpAdress">
             <TextBox.Text>
-                <Binding Path="IpAdress" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" RelativeSource="{RelativeSource AncestorType={x:Type controls:NetworkInputDialog}}">
+                <Binding Path="IpAdress" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="This">
                     <Binding.ValidationRules>
-                        <validators:IPAdressValidationRule ErrorMessage="Ungültige IP-Adresse"></validators:IPAdressValidationRule>
+                        <validators:IPAdressValidationRule></validators:IPAdressValidationRule>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Name="tbPort">
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Name="tbPort">
             <TextBox.Text>
-                <Binding Path="Port" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Port" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="This">
                     <Binding.ValidationRules>
-                        <validators:IntegerValidationRule ErrorMessage="Ungültiger Port"></validators:IntegerValidationRule>
+                        <validators:PortValidationRule></validators:PortValidationRule>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Margin="5" Name="btApply" Click="btApply_Click" IsEnabled="{Binding Path=Valid}">Anwenden</Button>
-            <Button Grid.Column="1" Margin="5" Name="btCancel" Click="btCancel_Click">Abbrechen</Button>
+            <Button Margin="5" Name="btApply" Click="btApply_Click" Content="Anwenden">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="IsEnabled" Value="false" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=tbIpAdress, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=tbPort, Path=(Validation.HasError)}" Value="false" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="true" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+            </Button>
+            <Button Grid.Column="1" Margin="5" Name="btCancel" Click="btCancel_Click" Content="Abbrechen"></Button>
         </Grid>
     </Grid>
 </Window>

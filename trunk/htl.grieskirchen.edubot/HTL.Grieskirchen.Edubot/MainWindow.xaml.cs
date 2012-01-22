@@ -63,6 +63,8 @@ namespace HTL.Grieskirchen.Edubot
         public void InitializeEnvironmentVariables() {
             parser = new CommandParser();
             currentFile = null;
+            
+            
             saved = true;
             running = false;
         }

@@ -15,13 +15,13 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
+            <!--<Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
                 Value="{Binding RelativeSource={RelativeSource Self}, 
                        Path=(Validation.Errors)[0].RuleInError.ErrorMessage}"/>
                 </Trigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
     </Application.Resources>
 </Application>
