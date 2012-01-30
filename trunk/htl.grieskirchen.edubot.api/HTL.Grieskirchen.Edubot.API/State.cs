@@ -14,6 +14,7 @@ namespace HTL.Grieskirchen.Edubot.API
         SHUTTING_DOWN,
         READY,
         SHUTDOWN,
-        MOVING
+        MOVING,
+        DISCONNECTED
     }
 }

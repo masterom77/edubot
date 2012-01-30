@@ -10,9 +10,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
     public abstract class IAdapter
     {
-        public IAdapter() {
+        public IAdapter(ITool tool, float length, float length2) {
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
+            this.tool = tool;
+            this.tool.X = (int) (length + length2);
+            this.tool.Y = 0;
+            this.length = length;
+            this.length2 = length2;
             interpolation = new LinearInterpolation();
         }
 
@@ -46,6 +51,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             get { return requiresPrecalculation; }
             set { requiresPrecalculation = value; }
+        }
+
+        protected float length2;
+
+        public float Length2
+        {
+            get { return length2; }
         }
 
         protected State state;

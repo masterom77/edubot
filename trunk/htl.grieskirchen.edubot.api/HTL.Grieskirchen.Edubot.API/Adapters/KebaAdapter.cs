@@ -12,30 +12,42 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
     public class KebaAdapter : IAdapter
     {
-        Socket socket;
-        IPEndPoint endpoint;
+        Socket senderSocket;
+        Socket receiverSocket;
+        IPEndPoint senderEndpoint;
+        IPEndPoint receiverEndpoint;
         Thread stateListener;
 
-        public KebaAdapter(ITool tool, float length, IPAddress ipAdress, int port)
-            : base()
+        public KebaAdapter(ITool tool, float length, float length2, IPAddress ipAdress, int port)
+            : base(tool, length, length2)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            endpoint = new IPEndPoint(ipAdress, port);
-            this.tool = tool;
-            tool.X = (int)length * 2;
-            tool.Y = 0;
-            this.length = length;
-            requiresPrecalculation = false;
             type = AdapterType.KEBA;
-            listener = new NetworkStateListener(this, socket);
+            state = State.DISCONNECTED;
+
+            senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            senderEndpoint = new IPEndPoint(ipAdress, port);
+
+            receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            receiverEndpoint = new IPEndPoint(ipAdress, port + 1);
+
+            requiresPrecalculation = false;
+            Connect();
+        }
+
+        public void Connect()
+        {
+            senderSocket.Connect(senderEndpoint);
+            receiverSocket.Connect(receiverEndpoint);
+            state = State.SHUTDOWN;
+            listener = new NetworkStateListener(this, receiverSocket);
         }
 
         public override void MoveTo(object param)
         {
             Point3D target = (Point3D)param;
-            socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes(target.ToString()));
-            socket.Disconnect(true);
+            senderSocket.Connect(senderEndpoint);
+            senderSocket.Send(Encoding.UTF8.GetBytes(target.ToString()));
+            senderSocket.Disconnect(true);
             tool.X = target.X;
             tool.Y = target.Y;
             tool.Z = target.Z;
@@ -45,9 +57,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             byte[] buffer = new byte[1];
             buffer[0] = Convert.ToByte(param);
-            socket.Connect(endpoint);
-            socket.Send(buffer);
-            socket.Disconnect(true);
+            senderSocket.Connect(senderEndpoint);
+            senderSocket.Send(buffer);
+            senderSocket.Disconnect(true);
         }
 
         public override void SetInterpolationResult(Interpolation.InterpolationResult result)
@@ -58,18 +70,18 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void Start()
         {
             //socket.Connect(endpoint);
-            socket.Connect(endpoint);
+            senderSocket.Connect(senderEndpoint);
             stateListener = new Thread(ListenOnState);
             stateListener.Start();
-            socket.Send(Encoding.UTF8.GetBytes("start"));
+            senderSocket.Send(Encoding.UTF8.GetBytes("start"));
             //socket.Disconnect(true);
         }
 
         public override void Shutdown()
         {
             //socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes("shutdown"));
-            socket.Disconnect(true);
+            senderSocket.Send(Encoding.UTF8.GetBytes("shutdown"));
+            senderSocket.Disconnect(true);
             //socket.Disconnect(true);
         }
 
@@ -78,11 +90,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             string message;
             List<byte> data = new List<byte>();
             byte[] buffer = new byte[512];
-            while (socket.Connected)
+            while (senderSocket.Connected)
             {
-                while (socket.Available > 0)
+                while (senderSocket.Available > 0)
                 {
-                    socket.Receive(buffer);
+                    senderSocket.Receive(buffer);
                     data.AddRange(buffer);
                 }
                 message = Encoding.UTF8.GetString(data.ToArray());
