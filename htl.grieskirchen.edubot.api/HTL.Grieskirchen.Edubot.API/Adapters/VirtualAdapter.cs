@@ -11,7 +11,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         InterpolationResult result;
 
-        public VirtualAdapter(ITool tool, float length) : base()
+        public VirtualAdapter(ITool tool, float length, float length2) : base(tool, length, length2)
         {
             this.tool = tool;
             tool.X = (int)length * 2;

@@ -17,19 +17,21 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint endpoint;
         InterpolationResult result;
 
-        public DefaultAdapter(ITool tool, float length, IPAddress ipAdress, int port)
-            : base()
+        public DefaultAdapter(ITool tool, float length,float length2, IPAddress ipAdress, int port)
+            : base(tool, length, length2)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            endpoint = new IPEndPoint(ipAdress, port);
-            this.tool = tool;
-            tool.X = (int)length * 2;
-            tool.Y = 0;
-            this.length = length;
             type = AdapterType.DEFAULT;
             requiresPrecalculation = true;
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            endpoint = new IPEndPoint(ipAdress, port);
+            state = State.DISCONNECTED;
+            Connect();
+        }
+
+        public void Connect() {
+            socket.Connect(endpoint);
+            state = State.SHUTDOWN;
             listener = new NetworkStateListener(this, socket);
-            
         }
 
         public override void MoveTo(object param)
@@ -39,6 +41,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             socket.SendBufferSize = Int32.MaxValue;
             byte[] content = Encoding.UTF8.GetBytes(result.ToString());
             socket.Send(content);
+            socket.Disconnect(true);
+
             tool.X = target.X;
             tool.Y = target.Y;
             tool.Z = target.Z;
@@ -55,9 +59,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //socket.Disconnect(true);
 
         }
-
-
-
 
         public override void Start()
         {

@@ -24,7 +24,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(ITool tool, Point3D target, float length)
         {
-            int steps = Configuration.InterpolationSteps;
+            int steps;// = Configuration.InterpolationSteps;
             float toolX = tool.X;
             float toolY = tool.Y;
             float difX = target.X - toolX;
@@ -35,6 +35,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             //    }
             //}
             float difY = target.Y - toolY;
+            float distance = (float) Math.Sqrt(difX * difX + difY * difY);
+            steps = (int) Math.Round(distance,1);
             //if ((y >= 0 && toolY <= 0)||(y <= 0 && toolY >= 0)){
             //    difY = Math.Abs(y) + Math.Abs(toolY);
             //    if (y < toolY)
@@ -46,9 +48,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float incrX = difX / steps;
             float incrY = difY / steps;
 
-            float[] primaryAngles = new float[steps];
-            float[] secondaryAngles = new float[steps];
-            float[] speeds = new float[2];
+            //float[] primaryAngles = new float[steps];
+            //float[] secondaryAngles = new float[steps];
+           // float[] speeds = new float[2];
 
             InterpolationResult result = new InterpolationResult();
             InterpolationStep prevStep = CalculateStepForPoint(toolX, toolY, length);
@@ -61,7 +63,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 
                 toolX += incrX;
                 toolY += incrY;
-                step = CalculateStepForPoint(toolX, toolY, length);// -step;
+                step = CalculateStepForPoint2(toolX, toolY, length,length);// -step;
                 result.Angles.Add(step);
                 result.Steps.Add(step-prevStep);
                 prevStep = step;
@@ -128,7 +130,30 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
 
-        
+        private InterpolationStep CalculateStepForPoint2(float x, float y, float length, float length2)
+        {
+            float r = (float) Math.Sqrt(x * x + y * y);
+            List<float> lengths = new List<float> { r, length, length2 };
+            float c = lengths.Max();
+            lengths.Remove(c);
+            float b = lengths.Max();
+            lengths.Remove(b);
+            float a = lengths.First();
+
+            float alpha = MathHelper.ConvertToDegrees(Math.Acos((b*b+c*c-a*a)/(2*b*c)));
+            float beta = MathHelper.ConvertToDegrees(Math.Acos((a * a + c * c - b * b) / (2 * a * c)));
+            float gamma = 180 - alpha - beta;
+            float helpAngle = MathHelper.ConvertToDegrees(Math.Acos(x / r));
+            if (length >= length2 && length >= r) {
+                
+                return new InterpolationStep() { Alpha1 = helpAngle-alpha, Alpha2 = 180 - beta };
+            }
+            if (length2 >= length && length2 >= r) {
+                return new InterpolationStep() { Alpha1 = helpAngle-gamma, Alpha2 = 180 - alpha };
+            }
+            else
+                return new InterpolationStep() { Alpha1 = helpAngle-alpha, Alpha2 = 180-gamma };
+        }
         
     }
 }
