@@ -70,12 +70,12 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             }
 
             Console.WriteLine("a1 \t a2");
-            int count = 0;
-            foreach (InterpolationStep s in result.Angles)
-            {
-                Console.WriteLine("[" + count + "]\t" + s.Alpha1 + "\t" + s.Alpha2);
-                count++;
-            }
+            //int count = 0;
+            //foreach (InterpolationStep s in result.Angles)
+            //{
+            //    Console.WriteLine("[" + count + "]\t" + s.Alpha1 + "\t" + s.Alpha2);
+            //    count++;
+            //}
             
             return result;
             
@@ -133,6 +133,29 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         private InterpolationStep CalculateStepForPoint2(float x, float y, float length, float length2)
         {
             float r = (float) Math.Sqrt(x * x + y * y);
+
+            if (Math.Sqrt(Math.Round(x) * Math.Round(x) + Math.Round(y) * Math.Round(y)) > (length + length2))
+                throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + x + "," + y + ",0) befindet sich außerhalb der Reichweite des Roboters");
+
+            if (Math.Round(x) == length + length2 && Math.Round(y) == 0)
+            {
+                return new InterpolationStep() { Alpha1 = 0, Alpha2 = 0 };
+            }
+            if (Math.Round(x) == -(length + length2) && Math.Round(y) == 0)
+            {
+                return new InterpolationStep() { Alpha1 = 180, Alpha2 = 0 };
+            }
+            if (Math.Round(x) == 0 && Math.Round(y) == length + length2)
+            {
+                return new InterpolationStep() { Alpha1 = 90, Alpha2 = 0 };
+            }
+            if (Math.Round(x) == 0 && Math.Round(y) == -(length + length2))
+            {
+                return new InterpolationStep() { Alpha1 = 270, Alpha2 = 0 };
+            }
+
+
+
             List<float> lengths = new List<float> { r, length, length2 };
             float c = lengths.Max();
             lengths.Remove(c);
@@ -144,15 +167,58 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float beta = MathHelper.ConvertToDegrees(Math.Acos((a * a + c * c - b * b) / (2 * a * c)));
             float gamma = 180 - alpha - beta;
             float helpAngle = MathHelper.ConvertToDegrees(Math.Acos(x / r));
+            
+            int quadrant = MathHelper.GetQuadrant(x, y);
+
+            float alpha1 = float.NaN;
             if (length >= length2 && length >= r) {
-                
-                return new InterpolationStep() { Alpha1 = helpAngle-alpha, Alpha2 = 180 - beta };
+                switch (quadrant)
+                {
+                    case 1: alpha1 = helpAngle - beta;
+                        break;
+                    case 2: alpha1 = 180 - (-helpAngle - beta);
+                        break;
+                    case 3: alpha1 = 180 + (-helpAngle - beta);
+                        break;
+                    case 4: alpha1 = 360 - (helpAngle - beta);
+                        break;
+                }
+                Console.WriteLine("QDR: "+quadrant+" LMAX\t"+alpha1 + "\t" + (180 - alpha));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180- alpha };
             }
-            if (length2 >= length && length2 >= r) {
-                return new InterpolationStep() { Alpha1 = helpAngle-gamma, Alpha2 = 180 - alpha };
+            if (length2 >= length && length2 >= r)
+            {
+                switch (quadrant)
+                {
+                    case 1: alpha1 = helpAngle - gamma;
+                        break;
+                    case 2: alpha1 = 180 - (-helpAngle - gamma);
+                        break;
+                    case 3: alpha1 = 180 + (-helpAngle - gamma);
+                        break;
+                    case 4: alpha1 = 360 - (helpAngle - gamma);
+                        break;
+                }
+                Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + alpha1 + "\t" + (180 - alpha));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-alpha };
             }
             else
-                return new InterpolationStep() { Alpha1 = helpAngle-alpha, Alpha2 = 180-gamma };
+            {
+                switch (quadrant)
+                {
+                    case 1: alpha1 = helpAngle - beta;
+                        break;
+                    case 2: alpha1 = 180 - (-helpAngle - beta);
+                        break;
+                    case 3: alpha1 = 180 + (-helpAngle - beta);
+                        break;
+                    case 4: alpha1 = 360 - (helpAngle - beta);
+                        break;
+                }
+
+                Console.WriteLine("QDR: " + quadrant + " RMAX\t" + alpha1 + "\t" + (180 - gamma));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-gamma };
+            }
         }
         
     }
