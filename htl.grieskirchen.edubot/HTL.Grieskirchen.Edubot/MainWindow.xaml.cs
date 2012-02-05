@@ -44,7 +44,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeEnvironmentVariables();
             InitializeLists();
             windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f);
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
             visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             visualisation3D.VisualisationAdapter = visualisationAdapter;
             edubot.RegisterAdapter(visualisationAdapter);
@@ -96,6 +96,7 @@ namespace HTL.Grieskirchen.Edubot
                 if (true)
                 {
                     visualisation3D.Angles = mse.Result.Angles;
+                    visualisation2D.Angles = mse.Result.Angles;
                     //visualisationAbove.Angles = ace.Result.Steps;
 
                     
@@ -297,10 +298,17 @@ namespace HTL.Grieskirchen.Edubot
 
         private void btRegister_Click(object sender, RoutedEventArgs e)
         {
-            AdapterType selected = (AdapterType) lbAvailableAdapters.SelectedItem;
-            if (selected != null) {
+            
+            if (lbAvailableAdapters.SelectedItem != null)
+            {
+                AdapterType selected = (AdapterType)lbAvailableAdapters.SelectedItem;
                 switch (selected) {
-                    case AdapterType.DEFAULT: new Controls.NetworkInputDialog().ShowDialog();
+                    case AdapterType.DEFAULT: 
+                        Controls.NetworkInputDialog dialog = new Controls.NetworkInputDialog();
+                        dialog.ShowDialog();
+                        if (dialog.DialogResult == true)
+                            edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f,155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
+                        InitializeLists();
                         break;
                 }
             }

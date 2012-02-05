@@ -19,6 +19,9 @@ namespace HTL.Grieskirchen.Edubot.Controls
     /// </summary>
     public partial class NetworkInputDialog : Window
     {
+        public static readonly DependencyProperty LengthProperty =
+      DependencyProperty.Register("Length", typeof(string), typeof(NetworkInputDialog));
+
         public static readonly DependencyProperty IPAddressProperty =
       DependencyProperty.Register("IPAddress", typeof(string), typeof(NetworkInputDialog));
 
@@ -45,7 +48,14 @@ namespace HTL.Grieskirchen.Edubot.Controls
             }
         }
 
-
+        public string Length
+        {
+            get { return (string)GetValue(LengthProperty); }
+            set
+            {
+                SetValue(LengthProperty, value);
+            }
+        }
 
         public NetworkInputDialog()
         {
@@ -55,7 +65,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
             //tbPort.DataContext = this;
             tbIpAdress.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            
+            tbLength.GetBindingExpression(TextBox.TextProperty).UpdateSource();
           
             //btApply.GetBindingExpression(Button.IsEnabledProperty).UpdateSource();
         }
