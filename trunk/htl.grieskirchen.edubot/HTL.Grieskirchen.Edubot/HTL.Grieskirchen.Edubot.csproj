@@ -64,19 +64,20 @@
     <Compile Include="Controls\NetworkInputDialog.xaml.cs">
       <DependentUpon>NetworkInputDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Visualisation2D.xaml.cs">
+      <DependentUpon>Visualisation2D.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\Animator.cs" />
     <Compile Include="DrawingPanel.xaml.cs">
       <DependentUpon>DrawingPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Validation\Converter\ErrorToMessageConverter.cs" />
     <Compile Include="Validation\Converter\MultiStringConverter.cs" />
+    <Compile Include="Validation\LengthValidationRule.cs" />
     <Compile Include="Validation\PortValidationRule.cs" />
     <Compile Include="Validation\IPAdressValidationRule.cs" />
     <Compile Include="Validation\StringEmptyValidationRule.cs" />
     <Compile Include="Validation\IntegerValidationRule.cs" />
-    <Compile Include="VisualisationAbove.xaml.cs">
-      <DependentUpon>VisualisationAbove.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Visualisation3D.xaml.cs">
       <DependentUpon>Visualisation3D.xaml</DependentUpon>
     </Compile>
@@ -87,13 +88,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Visualisation2D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DrawingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VisualisationAbove.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

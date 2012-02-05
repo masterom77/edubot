@@ -5,7 +5,7 @@
         xmlns:validators="clr-namespace:HTL.Grieskirchen.Edubot.Validation" 
         xmlns:converters="clr-namespace:HTL.Grieskirchen.Edubot.Validation.Converter"
         xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls" 
-        Title="Adapter registrieren" Height="Auto" Width="300" SizeToContent="Height" Loaded="Window_Loaded">
+        Title="Adapter registrieren" Height="Auto" Width="302" SizeToContent="Height" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Window.Resources>
 
         <converters:ErrorToMessageConverter x:Key="eToMConverter"></converters:ErrorToMessageConverter>
@@ -22,6 +22,8 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="5" TextWrapping="Wrap" Grid.ColumnSpan="2">Geben Sie die IP-Adresse und Port, die der Steuerung des Roboters zugeteilt sind, ein.</TextBlock>
         <TextBlock Margin="5" TextWrapping="Wrap"  Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Name="tbErrorMessage" Foreground="#FFFF0A0A">
@@ -29,6 +31,7 @@
                 <MultiBinding Converter="{StaticResource mStringConverter}">
                     <Binding ElementName="tbIpAdress" Path="(Validation.Errors)[0].ErrorContent" Converter="{StaticResource eToMConverter}"/>
                     <Binding ElementName="tbPort" Path="(Validation.Errors)[0].ErrorContent" Converter="{StaticResource eToMConverter}"/>
+                    <Binding ElementName="tbLength" Path="(Validation.Errors)[0].ErrorContent" Converter="{StaticResource eToMConverter}"/>
                 </MultiBinding>
             </TextBlock.Text>
             <TextBlock.Style>
@@ -41,9 +44,21 @@
                     </Style>
             </TextBlock.Style>
         </TextBlock>
-        <Label Grid.Row="2">IP-Adresse:</Label>
-        <Label Grid.Row="3">Port:</Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Name="tbIpAdress">
+        <Label Grid.Row="2">Werkzeug:</Label>
+        <Label Grid.Row="3">Achsenlänge (mm):</Label>
+        <Label Grid.Row="4">IP-Adresse:</Label>
+        <Label Grid.Row="5">Port:</Label>
+        <ComboBox Grid.Row="2" Grid.Column="1" Margin="5" Name="cbTool"></ComboBox>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Name="tbLength">
+            <TextBox.Text>
+                <Binding Path="Length" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="This">
+                    <Binding.ValidationRules>
+                        <validators:LengthValidationRule></validators:LengthValidationRule>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="5" Name="tbIpAdress">
             <TextBox.Text>
                 <Binding Path="IpAdress" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="This">
                     <Binding.ValidationRules>
@@ -52,7 +67,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Name="tbPort">
+        <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Name="tbPort">
             <TextBox.Text>
                 <Binding Path="Port" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="This">
                     <Binding.ValidationRules>
@@ -61,7 +76,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+        <Grid Grid.Row="6" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>

@@ -12,15 +12,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
+using HTL.Grieskirchen.Edubot.API.Adapters;
 
 namespace HTL.Grieskirchen.Edubot
 {
     /// <summary>
     /// Interaction logic for Visualisation3D.xaml
     /// </summary>
-    public partial class VisualisationAbove : UserControl
+    public partial class Visualisation2D : UserControl
     {
-         public VisualisationAbove()
+        public Visualisation2D()
         {
             InitializeComponent();
 
@@ -28,7 +30,7 @@ namespace HTL.Grieskirchen.Edubot
             AnglePrimaryAxis = 0;
             AnglePrimaryAxis = 0;
         }
-        
+
         private Rect3D posSecondaryEngine;
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
@@ -36,32 +38,38 @@ namespace HTL.Grieskirchen.Edubot
         private long primaryAxisTicks;
         private float secondaryAxisSpeed;
         private long secondaryAxisTicks;
-        private float[,] angles;
+        private VirtualAdapter visualisationAdapter;
 
-        public float[,] Angles
+        public VirtualAdapter VisualisationAdapter
+        {
+            get { return visualisationAdapter; }
+            set { visualisationAdapter = value; }
+        }
+
+        private List<InterpolationStep> angles;
+
+        public List<InterpolationStep> Angles
         {
             get { return angles; }
-            set
-            {
-                angles = value;
-                new System.Threading.Thread(startAnimation).Start();
+            set { angles = value;
+            new System.Threading.Thread(startAnimation).Start();
             }
         }
 
-        private void startAnimation()
-        {
+        private void startAnimation() {
             updateCallback updatePrimaryAngle = new updateCallback(UpdatePrimaryAxis);
             updateCallback updateSecondaryAngle = new updateCallback(UpdateSecondaryAxis);
 
-            for (int i = 0; i < Angles.GetLength(0); i++)
-            {
-                System.Threading.Thread.Sleep(50);
-                Dispatcher.Invoke(updatePrimaryAngle, Angles[i, 0]);
-                Dispatcher.Invoke(updateSecondaryAngle, Angles[i, 1]);
+            foreach (InterpolationStep step in angles) {
+                System.Threading.Thread.Sleep(10);
+                Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
             }
 
-
-
+            //visualisationAdapter.State = API.State.READY;
+            
+            
+        
         }
 
         delegate void updateCallback(float val);
@@ -113,7 +121,7 @@ namespace HTL.Grieskirchen.Edubot
         {
             AngleSecondaryAxis = val;
         }
-
+     
 
         public double AnglePrimaryAxis
         {
@@ -147,6 +155,7 @@ namespace HTL.Grieskirchen.Edubot
             get { return angleSecondaryAxis; }
             set
             {
+                //int dir = value < 0 ? -1 : 1;
                 Transform3DGroup transformGroup = new Transform3DGroup();
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));

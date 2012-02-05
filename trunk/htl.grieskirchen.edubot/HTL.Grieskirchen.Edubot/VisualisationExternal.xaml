@@ -8,6 +8,6 @@
             <ColumnDefinition Width="126*" />
         </Grid.ColumnDefinitions>
         <my:Visualisation3D Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" x:Name="visualisation3D" Width="Auto" />
-        <my:VisualisationAbove Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="visualisationAbove" VerticalAlignment="Stretch" />
+        <my:Visualisation2D Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="visualisationAbove" VerticalAlignment="Stretch" />
     </Grid>
 </Window>
