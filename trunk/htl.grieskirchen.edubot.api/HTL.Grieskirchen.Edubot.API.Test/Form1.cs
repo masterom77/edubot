@@ -26,7 +26,14 @@ namespace EduBot
             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("192.168.0.40"), 12000));
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
-            commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
+            //Console.WriteLine("QUADRANT 1");
+            //commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
+            Console.WriteLine("QUADRANT 2");
+            commands.Add(new MoveCommand(new Point3D(-100, 100, 0)));
+            Console.WriteLine("QUADRANT 3");
+            commands.Add(new MoveCommand(new Point3D(-100, -100, 0)));
+            Console.WriteLine("QUADRANT 4");
+            commands.Add(new MoveCommand(new Point3D(100, -100, 0)));
             //commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
             //commands.Add(new MoveCommand(new Point3D(50, 100, 0)));
             //commands.Add(new UseToolCommand(false));
