@@ -22,6 +22,8 @@ using System.Windows.Ink;
 using System.Threading;
 using HTL.Grieskirchen.Edubot.API.Adapters;
 using System.Windows.Controls.Primitives;
+using HTL.Grieskirchen.Edubot.API.Commands;
+using HTL.Grieskirchen.Edubot.Controls;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -289,23 +291,38 @@ namespace HTL.Grieskirchen.Edubot
 
         private void Execute(object sender, RoutedEventArgs e)
         {
-            try
+            switch (tcNavigation.SelectedIndex)
             {
-                tbConsole.Clear();
-                tbConsole.AppendText(">Building...\n");
-                List<HTL.Grieskirchen.Edubot.API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
-                tbConsole.AppendText(">Build succeeded\n");
-                tbConsole.AppendText(">Executing...\n");
-                foreach (HTL.Grieskirchen.Edubot.API.Commands.ICommand command in commands)
-                {
-                    edubot.Execute(command);
-                }
+                case 0:
+                    try
+                    {
+                        tbConsole.Clear();
+                        tbConsole.AppendText(">Building...\n");
+                        List<HTL.Grieskirchen.Edubot.API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
+                        tbConsole.AppendText(">Build succeeded\n");
+                        tbConsole.AppendText(">Executing...\n");
+                        foreach (HTL.Grieskirchen.Edubot.API.Commands.ICommand command in commands)
+                        {
+                            edubot.Execute(command);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        tbConsole.AppendText(">Build failed\n");
+                        tbConsole.AppendText(">" + ex.Message + "\n");
+                    }
+                    break;
+                case 1:
+                    if (edubot.State == State.SHUTDOWN)
+                        edubot.Execute(new StartCommand());
+                    foreach (MoveCommand command in icDrawing.GenerateMovementCommands())
+                    {
+                        edubot.Execute(command);
+                    }
+                    edubot.Execute(new ShutdownCommand());
+                    break;
             }
-            catch (Exception ex)
-            {
-                tbConsole.AppendText(">Build failed\n");
-                tbConsole.AppendText(">" + ex.Message + "\n");
-            }
+            
         }
 
 
@@ -359,6 +376,33 @@ namespace HTL.Grieskirchen.Edubot
                     break;
                 case 1:
                     icDrawing.Redo();
+                    break;
+            }
+        }
+
+        private void ChangeTool(object sender, RoutedEventArgs e) {
+            string operation = ((RadioButton)sender).Tag.ToString();
+            switch (operation) { 
+                case "select":
+                    icDrawing.EditingMode = InkCanvasEditingMode.Select;
+                    break;
+                case "draw":
+                    icDrawing.EditingMode = InkCanvasEditingMode.Ink;
+                    break;
+                case "erase":
+                    icDrawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
+                    break;
+                case "line":
+                    icDrawing.EditingMode = InkCanvasEditingMode.None;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.Line;
+                    break;
+                case "rect":
+                    icDrawing.EditingMode = InkCanvasEditingMode.None;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.Rectangle;
+                    break;
+                case "ellipse":
+                    icDrawing.EditingMode = InkCanvasEditingMode.None;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.Ellipse;
                     break;
             }
         }
