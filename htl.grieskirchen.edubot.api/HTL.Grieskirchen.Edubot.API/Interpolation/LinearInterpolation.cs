@@ -183,7 +183,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     case 4: alpha1 = 360 - (helpAngle - beta);
                         break;
                 }
-                Console.WriteLine("QDR: "+quadrant+" LMAX\t"+alpha1 + "\t" + (180 - alpha));
+              //  Console.WriteLine("QDR: "+quadrant+" LMAX\t"+alpha1 + "\t" + (180 - alpha));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180- alpha };
             }
             if (length2 >= length && length2 >= r)
@@ -199,7 +199,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     case 4: alpha1 = 360 - (helpAngle - gamma);
                         break;
                 }
-                Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + alpha1 + "\t" + (180 - alpha));
+               // Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + alpha1 + "\t" + (180 - alpha));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-alpha };
             }
             else
@@ -216,7 +216,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                         break;
                 }
 
-                Console.WriteLine("QDR: " + quadrant + " RMAX\t" + alpha1 + "\t" + (180 - gamma));
+               // Console.WriteLine("QDR: " + quadrant + " RMAX\t" + alpha1 + "\t" + (180 - gamma));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-gamma };
             }
         }

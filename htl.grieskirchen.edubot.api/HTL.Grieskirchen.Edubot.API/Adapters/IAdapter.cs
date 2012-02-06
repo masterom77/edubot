@@ -19,6 +19,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             this.length = length;
             this.length2 = length2;
             interpolation = new LinearInterpolation();
+            length2 = length;
         }
 
         #region Properties
@@ -45,14 +46,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             get { return length; }
         }
 
-        protected bool requiresPrecalculation;
-
-        public bool RequiresPrecalculation
-        {
-            get { return requiresPrecalculation; }
-            set { requiresPrecalculation = value; }
-        }
-
         protected float length2;
 
         public float Length2
@@ -60,6 +53,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             get { return length2; }
         }
 
+        protected bool requiresPrecalculation;
+
+        public bool RequiresPrecalculation
+        {
+            get { return requiresPrecalculation; }
+            set { requiresPrecalculation = value; }
+        }
         protected State state;
 
         public State State
