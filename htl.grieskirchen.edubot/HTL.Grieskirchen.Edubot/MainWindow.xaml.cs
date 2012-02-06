@@ -21,6 +21,7 @@ using System.Net;
 using System.Windows.Ink;
 using System.Threading;
 using HTL.Grieskirchen.Edubot.API.Adapters;
+using System.Windows.Controls.Primitives;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -36,6 +37,48 @@ namespace HTL.Grieskirchen.Edubot
         VisualisationExternal windowVisualisation;
         
         API.Edubot edubot;
+        private static RoutedCommand saveCommand = new RoutedCommand();
+
+        public static RoutedCommand SaveCommand
+        {
+            get { return MainWindow.saveCommand; }
+            set { MainWindow.saveCommand = value;}
+        }
+
+        private static RoutedCommand openCommand = new RoutedCommand();
+
+        public static RoutedCommand OpenCommand
+        {
+            get { return MainWindow.openCommand; }
+            set { MainWindow.openCommand = value; }
+        }
+
+        private static RoutedCommand undoCommand = new RoutedCommand();
+
+        public static RoutedCommand UndoCommand
+        {
+            get { return MainWindow.undoCommand; }
+            set { MainWindow.undoCommand = value; }
+        }
+
+        private static RoutedCommand redoCommand = new RoutedCommand();
+
+        public static RoutedCommand RedoCommand
+        {
+            get { return MainWindow.redoCommand; }
+            set { MainWindow.redoCommand = value; }
+        }
+
+        static MainWindow(){
+            saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            openCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
+            undoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            redoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+            
+        }
+
+
+        List<string> commands;
 
         public MainWindow()
         {
@@ -49,6 +92,14 @@ namespace HTL.Grieskirchen.Edubot
             visualisation3D.VisualisationAdapter = visualisationAdapter;
             edubot.RegisterAdapter(visualisationAdapter);
             InitializeLists();
+
+            puAutocomplete.Visibility = Visibility.Visible;
+            puAutocomplete.KeyDown += AppendText;
+
+            commands = new List<string>();
+            commands.Add("moveto");
+            commands.Add("start");
+            commands.Add("shutdown");
             //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
@@ -147,7 +198,29 @@ namespace HTL.Grieskirchen.Edubot
            
         }
 
-        private void SaveAs()
+        private void Create(object sender, RoutedEventArgs e)
+        {
+            SaveChanges();
+            if (saved)
+            {
+                tbCodeArea.Clear();
+                currentFile = null;
+            }
+        }
+
+        private void Save(object sender, RoutedEventArgs e)
+        {
+            if (currentFile == null)
+            {
+                SaveAs(sender,e);
+            }
+            else
+            {
+                Save(currentFile);
+            }
+        }
+
+        private void SaveAs(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.AddExtension = true;
@@ -169,22 +242,26 @@ namespace HTL.Grieskirchen.Edubot
             saved = true;
         }
 
-        private void Open()
+        private void Open(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.AddExtension = true;
-            dialog.DefaultExt = ".txt";
-            dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
-
-            if ((bool)dialog.ShowDialog())
+            SaveChanges();
+            if (saved)
             {
-                StreamReader reader = new StreamReader(new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read));
-                while (!reader.EndOfStream)
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.AddExtension = true;
+                dialog.DefaultExt = ".txt";
+                dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
+
+                if ((bool)dialog.ShowDialog())
                 {
-                    tbCodeArea.AppendText(reader.ReadLine()+Environment.NewLine);
+                    StreamReader reader = new StreamReader(new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read));
+                    while (!reader.EndOfStream)
+                    {
+                        tbCodeArea.AppendText(reader.ReadLine() + Environment.NewLine);
+                    }
+                    reader.Close();
+                    currentFile = dialog.FileName;
                 }
-                reader.Close();
-                currentFile = dialog.FileName;
             }
         }
 
@@ -195,7 +272,7 @@ namespace HTL.Grieskirchen.Edubot
                 if (response == MessageBoxResult.Yes) {
                     if (currentFile == null)
                     {
-                        SaveAs();
+                        SaveAs(null,null);
                     }
                     else {
                         Save(currentFile);
@@ -210,90 +287,37 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
-        private void Create()
+        private void Execute(object sender, RoutedEventArgs e)
         {
-            tbCodeArea.Clear();
-            currentFile = null;
-        }
-
-        private void btExecute_Click(object sender, RoutedEventArgs e)
-        {
-            
             try
             {
                 tbConsole.Clear();
                 tbConsole.AppendText(">Building...\n");
                 List<HTL.Grieskirchen.Edubot.API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
                 tbConsole.AppendText(">Build succeeded\n");
-                tbConsole.AppendText(">Executing...");
-                foreach (HTL.Grieskirchen.Edubot.API.Commands.ICommand command in commands) {
+                tbConsole.AppendText(">Executing...\n");
+                foreach (HTL.Grieskirchen.Edubot.API.Commands.ICommand command in commands)
+                {
                     edubot.Execute(command);
                 }
             }
             catch (Exception ex)
             {
                 tbConsole.AppendText(">Build failed\n");
-                tbConsole.AppendText(">"+ex.Message + "\n");
+                tbConsole.AppendText(">" + ex.Message + "\n");
             }
-          
         }
 
-        private void Execute(object cmd) {
-            
-        }
 
         private void ExtVis_Click(object sender, RoutedEventArgs e)
         {
             windowVisualisation.Show();
         }
 
-        private void miSaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            SaveAs();
-            
-        }
-
-        private void miSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentFile == null)
-            {
-                SaveAs();
-            }
-            else {
-                Save(currentFile);
-            }
-        }
-
-        private void miOpen_Click(object sender, RoutedEventArgs e)
-        {
-            SaveChanges();
-            if (saved)
-            {
-                Open();
-            }
-
-        }
-
-        private void miNew_Click(object sender, RoutedEventArgs e)
-        {
-            SaveChanges();
-            if (saved)
-            {
-                Create();
-            }
-        }
-
-       
-
         private void tbCodeArea_TextChanged(object sender, TextChangedEventArgs e)
         {
           
             saved = false;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void btRegister_Click(object sender, RoutedEventArgs e)
@@ -314,6 +338,99 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
+        private void Undo(object sender, RoutedEventArgs e)
+        {
+            switch (tcNavigation.SelectedIndex) {
+                case 0:
+                    tbCodeArea.Undo();
+                    break;
+                case 1:
+                    icDrawing.Undo();
+                    break;
+            }
+        }
+
+        private void Redo(object sender, RoutedEventArgs e)
+        {
+            switch (tcNavigation.SelectedIndex)
+            {
+                case 0:
+                    tbCodeArea.Redo();
+                    break;
+                case 1:
+                    icDrawing.Redo();
+                    break;
+            }
+        }
+
+        private void ClosePopup(object sender, EventArgs e) {
+            puAutocomplete.IsOpen = false;
+            tbCodeArea.Focus();
+        }
+
+        private void AppendText(object sender, KeyEventArgs e) {
+            if (puAutocomplete.IsOpen && e.Key == Key.Enter)
+            {
+                tbCodeArea.Focus();
+                string line = tbCodeArea.GetLineText(tbCodeArea.GetLineIndexFromCharacterIndex(tbCodeArea.CaretIndex));
+                if (line == string.Empty)
+                    tbCodeArea.Text.Insert(0, lbAutocomplete.SelectedItem.ToString());
+                else
+                    tbCodeArea.Text.Replace(line, lbAutocomplete.SelectedItem.ToString());
+                tbCodeArea.InvalidateVisual();
+                puAutocomplete.IsOpen = false;
+            }
+        }
+
+        private void tbCodeArea_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
+               string currentLine = tbCodeArea.GetLineText(tbCodeArea.GetLineIndexFromCharacterIndex(tbCodeArea.CaretIndex));
+               currentLine = currentLine.Trim();
+               List<string> possibleCommands = null;
+               if (currentLine != string.Empty)
+               {
+                   possibleCommands = (from cmd in commands
+                                          where cmd.StartsWith(currentLine)
+                                          select cmd).ToList();
+               }
+               else {
+                   possibleCommands = commands.ToList();
+               }
+
+               lbAutocomplete.Items.Clear();
+               foreach (string cmd in possibleCommands) {
+                   lbAutocomplete.Items.Add(cmd);
+               }
+               lbAutocomplete.SelectedIndex = 0;
+               puAutocomplete.IsOpen = true;
+               //puAutocomplete.Focus();
+               e.Handled = true;
+            }
+            //if (e.Key == Key.Down) {
+            //    lbAutocomplete.Items.MoveCurrentToNext();
+            //}
+
+            //if (e.Key == Key.Up)
+            //{
+            //    lbAutocomplete.Items.MoveCurrentToPrevious();
+            //}
+            
+
+        }
+
+        private void tbCodeArea_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (puAutocomplete.IsOpen && e.Key == Key.Down && lbAutocomplete.Items.Count > 0
+   && !(e.OriginalSource is ListBoxItem))
+            {
+                lbAutocomplete.Focus();
+                lbAutocomplete.SelectedIndex = 0;
+                ListBoxItem lbi = lbAutocomplete.ItemContainerGenerator.ContainerFromIndex(lbAutocomplete.SelectedIndex) as ListBoxItem;
+                lbi.Focus();
+                e.Handled = true;
+            }
+        }
         
 
         

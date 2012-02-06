@@ -1,7 +1,15 @@
 ﻿<Window x:Class="HTL.Grieskirchen.Edubot.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls"
         Title="Edubot" Height="768" Width="1024" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Member=my:MainWindow.OpenCommand}" Executed="Open"/>
+        <CommandBinding Command="{x:Static Member=my:MainWindow.SaveCommand}" Executed="Save"/>
+        <CommandBinding Command="{x:Static Member=my:MainWindow.UndoCommand}" Executed="Undo"/>
+        <CommandBinding Command="{x:Static Member=my:MainWindow.RedoCommand}" Executed="Redo"/>
+
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
@@ -16,34 +24,37 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="Datei" Name="miFile">
-                    <MenuItem Header="Neu..." Name="miNew" Click="miNew_Click"></MenuItem>
-                    <MenuItem Header="Öffnen..." Name="miOpen" Click="miOpen_Click"></MenuItem>
-                    <MenuItem Header="Speichern" Name="miSave" Click="miSave_Click"></MenuItem>
-                    <MenuItem Header="Speichern unter..." Name="miSaveAs" Click="miSaveAs_Click"></MenuItem>
+                    <MenuItem Header="Neu..." Name="miNew" Click="Create"></MenuItem>
+                <MenuItem Header="Öffnen..." Name="miOpen" InputGestureText="Strg + O" Click="Open"></MenuItem>
+                <MenuItem Header="Speichern" Name="miSave" InputGestureText="Strg + S" Click="Save"></MenuItem>
+                    <MenuItem Header="Speichern unter..." Name="miSaveAs" Click="SaveAs"></MenuItem>
             </MenuItem>
             <MenuItem Header="Bearbeiten"></MenuItem>
             <MenuItem Header="Ansicht"></MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" Grid.ColumnSpan="2">
             <ToolBar>
-                <Button Width="20" Height="20" Name="tbbNew" ToolTip="Neues Skript">
+                <Button Width="20" Height="20" Name="tbbNew" ToolTip="Neues Skript" Click="Create">
                     
                 </Button>
-                <Button Width="20" Height="20" Name="tbbOpen" ToolTip="Skript öffnen">
+                <Button Width="20" Height="20" Name="tbbOpen" ToolTip="Skript öffnen" Click="Open">
 
                 </Button>
-                <Button Width="20" Height="20" Name="tbbSave" ToolTip="Skript speichern">
+                <Button Width="20" Height="20" Name="tbbSave" ToolTip="Skript speichern" Click="Save">
 
                 </Button>
-                <Button Width="20" Height="20" Name="tbbSaveAs" ToolTip="Skript speichern unter">
+                <Button Width="20" Height="20" Name="tbbUndo" ToolTip="Rückgängig" Click="Undo">
 
                 </Button>
-                <Button Width="20" Height="20" Name="tbbExecute" ToolTip="Skript ausführen">
+                <Button Width="20" Height="20" Name="tbbRedo" ToolTip="Wiederholen" Click="Redo">
+
+                </Button>
+                <Button Width="20" Height="20" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
                     
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <TabControl Grid.RowSpan="2" Grid.Row="2">
+        <TabControl Grid.RowSpan="2" Grid.Row="2" Name="tcNavigation">
             <TabItem Header="CLI">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -51,8 +62,15 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" Name="tbCodeArea" TextChanged="tbCodeArea_TextChanged"></TextBox>
-                    <Button Grid.Row="1" Height="20" Content="Ausführen" Name="btExecute" Click="btExecute_Click"></Button>
+                    <Popup Visibility="Hidden" Name="puAutocomplete" Placement="Mouse">
+                        <ListBox x:Name="lbAutocomplete"                                 
+                      VerticalContentAlignment="Stretch" 
+                      HorizontalContentAlignment="Stretch"
+                                 Width="400" Height="Auto" MaxHeight="200"
+                      KeyboardNavigation.DirectionalNavigation="Contained" />
+                    </Popup>
+                    <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" Name="tbCodeArea" TextChanged="tbCodeArea_TextChanged" KeyDown="tbCodeArea_KeyDown" PreviewKeyDown="tbCodeArea_PreviewKeyDown"></TextBox>
+                    <Button Grid.Row="1" Height="20" Content="Ausführen" Name="btExecute" Click="Execute"></Button>
                     <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Grid.Row="2" Margin="0,0,0,0" Name="tbConsole"></TextBox>
                 </Grid>
             </TabItem>
@@ -79,7 +97,7 @@
                             </Button>
                         </ToolBar>
                     </ToolBarTray>
-                    <InkCanvas Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5" Name="icDrawing"></InkCanvas>
+                    <controls:DrawingCanvas Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5" x:Name="icDrawing"></controls:DrawingCanvas>
                     <!--<my:DrawingPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5"></my:DrawingPanel>-->
                 </Grid>
 
