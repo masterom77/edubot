@@ -13,7 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
@@ -34,23 +34,29 @@
         </Menu>
         <ToolBarTray Grid.Row="1" Grid.ColumnSpan="2">
             <ToolBar>
-                <Button Width="20" Height="20" Name="tbbNew" ToolTip="Neues Skript" Click="Create">
-                    
+                <Button Width="30" Height="30" Name="tbbNew" ToolTip="Neues Skript" Click="Create">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/NewButton.png"></Image>
                 </Button>
-                <Button Width="20" Height="20" Name="tbbOpen" ToolTip="Skript öffnen" Click="Open">
-
+                <Button Width="30" Height="30" Name="tbbOpen" ToolTip="Skript öffnen" Click="Open">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/OpenButton.png"></Image>
                 </Button>
-                <Button Width="20" Height="20" Name="tbbSave" ToolTip="Skript speichern" Click="Save">
-
+                <Button Width="30" Height="30" Name="tbbSave" ToolTip="Skript speichern" Click="Save">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/SaveButton.png"></Image>
                 </Button>
-                <Button Width="20" Height="20" Name="tbbUndo" ToolTip="Rückgängig" Click="Undo">
-
+                <Button Width="30" Height="30" Name="tbbUndo" ToolTip="Rückgängig" Click="Undo">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/UndoButton.png"></Image>
                 </Button>
-                <Button Width="20" Height="20" Name="tbbRedo" ToolTip="Wiederholen" Click="Redo">
-
+                <Button Width="30" Height="30" Name="tbbRedo" ToolTip="Wiederholen" Click="Redo">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/RedoButton.png"></Image>
                 </Button>
-                <Button Width="20" Height="20" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
-                    
+                <Button Width="30" Height="30" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteButton.png"></Image>
+                </Button>
+                <Button Width="30" Height="30" Name="tbbExecuteWindow" ToolTip="Skript in eigenem Fenster ausführen" Click="Execute">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteWindowButton.png"></Image>
+                </Button>
+                <Button Width="30" Height="30" Name="tbbAbort" ToolTip="Skriptausführung abbrechen" Click="Execute">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/AbortButton.png"></Image>
                 </Button>
             </ToolBar>
         </ToolBarTray>
@@ -81,23 +87,51 @@
                         <RowDefinition Height="30"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"></ColumnDefinition>
+                        <ColumnDefinition Width="35"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <ToolBarTray Grid.RowSpan="2" Orientation="Vertical" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <ToolBar Band="1" BandIndex="1">
-                            <Button>
-                                <Image></Image>
-                            </Button>
-                            <Button>
-                                <Image></Image>
-                            </Button>
-                            <Button>
-                                <Image></Image>
-                            </Button>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbSelectTool" Tag="select" Click="ChangeTool" IsChecked="True">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/SelectButton.png"></Image>
+                                </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbDrawTool" Tag="draw" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/DrawButton.png"></Image>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbEraseTool" Tag="erase" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/EraseButton.png"></Image>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbEraseShapeTool" Tag="eraseShape" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/EraseShapeButton.png"></Image>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbLineTool" Tag="line" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/DrawLineButton.png"></Image>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbRectTool" Tag="rect" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/DrawRectButton.png"></Image>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" Height="30" Width="30" Name="tbbEllipseTool" Tag="ellipse" Click="ChangeTool">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/DrawEllipseButton.png"></Image>
+                            </RadioButton>
+                            <Label Height="20"></Label>
+                            <ToggleButton Height="30" Width="30" Name="tbbDisplayGrid" Tag="ellipse" IsChecked="{Binding ElementName=icDrawing, Path=DisplayGrid}">
+                                <Image Source="/HTL.Grieskirchen.Edubot;component/Images/DisplayGridButton.png"></Image>
+                            </ToggleButton>
+                            <!--<Grid Height="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox></TextBox>
+                                <Label Grid.Column="1" Content="pt"></Label>
+                            </Grid>-->
                         </ToolBar>
                     </ToolBarTray>
-                    <controls:DrawingCanvas Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5" x:Name="icDrawing"></controls:DrawingCanvas>
+                    <Viewbox Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vbDrawing" Stretch="Uniform">
+                        <controls:DrawingCanvas Width="600" Height="600" x:Name="icDrawing" Background="{x:Null}">
+                        
+                        </controls:DrawingCanvas>
+                    </Viewbox>
                     <!--<my:DrawingPanel Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5"></my:DrawingPanel>-->
                 </Grid>
 
