@@ -61,6 +61,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CommandBuilder.cs" />
     <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Controls\DrawingCanvas.xaml.cs">
+      <DependentUpon>DrawingCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NetworkInputDialog.xaml.cs">
       <DependentUpon>NetworkInputDialog.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
     <Compile Include="VisualisationExternal.xaml.cs">
       <DependentUpon>VisualisationExternal.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\DrawingCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NetworkInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
