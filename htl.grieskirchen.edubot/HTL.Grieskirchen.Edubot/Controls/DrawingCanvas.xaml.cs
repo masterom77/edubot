@@ -203,7 +203,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
                         StylusPointCollection ellipse = new StylusPointCollection();
                         int radiusX = (int)(currentPosition.X - origin.X) / 2;
                         int radiusY = (int)(currentPosition.Y - origin.Y) / 2;
-                        int segmentCount = (int)((radiusX * 2 + radiusY * 2) * 1.5);
+                        int segmentCount = (int)(Math.Sqrt(radiusX * radiusX + radiusY * radiusY)*4);
                         double dTheta = 2 * Math.PI / segmentCount;
                         double theta = 0;
                         Point center = new Point(origin.X + radiusX, origin.Y + radiusY);                        
@@ -223,10 +223,11 @@ namespace HTL.Grieskirchen.Edubot.Controls
             }
         }
 
-        public List<MoveCommand> GenerateMovementCommands() {
-            List<MoveCommand> commands = new List<MoveCommand>();
+        public List<MVSCommand> GenerateMovementCommands() {
+            List<MVSCommand> commands = new List<MVSCommand>();
             bool firstPoint;
             int sizePerQuadrant = (int)ActualHeight/2;
+            
             foreach (Stroke stroke in Strokes) {
                 firstPoint = true;
                 foreach (StylusPoint point in stroke.StylusPoints)
@@ -237,11 +238,11 @@ namespace HTL.Grieskirchen.Edubot.Controls
                     if (firstPoint)
                     {
                         //move to starting pointn of stroke without drawing a line --> Z = 0
-                        commands.Add(new MoveCommand(new API.Point3D(x, y, 0)));
+                        commands.Add(new MVSCommand(new API.Point3D(x, y, 0)));
                         firstPoint = false;
                     }
                     else {
-                        commands.Add(new MoveCommand(new API.Point3D(x, y, 1)));
+                        commands.Add(new MVSCommand(new API.Point3D(x, y, 1)));
                     }
                 }
             }
@@ -292,31 +293,32 @@ namespace HTL.Grieskirchen.Edubot.Controls
         protected void RenderLine(DrawingContext drawingContext)
         {
             Point currentPosition = Mouse.GetPosition(this);
-            //if (Keyboard.IsKeyDown(Key.LeftShift))
-            //{
-            //    int x = (int) (currentPosition.X - origin.X);
-            //    int y = (int) (currentPosition.Y - origin.Y);
-            //    double angle;
-            //    if (y != 0)
-            //    {
-            //        angle = Math.Acos(x / Math.Abs(y)) * 180 / Math.PI;
-            //    }
-            //    else {
-            //        if (x > 0)
-            //            angle = 0;
-            //        else
-            //            angle = 180;
-            //    }
+            if (Keyboard.IsKeyDown(Key.LeftShift))
+            {
+                int x = (int)(currentPosition.X - origin.X);
+                int y = (int)(currentPosition.Y - origin.Y);
+                double angle;
+                if (y != 0)
+                {
+                    angle = Math.Acos(x / Math.Abs(y)) * 180 / Math.PI;
+                }
+                else
+                {
+                    if (x > 0)
+                        angle = 0;
+                    else
+                        angle = 180;
+                }
 
-            //        if ((angle > 60 && angle < 120) || (angle > 240 && angle < 300))
-            //        {
-            //            currentPosition.X = origin.X;
-            //        }
-            //        else
-            //        {
-            //            currentPosition.Y = origin.Y;
-            //        }
-            //}
+                if ((angle > 60 && angle < 120) || (angle > 240 && angle < 300))
+                {
+                    currentPosition.X = origin.X;
+                }
+                else
+                {
+                    currentPosition.Y = origin.Y;
+                }
+            }
             drawingContext.DrawLine(new Pen(Brushes.Black, DefaultDrawingAttributes.Width), origin, currentPosition);
         }
 

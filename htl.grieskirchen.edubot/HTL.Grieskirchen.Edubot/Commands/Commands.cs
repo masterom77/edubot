@@ -7,7 +7,8 @@ namespace HTL.Grieskirchen.Edubot.Commands
 {
     enum Commands
     {
-        MOVETO,
+        MVS,
+        MVC,
         USETOOL,
         START,
         SHUTDOWN,

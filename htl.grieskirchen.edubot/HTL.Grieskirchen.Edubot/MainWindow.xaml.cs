@@ -93,15 +93,12 @@ namespace HTL.Grieskirchen.Edubot
             visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             visualisation3D.VisualisationAdapter = visualisationAdapter;
             edubot.RegisterAdapter(visualisationAdapter);
+            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 150, 150, IPAddress.Parse("127.0.0.1"), 12000));
             InitializeLists();
 
             puAutocomplete.Visibility = Visibility.Visible;
             puAutocomplete.KeyDown += AppendText;
 
-            commands = new List<string>();
-            commands.Add("moveto");
-            commands.Add("start");
-            commands.Add("shutdown");
             //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
@@ -145,8 +142,10 @@ namespace HTL.Grieskirchen.Edubot
                 //AxisData d;
 
                 //Update Visualisation
-
-                if (true)
+                if (sender is DefaultAdapter) {
+                    Console.WriteLine("DEFAULT!");
+                }
+                if (sender is VirtualAdapter)
                 {
                     visualisation3D.Angles = mse.Result.Angles;
                     visualisation2D.Angles = mse.Result.Angles;
@@ -313,9 +312,12 @@ namespace HTL.Grieskirchen.Edubot
                     }
                     break;
                 case 1:
-                    if (edubot.State == State.SHUTDOWN)
+                    try
+                    {
                         edubot.Execute(new StartCommand());
-                    foreach (MoveCommand command in icDrawing.GenerateMovementCommands())
+                    }
+                    catch (Exception) { };
+                    foreach (MVSCommand command in icDrawing.GenerateMovementCommands())
                     {
                         edubot.Execute(command);
                     }
@@ -390,6 +392,9 @@ namespace HTL.Grieskirchen.Edubot
                     icDrawing.EditingMode = InkCanvasEditingMode.Ink;
                     break;
                 case "erase":
+                    icDrawing.EditingMode = InkCanvasEditingMode.EraseByPoint;
+                    break;
+                case "eraseShape":
                     icDrawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
                     break;
                 case "line":
