@@ -59,11 +59,12 @@
     <Compile Include="Adapters\DefaultAdapter.cs" />
     <Compile Include="Adapters\Listeners\VirtualStateListener.cs" />
     <Compile Include="Commands\ChangeInterpolationCommand.cs" />
+    <Compile Include="Commands\MVCCommand.cs" />
+    <Compile Include="Commands\MVSCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
     <Compile Include="Commands\UseToolCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\MoveCommand.cs" />
     <Compile Include="Adapters\VirtualAdapter.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="Configuration.cs" />
@@ -79,9 +80,11 @@
     <Compile Include="Exceptions\OutOfRangeException.cs" />
     <Compile Include="Exceptions\IllegalStateUpdateException.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />
+    <Compile Include="Interpolation\CircularInterpolation.cs" />
     <Compile Include="Interpolation\IInterpolationType.cs" />
     <Compile Include="Interpolation\InterpolationResult.cs" />
     <Compile Include="Interpolation\InterpolationStep.cs" />
+    <Compile Include="Interpolation\Kinematics.cs" />
     <Compile Include="Interpolation\LinearInterpolation.cs" />
     <Compile Include="Interpolation\MathHelper.cs" />
     <Compile Include="Interpolation\SplineInterpolation.cs" />

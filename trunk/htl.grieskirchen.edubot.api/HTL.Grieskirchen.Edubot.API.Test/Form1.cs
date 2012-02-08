@@ -11,6 +11,7 @@ using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
 using HTL.Grieskirchen.Edubot.API.Adapters;
 using HTL.Grieskirchen.Edubot.API.Commands;
+using System.Net.Sockets;
 
 namespace EduBot
 {
@@ -22,34 +23,70 @@ namespace EduBot
         {
             InitializeComponent();
             Edubot edubot = Edubot.GetInstance();
-            edubot.RegisterAdapter(new VirtualAdapter(new VirtualTool(), 150f,150f));
-            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("192.168.0.40"), 12000));
+            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+            edubot.RegisterAdapter(adapter);
+            //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            new Thread(ControllerCircle).Start(); 
+            edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("127.0.0.1"), 12000));
+           
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
-            //Console.WriteLine("QUADRANT 1");
-            //commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
-            Console.WriteLine("QUADRANT 2");
-            commands.Add(new MoveCommand(new Point3D(-100, 100, 0)));
-            Console.WriteLine("QUADRANT 3");
-            commands.Add(new MoveCommand(new Point3D(-100, -100, 0)));
-            Console.WriteLine("QUADRANT 4");
-            commands.Add(new MoveCommand(new Point3D(100, -100, 0)));
-            //commands.Add(new MoveCommand(new Point3D(100, 100, 0)));
-            //commands.Add(new MoveCommand(new Point3D(50, 100, 0)));
-            //commands.Add(new UseToolCommand(false));
-            //commands.Add(new MoveCommand(new Point3D(50, 50, 0)));
-            //commands.Add(new ShutdownCommand());
-            //commands.Add(new StartCommand());
-            //commands.Add(new UseToolCommand(true));
-            //commands.Add(new MoveCommand(new Point3D(100, 50, 0)));
-            //commands.Add(new ShutdownCommand());
-            edubot.OnAxisAngleChanged += React; 
+            commands.Add(new MVSCommand(new Point3D(100, 100, 0)));
+            commands.Add(new ShutdownCommand());
+            commands.Add(new StartCommand());
+            commands.Add(new MVSCommand(new Point3D(100, 150, 0)));
+            //edubot.OnAxisAngleChanged += React; 
             foreach (ICommand cmd in commands) {
                 edubot.Execute(cmd);
             }
             
         }
 
+        private void ControllerCircle() {
+            TcpListener listener = new TcpListener(System.Net.IPAddress.Parse("127.0.0.1"),12000);
+            listener.Start();
+            TcpClient client = listener.AcceptTcpClient();
+            byte[] readBuffer = new byte[512];
+            byte[] writeBuffer;
+            while(true){
+              
+                List<byte> bytes = new List<byte>();
+                while (client.GetStream().DataAvailable) {
+                    int bytesRead = client.GetStream().Read(readBuffer, 0, readBuffer.Length);
+                    for (int i = 0; i < bytesRead;i++ )
+                    {
+                        bytes.Add(readBuffer[i]);
+                    }
+                }
+                if (bytes.Count > 0)
+                {
+                    string message = Encoding.UTF8.GetString(bytes.ToArray());
+                    bytes.Clear();
+                    if (message.StartsWith("start")) {
+                        Console.WriteLine("Controller: start received");
+                        Thread.Sleep(1000);
+                        writeBuffer = Encoding.UTF8.GetBytes("ready");
+                        client.GetStream().Write(Encoding.UTF8.GetBytes("ready"),0,writeBuffer.Length);
+                    }
+                    if (message.StartsWith("mvs:") || message.StartsWith("mvc:"))
+                    {
+                        Console.WriteLine("Controller: move received");
+                        Thread.Sleep(message.Length);
+                        writeBuffer = Encoding.UTF8.GetBytes("ready");
+                        client.GetStream().Write(Encoding.UTF8.GetBytes("ready"), 0, writeBuffer.Length);
+                    }
+                    if (message.StartsWith("shutdown"))
+                    {
+                        Console.WriteLine("Controller: shutdown received");
+                        Thread.Sleep(1000);
+                        writeBuffer = Encoding.UTF8.GetBytes("shutdown");
+                        client.GetStream().Write(Encoding.UTF8.GetBytes("shutdown"), 0, writeBuffer.Length);
+                    }
+                }
+            }
+        }
+
+        
         private void React(object src,  EventArgs args) {
             Console.WriteLine((args as AngleChangedEventArgs).Result.ToString());
         }

@@ -7,25 +7,14 @@ namespace HTL.Grieskirchen.Edubot.API
 {
     public abstract class ITool
     {
-        int x, y, z;
+        Point3D toolCenterPoint;
 
-        public int X
+        public Point3D ToolCenterPoint
         {
-            get { return x; }
-            set { x = value; }
+            get { return toolCenterPoint; }
+            set { toolCenterPoint = value; }
         }
 
-        public int Y
-        {
-            get { return y; }
-            set { y = value; }
-        }
-
-        public int Z
-        {
-            get { return z; }
-            set { z = value; }
-        }
 
         //public abstract void Activate();
         //public abstract void Deactivate();

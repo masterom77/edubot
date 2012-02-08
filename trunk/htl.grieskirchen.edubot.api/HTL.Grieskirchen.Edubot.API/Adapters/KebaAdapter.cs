@@ -42,15 +42,23 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             listener = new NetworkStateListener(this, receiverSocket);
         }
 
-        public override void MoveTo(object param)
+        public override void MoveStraightTo(object param)
         {
             Point3D target = (Point3D)param;
             senderSocket.Connect(senderEndpoint);
-            senderSocket.Send(Encoding.UTF8.GetBytes(target.ToString()));
-            senderSocket.Disconnect(true);
-            tool.X = target.X;
-            tool.Y = target.Y;
-            tool.Z = target.Z;
+            senderSocket.Send(Encoding.UTF8.GetBytes("mvs:" + target.ToString()));
+            tool.ToolCenterPoint = target;
+        }
+
+        public override void MoveCircularTo(object param)
+        {
+
+            object[] parameters = (object[])param;
+            Point3D target = (Point3D)parameters[0];
+            Point3D center = (Point3D)parameters[1];
+            senderSocket.Connect(senderEndpoint);
+            senderSocket.Send(Encoding.UTF8.GetBytes("mvc:" + target.ToString() + "&" + center.ToString()));
+            tool.ToolCenterPoint = target;
         }
 
         public override void UseTool(object param)
@@ -107,5 +115,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 message = "";
             }
         }
+
+        
     }
 }

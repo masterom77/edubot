@@ -7,10 +7,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class SplineInterpolation : IInterpolationType
     {
-        public InterpolationResult CalculatePath(ITool tool, Point3D target, float length)
+        public InterpolationResult CalculatePath(Point3D toolCenterPoint, Point3D target, float length, float length2)
         {
-            
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

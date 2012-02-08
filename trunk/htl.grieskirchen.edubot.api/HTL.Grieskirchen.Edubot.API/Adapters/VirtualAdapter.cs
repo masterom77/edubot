@@ -14,23 +14,24 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public VirtualAdapter(ITool tool, float length, float length2) : base(tool, length, length2)
         {
             this.tool = tool;
-            tool.X = (int)length * 2;
-            tool.Y = 0;
             this.length = length;
             this.requiresPrecalculation = true;
             type = AdapterType.VIRTUAL;
             listener = new VirtualStateListener();
         }
 
-        public override void MoveTo(object param)
+        public override void MoveStraightTo(object param)
         {
             Point3D target = (Point3D)param;
-            tool.X = target.X;
-            tool.Y = target.Y;
-            tool.Z = target.Z;
-            //Console.WriteLine("Moving...");
-            //System.Threading.Thread.Sleep(1000);
-            //State = State.READY;
+            tool.ToolCenterPoint = target;
+        }
+
+        public override void MoveCircularTo(object param)
+        {
+            object[] parameters = (object[])param;
+            Point3D target = (Point3D)parameters[0];
+            Point3D center = (Point3D)parameters[1];
+            tool.ToolCenterPoint = target;
         }
 
         public override void UseTool(object param)
@@ -59,5 +60,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //System.Threading.Thread.Sleep(2000);
             State = State.SHUTDOWN;
         }
+
+        
     }
 }
