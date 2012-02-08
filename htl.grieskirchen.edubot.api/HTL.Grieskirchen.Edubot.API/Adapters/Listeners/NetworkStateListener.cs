@@ -20,25 +20,42 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
 
         private void ListenOnState()
         {
-            string message;
-            List<byte> data = new List<byte>();
-            byte[] buffer = new byte[512];
-            while (socket.Connected)
+            try
             {
-                while (socket.Available > 0)
+                string message;
+                List<byte> data = new List<byte>();
+                byte[] buffer = new byte[512];
+                while (socket.Connected)
                 {
-                    socket.Receive(buffer);
-                    data.AddRange(buffer);
+                    while (socket.Available > 0)
+                    {
+                        int bytesRead = socket.Receive(buffer);
+                        for (int i = 0; i < bytesRead; i++)
+                        {
+                            data.Add(buffer[i]);
+                        }
+                    }
+                    if (data.Count > 0)
+                    {
+                        message = Encoding.UTF8.GetString(data.ToArray());
+                        switch (message)
+                        {
+                            case "ready":
+
+                                adapter.State = State.READY;
+
+                                break;
+                            case "shutdown":
+                                adapter.State = State.SHUTDOWN;
+                                socket.Disconnect(true);
+                                break;
+                        }
+                        data.Clear();
+                        message = "";
+                    }
                 }
-                message = Encoding.UTF8.GetString(data.ToArray());
-                switch (message)
-                {
-                    case "READY": adapter.State = State.READY;
-                        break;
-                }
-                data.Clear();
-                message = "";
             }
+            catch (ThreadAbortException tae) { }
         }
 
         public override void UpdateState(State state)
@@ -54,8 +71,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
 
         public override void Stop()
         {
-            stateListener.Abort();
-            stateListener = null;
+            //stateListener.Abort();
+            //stateListener = null;
         }
     }
 }

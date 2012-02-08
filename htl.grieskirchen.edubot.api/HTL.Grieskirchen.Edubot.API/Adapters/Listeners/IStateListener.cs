@@ -7,6 +7,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
 {
     public abstract class IStateListener
     {
+        
         protected IAdapter adapter;
 
         public IAdapter Adapter

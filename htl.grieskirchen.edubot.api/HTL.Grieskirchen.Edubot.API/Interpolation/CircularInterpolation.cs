@@ -11,7 +11,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     /// <summary>
     /// An implementation of the IInterpolationType interfaces, which uses linear interpolation for path calculation
     /// </summary>
-    public class LinearInterpolation
+    public class CircularInterpolation
     {
         /// <summary>
         /// dCalculates the path by using the specified parameters and linear interpolation.
@@ -21,7 +21,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <param name="length">The length of the first axis</param>
         /// <param name="length2">The length of the second axis</param>
         /// <returns></returns>
-        public InterpolationResult CalculatePath(Point3D toolCenterPoint, Point3D target, float length, float length2)
+        public InterpolationResult CalculatePath(Point3D toolCenterPoint, Point3D target, Point3D center, float length, float length2)
         {
             int steps;// = Configuration.InterpolationSteps;
             float toolX = toolCenterPoint.X;

@@ -14,11 +14,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
             this.tool = tool;
-            this.tool.X = (int) (length + length2);
-            this.tool.Y = 0;
+            tool.ToolCenterPoint = new Point3D((int)length + length2, 0, 0);
             this.length = length;
             this.length2 = length2;
-            interpolation = new LinearInterpolation();
+            //interpolation = new LinearInterpolation();
             length2 = length;
         }
 
@@ -118,7 +117,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public abstract void Start();
         public abstract void Shutdown();
-        public abstract void MoveTo(object param);
+        public abstract void MoveStraightTo(object param);
+        public abstract void MoveCircularTo(object param);
         public abstract void UseTool(object param);
         public abstract void SetInterpolationResult(Interpolation.InterpolationResult result);
 

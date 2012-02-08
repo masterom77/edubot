@@ -14,31 +14,32 @@ namespace HTL.Grieskirchen.Edubot.API
             this.z = 0;
         }
 
-        public Point3D(int x, int y, int z) {
+        public Point3D(float x, float y, float z)
+        {
             this.x = x;
             this.y = y;
             this.z = z;
         }
 
-        int x;
+        float x;
 
-        public int X
+        public float X
         {
             get { return x; }
             set { x = value; }
         }
 
-        int y;
+        float y;
 
-        public int Y
+        public float Y
         {
             get { return y; }
             set { y = value; }
         }
 
-        int z;
+        float z;
 
-        public int Z
+        public float Z
         {
             get { return z; }
             set { z = value; }

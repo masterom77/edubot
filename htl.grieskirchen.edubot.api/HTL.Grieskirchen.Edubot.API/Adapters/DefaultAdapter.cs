@@ -11,12 +11,23 @@ using System.Threading;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
+    /// <summary>
+    /// Used for communication to the Edubot
+    /// </summary>
     public class DefaultAdapter : IAdapter
     {
         Socket socket;
         IPEndPoint endpoint;
         InterpolationResult result;
 
+        /// <summary>
+        /// Initializes a new instance of the DefaultAdapter class.
+        /// </summary>
+        /// <param name="tool">An instance of the tool, that is currently installed on the robot</param>
+        /// <param name="length">The length of the first Axis in millimeters</param>
+        /// <param name="length2">The length of the second Axis in millimeters</param>
+        /// <param name="ipAdress">The IP address of controller</param>
+        /// <param name="port">The port, on which the program of the controller is listening</param>
         public DefaultAdapter(ITool tool, float length,float length2, IPAddress ipAdress, int port)
             : base(tool, length, length2)
         {
@@ -24,29 +35,66 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             requiresPrecalculation = true;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             endpoint = new IPEndPoint(ipAdress, port);
-            state = State.DISCONNECTED;
-            Connect();
-        }
-
-        public void Connect() {
-            socket.Connect(endpoint);
-            state = State.SHUTDOWN;
             listener = new NetworkStateListener(this, socket);
+            
+            //Connect();
         }
 
-        public override void MoveTo(object param)
-        {
-            //socket.Connect(endpoint);
-            Point3D target = (Point3D)param;
-            socket.SendBufferSize = Int32.MaxValue;
-            byte[] content = Encoding.UTF8.GetBytes(result.ToString());
-            socket.Send(content);
-            socket.Disconnect(true);
+        /// <summary>
+        /// Trys to connect to the controller and starts the internal network listener.
+        /// </summary>
+        /// <exception cref="System.Net.Sockets.SocketException"></exception>
+        public void Connect() {
+            socket.Connect(endpoint);            
+            listener.Start();
+        }
 
-            tool.X = target.X;
-            tool.Y = target.Y;
-            tool.Z = target.Z;
+        public bool TestConnectivity() {
+            try
+            {
+                socket.Connect(endpoint);
+                socket.Disconnect(true);
+                return true;
+            }
+            catch(Exception e) {
+                return false;
+            }
+        }
+
+        public void Disconnect()
+        {
+            //listener.Stop();
+            socket.Disconnect(true);
+        }
+
+        /// <summary>
+        /// Sends the command
+        /// </summary>
+        /// <param name="param"></param>
+
+
+
+        public override void MoveStraightTo(object param)
+        {
+            //socket.SendBufferSize = Int32.MaxValue;
+            Point3D target = (Point3D)param;
+            byte[] content = Encoding.UTF8.GetBytes("mvs:" + result.ToString());
+            socket.Send(content);
+
+            tool.ToolCenterPoint = target;
+        }
+
+        public override void MoveCircularTo(object param)
+        {
+
+            object[] parameters = (object[])param;
+            Point3D target = (Point3D)parameters[0];
+            Point3D center = (Point3D)parameters[1];
+            byte[] content = Encoding.UTF8.GetBytes("mvc:" + result.ToString());
+            socket.Send(content);
             //socket.Disconnect(true);
+
+            tool.ToolCenterPoint = target;
         }
 
         public override void UseTool(object param)
@@ -55,33 +103,30 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //byte[] buffer = new byte[1];
             //buffer[0] = Convert.ToByte(activate);
             //socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes("activate:" + param.ToString()));
+            socket.Send(Encoding.UTF8.GetBytes("usetool:" + param.ToString()));
             //socket.Disconnect(true);
 
         }
 
         public override void Start()
         {
-            //socket.Connect(endpoint);
-            listener.Start();
+            //if (!socket.Connected)
+            //    Connect();
+            Connect();
             socket.Send(Encoding.UTF8.GetBytes("start"));
-            //socket.Disconnect(true);
         }
 
         public override void Shutdown()
         {
-            //socket.Connect(endpoint);
+            
             socket.Send(Encoding.UTF8.GetBytes("shutdown"));
-            listener.Stop();
-            socket.Disconnect(true);
-            //socket.Disconnect(true);
+            //Disconnect();
         }
 
         public override void SetInterpolationResult(Interpolation.InterpolationResult result)
         {
             this.result = result;
         }
-
 
 
     }

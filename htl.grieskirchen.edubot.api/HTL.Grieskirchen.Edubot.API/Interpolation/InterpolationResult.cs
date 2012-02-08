@@ -79,7 +79,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         {
             float varianceAlpha1 = 0f;
             float varianceAlpha2 = 0f;
-            string result = primarySpeed+";"+secondarySpeed+"|";
+            string result = "";//primarySpeed+";"+secondarySpeed+"|";
             foreach (InterpolationStep step in steps) {
                 if (step.Alpha1 < Configuration.AnglePerStep) {
                     varianceAlpha1 += step.Alpha1;

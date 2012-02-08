@@ -19,7 +19,7 @@ namespace HTL.Grieskirchen.Edubot.API
         private Edubot() {
 
             //InitAxis();
-            interpolation = new LinearInterpolation();
+            //interpolation = new LinearInterpolation();
             registeredAdapters = new Dictionary<AdapterType, IAdapter>();
             state = State.SHUTDOWN;
             //tool = new VirtualTool();
