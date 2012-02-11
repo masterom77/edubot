@@ -24,6 +24,7 @@ using HTL.Grieskirchen.Edubot.API.Adapters;
 using System.Windows.Controls.Primitives;
 using HTL.Grieskirchen.Edubot.API.Commands;
 using HTL.Grieskirchen.Edubot.Controls;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -88,8 +89,9 @@ namespace HTL.Grieskirchen.Edubot
             InitializeEdubot();
             InitializeEnvironmentVariables();
             InitializeLists();
+            Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 120f);
             visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             visualisation3D.VisualisationAdapter = visualisationAdapter;
             edubot.RegisterAdapter(visualisationAdapter);

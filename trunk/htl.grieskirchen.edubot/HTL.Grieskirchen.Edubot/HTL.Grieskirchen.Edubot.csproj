@@ -87,9 +87,6 @@
       <DependentUpon>Visualisation2D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Animator.cs" />
-    <Compile Include="DrawingPanel.xaml.cs">
-      <DependentUpon>DrawingPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Validation\Converter\ErrorToMessageConverter.cs" />
     <Compile Include="Validation\Converter\MultiStringConverter.cs" />
     <Compile Include="Validation\LengthValidationRule.cs" />
@@ -118,10 +115,6 @@
     <Page Include="Visualisation2D.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DrawingPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

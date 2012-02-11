@@ -27,6 +27,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeComponent();
 
             posSecondaryEngine = MeshSecondaryEngine.Content.Bounds;
+            drawnPoints = new List<Point>();
             AnglePrimaryAxis = 0;
             AnglePrimaryAxis = 0;
         }
@@ -38,6 +39,7 @@ namespace HTL.Grieskirchen.Edubot
         private long primaryAxisTicks;
         private float secondaryAxisSpeed;
         private long secondaryAxisTicks;
+        private List<Point> drawnPoints;
         private VirtualAdapter visualisationAdapter;
 
         public VirtualAdapter VisualisationAdapter
@@ -143,7 +145,6 @@ namespace HTL.Grieskirchen.Edubot
                 posSecondaryEngine = transformGroup.TransformBounds(MeshSecondaryEngine.Content.Bounds);
 
 
-
                 anglePrimaryAxis = value;
                 AngleSecondaryAxis = AngleSecondaryAxis;
             }
@@ -159,13 +160,51 @@ namespace HTL.Grieskirchen.Edubot
                 Transform3DGroup transformGroup = new Transform3DGroup();
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));
-
-
+                
                 MeshPen.Transform = transformGroup;
                 //MeshPen2.Transform = transformGroup;
                 MeshSecondaryAxis.Transform = transformGroup;
 
+
                 angleSecondaryAxis = value;
+            }
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            
+            RenderGrid(drawingContext);
+            base.OnRender(drawingContext);
+            drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(0, ActualHeight / 2 - 1), new Point(ActualWidth, ActualHeight / 2 - 1));
+            drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(ActualWidth / 2 - 1, 0), new Point(ActualWidth / 2 - 1, ActualHeight));
+            RenderLabels(drawingContext);
+        }
+
+        protected void RenderGrid(DrawingContext drawingContext)
+        {
+            int stepSize = 25;
+            for (int col = 0; col < ActualWidth / stepSize; col++)
+            {
+                drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(0, stepSize * col), new Point(ActualWidth, stepSize * col));
+            }
+            for (int row = 0; row < ActualHeight / stepSize; row++)
+            {
+                drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(stepSize * row, 0), new Point(stepSize * row, ActualHeight));
+            }
+        }
+
+        protected void RenderLabels(DrawingContext drawingContext)
+        {
+            int stepSize = 25;
+            int steps = (int) ActualWidth / stepSize;
+            for (int col = 0; col < steps+1; col++)
+            {
+                int y = (steps * 25 / 2) - stepSize * col;
+                if (y == 0) {
+                    continue;
+                }
+                FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Baseline/2 , (col * stepSize)-text.Height/2));
             }
         }
     }
