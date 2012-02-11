@@ -39,6 +39,18 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <param name="length2"></param>
         /// <returns></returns>
         public static Point3D CalculateDirect(float angle1, float angle2, float length, float length2) {
+
+            double tmpAlpha = MathHelper.ConvertToDegrees(Math.Atan(length2 / length));
+            double helpAlpha = angle1 + tmpAlpha;
+            double tmpBeta = MathHelper.ConvertToDegrees(Math.Atan(length / length2));
+
+            double r = Math.Sqrt(length * length + length2 * length2 - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(180 - tmpAlpha - tmpBeta)));
+
+            double x = Math.Sin(MathHelper.ConvertToRadians(angle1)) * r;
+            double y = Math.Cos(MathHelper.ConvertToRadians(angle1)) * r;
+            double x2 = Math.Sin(MathHelper.ConvertToRadians(angle2)) * r;
+            double y2 = Math.Cos(MathHelper.ConvertToRadians(angle2)) * r;
+      
             return new Point3D(0, 0, 0);
         }
 
@@ -57,8 +69,15 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float r = (float) Math.Sqrt(x * x + y * y);
 
             #region ------------------------Point Validation------------------------
-            if (Math.Sqrt(Math.Round(x) * Math.Round(x) + Math.Round(y) * Math.Round(y)) > (length + length2))
-                throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich außerhalb der Reichweite des Roboters");
+            if ((Math.Sqrt(Math.Round(x) * Math.Round(x) + Math.Round(y) * Math.Round(y)) > (length + length2))||
+                (r < Math.Abs(length - length2))
+                )
+                throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
+            //if (length != length2) {
+            //    float difLength = Math.Abs(length - length2);
+            //    if (r <= difLength)
+            //        throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
+            //}
             #endregion
 
             #region ------------------------Special Cases------------------------
@@ -89,7 +108,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             lengths.Remove(b);
             float a = lengths.First();
 
-            float alpha = MathHelper.ConvertToDegrees(Math.Acos((b*b+c*c-a*a)/(2*b*c)));
+            float alpha = MathHelper.ConvertToDegrees(Math.Acos((b * b + c * c - a * a) / (2 * b * c)));
             float beta = MathHelper.ConvertToDegrees(Math.Acos((a * a + c * c - b * b) / (2 * a * c)));
             float gamma = 180 - alpha - beta;
 
@@ -102,10 +121,12 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             #region ------------------------Angle Transformation and Distribution------------------------
             int quadrant = MathHelper.GetQuadrant(x, y);
             float alpha1 = float.NaN;
+            float alpha2 = float.NaN;
 
             if (length >= length2 && length >= r) {
                 switch (quadrant)
                 {
+                        //GAMMA & ALPHA
                     case 1: alpha1 = helpAngle - beta;
                         break;
                     case 2: alpha1 = helpAngle - beta; //180-
@@ -115,9 +136,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     case 4: alpha1 = -helpAngle - beta; //360-
                         break;
                 }
+                alpha2 = 180 - alpha;
                 if(displayResults)
-                  Console.WriteLine("QDR: "+quadrant+" LMAX\t"+alpha1 + "\t" + (180 - alpha));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180- alpha };
+                    Console.WriteLine("QDR: " + quadrant + " LMAX\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             if (length2 >= length && length2 >= r)
             {
@@ -132,9 +154,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     case 4: alpha1 = -helpAngle - gamma;
                         break;
                 }
+                alpha2 = 180 - alpha;
                 if (displayResults)
-                 Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + alpha1 + "\t" + (180 - alpha));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-alpha };
+                    Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + Math.Round(alpha,2) + " beta:\t" + Math.Round(beta,2) + " gamma:\t" + Math.Round(gamma,2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             else
             {
@@ -149,9 +172,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     case 4: alpha1 = -helpAngle - beta;
                         break;
                 }
+                alpha2 = 180 - gamma;
                 if (displayResults)
-                  Console.WriteLine("QDR: " + quadrant + " RMAX\t" + alpha1 + "\t" + (180 - gamma));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = 180-gamma };
+                    Console.WriteLine("QDR: " + quadrant + " RMAX\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             #endregion
         }
