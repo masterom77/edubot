@@ -31,6 +31,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
             EditingMode = InkCanvasEditingMode.Select;
             StrokeCollected += AddMemento;
             StrokeErasing += AddMemento;
+            Strokes.StrokesChanged += AddMemento;
             MouseLeftButtonDown += SetOrigin;
             MouseLeftButtonUp += AddStrokes;
             MouseMove += UpdateShape;
@@ -72,29 +73,36 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 InkCanvasStrokeCollectedEventArgs icsce = (InkCanvasStrokeCollectedEventArgs)e;
                 buffer.Add(new Memento() { Operation = "add", Strokes = new StrokeCollection() { icsce.Stroke } });
                 index++;
+
+                if (buffer.Count > index)
+                {
+                    buffer.RemoveRange(index, buffer.Count - index);
+                }
             }
             if (e is InkCanvasStrokeErasingEventArgs) {
                 InkCanvasStrokeErasingEventArgs icsee = (InkCanvasStrokeErasingEventArgs)e;
                 buffer.Add(new Memento() { Operation = "del", Strokes = new StrokeCollection() { icsee.Stroke } });
                 index++;
+
+                if (buffer.Count > index)
+                {
+                    buffer.RemoveRange(index, buffer.Count - index);
+                }
             }
-            //if (e is StrokeCollectionChangedEventArgs) {
-            //    StrokeCollectionChangedEventArgs scce = (StrokeCollectionChangedEventArgs)e;
-            //    if (scce.Added.Count > 0)
-            //    {
-            //        buffer.Add(new Memento() { Operation = "add", Strokes = scce.Added });
-            //        index++;
-            //    }
-            //    if (scce.Removed.Count > 0)
-            //    {
-            //        buffer.Add(new Memento() { Operation = "del", Strokes = scce.Removed });
-            //        index++;
-            //    }
+            //if (e is StrokeCollectionChangedEventArgs)
+            //{
+            //    //StrokeCollectionChangedEventArgs scce = (StrokeCollectionChangedEventArgs)e;
+            //    //if (scce.Added.Count > 0)
+            //    //{
+            //    //    buffer.Add(new Memento() { Operation = "add", Strokes = scce.Added });
+            //    //    index++;
+            //    //}
+            //    //if (scce.Removed.Count > 0)
+            //    //{
+            //    //    buffer.Add(new Memento() { Operation = "del", Strokes = scce.Removed });
+            //    //    index--;
+            //    //}
             //}
-            if (buffer.Count > index)
-            {
-                buffer.RemoveRange(index, buffer.Count - index);
-            }
 
         }
 
@@ -178,13 +186,16 @@ namespace HTL.Grieskirchen.Edubot.Controls
             if (IsDrawingShape)
             {
                 Point currentPosition = Mouse.GetPosition(this);
+                Stroke stroke;
                 switch (drawingMode)
                 {
                     case InkCanvasDrawingMode.Line:
                         StylusPointCollection line = new StylusPointCollection();
                         line.Add(new StylusPoint(origin.X, origin.Y));
                         line.Add(new StylusPoint(currentPosition.X, currentPosition.Y));
-                        Strokes.Add(new Stroke(line));
+                        stroke = new Stroke(line);
+                        Strokes.Add(stroke);
+                        OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
                         //buffer.Add(new Memento() { Operation = "add", Strokes = new StrokeCollection(){new Stroke(line)} });
                         //index++;
                         break;
@@ -195,7 +206,11 @@ namespace HTL.Grieskirchen.Edubot.Controls
                         rect.Add(new StylusPoint(currentPosition.X, currentPosition.Y));
                         rect.Add(new StylusPoint(origin.X, currentPosition.Y));
                         rect.Add(new StylusPoint(origin.X, origin.Y));
-                        Strokes.Add(new Stroke(rect));
+                        stroke = new Stroke(rect);
+                        Strokes.Add(stroke);
+
+                        OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
+                        
                         //buffer.Add(new Memento() { Operation = "add", Strokes = new StrokeCollection() { new Stroke(rect) } });
                         //index++;
                         break;
@@ -215,8 +230,10 @@ namespace HTL.Grieskirchen.Edubot.Controls
                             currentX = (int) (center.X + radiusX * Math.Cos(theta));
                             currentY = (int) (center.Y + radiusY * Math.Sin(theta));
                             ellipse.Add(new StylusPoint(currentX, currentY));
-                        }                      
-                        Strokes.Add(new Stroke(ellipse));
+                        }
+                        stroke = new Stroke(ellipse);
+                        Strokes.Add(stroke);
+                        OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
                         break;
                 }
                 
