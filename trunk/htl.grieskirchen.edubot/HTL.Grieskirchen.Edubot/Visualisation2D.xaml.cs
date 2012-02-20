@@ -35,17 +35,15 @@ namespace HTL.Grieskirchen.Edubot
         private Rect3D posSecondaryEngine;
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
-        private float primaryAxisSpeed;
-        private long primaryAxisTicks;
-        private float secondaryAxisSpeed;
-        private long secondaryAxisTicks;
         private List<Point> drawnPoints;
         private VirtualAdapter visualisationAdapter;
 
         public VirtualAdapter VisualisationAdapter
         {
             get { return visualisationAdapter; }
-            set { visualisationAdapter = value; }
+            set { visualisationAdapter = value;
+            InvalidateVisual();
+            }
         }
 
         private List<InterpolationStep> angles;
@@ -196,7 +194,12 @@ namespace HTL.Grieskirchen.Edubot
         protected void RenderLabels(DrawingContext drawingContext)
         {
             int stepSize = 25;
-            int steps = (int) ActualWidth / stepSize;
+            int steps;
+            if (visualisationAdapter != null)
+                steps = (int)(visualisationAdapter.Length + visualisationAdapter.Length2) / stepSize;
+            else
+                steps = (int)ActualWidth / stepSize;
+
             for (int col = 0; col < steps+1; col++)
             {
                 int y = (steps * 25 / 2) - stepSize * col;
@@ -204,7 +207,17 @@ namespace HTL.Grieskirchen.Edubot
                     continue;
                 }
                 FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
-                drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Baseline/2 , (col * stepSize)-text.Height/2));
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , (col * stepSize)-text.Height/2));
+            }
+            for (int row = 0; row < steps + 1; row++)
+            {
+                int x = (-steps * 25 / 2) + stepSize * row;
+                if (x == 0)
+                {
+                    continue;
+                }
+                FormattedText text = new FormattedText(x.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                drawingContext.DrawText(text, new Point((row * stepSize) - text.Width / 2, ActualWidth / 2 + 5));
             }
         }
     }

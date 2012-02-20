@@ -8,7 +8,7 @@
         <CommandBinding Command="{x:Static Member=my:MainWindow.SaveCommand}" Executed="Save"/>
         <CommandBinding Command="{x:Static Member=my:MainWindow.UndoCommand}" Executed="Undo"/>
         <CommandBinding Command="{x:Static Member=my:MainWindow.RedoCommand}" Executed="Redo"/>
-
+        <CommandBinding Command="{x:Static Member=my:MainWindow.ExecuteCommand}" Executed="Execute"/>
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,14 +22,24 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Menu Grid.ColumnSpan="2">
-            <MenuItem Header="Datei" Name="miFile">
-                    <MenuItem Header="Neu..." Name="miNew" Click="Create"></MenuItem>
+        <Menu Grid.ColumnSpan="2"  IsMainMenu="True">
+            <MenuItem Header="Datei" Name="miFile" >
+                <MenuItem Header="Neu..." Name="miNew" Click="Create"></MenuItem>
                 <MenuItem Header="Öffnen..." Name="miOpen" InputGestureText="Strg + O" Click="Open"></MenuItem>
                 <MenuItem Header="Speichern" Name="miSave" InputGestureText="Strg + S" Click="Save"></MenuItem>
-                    <MenuItem Header="Speichern unter..." Name="miSaveAs" Click="SaveAs"></MenuItem>
+                <MenuItem Header="Speichern unter..." Name="miSaveAs" Click="SaveAs"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Kürzlich geschlossen" Name="miRecentFiles"></MenuItem>
+                <MenuItem Header="Beenden" Name="miClose" Command="Close"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Bearbeiten"></MenuItem>
+            <MenuItem Header="Bearbeiten">
+                <MenuItem Header="Rückgängig" Name="miUndo" InputGestureText="Strg + Z" Command="Undo"></MenuItem>
+                <MenuItem Header="Wiederholen" Name="miRedo" InputGestureText="Strg + Y" Command="Redo"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Ausschneiden" Name="miCut" InputGestureText="Strg + X" Command="Cut"></MenuItem>
+                <MenuItem Header="Kopieren" Name="miCopy" InputGestureText="Strg + C" Command="Copy"></MenuItem>
+                <MenuItem Header="Einfügen" Name="miPaste" InputGestureText="Strg + V" Command="Paste"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Ansicht"></MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" Grid.ColumnSpan="2">
@@ -43,10 +53,10 @@
                 <Button Width="30" Height="30" Name="tbbSave" ToolTip="Skript speichern" Click="Save">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/SaveButton.png"></Image>
                 </Button>
-                <Button Width="30" Height="30" Name="tbbUndo" ToolTip="Rückgängig" Click="Undo">
+                <Button Width="30" Height="30" Name="tbbUndo" ToolTip="Rückgängig" Command="Undo">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/UndoButton.png"></Image>
                 </Button>
-                <Button Width="30" Height="30" Name="tbbRedo" ToolTip="Wiederholen" Click="Redo">
+                <Button Width="30" Height="30" Name="tbbRedo" ToolTip="Wiederholen" Command="Redo">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/RedoButton.png"></Image>
                 </Button>
                 <Button Width="30" Height="30" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
