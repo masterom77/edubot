@@ -72,14 +72,44 @@ namespace HTL.Grieskirchen.Edubot
             set { MainWindow.redoCommand = value; }
         }
 
+        private static RoutedCommand executeCommand = new RoutedCommand();
+
+        public static RoutedCommand ExecuteCommand
+        {
+            get { return MainWindow.executeCommand; }
+            set { MainWindow.executeCommand = value; }
+        }
+
         static MainWindow(){
             saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             openCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
-            undoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
-            redoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
-            
+            //undoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            //redoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+            executeCommand.InputGestures.Add(new KeyGesture(Key.F5, ModifierKeys.None));
         }
 
+        public bool UndoPossible {
+            get {
+                switch (tcNavigation.SelectedIndex) {
+                    case 0: return tbCodeArea.CanUndo;
+                    case 1: return icDrawing.CanUndo;
+                    default: return false;
+                }
+            }
+        }
+
+        public bool RedoPossible
+        {
+            get
+            {
+                switch (tcNavigation.SelectedIndex)
+                {
+                    case 0: return tbCodeArea.CanRedo;
+                    case 1: return icDrawing.CanRedo;
+                    default: return false;
+                }
+            }
+        }
 
         List<string> commands;
 
@@ -91,13 +121,17 @@ namespace HTL.Grieskirchen.Edubot
             InitializeLists();
             Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 120f);
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 1500f, 1500f);
             visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             visualisation3D.VisualisationAdapter = visualisationAdapter;
+            visualisation2D.VisualisationAdapter = visualisationAdapter;
             edubot.RegisterAdapter(visualisationAdapter);
             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 150, 150, IPAddress.Parse("127.0.0.1"), 12000));
             InitializeLists();
-
+           
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo,new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
+        
             puAutocomplete.Visibility = Visibility.Visible;
             puAutocomplete.KeyDown += AppendText;
 

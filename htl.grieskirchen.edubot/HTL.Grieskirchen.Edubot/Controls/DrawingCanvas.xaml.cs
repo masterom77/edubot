@@ -67,6 +67,26 @@ namespace HTL.Grieskirchen.Edubot.Controls
             get { return buffer.Count > 0 && index < buffer.Count; }
         }
 
+        internal void CanUndoDelegate(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+            e.CanExecute = buffer.Count > 0 && index > 0;
+        }
+
+        internal void CanRedoDelegate(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = buffer.Count > 0 && index < buffer.Count;
+        }
+
+        internal void UndoExecuted(object sender, ExecutedRoutedEventArgs e) {
+            Undo();
+        }
+
+        internal void RedoExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Redo();
+        }
+
         private void AddMemento(object src, EventArgs e) {
             if (e is InkCanvasStrokeCollectedEventArgs)
             {
