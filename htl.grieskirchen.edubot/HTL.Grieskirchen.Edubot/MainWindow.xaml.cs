@@ -121,7 +121,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeLists();
             Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 1500f, 1500f);
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
             visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             visualisation3D.VisualisationAdapter = visualisationAdapter;
             visualisation2D.VisualisationAdapter = visualisationAdapter;
