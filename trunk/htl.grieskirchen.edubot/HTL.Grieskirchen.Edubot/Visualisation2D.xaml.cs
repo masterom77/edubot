@@ -196,9 +196,10 @@ namespace HTL.Grieskirchen.Edubot
             int stepSize = 25;
             int steps;
             if (visualisationAdapter != null)
-                steps = (int)(visualisationAdapter.Length + visualisationAdapter.Length2) / stepSize;
+                steps = (int)(visualisationAdapter.Length + visualisationAdapter.Length2)*2 / stepSize;
             else
                 steps = (int)ActualWidth / stepSize;
+            double offset = ActualWidth / steps;
 
             for (int col = 0; col < steps+1; col++)
             {
@@ -207,17 +208,17 @@ namespace HTL.Grieskirchen.Edubot
                     continue;
                 }
                 FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
-                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , (col * stepSize)-text.Height/2));
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , (col * offset)-text.Height/2));
             }
             for (int row = 0; row < steps + 1; row++)
             {
-                int x = (-steps * 25 / 2) + stepSize * row;
+                int x = (-steps * 25 / 2) + stepSize * row;       
                 if (x == 0)
                 {
                     continue;
                 }
                 FormattedText text = new FormattedText(x.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
-                drawingContext.DrawText(text, new Point((row * stepSize) - text.Width / 2, ActualWidth / 2 + 5));
+                drawingContext.DrawText(text, new Point((row * offset) - text.Width / 2, ActualWidth / 2 + 5));
             }
         }
     }

@@ -148,7 +148,7 @@
             </TabItem>
             <TabItem Header="Einstellungen" >
                 <TabControl TabStripPlacement="Left">
-                    <TabItem Header="Adapter">
+                    <TabItem Header="Adapter" Height="30">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
@@ -167,6 +167,44 @@
                                 <Button Height="25" Name="btRegister" Click="btRegister_Click">Registrieren</Button>
                                 <Button Height="25" Name="btDeregister">Entfernen</Button>
                             </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Visualisierung" Height="30">
+                        <Grid ShowGridLines="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5"></CheckBox>
+                            <Label Grid.Row="1" Content="Visualisierter Adapter:" VerticalAlignment="Top" Margin="5"></Label>
+                            <Grid Margin="5" Grid.Row="1" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <RadioButton VerticalAlignment="Center" Content="Größte Spannweite"></RadioButton>
+                                <RadioButton Grid.Row="1" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Folgender"></Label>
+                                        <ComboBox Name="cbVisualizedAdapter"></ComboBox>
+                                   </StackPanel>
+                                </RadioButton>
+                            </Grid>
+                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5"></CheckBox>
+                            <CheckBox Grid.Row="3" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5"></CheckBox>
+                            <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5"></Label>
+                            <Slider Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="100" TickPlacement="BottomRight" Margin="5"></Slider>
+                            <Label Grid.Row="5" Content="Schrittweite:" VerticalAlignment="Top" Margin="5"></Label>
+                            <Slider Grid.Row="5" Grid.Column="1" IsSnapToTickEnabled="True" Minimum="0" Maximum="100" TickPlacement="BottomRight" Margin="5"></Slider>
                         </Grid>
                     </TabItem>
                 </TabControl>

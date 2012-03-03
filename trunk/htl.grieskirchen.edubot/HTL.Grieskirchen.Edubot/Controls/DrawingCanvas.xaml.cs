@@ -226,11 +226,12 @@ namespace HTL.Grieskirchen.Edubot.Controls
                         rect.Add(new StylusPoint(currentPosition.X, currentPosition.Y));
                         rect.Add(new StylusPoint(origin.X, currentPosition.Y));
                         rect.Add(new StylusPoint(origin.X, origin.Y));
-                        stroke = new Stroke(rect);
-                        Strokes.Add(stroke);
-
-                        OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
-                        
+                        if (rect.Count > 0)
+                        {
+                            stroke = new Stroke(rect);
+                            Strokes.Add(stroke);
+                            OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
+                        }
                         //buffer.Add(new Memento() { Operation = "add", Strokes = new StrokeCollection() { new Stroke(rect) } });
                         //index++;
                         break;
@@ -251,9 +252,12 @@ namespace HTL.Grieskirchen.Edubot.Controls
                             currentY = (int) (center.Y + radiusY * Math.Sin(theta));
                             ellipse.Add(new StylusPoint(currentX, currentY));
                         }
-                        stroke = new Stroke(ellipse);
-                        Strokes.Add(stroke);
-                        OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
+                        if (ellipse.Count > 0)
+                        {
+                            stroke = new Stroke(ellipse);
+                            Strokes.Add(stroke);
+                            OnStrokeCollected(new InkCanvasStrokeCollectedEventArgs(stroke));
+                        }
                         break;
                 }
                 
