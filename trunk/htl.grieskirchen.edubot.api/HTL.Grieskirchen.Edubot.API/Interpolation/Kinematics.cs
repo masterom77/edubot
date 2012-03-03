@@ -124,8 +124,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float alpha2 = float.NaN;
 
             if (length >= length2 && length >= r) {
-                switch (quadrant)
+                 switch (quadrant)
                 {
+                         //BETA = GAMMA 
                         //GAMMA & ALPHA
                     case 1: alpha1 = helpAngle - beta;
                         break;
@@ -138,7 +139,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 }
                 alpha2 = 180 - alpha;
                 if(displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " LMAX\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             if (length2 >= length && length2 >= r)
@@ -156,25 +157,27 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 }
                 alpha2 = 180 - alpha;
                 if (displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " L2MAX\t" + Math.Round(alpha,2) + " beta:\t" + Math.Round(beta,2) + " gamma:\t" + Math.Round(gamma,2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    Console.WriteLine("QDR: " + quadrant + " L2MAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             else
             {
+                //ALPHA = BETA
+                //DEFAULT: BETA + GAMMA
                 switch (quadrant)
                 {
-                    case 1: alpha1 = helpAngle - beta;
+                    case 1: alpha1 = helpAngle - alpha;
                         break;
-                    case 2: alpha1 = helpAngle - beta;
+                    case 2: alpha1 = helpAngle - alpha;
                         break;
-                    case 3: alpha1 = -helpAngle - beta;
+                    case 3: alpha1 = -helpAngle - alpha;
                         break;
-                    case 4: alpha1 = -helpAngle - beta;
+                    case 4: alpha1 = -helpAngle - alpha;
                         break;
                 }
                 alpha2 = 180 - gamma;
                 if (displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " RMAX\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    Console.WriteLine("QDR: " + quadrant + " RMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
                 return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
             }
             #endregion

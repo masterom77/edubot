@@ -25,7 +25,7 @@ namespace EduBot
             InitializeComponent();
             Edubot edubot = Edubot.GetInstance();
             Kinematics.DisplayResults = true;
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 120f);
+            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
             edubot.RegisterAdapter(adapter);
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
@@ -33,7 +33,7 @@ namespace EduBot
            
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
-            commands.Add(new MVSCommand(new Point3D(150, 0, 0)));
+            commands.Add(new MVSCommand(new Point3D(100, 0, 0)));
             commands.Add(new ShutdownCommand());
             //commands.Add(new StartCommand());
             //commands.Add(new MVSCommand(new Point3D(100, 150, 0)));
