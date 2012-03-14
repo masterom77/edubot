@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <Grid>
-             <Viewport3D ClipToBounds="True" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+             <Viewport3D ClipToBounds="True" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="vpVisualization">
             <Viewport3D.Camera>
                 <PerspectiveCamera FieldOfView="10.8" LookDirection="0,-1,0" Position="0,100,0" UpDirection="-1,0,0"/>
                 <!--<PerspectiveCamera FieldOfView="31" FarPlaneDistance="100" LookDirection="0,-7,-1" NearPlaneDistance="0.1" Position="0,35,5" UpDirection="-1,0,0"/>-->

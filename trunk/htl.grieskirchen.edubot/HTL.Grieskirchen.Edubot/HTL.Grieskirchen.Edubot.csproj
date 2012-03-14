@@ -76,6 +76,16 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CommandBuilder.cs" />
     <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Controls\Adapter\AdapterSetup.xaml.cs">
+      <DependentUpon>AdapterSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Adapter\AdapterSetupData.cs" />
+    <Compile Include="Controls\Adapter\BasicInfoPage.xaml.cs">
+      <DependentUpon>BasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Adapter\TypePage.xaml.cs">
+      <DependentUpon>TypePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\InkCanvasDrawingMode.cs" />
     <Compile Include="Controls\DrawingCanvas.xaml.cs">
       <DependentUpon>DrawingCanvas.xaml</DependentUpon>
@@ -100,6 +110,18 @@
     <Compile Include="VisualisationExternal.xaml.cs">
       <DependentUpon>VisualisationExternal.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\Adapter\AdapterSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Adapter\BasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Adapter\TypePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DrawingCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

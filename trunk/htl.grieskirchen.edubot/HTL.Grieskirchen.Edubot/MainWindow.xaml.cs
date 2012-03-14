@@ -25,6 +25,7 @@ using System.Windows.Controls.Primitives;
 using HTL.Grieskirchen.Edubot.API.Commands;
 using HTL.Grieskirchen.Edubot.Controls;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
+using HTL.Grieskirchen.Edubot.Controls.Adapter;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -38,8 +39,46 @@ namespace HTL.Grieskirchen.Edubot
         bool saved;
         bool running;
         VisualisationExternal windowVisualisation;
-        
         API.Edubot edubot;
+        List<IAdapter> registeredAdapters;
+        List<string> commands;
+
+        static MainWindow()
+        {
+            saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            openCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
+            undoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            redoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+            executeCommand.InputGestures.Add(new KeyGesture(Key.F5, ModifierKeys.None));
+        }
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            InitializeEdubot();
+            InitializeEnvironmentVariables();
+            InitializeLists();
+            Kinematics.DisplayResults = false;
+            windowVisualisation = new VisualisationExternal();
+            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+            visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
+            visualisation3D.VisualisationAdapter = visualisationAdapter;
+            visualisation2D.VisualisationAdapter = visualisationAdapter;
+            edubot.RegisterAdapter("2d",visualisationAdapter);
+            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 250, 150, IPAddress.Parse("127.0.0.1"), 12000));
+            InitializeLists();
+            ReplaceVisualisationAdapterWithLongest();
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
+
+            puAutocomplete.Visibility = Visibility.Visible;
+            puAutocomplete.KeyDown += AppendText;
+
+            //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
+        }
+
+        #region -----------------------------Static Properties-----------------------------
+
         private static RoutedCommand saveCommand = new RoutedCommand();
 
         public static RoutedCommand SaveCommand
@@ -80,63 +119,9 @@ namespace HTL.Grieskirchen.Edubot
             set { MainWindow.executeCommand = value; }
         }
 
-        static MainWindow(){
-            saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
-            openCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
-            //undoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
-            //redoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
-            executeCommand.InputGestures.Add(new KeyGesture(Key.F5, ModifierKeys.None));
-        }
+        #endregion
 
-        public bool UndoPossible {
-            get {
-                switch (tcNavigation.SelectedIndex) {
-                    case 0: return tbCodeArea.CanUndo;
-                    case 1: return icDrawing.CanUndo;
-                    default: return false;
-                }
-            }
-        }
-
-        public bool RedoPossible
-        {
-            get
-            {
-                switch (tcNavigation.SelectedIndex)
-                {
-                    case 0: return tbCodeArea.CanRedo;
-                    case 1: return icDrawing.CanRedo;
-                    default: return false;
-                }
-            }
-        }
-
-        List<string> commands;
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            InitializeEdubot();
-            InitializeEnvironmentVariables();
-            InitializeLists();
-            Kinematics.DisplayResults = false;
-            windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
-            visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
-            visualisation3D.VisualisationAdapter = visualisationAdapter;
-            visualisation2D.VisualisationAdapter = visualisationAdapter;
-            edubot.RegisterAdapter(visualisationAdapter);
-            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 150, 150, IPAddress.Parse("127.0.0.1"), 12000));
-            InitializeLists();
-           
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo,new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
-        
-            puAutocomplete.Visibility = Visibility.Visible;
-            puAutocomplete.KeyDown += AppendText;
-
-            //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
-        }
+        #region -----------------------------Initialization-----------------------------
 
         public void InitializeEdubot() {
             edubot = API.Edubot.GetInstance();
@@ -160,8 +145,12 @@ namespace HTL.Grieskirchen.Edubot
             List<AdapterType> allTypes = new List<AdapterType>();
             foreach (AdapterType type in (Enum.GetValues(typeof(AdapterType)).AsQueryable()))
                 allTypes.Add(type);
-            lbAvailableAdapters.ItemsSource = allTypes.Except(edubot.RegisteredAdapters.Keys);
+            //lbAvailableAdapters.ItemsSource = allTypes.Except(edubot.RegisteredAdapters.Keys);
+            cbVisualizedAdapter.ItemsSource = edubot.RegisteredAdapters.Keys;
+            //cbVisualizedAdapter.Items.Add(AdapterType.KEBA);
         }
+
+        #endregion
 
         private void ShowEventArgsInfo(object sender, EventArgs e) {
             Console.WriteLine("--------------------------");
@@ -233,6 +222,34 @@ namespace HTL.Grieskirchen.Edubot
             Console.WriteLine("--------------------------");
             
            
+        }
+
+        #region -----------------------------Toolbar Commands-----------------------------
+
+        public bool UndoPossible
+        {
+            get
+            {
+                switch (tcNavigation.SelectedIndex)
+                {
+                    case 0: return tbCodeArea.CanUndo;
+                    case 1: return icDrawing.CanUndo;
+                    default: return false;
+                }
+            }
+        }
+
+        public bool RedoPossible
+        {
+            get
+            {
+                switch (tcNavigation.SelectedIndex)
+                {
+                    case 0: return tbCodeArea.CanRedo;
+                    case 1: return icDrawing.CanRedo;
+                    default: return false;
+                }
+            }
         }
 
         private void Create(object sender, RoutedEventArgs e)
@@ -360,42 +377,13 @@ namespace HTL.Grieskirchen.Edubot
                     edubot.Execute(new ShutdownCommand());
                     break;
             }
-            
-        }
 
-
-        private void ExtVis_Click(object sender, RoutedEventArgs e)
-        {
-            windowVisualisation.Show();
-        }
-
-        private void tbCodeArea_TextChanged(object sender, TextChangedEventArgs e)
-        {
-          
-            saved = false;
-        }
-
-        private void btRegister_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (lbAvailableAdapters.SelectedItem != null)
-            {
-                AdapterType selected = (AdapterType)lbAvailableAdapters.SelectedItem;
-                switch (selected) {
-                    case AdapterType.DEFAULT: 
-                        Controls.NetworkInputDialog dialog = new Controls.NetworkInputDialog();
-                        dialog.ShowDialog();
-                        if (dialog.DialogResult == true)
-                            edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f,155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
-                        InitializeLists();
-                        break;
-                }
-            }
         }
 
         private void Undo(object sender, RoutedEventArgs e)
         {
-            switch (tcNavigation.SelectedIndex) {
+            switch (tcNavigation.SelectedIndex)
+            {
                 case 0:
                     tbCodeArea.Undo();
                     break;
@@ -416,6 +404,19 @@ namespace HTL.Grieskirchen.Edubot
                     icDrawing.Redo();
                     break;
             }
+        }
+
+        #endregion
+
+        private void ExtVis_Click(object sender, RoutedEventArgs e)
+        {
+            windowVisualisation.Show();
+        }
+
+        private void tbCodeArea_TextChanged(object sender, TextChangedEventArgs e)
+        {
+          
+            saved = false;
         }
 
         private void ChangeTool(object sender, RoutedEventArgs e) {
@@ -447,6 +448,8 @@ namespace HTL.Grieskirchen.Edubot
                     break;
             }
         }
+
+        #region -----------------------------Autocomplete-----------------------------
 
         private void ClosePopup(object sender, EventArgs e) {
             puAutocomplete.IsOpen = false;
@@ -516,8 +519,98 @@ namespace HTL.Grieskirchen.Edubot
                 e.Handled = true;
             }
         }
-        
+
+        #endregion
+
+        #region -----------------------------Settings Tab-----------------------------
+
+        #region -----------------------------Adapter-----------------------------
+        private void btRegister_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (lbAvailableAdapters.SelectedItem != null)
+            {
+                AdapterType selected = (AdapterType)lbAvailableAdapters.SelectedItem;
+                switch (selected)
+                {
+                    case AdapterType.DEFAULT:
+                        Controls.NetworkInputDialog dialog = new Controls.NetworkInputDialog();
+                        dialog.ShowDialog();
+                        if (dialog.DialogResult == true)
+                            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f, 155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
+                        InitializeLists();
+                        break;
+                }
+            }
+        }
+        #endregion
+
+        #region -----------------------------Visualization-----------------------------
+
+        private void ReplaceVisualisationAdapter(VirtualAdapter newAdapter)
+        {
+            //visualisation2D.VisualisationAdapter = newAdapter;
+            //visualisation3D.VisualisationAdapter = newAdapter;
+        }
+
+        private void ReplaceVisualisationAdapterWithLongest()
+        {
+            if (edubot != null && edubot.RegisteredAdapters.Count > 0)
+            {
+                IAdapter longestAdapter = GetLongestAdapter();
+                ReplaceVisualisationAdapter(new VirtualAdapter(new VirtualTool(), longestAdapter.Length, longestAdapter.Length2));
+            }
+        }
+
+        private IAdapter GetLongestAdapter() {
+            return (from adapter in edubot.RegisteredAdapters.Values
+                    where adapter.Length + adapter.Length2 == edubot.RegisteredAdapters.Values.Max(x => x.Length + x.Length2)
+                    select adapter).FirstOrDefault();
+        }
 
         
+
+        private void rbUseLongestAdapter_Checked(object sender, RoutedEventArgs e)
+        {
+            ReplaceVisualisationAdapterWithLongest();
+        
+        }
+
+        private void rbUseSpecificAdapter_Checked(object sender, RoutedEventArgs e)
+        {
+            if (edubot != null && edubot.RegisteredAdapters.Count > 0 && cbVisualizedAdapter.SelectedItem != null)
+            {
+                IAdapter selectedAdapter = null;
+                //edubot.RegisteredAdapters.TryGetValue((AdapterType)cbVisualizedAdapter.SelectedItem, out selectedAdapter);
+                if (selectedAdapter != null)
+                {
+                    ReplaceVisualisationAdapter( new VirtualAdapter(new VirtualTool(), selectedAdapter.Length, selectedAdapter.Length2));
+                }
+            }
+        }
+
+        private void cbVisualizedAdapter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (edubot != null && edubot.RegisteredAdapters.Count > 0 && cbVisualizedAdapter.SelectedItem != null)
+            {
+                IAdapter selectedAdapter = null;
+                //edubot.RegisteredAdapters.TryGetValue((AdapterType)cbVisualizedAdapter.SelectedItem, out selectedAdapter);
+                if (selectedAdapter != null)
+                {
+                    ReplaceVisualisationAdapter(new VirtualAdapter(new VirtualTool(), selectedAdapter.Length, selectedAdapter.Length2));
+                }
+            }
+        }
+
+        #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AdapterSetup setup = new AdapterSetup();
+            setup.ShowDialog();
+        }
+
+        #endregion
+
     }
 }

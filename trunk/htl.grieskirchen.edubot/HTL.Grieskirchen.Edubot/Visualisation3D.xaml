@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="264" d:DesignWidth="388">
+             d:DesignHeight="600" d:DesignWidth="600">
     <Grid>
-             <Viewport3D ClipToBounds="True" Margin="0,0,0,0">
+        <Viewport3D ClipToBounds="True" Margin="0,0,0,0" Name="vpVisualization">
             <Viewport3D.Camera>
-                <PerspectiveCamera FieldOfView="45" FarPlaneDistance="100" LookDirection="-6,-6,-2" NearPlaneDistance="0.1" Position="10,11,0.2" UpDirection="0,1,0"/>
+                <PerspectiveCamera FieldOfView="60" FarPlaneDistance="100" LookDirection="-6,-6,-2" NearPlaneDistance="0.1" Position="10,11,3.2" UpDirection="0,1,0"/>
+
+                <!--<PerspectiveCamera FieldOfView="100" FarPlaneDistance="100" LookDirection="-6,-6,-2" NearPlaneDistance="0.1" Position="10,12,2" UpDirection="0,1,0"/>-->
             </Viewport3D.Camera>
             <ModelVisual3D x:Name="World">
                 <ModelVisual3D x:Name="AmbientLightContainer">
