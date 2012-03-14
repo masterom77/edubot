@@ -18,6 +18,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint receiverEndpoint;
         Thread stateListener;
 
+        public KebaAdapter()
+            : base()
+        {
+            type = AdapterType.KEBA;
+            state = State.SHUTDOWN;
+            requiresPrecalculation = true;
+            //Connect();
+        }
+
         public KebaAdapter(ITool tool, float length, float length2, IPAddress ipAdress, int port)
             : base(tool, length, length2)
         {
@@ -32,6 +41,25 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
             requiresPrecalculation = false;
             Connect();
+        }
+
+        public void SetNetworkConfiguration(IPAddress ipAddress, int port)
+        {
+            if (receiverSocket.Connected)
+            {
+                listener.Stop();
+                receiverSocket.Disconnect(false);
+            }
+            if (senderSocket.Connected)
+            {
+                senderSocket.Disconnect(false);
+            }
+
+            senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            senderEndpoint = new IPEndPoint(ipAddress, port);
+            receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            receiverEndpoint = new IPEndPoint(ipAddress, port+1);
+            listener = new NetworkStateListener(this, receiverSocket);
         }
 
         public void Connect()

@@ -20,7 +20,7 @@ namespace HTL.Grieskirchen.Edubot.API
 
             //InitAxis();
             //interpolation = new LinearInterpolation();
-            registeredAdapters = new Dictionary<AdapterType, IAdapter>();
+            registeredAdapters = new Dictionary<string, IAdapter>();
             state = State.SHUTDOWN;
             //tool = new VirtualTool();
             //tool.X = 300;
@@ -61,9 +61,9 @@ namespace HTL.Grieskirchen.Edubot.API
 
         }
 
-        Dictionary<AdapterType, IAdapter> registeredAdapters;
+        Dictionary<string, IAdapter> registeredAdapters;
 
-        public Dictionary<AdapterType, IAdapter> RegisteredAdapters
+        public Dictionary<string, IAdapter> RegisteredAdapters
         {
             get { return registeredAdapters; }
         }
@@ -233,7 +233,7 @@ namespace HTL.Grieskirchen.Edubot.API
         #region ------------------Public Methods-------------------
 
         public void Execute(ICommand cmd) {
-            foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
+            foreach (KeyValuePair<string, IAdapter> entry in registeredAdapters)
             {
                 IAdapter currentAdapter = entry.Value;
                 currentAdapter.Execute(cmd);
@@ -415,18 +415,18 @@ namespace HTL.Grieskirchen.Edubot.API
         //    registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
         //}
 
-        public void RegisterAdapter(IAdapter adapter)
+        public void RegisterAdapter(string name, IAdapter adapter)
         {
             if (registeredAdapters.ContainsValue(adapter))
                 throw new AdapterException(adapter.Type, "Der Adapter ist bereits registriert: \"" + adapter.GetType().Name + "\"");
 
-            registeredAdapters.Add(adapter.Type, adapter);
+            registeredAdapters.Add(name, adapter);
         }
 
-        public void DeregisterAdapter(IAdapter adapter)
+        public void DeregisterAdapter(string name)
         {
-            if (!registeredAdapters.Remove(adapter.Type))
-                throw new AdapterException(adapter.Type, "Der Adapter ist nicht registriert: \"" + adapter.ToString() + "\"");
+            if (!registeredAdapters.Remove(name))
+                throw new AdapterException(AdapterType.VIRTUAL, "Der Adapter ist nicht registriert: \"" + name + "\"");
         }
 
         #endregion

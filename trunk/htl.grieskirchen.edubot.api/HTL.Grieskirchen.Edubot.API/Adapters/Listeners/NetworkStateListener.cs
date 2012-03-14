@@ -71,8 +71,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
 
         public override void Stop()
         {
-            //stateListener.Abort();
-            //stateListener = null;
+            stateListener.Abort();
+            stateListener = null;
         }
     }
 }

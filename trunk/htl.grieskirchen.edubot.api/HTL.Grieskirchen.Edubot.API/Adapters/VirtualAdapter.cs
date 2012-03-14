@@ -11,6 +11,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         InterpolationResult result;
 
+        public VirtualAdapter()
+            : base()
+        {
+            type = AdapterType.VIRTUAL;
+            requiresPrecalculation = true;
+            listener = new VirtualStateListener();
+            //Connect();
+        }
+
         public VirtualAdapter(ITool tool, float length, float length2) : base(tool, length, length2)
         {
             this.tool = tool;
