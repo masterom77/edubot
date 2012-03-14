@@ -20,6 +20,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint endpoint;
         InterpolationResult result;
 
+        public DefaultAdapter()
+            : base()
+        {
+            type = AdapterType.DEFAULT;
+            requiresPrecalculation = true;
+            //Connect();
+        }
+
         /// <summary>
         /// Initializes a new instance of the DefaultAdapter class.
         /// </summary>
@@ -33,11 +41,20 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             type = AdapterType.DEFAULT;
             requiresPrecalculation = true;
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            endpoint = new IPEndPoint(ipAdress, port);
-            listener = new NetworkStateListener(this, socket);
-            
+            SetNetworkConfiguration(ipAdress, port);
             //Connect();
+        }
+
+        public void SetNetworkConfiguration(IPAddress ipAddress, int port)
+        {
+            if (socket.Connected)
+            {
+                listener.Stop();
+                socket.Disconnect(false);
+            }
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            endpoint = new IPEndPoint(ipAddress, port);
+            listener = new NetworkStateListener(this, socket);
         }
 
         /// <summary>

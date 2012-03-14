@@ -26,7 +26,7 @@ namespace EduBot
             Edubot edubot = Edubot.GetInstance();
             Kinematics.DisplayResults = true;
             VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
-            edubot.RegisterAdapter(adapter);
+            edubot.RegisterAdapter("virtual",adapter);
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("127.0.0.1"), 12000));
