@@ -19,8 +19,14 @@ namespace HTL.Grieskirchen.Edubot.Controls
     /// </summary>
     public partial class NetworkInputDialog : Window
     {
+        public static readonly DependencyProperty NameProperty =
+      DependencyProperty.Register("Name", typeof(string), typeof(NetworkInputDialog));
+        
         public static readonly DependencyProperty LengthProperty =
       DependencyProperty.Register("Length", typeof(string), typeof(NetworkInputDialog));
+        
+        public static readonly DependencyProperty Length2Property =
+      DependencyProperty.Register("Length2", typeof(string), typeof(NetworkInputDialog));
 
         public static readonly DependencyProperty IPAddressProperty =
       DependencyProperty.Register("IPAddress", typeof(string), typeof(NetworkInputDialog));
@@ -28,13 +34,20 @@ namespace HTL.Grieskirchen.Edubot.Controls
         public static readonly DependencyProperty PortProperty =
       DependencyProperty.Register("Port", typeof(string), typeof(NetworkInputDialog));
 
+        public string Name
+        {
+            get { return (string)GetValue(NameProperty); }
+            set
+            {
+                SetValue(NameProperty, value);
+            }
+        }
+
         public string IpAdress
         {
             get { return (string) GetValue(IPAddressProperty) ; }
             set
-            {
-                BindingExpression b;
-                
+            {                
                 SetValue(IPAddressProperty, value);
             }
         }
@@ -57,15 +70,26 @@ namespace HTL.Grieskirchen.Edubot.Controls
             }
         }
 
+        public string Length2
+        {
+            get { return (string)GetValue(Length2Property); }
+            set
+            {
+                SetValue(Length2Property, value);
+            }
+        }
+
         public NetworkInputDialog()
         {
             InitializeComponent();
             
             //DataContext = this;
             //tbPort.DataContext = this;
+            tbName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             tbIpAdress.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             tbPort.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             tbLength.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            tbLength2.GetBindingExpression(TextBox.TextProperty).UpdateSource();
           
             //btApply.GetBindingExpression(Button.IsEnabledProperty).UpdateSource();
         }
