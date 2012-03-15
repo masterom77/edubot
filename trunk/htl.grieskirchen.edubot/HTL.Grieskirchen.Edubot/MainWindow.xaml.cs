@@ -26,6 +26,7 @@ using HTL.Grieskirchen.Edubot.API.Commands;
 using HTL.Grieskirchen.Edubot.Controls;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.Controls.Adapter;
+using HTL.Grieskirchen.Edubot.Settings;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -40,8 +41,10 @@ namespace HTL.Grieskirchen.Edubot
         bool running;
         VisualisationExternal windowVisualisation;
         API.Edubot edubot;
-        List<IAdapter> registeredAdapters;
+        //List<IAdapter> registeredAdapters;
         List<string> commands;
+        Settings.Settings settings;
+
 
         static MainWindow()
         {
@@ -58,6 +61,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeEdubot();
             InitializeEnvironmentVariables();
             InitializeLists();
+            LoadSettings();
             Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
             VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
@@ -70,12 +74,14 @@ namespace HTL.Grieskirchen.Edubot
             ReplaceVisualisationAdapterWithLongest();
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
+            puAutocomplete.KeyDown += AppendText;
 
             puAutocomplete.Visibility = Visibility.Visible;
             puAutocomplete.KeyDown += AppendText;
-
+            
             //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
+
 
         #region -----------------------------Static Properties-----------------------------
 
@@ -147,7 +153,28 @@ namespace HTL.Grieskirchen.Edubot
                 allTypes.Add(type);
             //lbAvailableAdapters.ItemsSource = allTypes.Except(edubot.RegisteredAdapters.Keys);
             cbVisualizedAdapter.ItemsSource = edubot.RegisteredAdapters.Keys;
+            cbDASelectedTool.ItemsSource = new List<string>() { "Virtuell" };
             //cbVisualizedAdapter.Items.Add(AdapterType.KEBA);
+        }
+
+        public void LoadSettings()
+        {
+            this.settings = Settings.Settings.Load();
+            if (settings == null)
+                settings = new Settings.Settings();
+
+            tiDASettings.DataContext = settings.DefaultConfig;
+            //tbDALength.SetBinding(TextBox.TextProperty, "DefaultConfig.Length");
+            //tiDASettings.DataContext = settings.DefaultConfig;
+            //ActualizeDefaultSettings();
+        }
+
+
+        public void ActualizeDefaultSettings() {
+            tbDALength.Text = settings.DefaultConfig.Length.ToString();
+            tbDALength2.Text = settings.DefaultConfig.Length2.ToString();
+            tbDAIpAddress.Text = settings.DefaultConfig.IpAddress;
+            tbDAPort.Text = settings.DefaultConfig.Port.ToString();
         }
 
         #endregion
@@ -524,7 +551,13 @@ namespace HTL.Grieskirchen.Edubot
 
         #region -----------------------------Settings Tab-----------------------------
 
-        #region -----------------------------Adapter-----------------------------
+        #region -----------------------------Default Adapter-----------------------------
+
+        #region ---------------Properties---------------
+
+        
+
+        #endregion
         private void btRegister_Click(object sender, RoutedEventArgs e)
         {
 
@@ -538,7 +571,7 @@ namespace HTL.Grieskirchen.Edubot
                         dialog.ShowDialog();
                         if (dialog.DialogResult == true)
                             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f, 155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
-                        InitializeLists();
+                            InitializeLists();
                         break;
                 }
             }
