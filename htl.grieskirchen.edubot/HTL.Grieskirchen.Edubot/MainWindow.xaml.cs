@@ -147,13 +147,14 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         public void InitializeLists() {
-            lbRegisteredAdapters.ItemsSource = edubot.RegisteredAdapters.Keys;
+            //lbRegisteredAdapters.ItemsSource = edubot.RegisteredAdapters.Keys;
             List<AdapterType> allTypes = new List<AdapterType>();
             foreach (AdapterType type in (Enum.GetValues(typeof(AdapterType)).AsQueryable()))
                 allTypes.Add(type);
             //lbAvailableAdapters.ItemsSource = allTypes.Except(edubot.RegisteredAdapters.Keys);
             cbVisualizedAdapter.ItemsSource = edubot.RegisteredAdapters.Keys;
             cbDASelectedTool.ItemsSource = new List<string>() { "Virtuell" };
+            cbKESelectedTool.ItemsSource = new List<string>() { "Virtuell" };
             //cbVisualizedAdapter.Items.Add(AdapterType.KEBA);
         }
 
@@ -162,12 +163,24 @@ namespace HTL.Grieskirchen.Edubot
             this.settings = Settings.Settings.Load();
             if (settings == null)
                 settings = new Settings.Settings();
-
+            if(settings.DefaultConfig.AutoConnect){
+                settings.DefaultConfig.ApplyTo(edubot);
+            }
+            if (settings.KebaConfig.AutoConnect) {
+                settings.KebaConfig.ApplyTo(edubot);
+            }
+            
             tiDASettings.DataContext = settings.DefaultConfig;
+            tiKESettings.DataContext = settings.KebaConfig;
+            tiVisualization.DataContext = settings.VisualizationConfig;
+            vb2DVisualisation.DataContext = settings.VisualizationConfig;
+            vb3DVisualisation.DataContext = settings.VisualizationConfig;
             //tbDALength.SetBinding(TextBox.TextProperty, "DefaultConfig.Length");
             //tiDASettings.DataContext = settings.DefaultConfig;
             //ActualizeDefaultSettings();
         }
+
+       
 
 
         public void ActualizeDefaultSettings() {
@@ -561,20 +574,20 @@ namespace HTL.Grieskirchen.Edubot
         private void btRegister_Click(object sender, RoutedEventArgs e)
         {
 
-            if (lbAvailableAdapters.SelectedItem != null)
-            {
-                AdapterType selected = (AdapterType)lbAvailableAdapters.SelectedItem;
-                switch (selected)
-                {
-                    case AdapterType.DEFAULT:
-                        Controls.NetworkInputDialog dialog = new Controls.NetworkInputDialog();
-                        dialog.ShowDialog();
-                        if (dialog.DialogResult == true)
-                            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f, 155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
-                            InitializeLists();
-                        break;
-                }
-            }
+            //if (lbAvailableAdapters.SelectedItem != null)
+            //{
+            //    AdapterType selected = (AdapterType)lbAvailableAdapters.SelectedItem;
+            //    switch (selected)
+            //    {
+            //        case AdapterType.DEFAULT:
+            //            Controls.NetworkInputDialog dialog = new Controls.NetworkInputDialog();
+            //            dialog.ShowDialog();
+            //            if (dialog.DialogResult == true)
+            //                //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 155f, 155f, IPAddress.Parse(dialog.IpAdress), int.Parse(dialog.Port)));
+            //                InitializeLists();
+            //            break;
+            //    }
+            //}
         }
         #endregion
 
@@ -644,6 +657,12 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         #endregion
+
+        private void btDASaveSettings_Click(object sender, RoutedEventArgs e)
+        {            
+            settings.DefaultConfig.ApplyTo(edubot);
+            Settings.Settings.Save(settings);
+        }
 
     }
 }

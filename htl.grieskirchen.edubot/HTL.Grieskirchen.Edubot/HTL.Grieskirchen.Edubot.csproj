@@ -93,9 +93,11 @@
     <Compile Include="Controls\NetworkInputDialog.xaml.cs">
       <DependentUpon>NetworkInputDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\KebaAdapterConfig.cs" />
     <Compile Include="Settings\DefaultAdapterConfig.cs" />
     <Compile Include="Settings\IConfiguration.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\VisualizationConfig.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="Visualisation2D.xaml.cs">
       <DependentUpon>Visualisation2D.xaml</DependentUpon>

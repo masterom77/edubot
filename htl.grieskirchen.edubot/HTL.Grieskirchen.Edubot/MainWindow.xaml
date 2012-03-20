@@ -171,175 +171,14 @@
             </TabItem>
             <TabItem Header="Einstellungen" Name="tiSettings">
                 <TabControl TabStripPlacement="Left">
-                    <TabItem Header="Adapter" Height="30">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label>Registriert</Label>
-                            <Label Grid.Column="2">Verfügbar</Label>
-                            <ListBox Grid.Row="1" Margin="5,5,5,5" Name="lbRegisteredAdapters"></ListBox>
-                            <ListBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Name="lbAvailableAdapters"></ListBox>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5,0,5">
-                                <Button Height="25" Name="btRegister" Click="btRegister_Click">Registrieren</Button>
-                                <Button Height="25" Name="btDeregister">Entfernen</Button>
-                            </StackPanel>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Visualisierung" Height="30">
-                        <Grid ShowGridLines="False">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization"></CheckBox>
-                            <Label Grid.Row="1" Content="Visualisierter Adapter:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                            <Grid Margin="5" Grid.Row="1" Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="10"></RowDefinition>
-                                    <RowDefinition Height="6" />
-                                    <RowDefinition Height="26*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <RadioButton VerticalAlignment="Center" Content="Größte Spannweite" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="True" Grid.RowSpan="2" Checked="rbUseLongestAdapter_Checked" Name="rbUseLongestAdapter"></RadioButton>
-                                <RadioButton Grid.Row="2" VerticalAlignment="Center" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Name="rbUseSpecificAdapter" Checked="rbUseSpecificAdapter_Checked">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Folgender" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                        <ComboBox MinWidth="100" Grid.Column="1" Name="cbVisualizedAdapter" IsEditable="False" IsEnabled="{Binding ElementName=rbUseSpecificAdapter, Path=IsChecked}" SelectionChanged="cbVisualizedAdapter_SelectionChanged"></ComboBox>
-                                    </Grid>
-                                </RadioButton>
-                            </Grid>
-                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding ElementName=visualisation2D, Path=ShowGrid}"></CheckBox>
-                            <CheckBox Grid.Row="3" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></CheckBox>
-                            <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                            <Grid Grid.Row="4" Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Slider IsSnapToTickEnabled="True" Name="sldSpeed" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="{Binding ElementName=visualisation2D, Path=MaxSpeed}" Minimum="{Binding ElementName=visualisation2D, Path=MinSpeed}"></Slider>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldSpeed, Path=Value}"></Label>
-                                    <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="%"></Label>
-                                </StackPanel>
-                            </Grid>
-                                <Label Grid.Row="5" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                            <Grid Grid.Row="5" Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Slider IsSnapToTickEnabled="True" Name="sldStepSize" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="{Binding ElementName=visualisation2D, Path=MaxTicks}" Minimum="{Binding ElementName=visualisation2D, Path=MinTicks}"></Slider>
-                                <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldStepSize, Path=Value}"></Label>
-                            </Grid>
-                            </Grid>
-                    </TabItem>
-                    <TabItem Header="Adapter" Height="30">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Content="Registrierte Adapter:"></Label>
-                            <ListBox Grid.Row="1" MinWidth="150"></ListBox>
-                            <Grid Grid.Row="1" Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Border Margin="5" CornerRadius="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" Content="Name:"></Label>
-                                        <Label Grid.Row="0" Grid.Column="1" Margin="5" HorizontalAlignment="Left"></Label>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="Typ:"></Label>
-                                        <Label Grid.Row="1" Grid.Column="1" Margin="5" HorizontalAlignment="Left"></Label>
-                                        <Label Grid.Row="2" Grid.Column="0" Content="Achsenlänge 1:"></Label>
-                                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                            <TextBox Margin="5" Width="75" HorizontalAlignment="Left"></TextBox>
-                                            <Label Content="mm"></Label>
-                                        </StackPanel>
-                                        <Label Grid.Row="3" Grid.Column="0" Content="Achsenlänge 2:"></Label>
-                                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                                            <TextBox Margin="5" Width="75" HorizontalAlignment="Left"></TextBox>
-                                            <Label Content="mm"></Label>
-                                        </StackPanel>
-                                        <Label Grid.Row="4" Grid.Column="0" Content="Werkzeug:"></Label>
-                                        <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left"></ComboBox>
-                                    </Grid>
-                                </Border>
-                                <Border Grid.Row="1" Margin="5" CornerRadius="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                            <RowDefinition Height="30"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" Content="IP-Adresse:"></Label>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="200" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="Port:"></Label>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="50" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Row="2" Grid.Column="0" Content="Status:"></Label>
-                                        <Label Grid.Row="2" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="5"></Label>
-                                    </Grid>
-                                </Border>
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Margin="5,5,2.5,5" Content="Neuen Adapter registrieren" Click="Button_Click"></Button>
-                                    <Button Grid.Column="1" Margin="2.5,5,5,5" Content="Diesen Adapter entfernen"></Button>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Height="30" Header="Edubot" Name="tiDASettings">
+                    <TabItem Height="30" Header="Edubot-Adapter" Name="tiDASettings">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Border Margin="5" CornerRadius="5">
+                            <Border Margin="5" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -381,7 +220,7 @@
 
                                 </Grid>
                             </Border>
-                            <Border Grid.Row="1" Margin="5" CornerRadius="5">
+                            <Border Grid.Row="1" Margin="5" CornerRadius="5" BorderThickness="1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -439,9 +278,204 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Grid.Column="0" Margin="5" Name="btConnect" IsEnabled="{Binding}">Verbindung herstellen</Button>
-                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btDisconnect">Verbindung trennen</Button>
+                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btDASaveSettings" Click="btDASaveSettings_Click">Einstellungen speichern</Button>
                             </Grid>
+                        </Grid>
+
+                    </TabItem>
+
+                    <TabItem Height="30" Header="Keba-Adapter" Name="tiKESettings">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Border Margin="5" CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0">Werkzeug:</Label>
+                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="cbKESelectedTool" SelectedValue="{Binding Tool, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    <Label Grid.Row="1" Grid.Column="0">Achsenlänge 1:</Label>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKELength">
+                                            <TextBox.Text>
+                                                <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <Label>mm</Label>
+                                    </StackPanel>
+                                    <Label Grid.Row="2" Grid.Column="0">Achsenlänge 2:</Label>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKELength2">
+                                            <TextBox.Text>
+                                                <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <Label>mm</Label>
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1" Margin="5" CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0">IP-Adresse:</Label>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbKEIpAddress">
+                                        <TextBox.Text>
+                                            <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <validators:IPAdressValidationRule></validators:IPAdressValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Label Grid.Row="1" Grid.Column="0">Empfänger-Port:</Label>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKEReceiverPort">
+                                        <TextBox.Text>
+                                            <Binding Path="ReceiverPort" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <validators:PortValidationRule></validators:PortValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Label Grid.Row="2" Grid.Column="0">Sender-Port:</Label>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKESenderPort">
+                                        <TextBox.Text>
+                                            <Binding Path="SenderPort" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <validators:PortValidationRule></validators:PortValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Label Grid.Row="3" Grid.Column="0">Status:</Label>
+                                    <Label Grid.Row="3" Grid.Column="1" Name="lbKEIpState" HorizontalAlignment="Left" Content="{Binding ConnectionState}">
+                                        <Label.Style>
+                                            <Style TargetType="{x:Type Label}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Content}" Value="Disconnected">
+                                                        <Setter Property="Foreground" Value="Red"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Content}" Value="Connected">
+                                                        <Setter Property="Foreground" Value="Green"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                    <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="chkKEAutoConnect" IsChecked="{Binding AutoConnect}">Automatisch beim Programmstart verbinden</CheckBox>
+                                </Grid>
+                            </Border>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btKESaveSettings">Einstellungen speichern</Button>
+                            </Grid>
+                        </Grid>
+
+                    </TabItem>
+                    <TabItem Header="Visualisierung" Height="30" Name="tiVisualization" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Border>
+                                <Grid ShowGridLines="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
+                                    <Label Grid.Row="1" Content="Visualisierter Adapter:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                    <Grid Margin="5" Grid.Row="1" Grid.Column="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="10"></RowDefinition>
+                                            <RowDefinition Height="6" />
+                                            <RowDefinition Height="26*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <RadioButton VerticalAlignment="Center" Content="Größte Spannweite" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=UseLongest}" Grid.RowSpan="2" Checked="rbUseLongestAdapter_Checked" Name="rbUseLongestAdapter"></RadioButton>
+                                        <RadioButton Grid.Row="2" VerticalAlignment="Center" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Name="rbUseSpecificAdapter" IsChecked="{Binding Path=UseFollowing}" Checked="rbUseSpecificAdapter_Checked">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Content="Folgender" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                                <ComboBox MinWidth="100" Grid.Column="1" Name="cbVisualizedAdapter" IsEditable="False" IsEnabled="{Binding ElementName=rbUseSpecificAdapter, Path=IsChecked}" SelectionChanged="cbVisualizedAdapter_SelectionChanged"></ComboBox>
+                                            </Grid>
+                                        </RadioButton>
+                                    </Grid>
+                                    <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
+                                    <CheckBox Grid.Row="3" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
+                                    <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                    <Grid Grid.Row="4" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="50"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Slider IsSnapToTickEnabled="True" Name="sldSpeed" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="{Binding ElementName=visualisation2D, Path=MaxSpeed}" Minimum="{Binding ElementName=visualisation2D, Path=MinSpeed}" Value="{Binding Path=Speed}"></Slider>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldSpeed, Path=Value}"></Label>
+                                            <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="%"></Label>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Label Grid.Row="5" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                    <Grid Grid.Row="5" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="50"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Slider IsSnapToTickEnabled="True" Name="sldStepSize" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="{Binding ElementName=visualisation2D, Path=MaxTicks}" Minimum="{Binding ElementName=visualisation2D, Path=MinTicks}" Value="{Binding Path=Steps}"></Slider>
+                                        <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldStepSize, Path=Value}"></Label>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1">
+
+                            </Border>
                         </Grid>
                         
                     </TabItem>
@@ -456,7 +490,7 @@
         </Viewbox>
             <!--<Button Content="Visualisierung in eigenem Fenster anzeigen" Grid.Column="1" Grid.Row="1" Height="33" HorizontalAlignment="Left" Margin="4,97,0,0" Name="ExtVis" VerticalAlignment="Top" Width="157" Click="ExtVis_Click" />-->
         <Viewbox Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb2DVisualisation" Stretch="Uniform">
-            <my:Visualisation2D HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="600" Width="600" ShowAnimation="{Binding ElementName=cbEnableVisualization, Path=IsChecked, Mode=TwoWay}" ShowGrid="{Binding ElementName=cbShowGrid, Path=IsChecked}" ShowLabels="{Binding ElementName=cbShowLabels, Path=IsChecked}" Ticks="{Binding ElementName=sldStepSize, Path=Value}" Speed="{Binding ElementName=sldSpeed, Path=Value}"/>
+            <my:Visualisation2D HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="600" Width="600" ShowAnimation="{Binding Path=VisualizationEnabled}" ShowGrid="{Binding Path=ShowGrid}" ShowLabels="{Binding Path=ShowLabels}" Ticks="{Binding Path=Steps}" Speed="{Binding Path=Speed}"/>
         </Viewbox>
         <!--<my:Visualisation2D Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="Auto" Width="Auto" />-->
     </Grid>
