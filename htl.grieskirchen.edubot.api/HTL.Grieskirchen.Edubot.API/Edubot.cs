@@ -415,18 +415,20 @@ namespace HTL.Grieskirchen.Edubot.API
         //    registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
         //}
 
-        public void RegisterAdapter(string name, IAdapter adapter)
+        public bool RegisterAdapter(string name, IAdapter adapter)
         {
             if (registeredAdapters.ContainsValue(adapter))
-                throw new AdapterException(adapter.Type, "Der Adapter ist bereits registriert: \"" + adapter.GetType().Name + "\"");
+                return false;
 
             registeredAdapters.Add(name, adapter);
+            return true;
         }
 
-        public void DeregisterAdapter(string name)
+        public bool DeregisterAdapter(string name)
         {
             if (!registeredAdapters.Remove(name))
-                throw new AdapterException(AdapterType.VIRTUAL, "Der Adapter ist nicht registriert: \"" + name + "\"");
+                return false;
+            return true;
         }
 
         #endregion
