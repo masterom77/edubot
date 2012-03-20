@@ -47,10 +47,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public void SetNetworkConfiguration(IPAddress ipAddress, int port)
         {
-            if (socket.Connected)
+            if (socket != null)
             {
-                listener.Stop();
-                socket.Disconnect(false);
+                if (socket.Connected)
+                {
+                    listener.Stop();
+                    socket.Disconnect(false);
+                }
             }
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             endpoint = new IPEndPoint(ipAddress, port);
@@ -80,7 +83,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public void Disconnect()
         {
-            //listener.Stop();
+            listener.Stop();
             socket.Disconnect(true);
         }
 
@@ -137,7 +140,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             
             socket.Send(Encoding.UTF8.GetBytes("shutdown"));
-            //Disconnect();
+            Disconnect();
         }
 
         public override void SetInterpolationResult(Interpolation.InterpolationResult result)

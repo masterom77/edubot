@@ -27,17 +27,17 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //Connect();
         }
 
-        public KebaAdapter(ITool tool, float length, float length2, IPAddress ipAdress, int port)
+        public KebaAdapter(ITool tool, float length, float length2, IPAddress ipAdress, int senderPort, int receiverPort)
             : base(tool, length, length2)
         {
             type = AdapterType.KEBA;
             state = State.DISCONNECTED;
 
             senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            senderEndpoint = new IPEndPoint(ipAdress, port);
+            senderEndpoint = new IPEndPoint(ipAdress, senderPort);
 
             receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            receiverEndpoint = new IPEndPoint(ipAdress, port + 1);
+            receiverEndpoint = new IPEndPoint(ipAdress, receiverPort);
 
             requiresPrecalculation = false;
             Connect();
