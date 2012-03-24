@@ -29,8 +29,9 @@ namespace EduBot
             edubot.RegisterAdapter("virtual",adapter);
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
-            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("127.0.0.1"), 12000));
-           
+            //DefaultAdapter a = new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
+            //edubot.RegisterAdapter("default",a);
+            //bool conTest = a.TestConnectivity();
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
             commands.Add(new MVSCommand(new Point3D(100, 0, 0)));
