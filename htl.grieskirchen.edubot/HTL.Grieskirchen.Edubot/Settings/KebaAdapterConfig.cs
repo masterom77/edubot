@@ -7,6 +7,7 @@ using HTL.Grieskirchen.Edubot.API;
 
 namespace HTL.Grieskirchen.Edubot.Settings
 {
+    [Serializable]
     public class KebaAdapterConfig : IConfiguration
     {
         public const string NAME = "Keba";
@@ -72,12 +73,13 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
-        public override void ApplyTo(API.Edubot edubot)
+        public override void Apply()
         {
+            API.Edubot edubot = API.Edubot.GetInstance();
             edubot.DeregisterAdapter(NAME);
 
             ITool realTool = null;
-            switch (tool)
+            switch (selectedTool)
             {
                 case "Virtuell": realTool = new VirtualTool();
                     break;

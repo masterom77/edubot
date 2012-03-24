@@ -9,13 +9,13 @@ namespace HTL.Grieskirchen.Edubot.Settings
 {
     public abstract class IConfiguration : INotifyPropertyChanged
     {
-        protected string tool;
+        protected string selectedTool;
 
-        public string Tool
+        public string SelectedTool
         {
-            get { return tool; }
-            set { tool = value;
-            NotifyPropertyChanged("Tool");
+            get { return selectedTool; }
+            set { selectedTool = value;
+            NotifyPropertyChanged("SelectedTool");
             }
         }
 
@@ -43,6 +43,12 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
+        protected Dictionary<String, ITool> availableTools;
+
+        public List<String> AvailableTools {
+            get { return availableTools.Keys.ToList(); }
+        }
+
         protected void NotifyPropertyChanged(String property)
         {
             if (PropertyChanged != null)
@@ -53,6 +59,6 @@ namespace HTL.Grieskirchen.Edubot.Settings
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public abstract void ApplyTo(API.Edubot edubot);
+        public abstract void Apply();
     }
 }

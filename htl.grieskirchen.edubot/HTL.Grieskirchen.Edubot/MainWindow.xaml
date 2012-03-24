@@ -190,10 +190,10 @@
                                         <RowDefinition Height="30"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0" Grid.Column="0">Werkzeug:</Label>
-                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="cbDASelectedTool" SelectedValue="{Binding Tool, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="cbDASelectedTool" SelectedValue="{Binding Tool, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FieldsEnabled}"></ComboBox>
                                     <Label Grid.Row="1" Grid.Column="0">Achsenlänge 1:</Label>
                                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength">
+                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength" IsEnabled="{Binding FieldsEnabled}">
                                             <TextBox.Text>
                                                 <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -206,7 +206,7 @@
                                     </StackPanel>
                                     <Label Grid.Row="2" Grid.Column="0">Achsenlänge 2:</Label>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength2">
+                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength2" IsEnabled="{Binding FieldsEnabled}">
                                             <TextBox.Text>
                                                 <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -233,7 +233,7 @@
                                         <RowDefinition Height="30"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0" Grid.Column="0">IP-Adresse:</Label>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbDAIpAddress">
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbDAIpAddress" IsEnabled="{Binding FieldsEnabled}">
                                         <TextBox.Text>
                                             <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -243,7 +243,7 @@
                                         </TextBox.Text>
                                     </TextBox>
                                     <Label Grid.Row="1" Grid.Column="0">Port:</Label>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDAPort">
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDAPort" IsEnabled="{Binding FieldsEnabled}">
                                         <TextBox.Text>
                                             <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -257,17 +257,17 @@
                                         <Label.Style>
                                             <Style TargetType="{x:Type Label}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Content}" Value="Disconnected">
+                                                    <DataTrigger Binding="{Binding ConnectionState}" Value="Nicht verbunden">
                                                         <Setter Property="Foreground" Value="Red"></Setter>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Content}" Value="Connected">
+                                                    <DataTrigger Binding="{Binding ConnectionState}" Value="Verbunden">
                                                         <Setter Property="Foreground" Value="Green"></Setter>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Label.Style>
                                     </Label>
-                                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="chkDAAutoConnect" IsChecked="{Binding AutoConnect}">Automatisch beim Programmstart verbinden</CheckBox>
+                                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="chkDAAutoConnect" IsChecked="{Binding AutoConnect}" IsEnabled="{Binding FieldsEnabled}">Automatisch beim Programmstart verbinden</CheckBox>
                                 </Grid>
                             </Border>
                             <Grid Grid.Row="2">
@@ -413,7 +413,7 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Border>
+                            <Border BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
                                 <Grid ShowGridLines="False">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -421,11 +421,6 @@
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
                                         <RowDefinition Height="Auto"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
@@ -448,10 +443,26 @@
                                             </Grid>
                                         </RadioButton>
                                     </Grid>
-                                    <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
-                                    <CheckBox Grid.Row="3" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
-                                    <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <Grid Grid.Row="4" Grid.Column="1">
+                                    
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Grid.Row="0" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
+                                    <Label Grid.Row="2" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                    <Grid Grid.Row="2" Grid.Column="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition></ColumnDefinition>
                                             <ColumnDefinition Width="50"></ColumnDefinition>
@@ -462,8 +473,8 @@
                                             <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="%"></Label>
                                         </StackPanel>
                                     </Grid>
-                                    <Label Grid.Row="5" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <Grid Grid.Row="5" Grid.Column="1">
+                                    <Label Grid.Row="4" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                    <Grid Grid.Row="4" Grid.Column="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition></ColumnDefinition>
                                             <ColumnDefinition Width="50"></ColumnDefinition>
@@ -472,9 +483,6 @@
                                         <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldStepSize, Path=Value}"></Label>
                                     </Grid>
                                 </Grid>
-                            </Border>
-                            <Border Grid.Row="1">
-
                             </Border>
                         </Grid>
                         
