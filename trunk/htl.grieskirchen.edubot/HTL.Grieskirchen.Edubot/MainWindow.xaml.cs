@@ -27,6 +27,7 @@ using HTL.Grieskirchen.Edubot.Controls;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.Controls.Adapter;
 using HTL.Grieskirchen.Edubot.Settings;
+using System.ComponentModel;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -78,7 +79,7 @@ namespace HTL.Grieskirchen.Edubot
 
             puAutocomplete.Visibility = Visibility.Visible;
             puAutocomplete.KeyDown += AppendText;
-            
+            settings.VisualizationConfig.PropertyChanged += ReplaceVisualisationAdapters;
             //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
@@ -164,12 +165,14 @@ namespace HTL.Grieskirchen.Edubot
             if (settings == null)
                 settings = new Settings.Settings();
             if(settings.DefaultConfig.AutoConnect){
-                settings.DefaultConfig.ApplyTo(edubot);
+                settings.DefaultConfig.Apply();
             }
             if (settings.KebaConfig.AutoConnect) {
-                settings.KebaConfig.ApplyTo(edubot);
+                settings.KebaConfig.Apply();
             }
-            
+            if (settings.VisualizationConfig.VisualizationEnabled) {
+                settings.VisualizationConfig.Apply();
+            }
             tiDASettings.DataContext = settings.DefaultConfig;
             tiKESettings.DataContext = settings.KebaConfig;
             tiVisualization.DataContext = settings.VisualizationConfig;
@@ -659,10 +662,28 @@ namespace HTL.Grieskirchen.Edubot
         #endregion
 
         private void btDASaveSettings_Click(object sender, RoutedEventArgs e)
-        {            
-            settings.DefaultConfig.ApplyTo(edubot);
+        {
+            try
+            {
+                settings.DefaultConfig.Apply();
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
             Settings.Settings.Save(settings);
         }
+
+        private void ReplaceVisualisationAdapters(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName == "VisualizedAdapter") {
+                VirtualAdapter adapter = settings.VisualizationConfig.GetVisualizedAdapter();
+                adapter.OnMovementStarted += ShowEventArgsInfo;
+                visualisation2D.VisualisationAdapter = adapter;
+                adapter = settings.VisualizationConfig.GetVisualizedAdapter();
+                adapter.OnMovementStarted += ShowEventArgsInfo;
+                visualisation3D.VisualisationAdapter = adapter;
+            }
+        }
+
 
     }
 }

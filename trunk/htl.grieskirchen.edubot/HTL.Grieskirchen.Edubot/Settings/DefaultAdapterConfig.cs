@@ -7,9 +7,15 @@ using HTL.Grieskirchen.Edubot.API;
 
 namespace HTL.Grieskirchen.Edubot.Settings
 {
+    [Serializable]
     public class DefaultAdapterConfig : IConfiguration
     {
         public const string NAME = "Default";
+
+        public DefaultAdapterConfig() {
+            availableTools = new Dictionary<string, ITool>();
+            availableTools.Add("Virtuell", new VirtualTool());
+        }
 
         string ipAddress;
 
@@ -41,30 +47,55 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
+        [NonSerialized]
+        string connectionState = "Nicht verbunden";
+        
         public string ConnectionState
         {
             get
             {
-                IAdapter adapter;
-                string state = "Disconnected";
-                if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter)) {
-                    if (((DefaultAdapter)adapter).TestConnectivity()) {
-                        state = "Connected";
-                    }
-                }                
-                return state;
+                return connectionState;
+            }
+            set {
+                connectionState = value;
+                NotifyPropertyChanged("ConnectionState");
+                NotifyPropertyChanged("FieldsEnabled");
             }
         }
 
-        public override void ApplyTo(API.Edubot edubot)
+        public bool FieldsEnabled {
+            get {
+                return connectionState == "Nicht verbunden" || connectionState == "Verbindung fehlgeschlagen";
+            }
+        }
+
+        private void ActualizeConnectionState() {
+            IAdapter adapter;
+            ConnectionState = "Nicht verbunden";
+            if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter))
+            {
+                ConnectionState = "Verbindung testen...";
+                if (((DefaultAdapter)adapter).TestConnectivity())
+                {
+                    ConnectionState = "Bereit";
+                }
+                else {
+                    ConnectionState = "Verbindung fehlgeschlagen";
+                }
+            }   
+        }
+
+        public override void Apply()
         {
+            API.Edubot edubot = API.Edubot.GetInstance();
             edubot.DeregisterAdapter(NAME);
             ITool realTool = null;
-            switch (tool) {
+            switch (selectedTool) {
                 case "Virtuell": realTool = new VirtualTool();
                     break;
             }
             edubot.RegisterAdapter(NAME, new DefaultAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress),port));
+            new System.Threading.Thread(ActualizeConnectionState).Start();
         }
     }
 }
