@@ -17,8 +17,8 @@ namespace HTL.Grieskirchen.Edubot.Settings
             steps = 10;
             speed = 50;
             edubot = API.Edubot.GetInstance();
-            length = "300";
-            length2 = "300";
+            length = "150";
+            length2 = "150";
             selectedTool = "Virtuell";
             useLongest = true;
             useFollowing = false;
@@ -26,6 +26,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             availableTools = new Dictionary<string, ITool>();
             availableTools.Add("Virtuell", new VirtualTool());
             Apply();
+            //NotifyPropertyChanged("VirtualizedAdapter");
         }
 
         API.Edubot edubot;
@@ -94,6 +95,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             set
             {
                 useLongest = value;
+                useFollowing = !value;
                 NotifyPropertyChanged("UseLongest");
                 if(useLongest)
                 VisualizedAdapter = GetLongestAdapter();
@@ -108,6 +110,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             set
             {
                 useFollowing = value;
+                useLongest = !value;
                 NotifyPropertyChanged("UseFollowing");
                 if (useFollowing)
                 {
