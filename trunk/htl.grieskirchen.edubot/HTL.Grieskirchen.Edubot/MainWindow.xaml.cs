@@ -25,7 +25,6 @@ using System.Windows.Controls.Primitives;
 using HTL.Grieskirchen.Edubot.API.Commands;
 using HTL.Grieskirchen.Edubot.Controls;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
-using HTL.Grieskirchen.Edubot.Controls.Adapter;
 using HTL.Grieskirchen.Edubot.Settings;
 using System.ComponentModel;
 
@@ -65,14 +64,21 @@ namespace HTL.Grieskirchen.Edubot
             LoadSettings();
             Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
-            VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
-            visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
-            visualisation3D.VisualisationAdapter = visualisationAdapter;
-            visualisation2D.VisualisationAdapter = visualisationAdapter;
-            edubot.RegisterAdapter("2d",visualisationAdapter);
+            //VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+            //visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
+            //visualisation3D.VisualisationAdapter = visualisationAdapter;
+            //visualisation2D.VisualisationAdapter = visualisationAdapter;
+            //edubot.RegisterAdapter("2d",visualisationAdapter);
+            IAdapter adapter;
+            edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
+            adapter.OnMovementStarted += ShowEventArgsInfo;
+            visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
+            edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
+            adapter.OnMovementStarted += ShowEventArgsInfo;
+            visualisation3D.VisualisationAdapter = (VirtualAdapter)adapter;
             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 250, 150, IPAddress.Parse("127.0.0.1"), 12000));
             InitializeLists();
-            ReplaceVisualisationAdapterWithLongest();
+//ReplaceVisualisationAdapterWithLongest();
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
             puAutocomplete.KeyDown += AppendText;
@@ -655,8 +661,8 @@ namespace HTL.Grieskirchen.Edubot
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AdapterSetup setup = new AdapterSetup();
-            setup.ShowDialog();
+            //AdapterSetup setup = new AdapterSetup();
+            //setup.ShowDialog();
         }
 
         #endregion
@@ -675,15 +681,16 @@ namespace HTL.Grieskirchen.Edubot
 
         private void ReplaceVisualisationAdapters(object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName == "VisualizedAdapter") {
-                VirtualAdapter adapter = settings.VisualizationConfig.GetVisualizedAdapter();
+                IAdapter adapter;
+                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
                 adapter.OnMovementStarted += ShowEventArgsInfo;
-                visualisation2D.VisualisationAdapter = adapter;
-                adapter = settings.VisualizationConfig.GetVisualizedAdapter();
+                visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
+                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
                 adapter.OnMovementStarted += ShowEventArgsInfo;
-                visualisation3D.VisualisationAdapter = adapter;
+                visualisation3D.VisualisationAdapter = (VirtualAdapter) adapter;
             }
         }
 
-
+      
     }
 }
