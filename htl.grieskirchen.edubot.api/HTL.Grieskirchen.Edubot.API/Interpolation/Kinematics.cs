@@ -108,6 +108,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             lengths.Remove(b);
             float a = lengths.First();
 
+            
             float alpha = MathHelper.ConvertToDegrees(Math.Acos((b * b + c * c - a * a) / (2 * b * c)));
             float beta = MathHelper.ConvertToDegrees(Math.Acos((a * a + c * c - b * b) / (2 * a * c)));
             float gamma = 180 - alpha - beta;
@@ -123,62 +124,195 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float alpha1 = float.NaN;
             float alpha2 = float.NaN;
 
-            if (length >= length2 && length >= r) {
-                 switch (quadrant)
+            if (length == length2)
+            {
+                if (length >= length2 && length >= r)
                 {
-                         //BETA = GAMMA 
+                    switch (quadrant)
+                    {
+                        //BETA = GAMMA 
                         //GAMMA & ALPHA
-                    case 1: alpha1 = helpAngle - beta;
-                        break;
-                    case 2: alpha1 = helpAngle - beta; //180-
-                        break;
-                    case 3: alpha1 = -helpAngle - beta; //180+
-                        break;
-                    case 4: alpha1 = -helpAngle - beta; //360-
-                        break;
+                        case 1: alpha1 = helpAngle - beta;
+                            break;
+                        case 2: alpha1 = helpAngle - beta; //180-
+                            break;
+                        case 3: alpha1 = -helpAngle - beta; //180+
+                            break;
+                        case 4: alpha1 = -helpAngle - beta; //360-
+                            break;
+                    }
+                    alpha2 = 180 - alpha;
+                    if (displayResults)
+                        Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
                 }
-                alpha2 = 180 - alpha;
-                if(displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
-            }
-            if (length2 >= length && length2 >= r)
-            {
-                switch (quadrant)
+                if (length2 >= length && length2 >= r)
                 {
-                    case 1: alpha1 = helpAngle - gamma;
-                        break;
-                    case 2: alpha1 = helpAngle - gamma;
-                        break;
-                    case 3: alpha1 = -helpAngle - gamma;
-                        break;
-                    case 4: alpha1 = -helpAngle - gamma;
-                        break;
+                    switch (quadrant)
+                    {
+                        case 1: alpha1 = helpAngle - gamma;
+                            break;
+                        case 2: alpha1 = helpAngle - gamma;
+                            break;
+                        case 3: alpha1 = -helpAngle - gamma;
+                            break;
+                        case 4: alpha1 = -helpAngle - gamma;
+                            break;
+                    }
+                    alpha2 = 180 - alpha;
+                    if (displayResults)
+                        Console.WriteLine("QDR: " + quadrant + " L2MAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
                 }
-                alpha2 = 180 - alpha;
-                if (displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " L2MAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
-            }
-            else
-            {
-                //ALPHA = BETA
-                //DEFAULT: BETA + GAMMA
-                switch (quadrant)
+                else
                 {
-                    case 1: alpha1 = helpAngle - alpha;
-                        break;
-                    case 2: alpha1 = helpAngle - alpha;
-                        break;
-                    case 3: alpha1 = -helpAngle - alpha;
-                        break;
-                    case 4: alpha1 = -helpAngle - alpha;
-                        break;
+                    //ALPHA = BETA
+                    //DEFAULT: BETA + GAMMA
+                    switch (quadrant)
+                    {
+                        case 1: alpha1 = helpAngle - alpha;
+                            break;
+                        case 2: alpha1 = helpAngle - alpha;
+                            break;
+                        case 3: alpha1 = -helpAngle - alpha;
+                            break;
+                        case 4: alpha1 = -helpAngle - alpha;
+                            break;
+                    }
+                    alpha2 = 180 - gamma;
+                    if (displayResults)
+                        Console.WriteLine("QDR: " + quadrant + " RMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
                 }
-                alpha2 = 180 - gamma;
-                if (displayResults)
-                    Console.WriteLine("QDR: " + quadrant + " RMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
-                return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+            }
+            else {
+                if (length > length2)
+                {
+                    //LMAX
+                    if (c == length && b == r)
+                    {
+                        switch (quadrant)
+                        {
+                            case 1: alpha1 = helpAngle - beta;
+                                break;
+                            case 2: alpha1 = helpAngle - beta;
+                                break;
+                            case 3: alpha1 = -helpAngle - beta;
+                                break;
+                            case 4: alpha1 = -helpAngle - beta;
+                                break;
+                        }
+                        alpha2 = 180 - gamma;
+                        if (displayResults){
+                            Console.WriteLine("a: " + a + " b:\t" + b + " c:\t" + c + " l1:\t" + length + " l2:\t" + length2 + " r:\t" + r);
+                            Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));                        
+                        }
+                        return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                    }
+                    if(c==length && b== length2){
+                        switch (quadrant)
+                        {
+                            case 1: alpha1 = helpAngle - alpha;
+                                break;
+                            case 2: alpha1 = helpAngle - alpha;
+                                break;
+                            case 3: alpha1 = -helpAngle - alpha;
+                                break;
+                            case 4: alpha1 = -helpAngle - alpha;
+                                break;
+                        }
+                        alpha2 = 180 - gamma;
+                        if (displayResults)
+                        { 
+                            Console.WriteLine("a: " + a + " b:\t" + b + " c:\t" + c + " l1:\t" + length + " l2:\t" + length2 + " r:\t" + r);
+                            Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                        }
+                        return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                    }
+                    //RMAX
+                    if (c == r && b == length)
+                    {
+                        switch (quadrant)
+                        {
+                            case 1: alpha1 = helpAngle - beta;
+                                break;
+                            case 2: alpha1 = helpAngle - beta;
+                                break;
+                            case 3: alpha1 = -helpAngle - beta;
+                                break;
+                            case 4: alpha1 = -helpAngle - beta;
+                                break;
+                        }
+                        alpha2 = 180 - gamma;
+                        if (displayResults)
+                        {
+                            Console.WriteLine("a: " + a + " b:\t" + b + " c:\t" + c + " l1:\t" + length + " l2:\t" + length2 + " r:\t" + r);
+                            Console.WriteLine("QDR: " + quadrant + " RMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                        }
+                        return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                    }
+                }
+                else {
+                }
+                return null;
+                //if (length >= length2 && length >= r)
+                //{
+                //    switch (quadrant)
+                //    {
+                //        //BETA = GAMMA 
+                //        //GAMMA & ALPHA
+                //        case 1: alpha1 = helpAngle - beta;
+                //            break;
+                //        case 2: alpha1 = helpAngle - beta; //180-
+                //            break;
+                //        case 3: alpha1 = -helpAngle - beta; //180+
+                //            break;
+                //        case 4: alpha1 = -helpAngle - beta; //360-
+                //            break;
+                //    }
+                //    alpha2 = 180 - alpha;
+                //    if (displayResults)
+                //        Console.WriteLine("QDR: " + quadrant + " LMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                //    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                //}
+                //if (length2 >= length && length2 >= r)
+                //{
+                //    switch (quadrant)
+                //    {
+                //        case 1: alpha1 = helpAngle - gamma;
+                //            break;
+                //        case 2: alpha1 = helpAngle - gamma;
+                //            break;
+                //        case 3: alpha1 = -helpAngle - gamma;
+                //            break;
+                //        case 4: alpha1 = -helpAngle - gamma;
+                //            break;
+                //    }
+                //    alpha2 = 180 - alpha;
+                //    if (displayResults)
+                //        Console.WriteLine("QDR: " + quadrant + " L2MAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                //    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                //}
+                //else
+                //{
+                //    //ALPHA = BETA
+                //    //DEFAULT: BETA + GAMMA
+                //    switch (quadrant)
+                //    {
+                //        case 1: alpha1 = helpAngle - alpha;
+                //            break;
+                //        case 2: alpha1 = helpAngle - alpha;
+                //            break;
+                //        case 3: alpha1 = -helpAngle - alpha;
+                //            break;
+                //        case 4: alpha1 = -helpAngle - alpha;
+                //            break;
+                //    }
+                //    alpha2 = 180 - gamma;
+                //    if (displayResults)
+                //        Console.WriteLine("QDR: " + quadrant + " RMAX alpha:\t" + Math.Round(alpha, 2) + " beta:\t" + Math.Round(beta, 2) + " gamma:\t" + Math.Round(gamma, 2) + "\t" + Math.Round(alpha1, 2) + "\t" + Math.Round(alpha2, 2));
+                //    return new InterpolationStep() { Alpha1 = alpha1, Alpha2 = alpha2 };
+                //}
             }
             #endregion
         }
