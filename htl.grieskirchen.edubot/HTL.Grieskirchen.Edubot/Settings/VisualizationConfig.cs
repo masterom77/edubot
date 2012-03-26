@@ -14,18 +14,18 @@ namespace HTL.Grieskirchen.Edubot.Settings
         public const string NAME3D = "3D";
 
         public VisualizationConfig() {
-            steps = 10;
-            speed = 50;
-            edubot = API.Edubot.GetInstance();
-            length = "150";
-            length2 = "150";
-            selectedTool = "Virtuell";
-            useLongest = true;
-            useFollowing = false;
-            visualizationEnabled = true;
+            //steps = 10;
+            //speed = 50;
+            //edubot = API.Edubot.GetInstance();
+            //length = "150";
+            //length2 = "150";
+            //selectedTool = "Virtuell";
+            //useLongest = true;
+            //useFollowing = false;
+            //visualizationEnabled = true;
             availableTools = new Dictionary<string, ITool>();
             availableTools.Add("Virtuell", new VirtualTool());
-            Apply();
+            //Apply();
             //NotifyPropertyChanged("VirtualizedAdapter");
         }
 
@@ -96,9 +96,9 @@ namespace HTL.Grieskirchen.Edubot.Settings
             {
                 useLongest = value;
                 useFollowing = !value;
-                NotifyPropertyChanged("UseLongest");
-                if(useLongest)
-                VisualizedAdapter = GetLongestAdapter();
+                //NotifyPropertyChanged("UseLongest");
+                //if (useLongest)
+                //    VisualizedAdapter = GetLongestAdapter();
             }
         }
 
@@ -112,40 +112,40 @@ namespace HTL.Grieskirchen.Edubot.Settings
                 useFollowing = value;
                 useLongest = !value;
                 NotifyPropertyChanged("UseFollowing");
-                if (useFollowing)
-                {
-                    NotifyPropertyChanged("VisualizableAdapters");
-                    VisualizedAdapter = visualizedAdapter;
-                }
+                //if (useFollowing)
+                //{
+                //    NotifyPropertyChanged("VisualizableAdapters");
+                //    VisualizedAdapter = visualizedAdapter;
+                //}
             }
         }
 
-        string visualizedAdapter;
+        //string visualizedAdapter;
 
-        public string VisualizedAdapter
-        {
-            get { return visualizedAdapter; }
-            set
-            {
-                visualizedAdapter = value;
-                IAdapter adapter = null;
-                API.Edubot edubot = API.Edubot.GetInstance();
-                if (edubot.RegisteredAdapters.TryGetValue(VisualizedAdapter, out adapter))
-                {
-                    length = adapter.Length.ToString();
-                    length2 = adapter.Length2.ToString();
-                    if (adapter.Tool is VirtualTool) {
-                        selectedTool = "Virtuell";
-                    }
-                }
-                else
-                {
-                    throw new Exception("No adapter found");
-                }
-                NotifyPropertyChanged("VisualizedAdapter");
-                Apply();
-            }
-        }
+        //public string VisualizedAdapter
+        //{
+        //    get { return visualizedAdapter; }
+        //    set
+        //    {
+        //        visualizedAdapter = value;
+        //        IAdapter adapter = null;
+        //        API.Edubot edubot = API.Edubot.GetInstance();
+        //        if (edubot.RegisteredAdapters.TryGetValue(VisualizedAdapter, out adapter))
+        //        {
+        //            length = adapter.Length.ToString();
+        //            length2 = adapter.Length2.ToString();
+        //            if (adapter.Tool is VirtualTool) {
+        //                selectedTool = "Virtuell";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new Exception("No adapter found");
+        //        }
+        //        NotifyPropertyChanged("VisualizedAdapter");
+        //        Apply();
+        //    }
+        //}
 
         public List<string> VisualizableAdapters {
             get { return edubot.RegisteredAdapters.Keys.ToList(); }
@@ -169,28 +169,33 @@ namespace HTL.Grieskirchen.Edubot.Settings
 
         public override void Apply()
         {
-            API.Edubot edubot = API.Edubot.GetInstance();
-            edubot.DeregisterAdapter(NAME2D);
-            edubot.DeregisterAdapter(NAME3D);
-            ITool realTool = null;
-            switch (selectedTool)
+            if (visualizationEnabled)
             {
-                case "Virtuell": realTool = new VirtualTool();
-                    break;
+                API.Edubot edubot = API.Edubot.GetInstance();
+                edubot.DeregisterAdapter(NAME2D);
+                edubot.DeregisterAdapter(NAME3D);
+                ITool realTool = null;
+
+                switch (selectedTool)
+                {
+                    case "Virtuell": realTool = new VirtualTool();
+                        break;
+                }
+
+                edubot.RegisterAdapter(NAME2D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
+                edubot.RegisterAdapter(NAME3D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
+                NotifyPropertyChanged("VisualizedAdapter");
             }
-
-            edubot.RegisterAdapter(NAME2D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
-            edubot.RegisterAdapter(NAME3D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
         }
 
-        public VirtualAdapter GetVisualizedAdapter() {
-            IAdapter adapter = null;
-            API.Edubot edubot = API.Edubot.GetInstance();
-            if (edubot.RegisteredAdapters.TryGetValue(VisualizedAdapter, out adapter))
-                return new VirtualAdapter(new VirtualTool(), adapter.Length, adapter.Length2);
-            else
-                return null;
-        }
+        //public VirtualAdapter GetVisualizedAdapter() {
+        //    IAdapter adapter = null;
+        //    API.Edubot edubot = API.Edubot.GetInstance();
+        //    if (edubot.RegisteredAdapters.TryGetValue(VisualizedAdapter, out adapter))
+        //        return new VirtualAdapter(new VirtualTool(), adapter.Length, adapter.Length2);
+        //    else
+        //        return null;
+        //}
 
     }
 }

@@ -68,14 +68,14 @@ namespace HTL.Grieskirchen.Edubot
             //visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             //visualisation3D.VisualisationAdapter = visualisationAdapter;
             //visualisation2D.VisualisationAdapter = visualisationAdapter;
-            //edubot.RegisterAdapter("2d",visualisationAdapter);
-            IAdapter adapter;
-            edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
-            adapter.OnMovementStarted += ShowEventArgsInfo;
-            visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
-            edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
-            adapter.OnMovementStarted += ShowEventArgsInfo;
-            visualisation3D.VisualisationAdapter = (VirtualAdapter)adapter;
+            //edubot.RegisterAdapter("2de", visualisationAdapter);
+            //IAdapter adapter;
+            //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
+            //adapter.OnMovementStarted += ShowEventArgsInfo;
+            //visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
+            //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
+            //adapter.OnMovementStarted += ShowEventArgsInfo;
+            //visualisation3D.VisualisationAdapter = (VirtualAdapter)adapter;
             //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 250, 150, IPAddress.Parse("127.0.0.1"), 12000));
             InitializeLists();
 //ReplaceVisualisationAdapterWithLongest();
@@ -85,7 +85,6 @@ namespace HTL.Grieskirchen.Edubot
 
             puAutocomplete.Visibility = Visibility.Visible;
             puAutocomplete.KeyDown += AppendText;
-            settings.VisualizationConfig.PropertyChanged += ReplaceVisualisationAdapters;
             //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
         }
 
@@ -170,18 +169,22 @@ namespace HTL.Grieskirchen.Edubot
             this.settings = Settings.Settings.Load();
             if (settings == null)
                 settings = new Settings.Settings();
-            if(settings.DefaultConfig.AutoConnect){
-                settings.DefaultConfig.Apply();
-            }
-            if (settings.KebaConfig.AutoConnect) {
-                settings.KebaConfig.Apply();
-            }
-            if (settings.VisualizationConfig.VisualizationEnabled) {
-                settings.VisualizationConfig.Apply();
-            }
+            settings.VisualizationConfig.PropertyChanged += ReplaceVisualisationAdapters;
+            settings.Apply();
+            //if(settings.DefaultConfig.AutoConnect){
+            //    settings.DefaultConfig.Apply();
+            //}
+            //if (settings.KebaConfig.AutoConnect) {
+            //    settings.KebaConfig.Apply();
+            //}
+            //if (settings.VisualizationConfig.VisualizationEnabled) {
+            //    settings.VisualizationConfig.Apply();
+            //}
             tiDASettings.DataContext = settings.DefaultConfig;
             tiKESettings.DataContext = settings.KebaConfig;
             tiVisualization.DataContext = settings.VisualizationConfig;
+            visualisation2D.Configuration = settings.VisualizationConfig;
+            visualisation3D.Configuration = settings.VisualizationConfig;
             vb2DVisualisation.DataContext = settings.VisualizationConfig;
             vb3DVisualisation.DataContext = settings.VisualizationConfig;
             //tbDALength.SetBinding(TextBox.TextProperty, "DefaultConfig.Length");
@@ -221,7 +224,7 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 if (sender is VirtualAdapter)
                 {
-                    visualisation3D.Angles = mse.Result.Angles;
+                    //visualisation3D.Angles = mse.Result.Angles;
                     visualisation2D.Angles = mse.Result.Angles;
                     //visualisationAbove.Angles = ace.Result.Steps;
 
@@ -681,16 +684,25 @@ namespace HTL.Grieskirchen.Edubot
 
         private void ReplaceVisualisationAdapters(object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName == "VisualizedAdapter") {
-                IAdapter adapter;
-                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
-                adapter.OnMovementStarted += ShowEventArgsInfo;
-                visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
-                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
-                adapter.OnMovementStarted += ShowEventArgsInfo;
-                visualisation3D.VisualisationAdapter = (VirtualAdapter) adapter;
+                //IAdapter adapter;
+                //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
+                //adapter.OnMovementStarted += Notify2DVisualization;
+                //visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
+                IAdapter adapter2;
+                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter2);
+                adapter2.OnMovementStarted += Notify3DVisualization;
+                visualisation3D.VisualisationAdapter = (VirtualAdapter)adapter2;
             }
         }
 
-      
+        private void Notify2DVisualization(object sender, EventArgs e) {
+            
+            visualisation2D.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+        }
+
+        private void Notify3DVisualization(object sender, EventArgs e)
+        {
+            visualisation3D.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+        }
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="Adapters\KebaAdapter.cs" />
     <Compile Include="Adapters\DefaultAdapter.cs" />
     <Compile Include="Adapters\Listeners\VirtualStateListener.cs" />
+    <Compile Include="Commands\AbortCommand.cs" />
     <Compile Include="Commands\ChangeInterpolationCommand.cs" />
     <Compile Include="Commands\MVCCommand.cs" />
     <Compile Include="Commands\MVSCommand.cs" />

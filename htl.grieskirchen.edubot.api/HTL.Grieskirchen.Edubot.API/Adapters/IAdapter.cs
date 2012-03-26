@@ -83,9 +83,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                     cmdQueue.Dequeue().Execute(this);
                 }
             }
-        }       
+        }
 
-        protected IStateListener listener;
+        private IStateListener listener;
+
+        protected IStateListener Listener
+        {
+            get { return listener; }
+            set { listener = value; }
+        }
 
         Queue<ICommand> cmdQueue;
 
@@ -124,11 +130,20 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { onMovementStarted = value; }
         }
 
+        private Event onAbort;
+
+        public Event OnAbort
+        {
+            get { return onAbort; }
+            set { onAbort = value; }
+        }
+
         public abstract void Start();
         public abstract void Shutdown();
         public abstract void MoveStraightTo(object param);
         public abstract void MoveCircularTo(object param);
         public abstract void UseTool(object param);
+        public abstract void Abort();
         public abstract void SetInterpolationResult(Interpolation.InterpolationResult result);
 
         public void Execute(ICommand cmd) {

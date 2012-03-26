@@ -47,7 +47,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             if (receiverSocket.Connected)
             {
-                listener.Stop();
+                Listener.Stop();
                 receiverSocket.Disconnect(false);
             }
             if (senderSocket.Connected)
@@ -59,7 +59,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             senderEndpoint = new IPEndPoint(ipAddress, port);
             receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             receiverEndpoint = new IPEndPoint(ipAddress, port+1);
-            listener = new NetworkStateListener(this, receiverSocket);
+            Listener = new NetworkStateListener(this, receiverSocket);
         }
 
         public void Connect()
@@ -67,7 +67,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             senderSocket.Connect(senderEndpoint);
             receiverSocket.Connect(receiverEndpoint);
             state = State.SHUTDOWN;
-            listener = new NetworkStateListener(this, receiverSocket);
+            Listener = new NetworkStateListener(this, receiverSocket);
         }
 
         public override void MoveStraightTo(object param)
@@ -144,6 +144,12 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
         }
 
-        
+
+
+        public override void Abort()
+        {
+            CmdQueue.Clear();
+            senderSocket.Send(Encoding.UTF8.GetBytes("abort"));
+        }
     }
 }
