@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using HTL.Grieskirchen.Edubot.API;
 using System.ComponentModel;
+using HTL.Grieskirchen.Edubot.API.Adapters;
 
 namespace HTL.Grieskirchen.Edubot.Settings
 {
     [Serializable]
     public class Settings
     {
+
         public Settings() {
-            defaultConfig = new DefaultAdapterConfig() { Length = "300", Length2 = "300", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
-            kebaConfig = new KebaAdapterConfig() { Length = "300", Length2 = "300", IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
-            visualizationConfig = new VisualizationConfig();//new VisualizationConfig() { Length = "300", Length2 = "300", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, UseLongest = true, UseFollowing = false, Tool = "Virtuell" };
+            defaultConfig = new DefaultAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
+            kebaConfig = new KebaAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
+            visualizationConfig = new VisualizationConfig() { Length = "150", Length2 = "150", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, UseLongest = true, UseFollowing = false, SelectedTool = "Virtuell" };
         }
 
         DefaultAdapterConfig defaultConfig;
@@ -61,5 +63,17 @@ namespace HTL.Grieskirchen.Edubot.Settings
             return null;
         }
 
+        public void Apply() {
+            if (defaultConfig.AutoConnect)
+            {
+                defaultConfig.Apply();
+            }
+            if (kebaConfig.AutoConnect)
+            {
+                kebaConfig.Apply();
+            }
+            visualizationConfig.Apply();
+        
+        }
     }
 }

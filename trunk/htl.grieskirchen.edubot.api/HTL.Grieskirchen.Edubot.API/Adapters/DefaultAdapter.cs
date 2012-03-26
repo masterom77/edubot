@@ -51,13 +51,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             {
                 if (socket.Connected)
                 {
-                    listener.Stop();
+                    Listener.Stop();
                     socket.Disconnect(false);
                 }
             }
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             endpoint = new IPEndPoint(ipAddress, port);
-            listener = new NetworkStateListener(this, socket);
+            Listener = new NetworkStateListener(this, socket);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// <exception cref="System.Net.Sockets.SocketException"></exception>
         public void Connect() {
             socket.Connect(endpoint);            
-            listener.Start();
+            Listener.Start();
         }
 
         public bool TestConnectivity() {
@@ -88,7 +88,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public void Disconnect()
         {
-            listener.Stop();
+            Listener.Stop();
             socket.Disconnect(true);
         }
 
@@ -154,5 +154,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         }
 
 
+
+        public override void Abort()
+        {
+            CmdQueue.Clear();
+            socket.Send(Encoding.UTF8.GetBytes("abort"));
+        }
     }
 }

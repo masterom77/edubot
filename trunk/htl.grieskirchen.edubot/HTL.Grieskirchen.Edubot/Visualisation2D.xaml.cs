@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.API.Adapters;
+using HTL.Grieskirchen.Edubot.Settings;
+using System.ComponentModel;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -25,36 +27,36 @@ namespace HTL.Grieskirchen.Edubot
         public const int MAX_SPEED = 50;
 
         #region ---------------------Dependency Properties-------------------
-        public static readonly DependencyProperty ShowGridProperty =
-      DependencyProperty.Register("ShowGrid", typeof(bool), typeof(Visualisation2D),new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty ShowGridProperty =
+      //DependencyProperty.Register("ShowGrid", typeof(bool), typeof(Visualisation2D),new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty ShowLabelsProperty =
-      DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty ShowLabelsProperty =
+      //DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty ShowAnimationProperty =
-      DependencyProperty.Register("ShowAnimation", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty ShowAnimationProperty =
+      //DependencyProperty.Register("ShowAnimation", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty TicksProperty =
-      DependencyProperty.Register("Ticks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(4, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty TicksProperty =
+      //DependencyProperty.Register("Ticks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(4, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty MaxTicksProperty =
-      DependencyProperty.Register("MaxTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(20, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty MaxTicksProperty =
+      //DependencyProperty.Register("MaxTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(20, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty MinTicksProperty =
-      DependencyProperty.Register("MinTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty MinTicksProperty =
+      //DependencyProperty.Register("MinTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty SpeedProperty =
-      DependencyProperty.Register("Speed", typeof(int), typeof(Visualisation2D), new PropertyMetadata(50, USpeed));
+      //  public static readonly DependencyProperty SpeedProperty =
+      //DependencyProperty.Register("Speed", typeof(int), typeof(Visualisation2D), new PropertyMetadata(50, USpeed));
 
-        public static void USpeed(DependencyObject obj, DependencyPropertyChangedEventArgs arg){
-            speed = (int) obj.GetValue(SpeedProperty);
-        } 
+      //  public static void USpeed(DependencyObject obj, DependencyPropertyChangedEventArgs arg){
+      //      speed = (int) obj.GetValue(SpeedProperty);
+      //  } 
 
-        public static readonly DependencyProperty MaxSpeedProperty =
-      DependencyProperty.Register("MaxSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(100, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty MaxSpeedProperty =
+      //DependencyProperty.Register("MaxSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(100, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty MinSpeedProperty =
-      DependencyProperty.Register("MinSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
+      //  public static readonly DependencyProperty MinSpeedProperty =
+      //DependencyProperty.Register("MinSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
 
         #endregion
 
@@ -66,6 +68,7 @@ namespace HTL.Grieskirchen.Edubot
             drawnPoints = new List<Point>();
             AnglePrimaryAxis = 0;
             AnglePrimaryAxis = 0;
+            configuration = new VisualizationConfig();
         }
 
         private Rect3D posSecondaryEngine;
@@ -74,86 +77,14 @@ namespace HTL.Grieskirchen.Edubot
         private List<Point> drawnPoints;
 
         #region ---------------------Properties---------------------
-        
-        public bool ShowGrid
-        {
-            get { return (bool)GetValue(ShowGridProperty); }
-            set
-            {
-                SetValue(ShowGridProperty, value);
-            }
-        }
-        public bool ShowLabels
-        {
-            get { return (bool)GetValue(ShowLabelsProperty); }
-            set
-            {
-                SetValue(ShowLabelsProperty, value);
-            }
-        }
-        private bool showAnimation;
-        public bool ShowAnimation
-        {
-            get {
-                showAnimation = (bool)GetValue(ShowAnimationProperty);
-                return (bool)GetValue(ShowAnimationProperty); }
-            set
-            {
-                showAnimation = value;
-                SetValue(ShowAnimationProperty, value);
-            }
-        }
 
-        public int Ticks
-        {
-            get { return (int)GetValue(TicksProperty); }
-            set
-            {
-                SetValue(TicksProperty, value);
-            }
-        }
-        public int MaxTicks
-        {
-            get { return (int)GetValue(MaxTicksProperty); }
-            set
-            {
-                SetValue(MaxTicksProperty, value);
-            }
+        private VisualizationConfig configuration;
 
-        }
-        public int MinTicks
+        public VisualizationConfig Configuration
         {
-            get { return (int)GetValue(MinTicksProperty); }
-            set
-            {
-                SetValue(MinTicksProperty, value);
-            }
-        }
-        private static int speed;
-        public int Speed
-        {
-            get {
-                return (int)GetValue(SpeedProperty); 
-            }
-            set
-            {
-                SetValue(SpeedProperty, value);
-            }
-        }
-        public int MaxSpeed
-        {
-            get { return (int)GetValue(MaxSpeedProperty); }
-            set
-            {
-                SetValue(MaxSpeedProperty, value);
-            }
-        }
-        public int MinSpeed
-        {
-            get { return (int)GetValue(MinSpeedProperty); }
-            set
-            {
-                SetValue(MinSpeedProperty, value);
+            get { return configuration; }
+            set { configuration = value;
+            configuration.PropertyChanged += InvalidateDrawing;
             }
         }
 
@@ -173,16 +104,22 @@ namespace HTL.Grieskirchen.Edubot
             set
             {
                 angles = value;
-                if (showAnimation)
+                if (configuration.VisualizationEnabled)
                 {
                     new System.Threading.Thread(StartAnimation).Start();
                 }
             }
         }
 
+
+
         #endregion
 
         #region ---------------------Animation-----------------------
+
+        private void InvalidateDrawing(object sender, PropertyChangedEventArgs property) {
+            InvalidateVisual();
+        }
 
         delegate void UpdateCallback(float val);
         public double AnglePrimaryAxis
@@ -227,12 +164,14 @@ namespace HTL.Grieskirchen.Edubot
         private void StartAnimation() {
             UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
             UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-            float ticks = MAX_SPEED+1 - (((float)MAX_SPEED / 100) * speed);
+            float ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+            ticks = 5;
             foreach (InterpolationStep step in angles) {
                 System.Threading.Thread.Sleep((int)ticks);
                 Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                 Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
             }
+            visualisationAdapter.State = API.State.READY;
         }
         private void UpdatePrimaryAxis(float val)
         {
@@ -248,17 +187,17 @@ namespace HTL.Grieskirchen.Edubot
         #region ---------------------Rendering---------------------
         protected override void OnRender(DrawingContext drawingContext)
         {
-            if (ShowAnimation)
+            if (configuration.VisualizationEnabled)
             {
                 vpVisualization.Visibility = Visibility.Visible;
-                if (ShowGrid)
+                if (configuration.ShowGrid)
                 {
                     RenderGrid(drawingContext);
                 }
                 base.OnRender(drawingContext);
                 drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(0, ActualHeight / 2 - 1), new Point(ActualWidth, ActualHeight / 2 - 1));
                 drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(ActualWidth / 2 - 1, 0), new Point(ActualWidth / 2 - 1, ActualHeight));
-                if (ShowLabels)
+                if (configuration.ShowLabels)
                 {
                     RenderLabels(drawingContext);
                 }
@@ -274,12 +213,12 @@ namespace HTL.Grieskirchen.Edubot
 
         protected void RenderGrid(DrawingContext drawingContext)
         {
-            float stepSize = (float) ActualWidth / (Ticks*2);
-            for (int col = 0; col < Ticks*2; col++)
+            float stepSize = (float) ActualWidth / (configuration.Steps*2);
+            for (int col = 0; col < configuration.Steps * 2; col++)
             {
                 drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(0, stepSize * col), new Point(ActualWidth, stepSize * col));
             }
-            for (int row = 0; row < Ticks*2; row++)
+            for (int row = 0; row < configuration.Steps * 2; row++)
             {
                 drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(stepSize * row, 0), new Point(stepSize * row, ActualHeight));
             }
@@ -293,18 +232,18 @@ namespace HTL.Grieskirchen.Edubot
             if (visualisationAdapter != null)
             {
                 length = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
-                stepSize = (int)(length / (Ticks*2));
+                stepSize = (int)(length / (configuration.Steps * 2));
                 pixelPerPoint = ActualWidth / length;
             }
             else
             {
                 length = ActualWidth;
-                stepSize = (int)(ActualWidth / Ticks);
+                stepSize = (int)(ActualWidth / configuration.Steps);
                 pixelPerPoint = 1;
             }
             //double offset = ActualWidth / steps;
 
-            for (int col = 0; col < Ticks*2 +1; col++)
+            for (int col = 0; col < configuration.Steps * 2 + 1; col++)
             {
                 float yPos = (float) (col * stepSize * pixelPerPoint);
                 int y = (int)(length/2-(col * stepSize));
@@ -314,7 +253,7 @@ namespace HTL.Grieskirchen.Edubot
                 FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
                 drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , yPos-text.Height/2));
             }
-            for (int row = 0; row < Ticks*2 + 1; row++)
+            for (int row = 0; row < configuration.Steps * 2 + 1; row++)
             {
                 float xPos = (float)(row * stepSize * pixelPerPoint);
                 int x = (int)(length / 2 - (row * stepSize));

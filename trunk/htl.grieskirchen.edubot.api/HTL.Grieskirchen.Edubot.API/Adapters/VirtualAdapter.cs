@@ -16,8 +16,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             type = AdapterType.VIRTUAL;
             requiresPrecalculation = true;
-            listener = new VirtualStateListener();
-            //Connect();
+            Listener = new VirtualStateListener();
         }
 
         public VirtualAdapter(ITool tool, float length, float length2) : base(tool, length, length2)
@@ -26,7 +25,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             this.length = length;
             this.requiresPrecalculation = true;
             type = AdapterType.VIRTUAL;
-            listener = new VirtualStateListener();
+            Listener = new VirtualStateListener();
         }
 
         public override void MoveStraightTo(object param)
@@ -45,9 +44,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void UseTool(object param)
         {
-            //Console.WriteLine((((bool)param) ? "Activating" : "Deactivating") + " Tool...");
-            //System.Threading.Thread.Sleep(1000);
-            //State = State.READY;
         }
 
         public override void SetInterpolationResult(InterpolationResult result)
@@ -57,19 +53,18 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Start()
         {
-            //Console.WriteLine("Starting...");
-            //System.Threading.Thread.Sleep(2000);
             State = State.READY;
         }
 
         public override void Shutdown()
         {
-
-            //Console.WriteLine("Shutting down...");
-            //System.Threading.Thread.Sleep(2000);
             State = State.SHUTDOWN;
         }
 
-        
+        public override void Abort()
+        {
+            CmdQueue.Clear();
+            OnAbort(this, null);
+        }
     }
 }
