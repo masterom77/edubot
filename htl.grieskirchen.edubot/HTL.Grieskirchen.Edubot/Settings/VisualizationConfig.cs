@@ -174,16 +174,19 @@ namespace HTL.Grieskirchen.Edubot.Settings
                 API.Edubot edubot = API.Edubot.GetInstance();
                 edubot.DeregisterAdapter(NAME2D);
                 edubot.DeregisterAdapter(NAME3D);
-                ITool realTool = null;
+                ITool realTool2D = null;
+                ITool realTool3D = null;
 
                 switch (selectedTool)
                 {
-                    case "Virtuell": realTool = new VirtualTool();
+                    case "Virtuell": realTool2D = new VirtualTool();
+                        realTool3D = new VirtualTool();
                         break;
                 }
 
-                edubot.RegisterAdapter(NAME2D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
-                edubot.RegisterAdapter(NAME3D, new VirtualAdapter(realTool, float.Parse(length), float.Parse(length2)));
+                edubot.RegisterAdapter(NAME2D, new VirtualAdapter(realTool2D, float.Parse(length), float.Parse(length2)));
+                edubot.RegisterAdapter(NAME3D, new VirtualAdapter(realTool3D, float.Parse(length), float.Parse(length2)));
+               
                 NotifyPropertyChanged("VisualizedAdapter");
             }
         }
