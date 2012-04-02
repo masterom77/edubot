@@ -20,14 +20,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint endpoint;
         InterpolationResult result;
 
-        public DefaultAdapter()
-            : base()
-        {
-            type = AdapterType.DEFAULT;
-            requiresPrecalculation = true;
-            //Connect();
-        }
-
         /// <summary>
         /// Initializes a new instance of the DefaultAdapter class.
         /// </summary>
@@ -45,6 +37,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //Connect();
         }
 
+        /// <summary>
+        /// Sets the network configuration of this adapter. If there is a connection existing, it will be disconnected.
+        /// </summary>
+        /// <param name="ipAddress">The IP-address of the controller</param>
+        /// <param name="port">The port where controller-software runs</param>
         public void SetNetworkConfiguration(IPAddress ipAddress, int port)
         {
             if (socket != null)
@@ -69,6 +66,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             Listener.Start();
         }
 
+        /// <summary>
+        /// Trys to connect to the controller, using the given network configuration.
+        /// </summary>
+        /// <returns>Return true if a connection is possible, else returns false.</returns>
         public bool TestConnectivity() {
             try
             {
@@ -86,6 +87,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
         }
 
+        /// <summary>
+        /// Closes the connection to the controller and stops the running network-listener.
+        /// </summary>
         public void Disconnect()
         {
             Listener.Stop();
@@ -93,12 +97,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         }
 
         /// <summary>
-        /// Sends the command
+        /// Sends a "Move Straight"-Command to the controller, which will be executed by the robot.
         /// </summary>
-        /// <param name="param"></param>
-
-
-
+        /// <param name="param">An object containing the target point of the movement</param>
         public override void MoveStraightTo(object param)
         {
             //socket.SendBufferSize = Int32.MaxValue;
@@ -109,6 +110,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             tool.ToolCenterPoint = target;
         }
 
+        /// <summary>
+        /// Sends a "Move Circular"-Command to the controller, which will be executed by the robot
+        /// </summary>
+        /// <param name="param"></param>
         public override void MoveCircularTo(object param)
         {
 
@@ -133,12 +138,12 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         }
 
-        public override void Start()
+        public override void Start(object param)
         {
             //if (!socket.Connected)
             //    Connect();
             Connect();
-            socket.Send(Encoding.UTF8.GetBytes("start"));
+            socket.Send(Encoding.UTF8.GetBytes("homing:"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
         }
 
         public override void Shutdown()
@@ -157,7 +162,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Abort()
         {
-            CmdQueue.Clear();
             socket.Send(Encoding.UTF8.GetBytes("abort"));
         }
     }
