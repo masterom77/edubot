@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.API.Adapters.Listeners;
+using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
@@ -51,9 +52,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             this.result = result;  
         }
 
-        public override void Start()
+        public override void Start(object param)
         {
-            State = State.READY;
+            tool.ToolCenterPoint = new Point3D(length + length2, 0, 0);
+            //State = State.READY;
         }
 
         public override void Shutdown()
@@ -63,8 +65,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Abort()
         {
-            CmdQueue.Clear();
-            OnAbort(this, null);
+            Shutdown();
         }
     }
 }

@@ -18,23 +18,29 @@ namespace EduBot
 {
     public partial class Form1 : Form
     {
-        
+        VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+        VirtualAdapter adapter2 = new VirtualAdapter(new VirtualTool(), 150f, 150f);
 
         public Form1()
         {
             InitializeComponent();
             Edubot edubot = Edubot.GetInstance();
-            Kinematics.DisplayResults = true;
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200f, 150f);
-            edubot.RegisterAdapter("virtual",adapter);
+            //Kinematics.DisplayResults = true;
+            
+            //edubot.RegisterAdapter("virtual", adapter);
+            //edubot.RegisterAdapter("virtual2", adapter2);
+            adapter.OnMovementStarted += OnUpdate1;
+            adapter2.OnMovementStarted += OnUpdate2;
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
-            //DefaultAdapter a = new DefaultAdapter(new VirtualTool(), 153,153, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
-            //edubot.RegisterAdapter("default",a);
+            DefaultAdapter a = new DefaultAdapter(new VirtualTool(), 150,150, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
+            edubot.RegisterAdapter("default",a);
             //bool conTest = a.TestConnectivity();
             List<ICommand> commands = new List<ICommand>();
             commands.Add(new StartCommand());
             commands.Add(new MVSCommand(new Point3D(100, 0, 0)));
+            commands.Add(new MVSCommand(new Point3D(200, 100, 0)));
+            commands.Add(new MVSCommand(new Point3D(150, 150, 0)));
             commands.Add(new ShutdownCommand());
             //commands.Add(new StartCommand());
             //commands.Add(new MVSCommand(new Point3D(100, 150, 0)));
@@ -43,6 +49,16 @@ namespace EduBot
                 edubot.Execute(cmd);
             }
             
+        }
+
+        public void OnUpdate1(object sender, EventArgs args) {
+            Console.WriteLine("Update first adapter:"+((MovementStartedEventArgs)args).Result.Angles.Count);
+            adapter.State = State.READY;
+        }
+        public void OnUpdate2(object sender, EventArgs args)
+        {
+            Console.WriteLine("Update second adapter:" + ((MovementStartedEventArgs)args).Result.Angles.Count);
+            adapter2.State = State.READY;
         }
 
         private void ControllerCircle() {
@@ -92,6 +108,16 @@ namespace EduBot
         
         private void React(object src,  EventArgs args) {
             Console.WriteLine((args as AngleChangedEventArgs).Result.ToString());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            HTL.Grieskirchen.Edubot.API.Edubot.GetInstance().Execute(new AbortCommand());
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            HTL.Grieskirchen.Edubot.API.Edubot.GetInstance().Execute(new AbortCommand());
         }
         /*
         private void button1_Click(object sender, EventArgs e)

@@ -23,34 +23,47 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(Point3D toolCenterPoint, Point3D target, Point3D center, float length, float length2)
         {
-            int steps;// = Configuration.InterpolationSteps;
-            float toolX = toolCenterPoint.X;
-            float toolY = toolCenterPoint.Y;
-            float difX = target.X - toolX;
-            float difY = target.Y - toolY;
-            float distance = (float) Math.Sqrt(difX * difX + difY * difY);
-            steps = (int) Math.Round(distance,1);
-            float incrX = difX / steps;
-            float incrY = difY / steps;
+            double difTargetCenterX = target.X - center.X;
+            double difTargetCenterY = target.Y - center.Y;
+            double difTargetCenter = Math.Sqrt(difTargetCenterX * difTargetCenterX + difTargetCenterY * difTargetCenterY);
+            double difToolCenterX = toolCenterPoint.X - center.X;
+            double difToolCenterY = toolCenterPoint.Y - center.Y;
+            double difToolCenter = Math.Sqrt(difToolCenterX * difToolCenterX + difToolCenterY * difToolCenterY);
 
-            InterpolationResult result = new InterpolationResult();
-            InterpolationStep prevStep = Kinematics.CalculateInverse(new Point3D(toolX,toolY,0),length,length2);
-            InterpolationStep step;
-            result.PrimarySpeed = incrX / incrY;
-            result.SecondarySpeed = incrY / incrX;
+            if (difTargetCenter != difToolCenter)
+                throw new MVCException("Ungültiger Mittelpunkt: Der Punkt Ausgangspunkt (" + toolCenterPoint.ToString() + ") und der Zielpunkt (" + target.ToString() + ") liegen nicht in angegeben Kreis", toolCenterPoint, target, center);
 
-            for (int i = 0; i < steps; i++)
+       
+            double r = difToolCenter;
+            double difToolTargetX = target.X - toolCenterPoint.X;
+            double difToolTargetY = target.Y - toolCenterPoint.Y;
+            double d = Math.Sqrt(difToolTargetX * difToolTargetX + difToolTargetY * difToolTargetY);
+
+
+
+            double angle;
+            if (d == 0)
             {
-                
-                toolX += incrX;
-                toolY += incrY;
-                step = Kinematics.CalculateInverse(new Point3D(toolX,toolY,0), length,length2);// -step;
-                result.Angles.Add(step);
-                result.Steps.Add(step-prevStep);
-                prevStep = step;
+                angle = 360;
+            }
+            else
+            {   
+                angle = MathHelper.ConvertToDegrees(Math.Acos((2 * r * r - d * d) / (2 * r * r)));
+                int quadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
+                if (quadrant == 3)
+                    angle = 180 + angle;
             }
             
-            return result;
+            double anglePerStep = 1;
+
+            for (int i = 1; i <= (int)Math.Ceiling(angle / anglePerStep); i++)
+            {
+                d = Math.Sqrt(2 * r * r - 2 * r * r * Math.Cos(MathHelper.ConvertToRadians(i)));
+                Console.WriteLine(d);
+            }
+
+
+            return null;
             
         }
 

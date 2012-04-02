@@ -130,6 +130,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { onMovementStarted = value; }
         }
 
+        private Event onHoming;
+
+        public Event OnHoming
+        {
+            get { return onHoming; }
+            set { onHoming = value; }
+        }
+
         private Event onAbort;
 
         public Event OnAbort
@@ -138,7 +146,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { onAbort = value; }
         }
 
-        public abstract void Start();
+        public abstract void Start(object param);
         public abstract void Shutdown();
         public abstract void MoveStraightTo(object param);
         public abstract void MoveCircularTo(object param);
@@ -147,9 +155,17 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public abstract void SetInterpolationResult(Interpolation.InterpolationResult result);
 
         public void Execute(ICommand cmd) {
-            cmdQueue.Enqueue(cmd);
-            if (state == State.READY || state == State.SHUTDOWN) {
-                cmdQueue.Dequeue().Execute(this);
+            if (cmd is AbortCommand)
+            {
+                cmd.Execute(this);
+            }
+            else
+            {
+                cmdQueue.Enqueue(cmd);
+                if (state == State.READY || state == State.SHUTDOWN)
+                {
+                    cmdQueue.Dequeue().Execute(this);
+                }
             }
         }
 

@@ -23,11 +23,15 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns></returns>
         public InterpolationResult CalculatePath(Point3D toolCenterPoint, Point3D target, float length, float length2)
         {
+
             int steps;// = Configuration.InterpolationSteps;
             float toolX = toolCenterPoint.X;
             float toolY = toolCenterPoint.Y;
+            float toolZ = toolCenterPoint.Z;
+
             float difX = target.X - toolX;
             float difY = target.Y - toolY;
+            float difZ = target.Z - toolZ;
             float distance = (float) Math.Sqrt(difX * difX + difY * difY);
             steps = (int)Math.Round(distance, 0);
             //if (length == length2)
@@ -36,6 +40,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             //    steps = (int) (Math.Round(distance) + Math.Abs(length - length2));
             float incrX = difX / steps;
             float incrY = difY / steps;
+            float incrZ = difZ / steps;
 
             InterpolationResult result = new InterpolationResult();
             InterpolationStep prevStep = Kinematics.CalculateInverse(new Point3D(toolX,toolY,0),length,length2);
@@ -48,8 +53,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 
                 toolX += incrX;
                 toolY += incrY;
-                step = Kinematics.CalculateInverse(new Point3D(toolX,toolY,0), length,length2);// -step;
-                Kinematics.CalculateDirect(step.Alpha1, step.Alpha2, length, length2);
+                toolZ += incrZ;
+                step = Kinematics.CalculateInverse(new Point3D(toolX,toolY,toolZ), length,length2);// -step;
+                //Kinematics.CalculateDirect(step.Alpha1, step.Alpha2, length, length2);
                 result.Angles.Add(step);
                 result.Steps.Add(step-prevStep);
                 prevStep = step;

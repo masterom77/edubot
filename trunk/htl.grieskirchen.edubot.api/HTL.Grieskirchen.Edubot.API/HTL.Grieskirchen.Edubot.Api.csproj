@@ -59,7 +59,7 @@
     <Compile Include="Adapters\DefaultAdapter.cs" />
     <Compile Include="Adapters\Listeners\VirtualStateListener.cs" />
     <Compile Include="Commands\AbortCommand.cs" />
-    <Compile Include="Commands\ChangeInterpolationCommand.cs" />
+    <Compile Include="Commands\HomingCommand.cs" />
     <Compile Include="Commands\MVCCommand.cs" />
     <Compile Include="Commands\MVSCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="Adapters\VirtualAdapter.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="EventArgs\HomingEventArgs.cs" />
     <Compile Include="EventArgs\MovementStartedEventArgs.cs" />
     <Compile Include="Exceptions\AdapterException.cs" />
     <Compile Include="AxisType.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="EventArgs\StateChangedEventArgs.cs" />
     <Compile Include="EventArgs\ToolEventArgs.cs" />
     <Compile Include="EventArgs\InterpolationChangedEventArgs.cs" />
+    <Compile Include="Exceptions\MVCException.cs" />
     <Compile Include="Exceptions\OutOfRangeException.cs" />
     <Compile Include="Exceptions\IllegalStateUpdateException.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />

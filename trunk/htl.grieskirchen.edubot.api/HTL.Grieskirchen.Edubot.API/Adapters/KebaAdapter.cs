@@ -31,7 +31,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             : base(tool, length, length2)
         {
             type = AdapterType.KEBA;
-            state = State.DISCONNECTED;
+            state = State.SHUTDOWN;
 
             senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             senderEndpoint = new IPEndPoint(ipAdress, senderPort);
@@ -103,7 +103,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
            
         }
 
-        public override void Start()
+        public override void Start(object param)
         {
             //socket.Connect(endpoint);
             senderSocket.Connect(senderEndpoint);
@@ -148,7 +148,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Abort()
         {
-            CmdQueue.Clear();
             senderSocket.Send(Encoding.UTF8.GetBytes("abort"));
         }
     }

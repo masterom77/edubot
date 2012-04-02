@@ -10,11 +10,10 @@ namespace HTL.Grieskirchen.Edubot.API
     /// </summary>
     public enum State
     {
-        STARTING,
+        HOMING,
         SHUTTING_DOWN,
         READY,
         SHUTDOWN,
-        MOVING,
-        DISCONNECTED
+        MOVING
     }
 }
