@@ -72,6 +72,7 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         private Rect3D posSecondaryEngine;
+        private System.Threading.Thread animationThread;
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
         private List<Point> drawnPoints;
@@ -175,6 +176,7 @@ namespace HTL.Grieskirchen.Edubot
         {
             get { return visualisationAdapter; }
             set { visualisationAdapter = value;
+            visualisationAdapter.OnAbort += StopAnimation;
             InvalidateVisual();
             }
         }
@@ -191,7 +193,8 @@ namespace HTL.Grieskirchen.Edubot
                 angles = value;
                 if (configuration.VisualizationEnabled)
                 {
-                    new System.Threading.Thread(StartAnimation).Start();
+                    animationThread = new System.Threading.Thread(StartAnimation);
+                    animationThread.Start();
                 }
             }
         }
@@ -262,16 +265,29 @@ namespace HTL.Grieskirchen.Edubot
         /// Starts the animation of the virtual robot
         /// </summary>
         private void StartAnimation() {
-            UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-            UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-            float ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-            ticks = 5;
-            foreach (InterpolationStep step in angles) {
-                System.Threading.Thread.Sleep((int)ticks);
-                Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-                Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+            try
+            {
+                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                foreach (InterpolationStep step in angles)
+                {
+                    //ticks = MAX_SPEED + 3 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    System.Threading.Thread.Sleep((int)ticks);
+                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                }
+                visualisationAdapter.State = API.State.READY;
             }
-            visualisationAdapter.State = API.State.READY;
+            catch (System.Threading.ThreadAbortException)
+            {
+
+            }
+        }
+
+        private void StopAnimation(object sender, EventArgs args)
+        {
+            animationThread.Abort();
         }
 
         /// <summary>

@@ -88,7 +88,7 @@
                 <Button Width="30" Height="30" Name="tbbExecuteWindow" ToolTip="Skript in eigenem Fenster ausführen" Click="Execute">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteWindowButton.png"></Image>
                 </Button>
-                <Button Width="30" Height="30" Name="tbbAbort" ToolTip="Skriptausführung abbrechen" Click="Execute">
+                <Button Width="30" Height="30" Name="tbbAbort" ToolTip="Skriptausführung abbrechen" Click="Abort">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/AbortButton.png"></Image>
                 </Button>
             </ToolBar>
@@ -500,6 +500,8 @@
         <Viewbox Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb2DVisualisation" Stretch="Uniform">
             <my:Visualisation2D HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="600" Width="600"/>
         </Viewbox>
+        <!--<my:Visualisation3D Grid.Column="1" Grid.Row="2" Width="Auto" Height="{Binding Height}" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
+        <my:Visualisation2D Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="Auto" Width="{Binding Height}"/>-->
         <!--<my:Visualisation2D Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="Auto" Width="Auto" />-->
     </Grid>
 </Window>

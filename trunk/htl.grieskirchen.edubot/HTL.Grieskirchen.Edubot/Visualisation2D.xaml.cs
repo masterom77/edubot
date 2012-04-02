@@ -26,39 +26,6 @@ namespace HTL.Grieskirchen.Edubot
     {
         public const int MAX_SPEED = 50;
 
-        #region ---------------------Dependency Properties-------------------
-      //  public static readonly DependencyProperty ShowGridProperty =
-      //DependencyProperty.Register("ShowGrid", typeof(bool), typeof(Visualisation2D),new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty ShowLabelsProperty =
-      //DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty ShowAnimationProperty =
-      //DependencyProperty.Register("ShowAnimation", typeof(bool), typeof(Visualisation2D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty TicksProperty =
-      //DependencyProperty.Register("Ticks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(4, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty MaxTicksProperty =
-      //DependencyProperty.Register("MaxTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(20, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty MinTicksProperty =
-      //DependencyProperty.Register("MinTicks", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty SpeedProperty =
-      //DependencyProperty.Register("Speed", typeof(int), typeof(Visualisation2D), new PropertyMetadata(50, USpeed));
-
-      //  public static void USpeed(DependencyObject obj, DependencyPropertyChangedEventArgs arg){
-      //      speed = (int) obj.GetValue(SpeedProperty);
-      //  } 
-
-      //  public static readonly DependencyProperty MaxSpeedProperty =
-      //DependencyProperty.Register("MaxSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(100, FrameworkPropertyMetadataOptions.AffectsRender));
-
-      //  public static readonly DependencyProperty MinSpeedProperty =
-      //DependencyProperty.Register("MinSpeed", typeof(int), typeof(Visualisation2D), new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsRender));
-
-        #endregion
 
         public Visualisation2D()
         {
@@ -74,6 +41,7 @@ namespace HTL.Grieskirchen.Edubot
         private Rect3D posSecondaryEngine;
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
+        private System.Threading.Thread animationThread;
         private List<Point> drawnPoints;
 
         #region ---------------------Properties---------------------
@@ -93,6 +61,7 @@ namespace HTL.Grieskirchen.Edubot
         {
             get { return visualisationAdapter; }
             set { visualisationAdapter = value;
+            visualisationAdapter.OnAbort += StopAnimation;
             InvalidateVisual();
             }
         }
@@ -106,7 +75,8 @@ namespace HTL.Grieskirchen.Edubot
                 angles = value;
                 if (configuration.VisualizationEnabled)
                 {
-                    new System.Threading.Thread(StartAnimation).Start();
+                    animationThread = new System.Threading.Thread(StartAnimation);
+                    animationThread.Start();
                 }
             }
         }
@@ -162,17 +132,30 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
         private void StartAnimation() {
-            UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-            UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-            float ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-            ticks = 5;
-            foreach (InterpolationStep step in angles) {
-                System.Threading.Thread.Sleep((int)ticks);
-                Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-                Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+            try
+            {
+                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                foreach (InterpolationStep step in angles)
+                {
+                    //ticks = MAX_SPEED + 3 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    System.Threading.Thread.Sleep((int)ticks);
+                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                }
+                visualisationAdapter.State = API.State.READY;
             }
-            visualisationAdapter.State = API.State.READY;
+            catch (System.Threading.ThreadAbortException) {
+                
+            }
         }
+
+        private void StopAnimation(object sender, EventArgs args)
+        {
+            animationThread.Abort();
+        }
+
         private void UpdatePrimaryAxis(float val)
         {
             AnglePrimaryAxis = val;

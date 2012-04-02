@@ -62,7 +62,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeEnvironmentVariables();
             InitializeLists();
             LoadSettings();
-            Kinematics.DisplayResults = false;
+            //Kinematics.DisplayResults = false;
             windowVisualisation = new VisualisationExternal();
             //VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
             //visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
@@ -185,8 +185,8 @@ namespace HTL.Grieskirchen.Edubot
             tiVisualization.DataContext = settings.VisualizationConfig;
             visualisation2D.Configuration = settings.VisualizationConfig;
             visualisation3D.Configuration = settings.VisualizationConfig;
-            vb2DVisualisation.DataContext = settings.VisualizationConfig;
-            vb3DVisualisation.DataContext = settings.VisualizationConfig;
+            visualisation2D.DataContext = settings.VisualizationConfig;
+            visualisation3D.DataContext = settings.VisualizationConfig;
             //tbDALength.SetBinding(TextBox.TextProperty, "DefaultConfig.Length");
             //tiDASettings.DataContext = settings.DefaultConfig;
             //ActualizeDefaultSettings();
@@ -684,10 +684,10 @@ namespace HTL.Grieskirchen.Edubot
 
         private void ReplaceVisualisationAdapters(object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName == "VisualizedAdapter") {
-                //IAdapter adapter;
-                //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
-                //adapter.OnMovementStarted += Notify2DVisualization;
-                //visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
+                IAdapter adapter;
+                edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
+                adapter.OnMovementStarted += Notify2DVisualization;
+                visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
                 IAdapter adapter2;
                 edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter2);
                 adapter2.OnMovementStarted += Notify3DVisualization;
@@ -696,13 +696,18 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         private void Notify2DVisualization(object sender, EventArgs e) {
-            
+             
             visualisation2D.Angles = ((MovementStartedEventArgs)e).Result.Angles;
         }
 
         private void Notify3DVisualization(object sender, EventArgs e)
         {
             visualisation3D.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+        }
+
+        private void Abort(object sender, RoutedEventArgs e)
+        {
+            edubot.Execute(new AbortCommand());
         }
     }
 }
