@@ -30,28 +30,23 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { Kinematics.displayResults = value; }
         }
 
-        /// <summary>
-        /// Calculates a point from the specified angles and lengths
-        /// </summary>
-        /// <param name="angle1"></param>
-        /// <param name="angle2"></param>
-        /// <param name="length"></param>
-        /// <param name="length2"></param>
-        /// <returns></returns>
-        public static Point3D CalculateDirect(float angle1, float angle2, float length, float length2) {
+        public static Point3D CalculateDirect(float beta, float gamma, float temp, float length, float length2) {
 
-            double tmpAlpha = MathHelper.ConvertToDegrees(Math.Atan(length2 / length));
-            double helpAlpha = angle1 + tmpAlpha;
-            double tmpBeta = MathHelper.ConvertToDegrees(Math.Atan(length / length2));
+            double d = (length * (Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2)) + Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)))) / ((Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)) - Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2))));
+            float y = (float) (d * Math.Sin(MathHelper.ConvertToRadians(temp)));
+            float x = (float) Math.Sqrt(d * d - y * y);
+            //double tmpAlpha = MathHelper.ConvertToDegrees(Math.Atan(length2 / length));
+            //double helpAlpha = angle1 + tmpAlpha;
+            //double tmpBeta = MathHelper.ConvertToDegrees(Math.Atan(length / length2));
 
-            double r = Math.Sqrt(length * length + length2 * length2 - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(180 - tmpAlpha - tmpBeta)));
+            //double r = Math.Sqrt(length * length + length2 * length2 - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(180 - tmpAlpha - tmpBeta)));
 
-            double x = Math.Sin(MathHelper.ConvertToRadians(angle1)) * r;
-            double y = Math.Cos(MathHelper.ConvertToRadians(angle1)) * r;
-            double x2 = Math.Sin(MathHelper.ConvertToRadians(angle2)) * r;
-            double y2 = Math.Cos(MathHelper.ConvertToRadians(angle2)) * r;
+            //double x = Math.Sin(MathHelper.ConvertToRadians(angle1)) * r;
+            //double y = Math.Cos(MathHelper.ConvertToRadians(angle1)) * r;
+            //double x2 = Math.Sin(MathHelper.ConvertToRadians(angle2)) * r;
+            //double y2 = Math.Cos(MathHelper.ConvertToRadians(angle2)) * r;
       
-            return new Point3D(0, 0, 0);
+            return new Point3D(x,y,0);
         }
 
         ///// <summary>
@@ -366,11 +361,16 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
             double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
 
+
             double temp = MathHelper.ConvertToDegrees(Math.Acos(x / d));
             int quadrant = MathHelper.GetQuadrant(x, y);
             if (quadrant == 3 || quadrant == 4) {
                 temp = -temp;
             }
+
+            Console.WriteLine("Soll-Wert :" + x + "/" + y);
+            Point3D calculated = CalculateDirect((float)beta, (float)gamma, (float)temp, length, length2);
+            Console.WriteLine("Ist-Wert :" + calculated.X + "/" + calculated.Y);
             return new InterpolationStep() { Alpha1 = (float)(temp - alpha), Alpha2 = (float)(180 - beta) };
         }
     }

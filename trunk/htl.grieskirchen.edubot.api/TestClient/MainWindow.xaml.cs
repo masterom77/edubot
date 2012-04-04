@@ -29,7 +29,7 @@ namespace TestClient
         {
             InitializeComponent();
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 150);
+            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150, 150);
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
             adapter.OnMovementStarted += NotifyVisualisation;
