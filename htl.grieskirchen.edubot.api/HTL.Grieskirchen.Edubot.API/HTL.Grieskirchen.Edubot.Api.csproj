@@ -83,6 +83,8 @@
     <Compile Include="Exceptions\OutOfRangeException.cs" />
     <Compile Include="Exceptions\IllegalStateUpdateException.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />
+    <Compile Include="Interpolation\AccelerationArea.cs" />
+    <Compile Include="Interpolation\AccelerationResult.cs" />
     <Compile Include="Interpolation\CircularInterpolation.cs" />
     <Compile Include="Interpolation\IInterpolationType.cs" />
     <Compile Include="Interpolation\InterpolationResult.cs" />

@@ -368,10 +368,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 temp = -temp;
             }
 
-            Console.WriteLine("Soll-Wert :" + x + "/" + y);
-            Point3D calculated = CalculateDirect((float)beta, (float)gamma, (float)temp, length, length2);
-            Console.WriteLine("Ist-Wert :" + calculated.X + "/" + calculated.Y);
-            return new InterpolationStep() { Alpha1 = (float)(temp - alpha), Alpha2 = (float)(180 - beta) };
+            //Console.WriteLine("Soll-Wert :" + x + "/" + y);
+            //Point3D calculated = CalculateDirect((float)beta, (float)gamma, (float)temp, length, length2);
+            //Console.WriteLine("Ist-Wert :" + calculated.X + "/" + calculated.Y);
+            return new InterpolationStep() { Alpha1 = (float)(temp - alpha), Alpha2 = (float)(180 - beta) }; 
         }
     }
 }

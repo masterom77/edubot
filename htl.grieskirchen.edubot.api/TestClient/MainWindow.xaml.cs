@@ -37,6 +37,7 @@ namespace TestClient
 
         public void NotifyVisualisation(object sender, EventArgs e){
             v2d.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+            ((MovementStartedEventArgs)e).Result.ToString();
         }
 
         private void ExecuteStart(object sender, RoutedEventArgs e)

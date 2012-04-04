@@ -71,6 +71,20 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             steps = new List<InterpolationStep>();
         }
 
+        private void GenerateAccelerationData() {
+            for (int pos = 0; pos < steps.Count - 1; pos++)
+            {
+                int ticksAlpha1 = 0;
+                AccelerationArea area = new AccelerationArea();
+                area.StartPos = pos;
+                if (((steps[pos].Alpha1 > 0 && steps[pos + 1].Alpha1 > 0) || (steps[pos].Alpha1 < 0 && steps[pos + 1].Alpha1 < 0)) && ((steps[pos].Alpha1 > 0 && steps[pos + 1].Alpha2 > 0) || (steps[pos].Alpha1 < 0 && steps[pos + 1].Alpha2 < 0)))
+                {
+                    
+                }
+                area.EndPos = 1;
+            }
+        }
+
         /// <summary>
         /// Converts the content into a sendable format
         /// </summary>
@@ -80,16 +94,18 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float varianceAlpha1 = 0f;
             float varianceAlpha2 = 0f;
             string result = "";//primarySpeed+";"+secondarySpeed+"|";
+            
             foreach (InterpolationStep step in steps) {
                 //if (Math.Abs(step.Alpha1) < Configuration.AnglePerStep) {
-                //    varianceAlpha1 += step.Alpha1;
+                //    alpha1Counter++;
                 //}
-                //if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep) {
-                //    step.Alpha1 += varianceAlpha1;
-                //    varianceAlpha1 = 0f;
-                //}
-                //if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep) {
-                //    varianceAlpha2 += step.Alpha2;
+                ////if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep) {
+                ////    step.Alpha1 += varianceAlpha1;
+                ////    varianceAlpha1 = 0f;
+                ////}
+                //if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep)
+                //{
+                //    alpha2Counter++;
                 //}
                 //if (varianceAlpha2 >= Configuration.AnglePerStep)
                 //{
