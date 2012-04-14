@@ -327,10 +327,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float d = (float)Math.Sqrt(x * x + y * y);
 
             #region ------------------------Point Validation------------------------
-            if ((Math.Sqrt(Math.Round(x) * Math.Round(x) + Math.Round(y) * Math.Round(y)) > (length + length2)) ||
-                (d < Math.Abs(length - length2))
-                )
-                throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
+            //if (Math.Round(d) > (length + length2) ||
+            //    (d < Math.Abs(length - length2))
+            //    )
+            //    throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "/" + Math.Round(y) + "/0) befindet sich nicht im Arbeitsbereichs des Roboters");
             //if (length != length2) {
             //    float difLength = Math.Abs(length - length2);
             //    if (r <= difLength)

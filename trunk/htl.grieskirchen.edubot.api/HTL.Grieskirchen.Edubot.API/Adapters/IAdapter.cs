@@ -120,7 +120,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         }
 
         Event onMovementStarted;
-
         /// <summary>
         /// Triggered if the angle of an axis has changed. The specific axis can be found in the event arguments.
         /// </summary>

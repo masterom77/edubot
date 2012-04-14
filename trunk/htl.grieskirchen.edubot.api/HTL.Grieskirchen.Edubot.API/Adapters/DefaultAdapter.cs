@@ -73,7 +73,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public bool TestConnectivity() {
             try
             {
-                DateTime time = DateTime.Now;
                 Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, false);
                 socket.SendTimeout = 5000;

@@ -67,14 +67,11 @@
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Adapters\VirtualAdapter.cs" />
-    <Compile Include="Axis.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="EventArgs\HomingEventArgs.cs" />
     <Compile Include="EventArgs\MovementStartedEventArgs.cs" />
     <Compile Include="Exceptions\AdapterException.cs" />
-    <Compile Include="AxisType.cs" />
     <Compile Include="Edubot.cs" />
-    <Compile Include="Engine.cs" />
     <Compile Include="EventArgs\AngleChangedEventArgs.cs" />
     <Compile Include="EventArgs\StateChangedEventArgs.cs" />
     <Compile Include="EventArgs\ToolEventArgs.cs" />
