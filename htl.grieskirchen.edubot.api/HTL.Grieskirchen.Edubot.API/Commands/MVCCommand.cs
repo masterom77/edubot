@@ -45,7 +45,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
             adapter.State = State.MOVING;
             if (adapter.OnMovementStarted != null)
                 adapter.OnMovementStarted(adapter, new MovementStartedEventArgs(result));
-            new System.Threading.Thread(adapter.MoveCircularTo).Start(target);
+            new System.Threading.Thread(adapter.MoveCircularTo).Start(new object[]{target,center});
         }
     }
 }
