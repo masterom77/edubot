@@ -132,7 +132,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //byte[] buffer = new byte[1];
             //buffer[0] = Convert.ToByte(activate);
             //socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes("usetool:" + param.ToString()));
+            socket.Send(Encoding.UTF8.GetBytes("ust:" + param.ToString()));
             //socket.Disconnect(true);
 
         }
@@ -142,13 +142,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //if (!socket.Connected)
             //    Connect();
             Connect();
-            socket.Send(Encoding.UTF8.GetBytes("homing:"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
+            socket.Send(Encoding.UTF8.GetBytes("hom:"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
         }
 
         public override void Shutdown()
         {
             
-            socket.Send(Encoding.UTF8.GetBytes("shutdown"));
+            socket.Send(Encoding.UTF8.GetBytes("sht"));
             Disconnect();
         }
 
@@ -161,7 +161,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Abort()
         {
-            socket.Send(Encoding.UTF8.GetBytes("abort"));
+            socket.Send(Encoding.UTF8.GetBytes("abo"));
         }
     }
 }

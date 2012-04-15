@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
@@ -74,7 +75,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns>A string with format "alpha1;alpha2;alpha3"</returns>
         public override string ToString()
         {
-            return Convert.ToInt32(Math.Round(alpha1 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha2 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha3 / 0.1125));
+            NumberFormatInfo info = (NumberFormatInfo) NumberFormatInfo.CurrentInfo.Clone();
+            info.NumberDecimalSeparator = ".";
+            //return Convert.ToInt32(Math.Round(alpha1 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha2 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha3 / 0.1125));
+            return alpha1.ToString(info) + ";" + alpha2.ToString(info) + ";" + alpha3.ToString(info);
         }
 
     }

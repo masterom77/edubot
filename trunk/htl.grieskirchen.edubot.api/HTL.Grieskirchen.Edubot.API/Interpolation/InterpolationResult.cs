@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
@@ -91,27 +92,30 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <returns>A string with format "primarySpeed;secondarySpeed|step1&step2&step3..."</returns>
         public override string ToString()
         {
+            
             float varianceAlpha1 = 0f;
             float varianceAlpha2 = 0f;
             string result = "";//primarySpeed+";"+secondarySpeed+"|";
             
             foreach (InterpolationStep step in steps) {
-                //if (Math.Abs(step.Alpha1) < Configuration.AnglePerStep) {
-                //    alpha1Counter++;
-                //}
-                ////if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep) {
-                ////    step.Alpha1 += varianceAlpha1;
-                ////    varianceAlpha1 = 0f;
-                ////}
-                //if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep)
-                //{
-                //    alpha2Counter++;
-                //}
-                //if (varianceAlpha2 >= Configuration.AnglePerStep)
-                //{
-                //    step.Alpha2 += varianceAlpha2;
-                //    varianceAlpha2 = 0f;
-                //}
+                if (Math.Abs(step.Alpha1) < Configuration.AnglePerStep)
+                {
+                    varianceAlpha1 += step.Alpha1;
+                }
+                if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep)
+                {
+                    step.Alpha1 += varianceAlpha1;
+                    varianceAlpha1 = 0f;
+                }
+                if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep)
+                {
+                    varianceAlpha2 += step.Alpha2;
+                }
+                if (varianceAlpha2 >= Configuration.AnglePerStep)
+                {
+                    step.Alpha2 += varianceAlpha2;
+                    varianceAlpha2 = 0f;
+                }
                 result += step.ToString() + "&";
             }
             result = result.Remove(result.Length - 1);

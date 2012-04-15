@@ -165,7 +165,7 @@ namespace TestClient
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
                 bool primaryCorrected = false;
                 bool secondaryCorrected = false;
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                float ticks = 25;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
                 while (!primaryCorrected || !secondaryCorrected)
                 {
                     //ticks = MAX_SPEED + 3 - (((float)MAX_SPEED / 100) * configuration.Speed);
