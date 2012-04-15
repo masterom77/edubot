@@ -16,6 +16,7 @@ using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.API.Adapters;
 using System.ComponentModel;
 using HTL.Grieskirchen.Edubot.Settings;
+using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -177,7 +178,67 @@ namespace HTL.Grieskirchen.Edubot
             get { return visualisationAdapter; }
             set { visualisationAdapter = value;
             visualisationAdapter.OnAbort += StopAnimation;
+            visualisationAdapter.OnHoming += StartHoming;
             InvalidateVisual();
+            }
+        }
+
+        private void StartHoming(object sender, EventArgs args)
+        {
+            new System.Threading.Thread(Home).Start(args);
+        }
+
+        private void Home(object args)
+        {
+            try
+            {
+                HomingEventArgs e = (HomingEventArgs)args;
+                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                bool primaryCorrected = false;
+                bool secondaryCorrected = false;
+                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                while (!primaryCorrected || !secondaryCorrected)
+                {
+                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    System.Threading.Thread.Sleep((int)ticks);
+                    if (anglePrimaryAxis > e.CorrectionAngle || anglePrimaryAxis < -e.CorrectionAngle)
+                    {
+                        if (anglePrimaryAxis > e.CorrectionAngle)
+                        {
+                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis - e.CorrectionAngle));
+                        }
+                        else
+                        {
+                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis + e.CorrectionAngle));
+                        }
+                    }
+                    else
+                    {
+                        primaryCorrected = true;
+                    }
+
+                    if (angleSecondaryAxis > e.CorrectionAngle || angleSecondaryAxis < -e.CorrectionAngle)
+                    {
+                        if (angleSecondaryAxis > e.CorrectionAngle)
+                        {
+                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis - e.CorrectionAngle));
+                        }
+                        else
+                        {
+                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis + e.CorrectionAngle));
+                        }
+                    }
+                    else
+                    {
+                        secondaryCorrected = true;
+                    }
+                }
+                visualisationAdapter.State = API.State.READY;
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+
             }
         }
 
@@ -272,7 +333,7 @@ namespace HTL.Grieskirchen.Edubot
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
                 foreach (InterpolationStep step in angles)
                 {
-                    //ticks = MAX_SPEED + 3 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
