@@ -29,9 +29,11 @@ namespace TestClient
         {
             InitializeComponent();
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150, 150);
+            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 225);
+            DefaultAdapter adapter2 = new DefaultAdapter(new VirtualTool(), 200, 225, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
+            edubot.RegisterAdapter("demo2", adapter2);
             adapter.OnMovementStarted += NotifyVisualisation;
         }
 
