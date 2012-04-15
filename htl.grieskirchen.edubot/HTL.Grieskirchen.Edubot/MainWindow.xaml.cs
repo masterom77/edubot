@@ -63,7 +63,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeLists();
             LoadSettings();
             //Kinematics.DisplayResults = false;
-            windowVisualisation = new VisualisationExternal();
+            //windowVisualisation = new VisualisationExternal();
             //VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
             //visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
             //visualisation3D.VisualisationAdapter = visualisationAdapter;
@@ -630,7 +630,7 @@ namespace HTL.Grieskirchen.Edubot
 
         private void rbUseLongestAdapter_Checked(object sender, RoutedEventArgs e)
         {
-            ReplaceVisualisationAdapterWithLongest();
+            //ReplaceVisualisationAdapterWithLongest();
         
         }
 
