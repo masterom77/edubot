@@ -15,6 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -84,7 +84,7 @@
       <DependentUpon>NetworkInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\KebaAdapterConfig.cs" />
-    <Compile Include="Settings\DefaultAdapterConfig.cs" />
+    <Compile Include="Settings\EdubotAdapterConfig.cs" />
     <Compile Include="Settings\IConfiguration.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\VisualizationConfig.cs" />
@@ -247,6 +247,9 @@
     <Folder Include="Controls\Adapter\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "C:\Users\Philipp\Documents\HelpNDoc\Output\html\" "C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\doc\" /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

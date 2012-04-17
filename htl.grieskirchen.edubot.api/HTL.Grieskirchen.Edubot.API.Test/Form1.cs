@@ -33,7 +33,7 @@ namespace EduBot
             adapter2.OnMovementStarted += OnUpdate2;
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
-            DefaultAdapter a = new DefaultAdapter(new VirtualTool(), 150,150, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
+            EdubotAdapter a = new EdubotAdapter(new VirtualTool(), 150,150, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
             edubot.RegisterAdapter("default",a);
             //bool conTest = a.TestConnectivity();
             List<ICommand> commands = new List<ICommand>();

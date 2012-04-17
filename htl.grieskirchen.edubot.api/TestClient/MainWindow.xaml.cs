@@ -15,6 +15,7 @@ using HTL.Grieskirchen.Edubot.API;
 using HTL.Grieskirchen.Edubot.API.Adapters;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
 using HTL.Grieskirchen.Edubot.API.Commands;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace TestClient
 {
@@ -29,8 +30,8 @@ namespace TestClient
         {
             InitializeComponent();
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 225);
-            DefaultAdapter adapter2 = new DefaultAdapter(new VirtualTool(), 200, 225, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 230);
+            EdubotAdapter adapter2 = new EdubotAdapter(new VirtualTool(), 200, 230, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
             edubot.RegisterAdapter("demo2", adapter2);
@@ -65,6 +66,15 @@ namespace TestClient
         private void ExecuteShutdown(object sender, RoutedEventArgs e)
         {
             edubot.Execute(new ShutdownCommand());
+        }
+
+        private void SendAngle(object sender, RoutedEventArgs e)
+        {
+            EdubotAdapter adapter = new EdubotAdapter(new VirtualTool(), 200, 225, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            adapter.SetInterpolationResult(new InterpolationResult() { Steps = new List<InterpolationStep> { new InterpolationStep() { Alpha1 = float.Parse(tbAlpha1.Text), Alpha2 = float.Parse(tbAlpha2.Text) } } });
+            adapter.Start(0.1125f);
+            System.Threading.Thread.Sleep(1000);
+            adapter.MoveStraightTo(new Point3D(300,0,0));
         }
 
     }

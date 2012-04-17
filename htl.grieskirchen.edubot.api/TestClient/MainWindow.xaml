@@ -18,6 +18,8 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"></ColumnDefinition>
@@ -48,6 +50,9 @@
             <TextBox Grid.Row="3" Grid.Column="6" Background="LightGreen" Margin="5" Name="tbMVCZHelp"></TextBox>
             <Button Margin="5" Grid.Row="4" Click="ExecuteAbort">Abort</Button>
             <Button Margin="5" Grid.Row="5" Click="ExecuteShutdown">Shutdown</Button>
+            <Button Margin="5" Grid.Row="6" Click="SendAngle">Send Angle</Button>
+            <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Name="tbAlpha1"></TextBox>
+            <TextBox Grid.Row="6" Grid.Column="2" Margin="5" Name="tbAlpha2"></TextBox>
         </Grid>
     </Grid>
 </Window>

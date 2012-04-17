@@ -65,7 +65,8 @@ namespace HTL.Grieskirchen.Edubot.Settings
                 IAdapter adapter;
                 string state = "Disconnected";
                 if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter)) {
-                    if (((DefaultAdapter)adapter).TestConnectivity()) {
+                    if (((EdubotAdapter)adapter).TestConnectivity())
+                    {
                         state = "Connected";
                     }
                 }                

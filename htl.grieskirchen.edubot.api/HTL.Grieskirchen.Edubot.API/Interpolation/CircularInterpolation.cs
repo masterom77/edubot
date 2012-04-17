@@ -60,7 +60,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
 
             InterpolationResult result = new InterpolationResult();
-
+            InterpolationStep prevStep = Kinematics.CalculateInverse(toolCenterPoint, length, length2);
             
             for (int i = 1; i <= d; i++)
             {
@@ -68,7 +68,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 x = center.X + r * Math.Cos(MathHelper.ConvertToRadians(i * anglePerStep + startingAngle));
                 y = center.Y + r * Math.Sin(MathHelper.ConvertToRadians( i * anglePerStep + startingAngle));
                 InterpolationStep step = Kinematics.CalculateInverse(new Point3D((float)x, (float)y, 0), length, length2);
+                
                 result.Angles.Add(step);
+                result.Steps.Add(step - prevStep);
             }
 
 

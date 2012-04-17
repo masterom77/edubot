@@ -41,9 +41,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
                         switch (message)
                         {
                             case "ready":
-
                                 adapter.State = State.READY;
-
                                 break;
                             case "shutdown":
                                 adapter.State = State.SHUTDOWN;
