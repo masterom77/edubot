@@ -13,14 +13,14 @@ namespace HTL.Grieskirchen.Edubot.Settings
     {
 
         public Settings() {
-            defaultConfig = new DefaultAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
+            defaultConfig = new EdubotAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
             kebaConfig = new KebaAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
             visualizationConfig = new VisualizationConfig() { Length = "150", Length2 = "150", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, UseLongest = true, UseFollowing = false, SelectedTool = "Virtuell" };
         }
 
-        DefaultAdapterConfig defaultConfig;
+        EdubotAdapterConfig defaultConfig;
 
-        public DefaultAdapterConfig DefaultConfig
+        public EdubotAdapterConfig DefaultConfig
         {
             get { return defaultConfig; }
             set { defaultConfig = value; }
@@ -50,17 +50,25 @@ namespace HTL.Grieskirchen.Edubot.Settings
         }
 
         public static Settings Load() {
+            System.IO.FileStream stream = null;
+            Settings settings = null;
             try
             {
+                stream = new System.IO.FileStream("settings.xml", System.IO.FileMode.Create);
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(Settings));
-                Settings settings = (Settings)
-                serializer.Deserialize(new System.IO.FileStream("settings.xml", System.IO.FileMode.Create));
-                return settings;
+                settings = (Settings)serializer.Deserialize(stream);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine("LOADING ERROR:" + e.Message);
             }
-            return null;
+            finally {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
+            return settings;
         }
 
         public void Apply() {
@@ -73,7 +81,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
                 kebaConfig.Apply();
             }
             visualizationConfig.Apply();
-        
+            Settings.Save(this);
         }
     }
 }

@@ -43,10 +43,16 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
+        [NonSerialized]
         protected Dictionary<String, ITool> availableTools;
 
         public List<String> AvailableTools {
-            get { return availableTools.Keys.ToList(); }
+            get
+            {
+                if (availableTools == null) {
+                    availableTools = new Dictionary<string, ITool>();
+                } 
+                return availableTools.Keys.ToList(); }
         }
 
         protected void NotifyPropertyChanged(String property)

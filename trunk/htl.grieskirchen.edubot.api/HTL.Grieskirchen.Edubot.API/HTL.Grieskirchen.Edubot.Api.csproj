@@ -56,7 +56,7 @@
     <Compile Include="Adapters\AdapterType.cs" />
     <Compile Include="Adapters\IAdapter.cs" />
     <Compile Include="Adapters\KebaAdapter.cs" />
-    <Compile Include="Adapters\DefaultAdapter.cs" />
+    <Compile Include="Adapters\EdubotAdapter.cs" />
     <Compile Include="Adapters\Listeners\VirtualStateListener.cs" />
     <Compile Include="Commands\AbortCommand.cs" />
     <Compile Include="Commands\HomingCommand.cs" />

@@ -62,23 +62,10 @@ namespace HTL.Grieskirchen.Edubot
             InitializeEnvironmentVariables();
             InitializeLists();
             LoadSettings();
-            //Kinematics.DisplayResults = false;
-            //windowVisualisation = new VisualisationExternal();
-            //VirtualAdapter visualisationAdapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
-            //visualisationAdapter.OnMovementStarted += ShowEventArgsInfo;
-            //visualisation3D.VisualisationAdapter = visualisationAdapter;
-            //visualisation2D.VisualisationAdapter = visualisationAdapter;
-            //edubot.RegisterAdapter("2de", visualisationAdapter);
-            //IAdapter adapter;
-            //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter);
-            //adapter.OnMovementStarted += ShowEventArgsInfo;
-            //visualisation2D.VisualisationAdapter = (VirtualAdapter)adapter;
-            //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter);
-            //adapter.OnMovementStarted += ShowEventArgsInfo;
-            //visualisation3D.VisualisationAdapter = (VirtualAdapter)adapter;
-            //edubot.RegisterAdapter(new DefaultAdapter(new VirtualTool(), 250, 150, IPAddress.Parse("127.0.0.1"), 12000));
+            
             InitializeLists();
-//ReplaceVisualisationAdapterWithLongest();
+            string path = Environment.CurrentDirectory.Replace('\\', '/');
+            wbManual.Source = new Uri(path+"/doc/Edubot.html");
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
             puAutocomplete.KeyDown += AppendText;
@@ -145,9 +132,7 @@ namespace HTL.Grieskirchen.Edubot
 
         public void InitializeEnvironmentVariables() {
             parser = new CommandParser();
-            currentFile = null;
-            
-            
+            currentFile = null;                      
             saved = true;
             running = false;
         }
@@ -171,15 +156,6 @@ namespace HTL.Grieskirchen.Edubot
                 settings = new Settings.Settings();
             settings.VisualizationConfig.PropertyChanged += ReplaceVisualisationAdapters;
             settings.Apply();
-            //if(settings.DefaultConfig.AutoConnect){
-            //    settings.DefaultConfig.Apply();
-            //}
-            //if (settings.KebaConfig.AutoConnect) {
-            //    settings.KebaConfig.Apply();
-            //}
-            //if (settings.VisualizationConfig.VisualizationEnabled) {
-            //    settings.VisualizationConfig.Apply();
-            //}
             tiDASettings.DataContext = settings.DefaultConfig;
             tiKESettings.DataContext = settings.KebaConfig;
             tiVisualization.DataContext = settings.VisualizationConfig;
@@ -187,15 +163,12 @@ namespace HTL.Grieskirchen.Edubot
             visualisation3D.Configuration = settings.VisualizationConfig;
             visualisation2D.DataContext = settings.VisualizationConfig;
             visualisation3D.DataContext = settings.VisualizationConfig;
-            //tbDALength.SetBinding(TextBox.TextProperty, "DefaultConfig.Length");
-            //tiDASettings.DataContext = settings.DefaultConfig;
-            //ActualizeDefaultSettings();
         }
 
        
 
 
-        public void ActualizeDefaultSettings() {
+        public void ActualizeEdubotSettings() {
             tbDALength.Text = settings.DefaultConfig.Length.ToString();
             tbDALength2.Text = settings.DefaultConfig.Length2.ToString();
             tbDAIpAddress.Text = settings.DefaultConfig.IpAddress;
@@ -219,7 +192,8 @@ namespace HTL.Grieskirchen.Edubot
                 //AxisData d;
 
                 //Update Visualisation
-                if (sender is DefaultAdapter) {
+                if (sender is EdubotAdapter)
+                {
                     Console.WriteLine("DEFAULT!");
                 }
                 if (sender is VirtualAdapter)

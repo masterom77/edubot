@@ -98,27 +98,33 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             string result = "";//primarySpeed+";"+secondarySpeed+"|";
             
             foreach (InterpolationStep step in steps) {
-                if (Math.Abs(step.Alpha1) < Configuration.AnglePerStep)
-                {
-                    varianceAlpha1 += step.Alpha1;
-                }
-                if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep)
-                {
-                    step.Alpha1 += varianceAlpha1;
-                    varianceAlpha1 = 0f;
-                }
-                if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep)
-                {
-                    varianceAlpha2 += step.Alpha2;
-                }
-                if (varianceAlpha2 >= Configuration.AnglePerStep)
-                {
-                    step.Alpha2 += varianceAlpha2;
-                    varianceAlpha2 = 0f;
-                }
+                //if (Math.Abs(step.Alpha1) < Configuration.AnglePerStep)
+                //{
+                //    varianceAlpha1 += step.Alpha1;
+                //}
+                //if (Math.Abs(varianceAlpha1) >= Configuration.AnglePerStep)
+                //{
+                //    step.Alpha1 += varianceAlpha1;
+                //    varianceAlpha1 = 0f;
+                //}
+                //if (Math.Abs(step.Alpha2) < Configuration.AnglePerStep)
+                //{
+                //    varianceAlpha2 += step.Alpha2;
+                //}
+                //if (varianceAlpha2 >= Configuration.AnglePerStep)
+                //{
+                //    step.Alpha2 += varianceAlpha2;
+                //    varianceAlpha2 = 0f;
+                //}
+                //if (step.Alpha2 != 0) {
+                //    throw new Exception("Alpha 2 = " + step.Alpha2);
+                //}
                 result += step.ToString() + "&";
             }
-            result = result.Remove(result.Length - 1);
+            if (result.Length > 0)
+            {
+                result = result.Remove(result.Length - 1);
+            }
             return result;
         }
 
