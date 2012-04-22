@@ -62,7 +62,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// </summary>
         /// <exception cref="System.Net.Sockets.SocketException"></exception>
         public void Connect() {
-            socket.Connect(endpoint);            
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket.Connect(endpoint);
+            Listener = new NetworkStateListener(this, socket);            
             Listener.Start();
         }
 
@@ -142,14 +144,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //if (!socket.Connected)
             //    Connect();
             Connect();
-            socket.Send(Encoding.UTF8.GetBytes("hom:"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
+                socket.Send(Encoding.UTF8.GetBytes("hom:"+socket.LocalEndPoint.ToString()+";"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
         }
 
         public override void Shutdown()
         {
             
             socket.Send(Encoding.UTF8.GetBytes("sht"));
-            Disconnect();
+            //Disconnect();
         }
 
         public override void SetInterpolationResult(Interpolation.InterpolationResult result)

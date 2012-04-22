@@ -8,6 +8,11 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public static class MathHelper
     {
+        public const int BETWEEN_1_AND_2 = 5;
+        public const int BETWEEN_2_AND_3 = 6;
+        public const int BETWEEN_3_AND_4 = 7;
+        public const int BETWEEN_4_AND_1 = 8;
+
         public static float ConvertToDegrees(double rad)
         {
             return (float)(rad * 180 / Math.PI);
@@ -45,6 +50,21 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         public static int GetQuadrant(float x, float y)
         {
+            //if (x == 0 && y > 0) {
+            //    return BETWEEN_1_AND_2;
+            //}
+            //if (x == 0 && y < 0)
+            //{
+            //    return BETWEEN_3_AND_4;
+            //}
+            //if (x > 0 && y == 0)
+            //{
+            //    return BETWEEN_4_AND_1;
+            //}
+            //if (x < 0 && y == 0)
+            //{
+            //    return BETWEEN_2_AND_3;
+            //}
             if (x >= 0 && y >= 0)
                 return 1;
             if (x <= 0 && y >= 0)
