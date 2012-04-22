@@ -45,17 +45,18 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
               
                 angle = MathHelper.ConvertToDegrees(Math.Acos(1-(d*d/(2*r*r))));
                 int quadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
-                if (quadrant == 3 || quadrant==4)
-                    angle = 180 + angle;
+                if (angle != 180 && quadrant == 3 || quadrant==4)
+                    angle = -angle;
+
             
             
            
 
-            d = 2 * r * Math.PI * angle / 360;
-
+            d = 2 * r * Math.PI * Math.Abs(angle) / 360;
+            quadrant = MathHelper.GetQuadrant((float)difToolCenterX, (float)difToolCenterY);
             double startingAngle = MathHelper.ConvertToDegrees(Math.Acos(difToolCenterX / r));
             if (quadrant == 3 || quadrant == 4)
-                startingAngle = 180 + angle;
+                startingAngle = 180 + startingAngle;
             double anglePerStep = angle/d;
 
 

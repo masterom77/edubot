@@ -32,6 +32,7 @@ namespace TestClient
             edubot = Edubot.GetInstance();
             VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 230);
             EdubotAdapter adapter2 = new EdubotAdapter(new VirtualTool(), 200, 230, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+           
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
             edubot.RegisterAdapter("demo2", adapter2);
@@ -44,28 +45,52 @@ namespace TestClient
         }
 
         private void ExecuteStart(object sender, RoutedEventArgs e)
+        {try
+            {
+                edubot.Execute(new StartCommand());
+            }
+        catch (Exception ex)
         {
-            edubot.Execute(new StartCommand());
+            MessageBox.Show("Exception while executing:\n" + ex.ToString());
+        }
         }
 
         private void ExecuteMVS(object sender, RoutedEventArgs e)
-        {
-            edubot.Execute(new MVSCommand(new Point3D(float.Parse(tbMVSX.Text),float.Parse(tbMVSY.Text),float.Parse(tbMVSZ.Text))));
+        {try
+            {
+            edubot.Execute(new MVSCommand(new Point3D(float.Parse(tbMVSX.Text),float.Parse(tbMVSY.Text),float.Parse(tbMVSZ.Text))));}
+            catch (Exception ex) {
+                MessageBox.Show("Exception while executing:\n"+ex.ToString());
+            }
         }
 
         private void ExecuteMVC(object sender, RoutedEventArgs e)
         {
-            edubot.Execute(new MVCCommand(new Point3D(float.Parse(tbMVCX.Text), float.Parse(tbMVCY.Text), float.Parse(tbMVCZ.Text)), new Point3D(float.Parse(tbMVCXHelp.Text), float.Parse(tbMVCYHelp.Text), float.Parse(tbMVCZHelp.Text))));
+            try
+            {
+                edubot.Execute(new MVCCommand(new Point3D(float.Parse(tbMVCX.Text), float.Parse(tbMVCY.Text), float.Parse(tbMVCZ.Text)), new Point3D(float.Parse(tbMVCXHelp.Text), float.Parse(tbMVCYHelp.Text), float.Parse(tbMVCZHelp.Text))));
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Exception while executing:\n"+ex.ToString());
+            }
         }
 
         private void ExecuteAbort(object sender, RoutedEventArgs e)
-        {
-            edubot.Execute(new AbortCommand());
+        {try
+            {
+            edubot.Execute(new AbortCommand());}
+            catch (Exception ex) {
+                MessageBox.Show("Exception while executing:\n"+ex.ToString());
+            }
         }
 
         private void ExecuteShutdown(object sender, RoutedEventArgs e)
-        {
-            edubot.Execute(new ShutdownCommand());
+        {try
+            {
+            edubot.Execute(new ShutdownCommand());}
+            catch (Exception ex) {
+                MessageBox.Show("Exception while executing:\n"+ex.ToString());
+            }
         }
 
         private void SendAngle(object sender, RoutedEventArgs e)
@@ -75,6 +100,11 @@ namespace TestClient
             adapter.Start(0.1125f);
             System.Threading.Thread.Sleep(1000);
             adapter.MoveStraightTo(new Point3D(300,0,0));
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
 
     }
