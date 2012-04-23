@@ -1,0 +1,176 @@
+
+\subsection{Adapter-System}
+
+\subsubsection{Aufgaben}
+Da bei der API viel Wert auf Flexibilität gelegt wird, sollte die Bibliothek in der Lage sein mit den verschiedensten Steuerungen zu kommunizieren. Es soll ein System entwickelt werden mit dem die API zukünftig auch auf neue Steuerungen erweiterbar ist. Im Rahmen der Diplomarbeit soll die Kommunikation mit der KEBA- und der GHI-Steuerung ermöglicht werden. Weiters wird für die Visualisierung in der Endanwendung eine Art “virtuelle Steuerung” benötigt.
+
+\subsubsection{Aufbau}
+Die Grundidee besteht darin, den zukünftigen Anwendern eine einfache Erweiterung der API um neue Steuerungssysteme zu ermöglichen. Um diese Idee zu realisieren wird ein Adapter-System verwendet, bei der für jede Steuerung ein Adapter als Schnittstelle dient. Um einen neuen Adapter zu implementieren muss lediglich eine Klasse implementiert werden, die von der abstrakten \textit{IAdapter}-Klasse abgeleitet ist. Ein Objekt dieser abgeleiteten Klasse kann dann bei der \textit{Edubot}-Klasse mit Hilfe der \textit{RegisterAdapter-Methode} registriert werden. Der Adapter dient dann als Übersetzer der allgemeinen Befehle in die spezifischen Steuerungssprachen und kümmert sich um die Beschaffung bzw. Berechnung potentiell benötigter, zusätzlicher Informationen. Die in den darauffolgenden Kapiteln vorgestellten Adapter  \textit{EdubotAdapter}, \textit{KebaAdapter} und \textit{VirtualAdapter} sind ebenfalls von dieser \textit{IAdapter}-Klasse abgeleitet und dienen als Demonstration der Funktionalität dieses Systems. 
+
+\subsubsection{Umsetzung}
+\textbf{IAdapter}
+\newline
+Jeder Adapter muss die abstrakte Klasse \textit{IAdapter} implementieren, welches alle Grundinformationen bezüglich des angeschlossene Steuerung und des dazugehörigen Roboters enthält. Weiters müssen alle vorhandenen Kommandos von den Adaptern unterstützt werden, weshalb für jedes Kommando eine entsprechende Methode im \textit{IAdapter} vorhanden ist. Diese Klasse besitzt folgende Properties:
+\begin{itemize}
+\item \textbf{Length}
+\newline
+Gibt die Länge der ersten Roboterachse an. Die Längenangabe kann dabei in einer beliebigen Einheit sein, da es bei der Berechnung lediglich auf das Verhältnis der beiden Roboterachsen ankommt.
+\item \textbf{Length2}
+\newline
+Gibt die Länge der zweiten Roboterachse an. Für die korrekte Pfadberechnung muss dieser Wert in derselben Einheit wie “Length” angegeben sein.
+\item \textbf{RequiresPrecalculation}
+\newline
+Diese Eigenschaft legt fest ob beim Durchführen von Bewegungskommandos(MVS, MVC,...) die Pfadberechnung von der API durchgeführt wird oder ein eigener Algorithmus verwendet wird. Wenn dieser Wert auf true gesetzt ist, wird vor der Durchführung des Bewegungskommandos die Pfadberechnung durchgeführt und mittels der Methode \textit{SetInterpolationResult} dem Adapter das Ergebnis mitgegeben.
+\newpage
+\item \textbf{CmdQueue}
+\newline
+Bei der\textit{CmdQueue} handelt es sich um eine Warteschlange mit anstehenden Befehlen für die Steuerung, die in der Reihenfolge in der sie ankommen abgearbeitet werden. Die Liste besteht aus Elementen des Typs \textit{ICommand} (siehe Kommando-System), welche mit der \textit{Execute}-Methode ausgeführt werden.
+Der Grund für die separate Verwaltung der anstehenden Befehle in jedem Adapter liegt darin, dass jeder Roboter eine unterschiedliche lange Zeitdauer zum Ausführen eines Befehls benötigt.
+\item \textbf{State}
+\newline
+Das \textit{State}-Property istwohl eines der wichtigsten Eigenschaften der \textit{IAdapter}-Klasse. Es repräsentiert den aktuellen Zustand des Roboters mit Hilfe der \textit{State}-Enumeration. Wenn dieser Wert auf \textit{SHUTDOWN} oder  \textit{READY} gesetzt wird, wird das nächste \textit{ICommand} aus de r\textit{CmdQueue} geholt und ausgeführt.
+\end{itemize}
+
+Neben diesen Properties implementiert die IAdapter-Klasse noch die Methode
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Diese Methode übernimmt ein \textit{ICommand}-Objekt als Parameter. Zuerst wird überprüft ob es sich bei dem Objekt um ein Objekt vom Typ \textit{AbortCommand} handelt, da dieser Befehl der einzige ist, der unverzüglich nach Eintreffen ausgeführt werden muss. Handelt es sich um einen anderen Befehl, so wird dieser in die \textit{CmdQueue} eingereiht und der Zustand des Adapters wird überprüft. Dabei kommt dasselbe Verfahren wie bei Änderung des \textit{State}-Properties zum Einsatz: Befindet sich der Roboter im \textit{SHUTDOWN} oder \textit{READY}-Zustand so wird mit der Abarbeitung der Befehle begonnen.
+\end{itemize}
+
+Im Anschluss werden die abstrakten Methoden vorgestellt die von den abgeleiteten Klassen implementiert werden müssen. Hierbei handelt es sich um eine allgemeine Erklärung des Zwecks, da auf die genaue Implementierung in den Kapiteln zu den verschiedenen Adaptern eingegangen wird. Da die meisten der angegebenen Methoden aus Performance-Gründen in einem eigenen Thread ausgeführt werden, handelt es sich bei den Parametern immer um Objekte vom Typ \textit{object}. 
+\begin{itemize}
+\item \textbf{Start}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{StartCommand}-Objekts ausgeführt. In dieser Methode sollen alle nötigen Vorbereitungen zum Betrieb der Steuerung bzw. des Roboters getroffen werden. Vor allem sollte hier die Steuerung mit dem Homing, einem Algorithmus der den Roboter in eine bestimmte Ausgangsposition bringt, beginnen.
+\newpage
+\item \textbf{Shutdown}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{ShutdownCommand}-Objekts ausgeführt. Sie sollte zum geplanten Herunterfahren des Roboters dienen und sollte nach erfolgreichen Durchführung den Roboter in ausgeschaltetem Zustand hinterlassen.
+\item \textbf{MoveStraightTo}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{MVSCommand}-Objekts ausgeführt. Es erhält als Parameter den angesteuerten Zielpunkt in Form eines \textit{Point3D}-Objekts. Abhängig davon, worauf das \textit{RequiresPrecalculation-Property} gesetzt wurde, ist der Pfad zu diesen Zeitpunkt bereits berechnet und ist im Adapter in Form eines \textit{InterpolationResult}-Objekts zur weiteren Verwendung vorhanden. Aufgabe dieser Methode ist das Durchführen einer linearen Bewegung vom aktuellen Werkzeugmittelpunkt zum Zielpunkt.
+\item \textbf{MoveCircularTo}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{MVCCommand}-Objekts ausgeführt. Es erhält als Parameter ein \textit{Point3D}-Array mit 2 Punkten - dem angesteuerten Zielpunkt am Index 0 und den angegebenen Mittelpunkt am Index 1. Auch hier ist es wieder abhängig davon, ob das \textit{RequiresPrecalculation}-Property gesetzt wurde, ob eine \textit{InterpolationResult}-Objekt aus der Pfadberechnung vorhanden ist. Aufgabe dieser Methode ist das Durchführen einer zirkularen Bewegung unter Verwendung des angegebenen Mittelpunkts.
+\item \textbf{UseTool}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{UseToolCommand}-Objekts ausgeführt. Sie erhält als Parameter einen boolschen Wert, der angibt ob das Werkzeug aktiviert oder deaktiviert werden soll. Je nach Wert werden benötigte Informationen an den Roboter weitergegeben und dadurch das jeweilige Werkzeug aktiviert.
+\item \textbf{Abort}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{AbortCommand}-Objekts ausgeführt. Diese Methode dient als eine Art Software-Endschalter und sollte den Roboter, unabhängig von seiner aktuellen Aktion, auf der Stelle anhalten und ausschalten. 
+\item \textbf{SetInterpolationResult}
+\newline
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode von \textit{MVSCommand}- oder \textit{MVCCommand}-Objekten ausgeführt, falls das \textit{RequiresPrecalculation} Property auf true gesetzt ist. Als Parameter erhält die Methode das berechnete Interpolationsergebnis als Objekt vom Typ \textit{InterpolationResult} (siehe Interpolation).
+Zusätzlich zu diesen vordefinierten Methoden, besitzt die \textit{IAdapter}-Klasse die Methode \textit{Execute} welche eingehende Befehle verarbeitet.
+\item \textbf{Execute}
+\newline
+Dieser Methode wird als Parameter das durchzuführende Command mitgegeben. Anschließend wird überprüft ob es sich beim übergegebenen Command um ein \textit{AbortCommand} handelt, da dieses unverzüglich ausgeführt werden muss.
+Handelt es sich um eine andere Art von Command, so wird dieses in die Warteschlange, repräsentiert durch das \textit{CmdQueue}-Property, eingereiht. Im Anschluss wird das \textit{State}-Property der \textit{IAdapter-Klasse} überprüft. Falls der Wert dieser Eigenschaft auf \textit{READY} oder \textit{SHUTDOWN} gesetzt ist, wird mit Hilfe der \textit{Dequeue}-Methode der Warteschlange der nächste Befehl geholt und mit seiner \textit{Execute}-Methode ausgeführt.
+\end{itemize}
+
+\textbf{EdubotAdapter}
+\newline
+Der \textit{EdubotAdapter} dient als Schnittstelle zum kleineren Modell unseres SCARA-Roboters. Er kommuniziert via Netzwerk mit der Steuerung von GHI, auf welcher eine eigens entwickelte Steuerungssoftware läuft. Der Adapter ist, wie bereits oben angemerkt, von der abstrakten \textit{IAdapter}-Klasse abgeleitet. Zusätzlich zu den geerbten Properties, enthält die Klasse noch folgende zusätzliche Properties:
+\begin{itemize}
+\item \textbf{Result}
+\newline
+Um die CPU der GHI-Steuerung nicht zu überlasten, wird die Pfadberechnung auf dem ausführenden Rechner durchgeführt und das Ergebnis im \textit{Result}-Property gespeichert. Im Anschluss wird dieses Ergebnis als speziell formatierte Zeichenfolge an die Steuerung gesendet.
+\item \textbf{Endpoint}
+\newline
+Das \textit{Endpoint}-Property beinhaltet die IP-Adresse der GHI-Steuerung, sowie den Port auf dem die Steuerungssoftware läuft. Standardmäßig läuft die Steuerungssoftware auf Port 12000. Der Endpoint wird von \textit{Connect}-Methode des Sockets zum Aufbauen einer Verbindung verwendet.
+\item \textbf{Socket}
+\newline
+Um in C\# eine Netzwerkverbindung aufzubauen, werden sogenannte Sockets verwendet. Beim Erstellen einer neuen Instanz der Socket-Klasse, müssen spezifische Angaben über den Address-, Socket- und Protokolltyp im Konstruktor mitgegeben werden.
+Als Addresstyp verwenden wir \textit{AddressFamily.InterNetwork}, da es sich dabei laut MSDN um den Typ für IPv4-Adressen handelt. Weiters werden die Daten an die Steuerung gestreamt, weshalb wir als \textit{Sockettyp SocketType.Stream} verwenden. Zuletzt muss noch der Protokolltyp angegeben werden. Da bei der Übertragung des Interpolationsergebnisses keine Informationen verloren gehen dürfen, muss ein verlässliches Transport-Protokoll verwendet werden. Das Standard-Protokoll für diese Anforderungen ist das TCP (Transmission Control Protocol), welches deshalb auch als Protokolltyp angegeben wird.
+Mit Hilfe dieses Sockets und dem \textit{Endpoint}-Property, ist der \textit{EdubotAdapter} in der Lage sich zur GHI-Steuerung zu verbinden.
+\end{itemize}
+
+Weiters verfügt dieser Adapter aufgrund seiner Art der Kommunikation noch die Methoden zur Kontrolle und Änderung der Netzwerkeinstellungen:
+\begin{itemize}
+\item \textbf{TestConnectivity}
+\newline
+ Bei Aufruf dieser Methode versucht der Adapter sich kurzzeitig mit der Steuerung zu verbinden. Dazu wird, wie beim Property \textit{Socket} beschrieben, ein Stream geöffnet, jedoch mit zusätzlichen Einstellungen: Die Socket-Feature “Linger” wird via \textit{SetSocketOption} deaktiviert. Der Hintergrund ist der, dass beim Schließen eines Sockets normalerweise die Verbindung so lange offen gehalten wird bis wartende Pakete gesendet wurden. Um dies zu gewährleisten, wartet ein Socket mit dem Linger-Feature in etwa 2 Minuten und schließt erst dann die Verbindung vollständig. Da der Sinn dieser Methode jedoch nur ein schneller Verbindungstest ist, muss dieses Feature deaktiviert werden. Weiters wird der Send- bzw. Receive-Timout auf 5 Sekunden gesetzt, damit das Auslösen einer \textit{SocketException} durch den abgelaufenen Timeout nicht zu lange dauert. Die Methode gibt bei erfolgreichem Aufbauen und Trennen der Verbindung wird \textit{true}, bei Auftreten einer Exception \textit{false} zurückgegeben.
+\item \textbf{SetNetworkConfiguration}
+\newline
+Diese Methode dient zum setzen der Netzwerkeinstellungen und übernimmt als Parameter eine IP-Addresse und eine Port-Nummer. Im nächsten Schritt prüft sie ob derzeit eine Verbindung zur Steuerung besteht. Ist dies der Fall so wird die Verbindung geschlossen. Im Anschluss werden das \textit{Socket}-Objekt, das \textit{Endpoint}-Objekt und der \textit{NetworkStateListener} neu instanziert.
+\end{itemize}
+
+Bezüglich der \textit{IAdapter}-Methoden ist der \textit{EdubotAdapter} folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Start}
+\newline
+Bei Aufruf der \textit{Start}-Methode wird die Verbindung zur Steuerung hergestellt und ein String mit dem Inhalt “hom” (für HOMING) gesendet. Die Steuerungssoftware kümmert sich nach Erhalt der Nachricht darum das der Roboter in die Ausgangsposition fährt (siehe GHI-Steuerungssoftware). Anschließend wartet der \textit{NetworkStateListener} auf Erhalt einer “ready”-Nachricht von der Steuerung. Bei Ankunft dieser Nachricht setzt er den State des Adapters auf \textit{READY} und löst somit die Ausführung des nächsten Commands in der Warteschlange aus.
+\item \textbf{Shutdown}
+\newline
+Bei Aufruf der \textit{Shutdown}-Methode wird der Steuerung ein String mit Inhalt “sht” gesendet, der diese dazu veranlasst den Roboter herunterzufahren. Nachdem der Roboter heruntergefahren wurde sendet die Steuerung einen Nachricht mit “shutdown” die den Abschluss des Shutdown-Prozess indiziert. Das \textit{State}-Attribut des Adapters wird nun auf \textit{SHUTDOWN} gesetzt und die Verbindung mit der Steuerung wird getrennt.
+\item \textbf{MoveStraight}
+\newline
+Bei Aufruf der \textit{MoveStraight}-Methode wird der Steuerung der Auftrag zu einer linearen Verfahrbewegung mit den beigebenen Werten mitgeteilt. Dazu sendet der Adapter einen String der mit “mvs:” beginnt und anschließend die Verfahrschritte beihaltet. Bei den Verfahrschritten handelt es sich um eine Menge an Winkeldifferenzen für die beiden Motoren. Diese Informationen werden von der Steuerung ausgelesen, auf Motorenschritte umgerechnet und anschließend von den Schrittmotoren ausgeführt. Nach Abschluss der Verfahrbewegung sendet die Steuerung einen String mit Inhalt “ready”, woraufhin der \textit{NetworkStateListener} bei Erhalt dieser Nachricht den \textit{State} des ihm zugewiesenen Adapters auf \textit{READY} setzt und der nächste Befehl, falls vorhanden, ausgeführt wird.
+\item \textbf{MoveCircular}
+\newline
+Bei Aufruf der \textit{MoveCircular}-Methode verhält der Adapter gleich wie bei der \textit{MoveStraight}-Methode. Der einzige Unterschied besteht im Prefix, da bei dieser statt “mvs:” die Zeichenfolge “mvc:” verwendet wird. Da die Interpolation beim \textit{EdubotAdapter} sowieso durch die API durchgeführt wird, kann die Struktur des gesendeten Strings beibehalten werden.
+\item \textbf{UseTool}
+\newline
+Bei Aufruf der \textit{UseTool}-Methode wird der Steuerung ein String beginnend mit “ust:” und anschließend einem, vom ausgewählten Werkzeug abhängigen, Kürzel sowie einem boolschen Wert, welcher aussagt ob das Werkzeug aktiviert oder deaktiviert werden soll. Nach Ausführung dieses Befehls sendet die Steuerung erneut einen “ready”-String, nach dessen Erhalt das State-Attribut auf \textit{READY} gesetzt wird. 
+\item \textbf{Abort}
+\newline
+Der Aufruf der \textit{Abort}-Methode sollte zum sofortigen Abbruch jeglicher Aktion des Roboters führen. Dazu wird ein String mit “abo” an die Steuerung gesendet, woraufhin diese ihre aktuelle Aktion unverzüglich unterbricht.
+\item \textbf{SetInterpolationResult}
+\newline
+Bei Aufruf dieser Methode wird das übergebene \textit{InterpolationResult} in einer Variable des Adapters gespeichert, auf die später bei der Übertragung von \textit{MVS}- oder \textit{MVCCommand}s zugegriffen wird.
+\end{itemize}
+
+\textbf{KebaAdapter}
+\newline
+Dieser Adaptertyp dient zur Kommunikation mit der, von der Firma KEBA, zur Verfügung gestellten SPS (Speicherprogammierbare Steuereinheit). Da es sich dabei um eine hochwertige und leistungsstarke Steuerung handelt, muss für letztere keine Pfadberechnung am Rechner durchgeführt werden. Stattdessen werden der SPS lediglich Basisinformationen übermittelt mit welchen diese den Pfad mit einem eigenen Verfahren berechnet. Auch der \textit{KebaAdapter} verfügt über einige zusätzliche Properties:
+\begin{itemize}
+\item \textbf{SenderSocket}
+\newline
+Im Gegensatz zum \textit{EdubotAdapter}, benötigt der KebaAdapter zwei Sockets um eine beidseitige Kommunikation zu ermöglichen. Der \textit{SenderSocket} ist, wie der Name schon sagt, für das Senden von Informationen zur SPS verantwortlich. Auch hier wird als Transport-Protokoll TCP verwendet und mit Hilfe des \textit{SenderEndpoint}s ein Stream zur Steuerung geöffnet. 
+\item \textbf{SenderEndpoint}
+\newline
+Das \textit{SenderEndpoint}-Property beinhaltet die IP-Addresse der Steuerung und den Port auf welchem die SPS Daten über das Netzwerk entgegennimmt. 
+\item \textbf{ReceiverSocket}
+\newline
+Wie oben erwähnt, wird ein zweiter Socket für eine zweiseitige Kommunikation benötigt. Über den \textit{ReceiverSocket} empfängt der \textit{KebaAdapter} Informationen über den aktuellen Zustand beziehungsweise die aktuelle Tätigkeit der SPS. Zum Aufbauen der Verbindung wird das \textit{ReceiverEndpoint}-Attribut verwendet.
+\item \textbf{ReceiverEndpoint}
+\newline
+Das \textit{ReceiverEndpoint}-Property beinhaltet ebenfalls die IP-Addresse der Steuerung, welche im Regelfall mit der IP-Adresse des \textit{SenderEndpoint} übereinstimmen sollte. Lediglich die Portnummer unterscheidet sich von der des \textit{SenderEndpoints}, da hier jener Port angegeben wird über den die SPS Informationen an den Adapter sendet.
+\end{itemize}
+
+Weiters verfügt er über dieselben zusätzliche Methoden wie der EdubotAdapter
+\begin{itemize}
+\item \textbf{TestConnectivity}
+\newline
+Die Funktionweise dieser Methode ist dieselbe wie beim \textit{EdubotAdapter} und bedarf deshalb keiner erneuter Erläuterung.
+\item \textbf{SetNetworkConfiguration}
+\newline
+Auch diese Methode funktioniert gleich wie die des \textit{EdubotAdapters} und bedarf keiner weiteren Erklärung.
+\end{itemize}
+
+Die abstrakten Methoden der \textit{IAdapter}-Klasse sind bei diesem Adapter folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Start}
+\newline
+Bei Aufruf der \textit{Start}-Methode wird über den \textit{SenderSocket} eine Verbindung zur Steuerung hergestellt und ein String mit dem Inhalt “homing” gesendet. Nach Erhalt dieser Nachricht verwendet die SPS eine ausgewählte, von der Firma KEBA entwickelte, Homing-Methode und schickt nach Abschluss der Bewegung einen String mit Inhalt “ready” an den \textit{ReceiverSocket}. Der \textit{ReceiverSocket} wurde dem NetworkListener bei der Instanzierung übergeben, welcher bei Ankunft dieser Nachricht das \textit{State}-Property des Adapters auf \textit{READY} und eine die Ausführung des nächsten Befehls auslöst.
+\item \textbf{Shutdown}
+\newline
+Bei Aufruf der \textit{Shutdown}-Methode wird der Steuerung ein String mit Inhalt “sht” gesendet, der diese dazu veranlasst den Roboter herunterzufahren. Nachdem der Roboter heruntergefahren wurde sendet die Steuerung einen Nachricht mit “shutdown” die den Abschluss des Shutdown-Prozess indiziert. Das \textit{State}-Attribut des Adapters wird nun auf \textit{SHUTDOWN} gesetzt und die Verbindung mit der Steuerung wird getrennt.
+\item \textbf{MoveStraight}
+\newline
+Bei Aufruf der \textit{MoveStraight}-Methode wird der Steuerung der Auftrag zu einer linearen Verfahrbewegung mit den beigebenen Werten mitgeteilt. Dazu sendet der Adapter einen String der mit “mvs:” und im Anschluss den Zielpunkt der Bewegung. Da die Servomotoren der Firma KEBA eine sehr präzise Navigierung benötigen, verwenden wir das firmeneigene Interpolationsverfahren für lineare Bewegungen. Mit Hilfe des Ergebnisses werden im Anschluss die Motoren entsprechend angesteuert um die gewünschte Linearbewegung durchzuführen. Nach Abschluss der Verfahrbewegung sendet die Steuerung einen String mit Inhalt “ready”, woraufhin der \textit{NetworkStateListener} bei Erhalt dieser Nachricht den \textit{State} des ihm zugehörigen Adapters auf \textit{READY} setzt und der nächste Befehl, falls vorhanden, ausgeführt wird.
+\item \textbf{MoveCircular}
+\newline
+Bei Aufruf der \textit{MoveCircular}-Methode verhält der Adapter ähnlich wie bei der \textit{MoveStraight}-Methode. Auch hier wird wieder ein String an die Steuerung gesendet, jedoch mit dem Kürzel “mvc:” als Prefix und zusätzlich zum Zielpunkt den Mittelpunkt der zirkularen Verfahrbewegung. Beim Erhalt dieses Befehls, wird der String in seine Bestandteile (Befehlsart, Zielpunkt und Mittelpunkt) aufgeteilt. Mit Hilfe dieser Informationen wird erneut mit dem Zirkularinterpolationsverfahren der Firma KEBA eine Reihe an Motorenbewegung berechnet. Die Durchführung dieser Bewegungen wird von unserer SPS-Software geregelt und erzeugt die gewünschte Zirkularbewegung. 
+Nach Abschluss der Verfahrbewegung sendet die Steuerung einen String mit Inhalt “ready”, woraufhin der NetworkStateListener bei Erhalt dieser Nachricht den State des ihm zugehörigen Adapters auf \textit{READY} setzt und der nächste Befehl, falls vorhanden, ausgeführt wird.
+\item \textbf{UseTool [TODO]}
+\newline
+Bei Aufruf der UseTool-Methode wird der Steuerung ein String beginnend mit “ust:” und anschließend einem, vom ausgewählten Werkzeug abhängigen, Kürzel sowie einem boolschen Wert, welcher aussagt ob das Werkzeug aktiviert oder deaktiviert werden soll. Nach Ausführung dieses Befehls sendet die Steuerung erneut einen “ready”-String, nach dessen Erhalt das State-Attribut auf READY gesetzt wird. 
+\item \textbf{Abort [TODO]}
+\newline
+Der Aufruf der Abort-Methode sollte zum sofortigen Abbruch jeglicher Aktion des Roboters führen. Dazu wird ein String mit “abo” an die Steuerung gesendet, woraufhin diese ihre aktuelle Aktion unverzüglich unterbricht und die Stromabsenkung der Motoren abstellt. 
+\item \textbf{SetInterpolationResult [TODO]}
+\newline
+Bei Aufruf dieser Methode wird das übergebene InterpolationResult in einer Variable des Adapters gespeichert, auf die später bei der Übertragung von MVS oder MVC-Commands zugegriffen wird.
+\end{itemize}

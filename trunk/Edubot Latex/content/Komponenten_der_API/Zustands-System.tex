@@ -1,0 +1,19 @@
+
+\subsection{Zustands-System}
+
+\subsubsection{Aufgaben}
+Das System muss in der Lage sein bestimmen zu können ob die Ausführung eines Befehls zu einem bestimmten Zeitpunkt möglich ist oder der Roboter derzeit mit einem anderen Befehl beschäftigt ist. Weiters muss überprüft werden ob sich der Roboter im ein- bzw. ausgeschalteten Zustand befindet.
+
+\subsubsection{Aufbau}
+Um diese Aufgabe umsetzen zu können, wurde jedem Adapter das Property State hinzugefügt, welches einen Wert aus der State-Enumeration enthält (siehe Umsetzung). Anhand dieses Wertes kann zu jedem Zeitpunkt bestimmt werden in welchem Zustand sich der spezifische Adapter und demnach auch der Roboter mit dessen Steuerung er kommuniziert befindet.
+
+\subsubsection{Umsetzung}
+Zur Umsetzung wird wie oben erwähnt die Enumeration State verwendet, welche eine vorgegeben Anzahl an Zuständen enthält. Die Bedeutung dieser Zustände kann der folgenden Tabelle entnommen werden.
+
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\textbf{Zustand} & \textbf{Bedeutung}\\
+\hline
+SHUTDOWN & Der Roboter ist ausgeschaltet und kann derzeit keine Befehle ausführen. Lediglich ein Start-Befehl wird vom Adapter in diesem Zustand akzeptiert.\\
+\hline
+\end{tabular}
