@@ -1,20 +1,44 @@
 \subsection{Aufgabenstellung}
-Aufgabe des Projektes \textit{SmartBow} ist es die täglich anfallenden Prozesse eines Landwirtschaftsbetriebes zu vereinfachen und zu optimieren. Dies soll durch die Digitalisierung von allen tierrelevanten Daten geschehen. Mit \textit{SmartBow} können alle Tiere eines Betriebes verwaltet werden, d. h. es können tierrelevante Daten, wie ein Symptom, erfasst und zugewiesen werden. Mit diesen Daten soll \textit{SmartBow} dem Benutzer auf einen Blick darstellen wo es im Stall Probleme gibt, und ihm unnötge Rundgänge ersparen. Der zweite Teil von \textit{SmartBow} ist ein ausgereiftes Lokalisierungssystem, mit dem es dem Benutzer möglich ist, einzelne Tiere schneller zu finden.
+Das Ergebnis des Projekts Edubot soll ein simpel zu bedienendes, funktionales und effektives Werkzeug zum Erlernen der grundsätzlichen Arbeitsweise eines Roboters darstellen. Es soll im Anschluss an diese Diplomarbeit im Fach “Prozessregelung mit Laborübungen” verwendet werden. Das Projekt beinhaltet eine Programmierschnittstelle (API) mit der die Schüler den Roboter schnell und einfach in ihre eigenen Programme einbinden können, sowie eine Endanwendung welche zu Präsentations- und Unterrichtszwecken verwendet werden kann.
 \\[0.5em]
-Im Rahmen der Matura bestand die Aufgabe der Diplomarbeit darin, diese oben genannte Funktionalität von \textit{SmartBow} auf einen mobilen Android-Client zu übertragen. Dabei wurde besonders auf Übersichtlichkeit und hohe Benutzbarkeit der Applikation geachtet. Ein weiterer Punkt war die Übersichtlichkeit und die Erweiterbarkeit des Programmcodes, da das Projekt von den Mitarbeitern der MKWe nach Projektabschluss weiterhin betreut werden soll.
+Zusätzlich zu den erwähnten Funktionen soll ein ausführliches Dokumentations und Hilfesystem m zur Verfügung gestellt werden, welches es dem Anwender ermöglicht sowohl die Funktionen der API zu verstehen, als auch einen Einblick in die Funktionsweise der Anwendung und der Hardware zu erlangen.
 \\[0.5em]
-Konkret ergaben sich folgende Aufgabenbereiche:
+Die Folgende Aufzählung soll die Augabenstellungen der oben genannten Komponenten genauer erklären:
+\subsubsection{Anwendung}
+Die Edubot Endanwendung soll dem Benutzer eine Oberfläche bieten, welche ihm, über den Umweg der API, den Zugriff auf die Hardware ermöglicht. Die Anwendung soll über folgende Grundfunktionen verfügen:
 \begin{itemize}
-\item \textbf{Synchronisierung der Daten}\\
-Hier ist die Synchronisierung der lokal am Gerät gespeicherten Daten gemeint. Die Daten werden über das Netzwerk mit dem von der MKWe entwickelten Server synchronisiert. Dies dient, dazu damit mehrere Clients auf dieselben Informationen zugreifen können. Damit die Synchronisierung funktionieren kann, muss sich der Benutzer vorher am Server registrieren, was ebenfalls von der Applikation behandelt werden soll. 
-\item \textbf{Tierverwaltung}\\
-Dabei handelt es sich um das Erstellen, Bearbeiten und Löschen von Tieren. 
-\item \textbf{Gesundheitsverwaltung}\\
-Dieser Bereich betrifft die Erstellung, Verwaltung und Zuweisung von Auffälligkeiten und Medikationen. Die Gesundeheitsverwaltung soll dem Benutzer ermöglichen, schnell auf Krankheiten und Verletzungen zu reagieren um Zeit zu sparen. 
-\item \textbf{Qualitätssicherung}\\
-Die Aufgabe der Qualitätssicherung ist es, die volle Funktionalität der Applikation zu gewährleisten. Dies wurde durch ein Testing Tool realisiert, welches nach jeder Änderung eine Palette von Tests durchführt und so das Programm auf Fehler überprüft. Neben den automatisierten Tests wurden auch von den Entwicklern öfters Fehler entdeckt. Diese Bugs wurden dann in die Plattform \textit{Bugzilla} eingetragen und bei Gelegenheit ausgebessert.
-\item \textbf{Behandlung von Feedback}\\
-Im Projektablauf erhielten die Entwickler durchgehend Feedback von echten Benutzern die die Applikation bereits in ihrem Betrieb verwendeten. Aufgrund dieser Berichte wurden oft Änderungen am Programm vorgenommen und Prioritäten in der Projektplanung geändert.
+\item \textbf{Einstellungen}\\
+Ein Berreich zur Vornahme von Einstellungen solle es ermöglichen auszuwählen ob und auf welcher Hardware eingegebene Befehle ausgegeben werden sollen. Zusätzlich soll in den Einstellungen die Konfiguraiton der benötigten Verbindungsparamter möglich sein. Ebenfalls in diesem Berreich sollen sich verschiedene Konfigurationsparameter für die Visualisierung anpassen lassen.
+\item \textbf{Visualisierung}\\
+Da die Software auch ohne das Anschließen von Hardware benutzbar sein soll, soll eine Simulation eines Roboters verfügbar sein. Es soll hier verschiedene Ansichten auf den Roboter geben. Die Visualisierung soll es ermöglichen sämtliche eingegebene Befehle unabhängig von der Hardware anhand eines 3D Modells eines Roboters zu Simulieren. Durch diese Funktion soll es einer größeren Anzahl von Schülern ermöglicht werden gleichzeitig mit der Software zu arbeiten.
+\item \textbf{Zeichenfläche}\\
+Die Endanwendung soll eine einfache Zeichenfläche bieten auf welcher der Benutzer simple Standardformen und Freihandlinien zeichnen kann. Die gezeichneten Formen werden beim drücken eines entprechenden Buttons entsprechend umgerechnet und schließlich an die API übergeben
+\item \textbf{Kommandozeile}\\
+Ein Kommandozeilen Tool soll es ermöglichen einzelne Befehle in einer einfachen Script Sprache einzugeben und auszuführen.
+\item \textbf{Handbuch}\\
+Die Anwendersoftware soll einen eigenen Berreich für die Anzeige eines Handbuches bieten. Das zur verfügung gestellte Handbuch soll nicht nur einen groben Überblick über die Funktionsweise der Anwendung geben, sondern vielmehr einen erweiterten Einblick in die Funktionsweise aller Teilberreiche diese Projekts bieten. Es soll dem Leser ermöglicht werden mehr über Robotik und den Aufbau eines einfachen Roboters zu erfahren und die zur Verfügung gestellte API zu nutzen.
+\end{itemize}
+\subsubsection{API}
+
+(TODO)
+
+\subsubsection{Hardware}
+Im Bereich der Hardware ergeben sich zwei verschiedene, von einander nur lose abhängige Teilaufgaben:
+\begin{itemize}
+\item \textbf{KEBA Komponenten}\\
+Von der Firma KEBA zur Verfügung gestellte Komponenten sollen bei Abschluss dieses Projektes so weit programmiert und vorbereitet sein, dass der problemlose Einbau in eine nach Abschluss des Projektes eventuell im Rahmen eines weiteren Projektes zu erstellende Mechanik gewährleistet ist. Zu diesem Zweck muss sowohl eine Netzwerkschnittstelle auf der SPS, als auch eine Anbindung für die Motoren implementiert sein. Weiters muss für die richtige Nutzung der durch die SPS zur Verfügung gestellten Grundbewegungen gesorgt werden.
+Als weiterer Punkt soll eine die Grobplanung, der Teile der Alumechanik, sowie die Konstruktion der Einzelteile in Form von CNC Programmen vorhanden sein.
+\item \textbf{Edubot Modell}\\
+Unter dem Namen "Edubot Modell" solle ein Eigenständiger über die Netzwerkschnittstelle ansteuerbare Roboter aus Holz zur Verfügung gestellt werden. Dieser Roboter soll von der Software kommende Befehle Ausführen und die entsprechenden Bewegungen Ausführen. Um die Aufgabenstellung dieser Komponente genauer beschreiben zu können ist sie hier zusätzlich unterteilt:
+\begin{itemize}
+\item \textbf{Steuerung}\\
+Als Taktgeber für die Beiden Schrittmotoren soll ein Microcontroller, welcher im Laufe des Projektes ausgewählt und beschafft werden muss, dienen. Dieser Mikrocontroller soll über eine Netzwerkverbindung die benötigten Informationen von der auf dem PC laufenden Anwendung zugesant bekommen.
+Auf dem Mikrocontroller soll sowohl die Synchronisation der beiden Achsen, als auch die Berechnung der benötigten Anfahr- und Bremsrampen durchgeführt werden. Der Mikrocontroller soll außerdem die Verwaltung der Motoren, sowie die Ansteuerung der Funktionen der Motorsteuerung (Nanotec SMC11) übernehmen und damit die Schnittstelle zwischen dem PC und den Motoren bilden.
+\item \textbf{Mechanik und Elektronik}\\
+Die Mechanik und Elektronik soll auf Basis zweier Nanotech st2818 Schrittmotoren, den dazugehörigen SMC11 Steuerung und der zugehörigen Spannungsversorgung ein funktionsfähiger Roboter erstellt werden. Dieser Roboter soll über zwei horizontale Achsen verfügen und aus einem geeigneten Werkstoff bestehen. Als Werkzeug soll am Ende der vorderen Achse ein Stift oder etwas vergleichbares montiert werden können, um das Zeichnen eines von der Anwendung vorgegebenen Weges innerhalb des Bewegungsspielraums zu ermöglichen. Die Achslängen sollen sich in Abhängigkeit von der Leistungsfähigkeit der Motoren im Bereich zwischen 15 cm und 25 cm Bewegen.
 \end{itemize}  
+\end{itemize}  
+
+ 
 
 
