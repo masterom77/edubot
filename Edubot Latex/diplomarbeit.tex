@@ -1,0 +1,124 @@
+% SmartBow
+% Diplomarbeit HTL-Grieskirchen
+% Schuljahr 2011/12 
+%
+% diplomarbeit.tex: Hauptdatei der Diplomarbeit
+% Autoren: Tobias Geibinger, Mathias Aichinger
+
+\input{misc/header}
+
+\begin{document}
+	\pagestyle{empty}
+	\input{misc/title}
+	
+	%\thispagestyle{empty}
+	%\section*{}
+	%\addtocounter{page}{-1}
+	%\newpage
+	
+	\pagestyle{fancy}
+	\fancyhf{}
+	\renewcommand{\footrulewidth}{0.5pt}
+	\renewcommand{\headrulewidth}{0.0pt}
+	\onehalfspacing
+	\fancyfoot[LO,RE]{\small \emph{SmartBow}}
+	\fancyfoot[RO,LE]{\small \thepage}
+	\setlength{\footskip}{12mm}
+	
+	%adjust the captions
+	\titleformatsection{}
+	\titleformatsubsection{}
+	\titleformatsubsubsection{}
+	
+	\pagenumbering{Roman}
+	
+	\input{misc/statutory_declaration}
+	\newpage
+	\input{misc/abstract}
+
+	%
+	% Table of Contents
+	%
+	\titleformatsection{\hfill}
+	\clearpage
+	\pagestyle{empty}
+	\tableofcontents
+	\clearpage
+	\setcounter{page}{1}
+		
+	\pagestyle{fancy}
+	\fancyfoot[LO,RE]{\small \emph{SmartBow}}
+	\fancyfoot[RO,LE]{\small \thepage}
+	
+	%
+	% List of Figures
+	%
+	\newpage
+	\setcounter{page}{3}
+	\phantomsection
+	\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+	\listoffigures
+	
+	%
+	% List of Tables
+	%
+	\newpage
+	\phantomsection
+	\addcontentsline{toc}{section}{Tabellenverzeichnis}
+	\listoftables
+	
+	%
+	% List of Listings
+	%
+	\newpage
+	\phantomsection
+	\addcontentsline{toc}{section}{Verzeichnis der Listings}
+	\lstlistoflistings
+	\newpage
+	
+	%
+	% List of Tables
+	%
+	%\phantomsection
+	%\addcontentsline{toc}{section}{Tabellenverzeichnis}
+	%\listoftables
+	%\newpage
+	
+	\titleformatsection{}
+	\pagestyle{fancy}
+	\renewcommand{\headrulewidth}{0.5pt}
+	\fancyhead[L]{\slshape \nouppercase{\leftmark}}
+	\fancyhead[R]{\slshape \nouppercase{\rightmark}}
+	\fancyfoot[LO,RE]{\small \emph{SmartBow}}
+	\fancyfoot[RO,LE]{\small \thepage}	
+	\pagenumbering{arabic}
+	
+	%
+	% Content Section
+	%
+	\input{content/Einleitung/section}
+	\newpage
+	\input{content/Verwendete_Technologien_und_Werkzeuge/section}
+	\newpage
+	\input{content/Komponenten/section}
+%		
+	%
+  	% Bibliography
+ 	% 
+	\newpage
+	\fancyhead[L]{}
+	\fancyhead[R]{}
+	\renewcommand{\headrulewidth}{0.0pt}
+	\fancyfoot[LO,RE]{\small \emph{SmartBow}}
+	\fancyfoot[RO,LE]{\small \thepage}
+	\pagenumbering{Roman}
+	\setcounter{page}{6}
+	\phantomsection
+	\addcontentsline{toc}{section}{Literatur}
+	\bibliographystyle{geralpha}
+	\bibliography{misc/references}
+\end{document}
+
+%
+% EoF
+%

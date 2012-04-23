@@ -1,0 +1,25 @@
+% dito
+% Diplomarbeit HTL-Grieskirchen
+% Schuljahr 2008/09 
+%
+% statutory_declaration.tex - Eidesstattliche Erl‰rung
+% Autoren: Sebastian Strasser, Stefan Murauer
+
+\phantomsection
+\addcontentsline{toc}{section}{Eidesstattliche Erkl‰rung}
+
+\section*{Eidesstattliche Erkl‰rung}
+
+Ich erkl‰re an Eides statt, dass ich die vorliegende Diplomarbeit selbstst‰ndig und ohne fremde Hilfe verfasst, andere als die angegebenen Quellen und Hilfsmittel nicht benutzt und alle den benutzten Quellen wˆrtlich oder sinngem‰ﬂ entnommenen Stellen als solche kenntlich gemacht habe.
+\\
+\begin{flushleft}
+	\footnotesize
+	\begin{tabular}{@{}p{0.3\linewidth}p{0.1\linewidth}>{\centering\arraybackslash}p{0.5\linewidth}}
+		& & \\ \cline{3-3} Grieskirchen, 14. Mai 2009 & & Sebastian Strasser \\ [2\baselineskip]
+		& & \\ \cline{3-3} Grieskirchen, 14. Mai 2009 & & Stefan Murauer \\
+	\end{tabular}
+\end{flushleft}
+
+%
+% EoF
+%

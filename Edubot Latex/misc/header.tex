@@ -1,0 +1,108 @@
+
+\documentclass[pdftex, 
+			   a4paper, 
+			   12pt, 
+%			   twoside,
+%			   openright, 
+			   final]{scrartcl}
+\usepackage{german, ngerman}
+\usepackage[german]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{listing}
+\usepackage{color}
+\usepackage{float}
+\usepackage{array, ragged2e}
+\usepackage{caption}
+\usepackage{bibgerm}
+\usepackage{longtable}
+\usepackage{beramono}
+\usepackage{url}
+\usepackage{geometry}
+\usepackage[pdftex,
+            pdfauthor={Tobias Geibinger \& Mathias Aichinger},
+            pdftitle={SmartBow},
+            pdfsubject={Diplomarbeit aus System- und Einsatzplanung},
+            pdfproducer={LaTeX},
+            pdfcreator={PDFLaTeX}]{hyperref}
+\renewcommand{\familydefault}{\sfdefault}
+\geometry{a4paper, left=3cm, right=3cm, top=2.5cm, bottom=2.5cm}
+
+%pdf metatags
+
+%caption of pictures (skip)
+\captionsetup{aboveskip=10pt}
+
+%caption of figures
+\renewcommand{\captionfont}{\small}
+
+\newcommand{\titleformatsection}[1]
+		   {\titleformat{\section}
+		   {\normalfont\LARGE\bfseries}
+		   {\thesection}{1em}{#1}}
+\newcommand{\titleformatsubsection}[1]
+		   {\titleformat{\subsection}
+		   {\normalfont\Large\bfseries}
+		   {\thesubsection}{1em}{#1}}
+\newcommand{\titleformatsubsubsection}[1]
+		   {\titleformat{\subsubsection}
+		   {\normalfont\large\bfseries}
+		   {\thesubsubsection}{1em}{#1}}
+		   
+\titleformat{\paragraph}[hang]{\normalfont\bfseries}{}{0pt}{}
+\titleformat{\subparagraph}[hang]{\normalfont\bfseries}{}{0pt}{}
+\titlespacing{\paragraph}{0mm}{5pt}{4pt}
+\titlespacing{\subparagraph}{0mm}{3pt}{2pt}
+
+\newenvironment{myitemize}
+			   {\begin{itemize}\itemsep0.0pt\parskip1.0ex}
+			   {\end{itemize}\parskip1.5ex}
+			   
+\newcolumntype{C}[1]{>{\Centering}m{#1}}
+
+%setting up the code listings
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lightblue}{rgb}{0.0,0.0,0.5}
+\definecolor{lightgreen}{rgb}{0.0,0.5,0.0}
+\lstset{numbers=left}
+\lstset{numberstyle=\footnotesize\ttfamily}
+\lstset{numbersep=5pt} 
+\lstset{language=[SHARP]C}
+\lstset{backgroundcolor=\color{listinggray}}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{keywordstyle=\color{lightblue}}
+\lstset{commentstyle=\color{blue}}
+\lstset{stringstyle=\color{lightgreen}}
+\lstset{morecomment=[s][\color{blue}]{/*}{*/}}
+
+% Definition for typesetting MS SQL source code
+\lstdefinelanguage{MSSQL}
+{
+  keywords={
+    ADD, EXCEPT, PERCENT, ALL, EXEC, PLAN, ALTER, EXECUTE, PRECISION, AND, EXISTS, PRIMARY, ANY, EXIT, PRINT, AS, FETCH, PROC, ASC, FILE, PROCEDURE, AUTHORIZATION, FILLFACTOR, PUBLIC, BACKUP, FOR, RAISERROR, BEGIN, FOREIGN, READ, BETWEEN, FREETEXT, READTEXT, BREAK, FREETEXTTABLE, RECONFIGURE, BROWSE, FROM, REFERENCES, BULK, FULL, REPLICATION, BY, FUNCTION, RESTORE, CASCADE, GOTO, RESTRICT, CASE, GRANT, RETURN, CHECK, GROUP, REVOKE, CHECKPOINT, HAVING, RIGHT, CLOSE, HOLDLOCK, ROLLBACK, CLUSTERED, IDENTITY, ROWCOUNT, COALESCE, IDENTITY_INSERT, ROWGUIDCOL, COLLATE, IDENTITYCOL, RULE, COLUMN, IF, SAVE, COMMIT, IN, SCHEMA, COMPUTE, INDEX, SELECT, CONSTRAINT, INNER, SESSION_USER, CONTAINS, INSERT, SET, CONTAINSTABLE, INTERSECT, SETUSER, CONTINUE, INTO, SHUTDOWN, CONVERT, IS, SOME, CREATE, JOIN, STATISTICS, CROSS, KEY, SYSTEM_USER, CURRENT, KILL, TABLE, CURRENT_DATE, LEFT, TEXTSIZE, CURRENT_TIME, LIKE, THEN, CURRENT_TIMESTAMP, LINENO, TO, CURRENT_USER, LOAD, TOP, CURSOR, NATIONAL, TRAN, DATABASE, NOCHECK, TRANSACTION, DBCC, NONCLUSTERED, TRIGGER, DEALLOCATE, NOT, TRUNCATE, DECLARE, NULL, TSEQUAL, DEFAULT, NULLIF, UNION, DELETE, OF, UNIQUE, DENY, OFF, UPDATE, DESC, OFFSETS, UPDATETEXT, DISK, ON, USE, DISTINCT, OPEN, USER, DISTRIBUTED, OPENDATASOURCE, VALUES, DOUBLE, OPENQUERY, VARYING, DROP, OPENROWSET, VIEW, DUMMY, OPENXML, WAITFOR, DUMP, OPTION, WHEN, ELSE, OR, WHERE, END, ORDER, WHILE, ERRLVL, OUTER, WITH, ESCAPE, OVER, WRITETEXT},
+  sensitive=false,
+  comment=[l]{--}
+}
+
+
+%say latex that listings are atomar
+\newfloat{makeatomar}{tp}{lot}[section]
+
+%!!! IMPORTANT FOR TEXT FLOW !!!
+\raggedbottom
+
+%\setlength{\evensidemargin}{0.76cm}
+%\setlength{\oddsidemargin}{-0.54cm}
+	
+\parskip1.5ex
+\parindent0.0ex
+%
+% EoF
+%
