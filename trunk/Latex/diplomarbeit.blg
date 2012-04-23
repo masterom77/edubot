@@ -1,0 +1,60 @@
+This is BibTeX, Version 0.99d (TeX Live 2011)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: diplomarbeit.aux
+The style file: biblatex.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: diplomarbeit-blx.bib
+Database file #2: misc/references.bib
+Biblatex version: 1.5
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 9 entries,
+            5995 wiz_defined-function locations,
+            1147 strings with 8888 characters,
+and the built_in function-call counts, 21450 in all, are:
+= -- 760
+> -- 726
+< -- 201
++ -- 169
+- -- 224
+* -- 1231
+:= -- 1447
+add.period$ -- 0
+call.type$ -- 9
+change.case$ -- 72
+chr.to.int$ -- 34
+cite$ -- 16
+duplicate$ -- 2420
+empty$ -- 2408
+format.name$ -- 408
+if$ -- 4965
+int.to.chr$ -- 0
+int.to.str$ -- 24
+missing$ -- 0
+newline$ -- 150
+num.names$ -- 352
+pop$ -- 2588
+preamble$ -- 1
+purify$ -- 80
+quote$ -- 0
+skip$ -- 1366
+stack$ -- 0
+substring$ -- 221
+swap$ -- 697
+text.length$ -- 216
+text.prefix$ -- 8
+top$ -- 1
+type$ -- 330
+warning$ -- 0
+while$ -- 186
+width$ -- 0
+write$ -- 140

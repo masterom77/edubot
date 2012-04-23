@@ -1,0 +1,165 @@
+
+\documentclass[pdftex, 
+			   a4paper, 
+			   12pt, 
+%			   twoside,
+%			   openright, 
+			   final]{scrartcl}
+\usepackage[style=footnote-dw, autocite=footnote]{biblatex}
+%\usepackage{german, ngerman}
+\usepackage[german]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{listing}
+\usepackage{color}
+\usepackage{float}
+\usepackage{array, ragged2e}
+\usepackage{caption}
+%\usepackage{bibgerm}
+\usepackage{longtable}
+\usepackage{beramono}
+\usepackage{url}
+\usepackage{geometry}
+\usepackage[pdftex,
+            pdfauthor={Tobias Geibinger \& Mathias Aichinger},
+            pdftitle={SmartBow},
+            pdfsubject={Diplomarbeit aus System- und Einsatzplanung},
+            pdfproducer={LaTeX},
+            pdfcreator={PDFLaTeX}]{hyperref}
+\renewcommand{\familydefault}{\sfdefault}
+\geometry{a4paper, left=3cm, right=3cm, top=2.5cm, bottom=2.5cm}
+\bibliography{misc/references}
+
+
+%Bibliography Style
+\DeclareBibliographyDriver{misc}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  %\usebibmacro{author/editor+others/translator+others}%
+  \printtext{\printnames{labelname}}
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \setunit{. }\newblock
+  \printfield{year}%
+  \setunit{. }\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printlist{publisher}
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \setunit{. - }\newblock
+  \printlist{location}%
+  \setunit{\labelnamepunct}\newblock
+  \printlist{publisher}
+  \printfield{year}%
+  \printtext{. }
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+  
+  \newbibmacro*{cite}{% 
+  	\ifciteseen{
+    	   \printtext{\printnames{labelname} \printfield{year}}
+       }{
+       \printtext{% 
+          \usedriver 
+          {\DeclareNameAlias{default}{sortname}} 
+          {\thefield{entrytype}}}% 
+       }}
+
+
+
+%pdf metatags
+
+%caption of pictures (skip)
+\captionsetup{aboveskip=10pt}
+
+%caption of figures
+\renewcommand{\captionfont}{\small}
+
+\newcommand{\titleformatsection}[1]
+		   {\titleformat{\section}
+		   {\normalfont\LARGE\bfseries}
+		   {\thesection}{1em}{#1}}
+\newcommand{\titleformatsubsection}[1]
+		   {\titleformat{\subsection}
+		   {\normalfont\Large\bfseries}
+		   {\thesubsection}{1em}{#1}}
+\newcommand{\titleformatsubsubsection}[1]
+		   {\titleformat{\subsubsection}
+		   {\normalfont\large\bfseries}
+		   {\thesubsubsection}{1em}{#1}}
+		   
+\titleformat{\paragraph}[hang]{\normalfont\bfseries}{}{0pt}{}
+\titleformat{\subparagraph}[hang]{\normalfont\bfseries}{}{0pt}{}
+\titlespacing{\paragraph}{0mm}{5pt}{4pt}
+\titlespacing{\subparagraph}{0mm}{3pt}{2pt}
+
+\newenvironment{myitemize}
+			   {\begin{itemize}\itemsep0.0pt\parskip1.0ex}
+			   {\end{itemize}\parskip1.5ex}
+			   
+\newcolumntype{C}[1]{>{\Centering}m{#1}}
+
+%setting up the code listings
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lightblue}{rgb}{0.0,0.0,0.5}
+\definecolor{lightgreen}{rgb}{0.0,0.5,0.0}
+\lstset{numbers=left}
+\lstset{numberstyle=\footnotesize\ttfamily}
+\lstset{numbersep=5pt} 
+\lstset{language=[SHARP]C}
+\lstset{backgroundcolor=\color{listinggray}}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{keywordstyle=\color{lightblue}}
+\lstset{commentstyle=\color{blue}}
+\lstset{stringstyle=\color{lightgreen}}
+\lstset{morecomment=[s][\color{blue}]{/*}{*/}}
+
+
+
+
+%say latex that listings are atomar
+\newfloat{makeatomar}{tp}{lot}[section]
+
+%!!! IMPORTANT FOR TEXT FLOW !!!
+\raggedbottom
+
+%\setlength{\evensidemargin}{0.76cm}
+%\setlength{\oddsidemargin}{-0.54cm}
+	
+\parskip1.5ex
+\parindent0.0ex
+%
+% EoF
+%

@@ -1,0 +1,228 @@
+\newpage
+\subsection{Tierverwaltung}
+
+\subsubsection{Aufgaben}
+Die Aufgabe dieses Programmteils ist es die Verwaltung der Tiere zu ermöglichen. Dies beinhaltet das Anzeigen, Bearbeiten, Archivieren und Löschen von Tieren.
+
+\subsubsection{Aufbau}
+Die Tierverwaltung gliedert sich grundsätzlich auf 2 Teilbereiche, welche jeweils eine \textit{Activity} darstellen.
+\begin{itemize}
+\item{\textbf{Tierordner}}\\
+Im Tierordner werden alle Tiere alphabetisch sortiert in einer Liste angezeigt. Wie in den meisten Ansichten des Programmes muss vorher in den Bearbeitungsmodus gewechselt werden, bevor man die Tierliste bearbeiten kann. Hier beschränkt sich das Bearbeiten auf das Löschen bzw. Archivieren, aber über das Kontextmenü können auch Attribute hinzugefügt werden. Außerdem befinden sich an der rechten oberen Ecke der Ansicht, neben dem Button zum Starten des Bearbeitungsmodus auch ein Button um die Suchansicht zu starten und ein Button um ein Tier hinzufügen.
+\item{\textbf{Tierdetails}}\\
+In die Tierdetailansicht wird gestartet wenn man vom Tierordner aus ein Tier anklickt oder wenn man ein Neues hinzufügt. Hier werden die genauen Informationen zu dem Tier angezeigt und über den Bearbeitungsmodus können Attribute verändert bzw. hinzugefügt werden. Auch in dieser Ansicht befindet sich der Button zum Starten des Bearbeitungsmodus und der Button zum Starten der Suche wieder an der rechten oberen Ecke, aber anders als beim Tierordner gibt es keinen Button zum Erstellen eines neuen Tieres sondern einen um Attribute hinzuzufügen.
+\end{itemize}
+
+\subsubsection{Umsetzung}
+Wie bereits erwähnt handelt es sich bei den beiden Ansichten um \textit{Activities}. Die erste der beiden, der Tierordner, kann über den Homescreen der Applikation angesteuert werden. \\
+Um die Erweiterung der Applikation leichter zu gestalten wurde eine Abstrahierung entwickelt, die dem Entwickler viel unötigen Code erspart. Eine \textit{Activity} kann so einfach von der passenden Superklasse ableiten. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=15.5cm]{images/activity_abstraction}
+\caption{Activity Abstraktion}
+\end{figure}
+Die Tierordner \textit{Activity} leitet von der \textit{AbstractTitleActivity} ab. Zu dieser \textit{Activity} wird dann noch über den \textit{ViewFlow}, eines UI Elements welches das "Durchwischen" zwischen verschiedenen Screens ermöglicht, die eigentliche Tierliste hinzugefügt. Diese Liste ist eine eigene Klasse welche ebenfalls über eine Abstraktion aufgebaut ist. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=15.5cm]{images/view_abstraction}
+\caption{View Abstraktion}
+\end{figure}
+Die Tierliste ist eine Klasse abgeleitet von \textit{AbstractObjectListView} mit dem Typ \textit{Animal}. In ihr wird die Reihenfolge der Tiere bestimmt und archivierte oder bereits gelöschte Tiere werden aussortiert.\\
+Die Klasse \textit{AbstractObjectListView} beinhaltet eine \textit{ListView}, der man einen \textit{AbstractObjectListAdapter} zuweisen kann. Diese Klasse ist vom \textit{BaseAdapter} abgeleitet, welcher direkt einer \textit{ListView} zugewiesen werden kann. Der Adapter hat die Aufgabe die \textit{ListView} mit Objekten zu versorgen und legt das Layout eines Listeneintrags fest. Dieses Layout wird bei uns wie in Android üblich in XML definiert.\\[0.5em]
+Das Laden der Tiere aus der Datenbank wird von der Tierordner \textit{Activity} übernommen. Dies geschieht in einem \textit{AsyncTask} damit der UI-Thread nicht unterbrochen wird.\\[0.5em]
+Hier 2 Screenshots des Tierordners:
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\includegraphics[width=7cm]{images/app_screenshots/animal_folder} 
+    \caption{Tierordner}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\includegraphics[width=7cm]{images/app_screenshots/animal_folder_editmode}  
+    \caption{Tierordner im Bearbeitungsmodus}
+  \end{minipage}
+\end{figure}
+Wie in den Abbildungen zu erkennen ist, kann über die \includegraphics[width=0.7cm]{images/app_screenshots/editmode_button} - Schaltfäche in den Bearbeitungsmodus gewechselt werden. Klickt man auf den Button erscheinen unten die Schaltflächen zum Speichern und Abbrechen und die Icons der Tiere verändern sich.\\
+Wird im Bearbeitungsmodus das \includegraphics[width=0.7cm]{images/app_screenshots/remove_animal_button} - Icon angeklickt wird der Tierabgangsdialog angezeigt.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\includegraphics[width=7cm]{images/app_screenshots/animal_folder_remove_animal} 
+    \caption{Tierabgangsdialog}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\includegraphics[width=7cm]{images/app_screenshots/animal_folder_remove_animal_other}  
+    \caption{Sonstiger Abgangsgrund}
+  \end{minipage}
+\end{figure}
+In \textit{Abbilidung 15} sieht man den Tierabgangsdialog. Der Dialog ist ein \textit{AlertDialog}, eine Dialogimplementierung der Android-Platform, mit multiplen Selektionsmöglichkeiten. \\
+Die Möglichkeiten \textit{"Kein Grund"} und \textit{"Sonstiges..."} werden statisch hinzugefügt, die anderen Möglichkeiten kommen aus der Datenbank. Diese Gründe werden als ein Objekt vom Typ \textit{LeavingReason} über den \textit{CustomItemStorage} (siehe Abschnitt \textit{3.1 Synchronisierung}) in die Datenbank gespeichert.\\
+Der Grund \textit{"Kein Grund"} ist standardmäßig ausgewählt. Im Gegensatz zu den anderen Gründen kann \textit{"Kein Grund"} nicht mit anderen Gründen kombiniert werden. Dies liegt daran, dass bei einer Auswahl von \textit{"Kein Grund"} im \textit{Animal} Objekt die Variable \textit{deleted} auf \textit{true} gesetzt und somit "gelöscht" wird, bei einer anderen Auswahl werden dem Tier die \textit{LeavingReasons} über \textit{Assignments} zu gewiesen und im Objekt die Variable \textit{archived} auf \textit{true} gesetzt. Wird also das erste Mal eine andere Möglichkeit angeklickt, wird das \textit{OnItemSelected}-Event abgefangen und \textit{"Kein Grund"} wird automatisch deselektiert. Im Gegenzug wird \textit{"Kein Grund"} wieder automatisch ausgewählt, wenn alle anderen Möglichkeiten deselektiert wurden. \\
+Wird auf "Sonstiges" geklickt erscheint der \textit{AlertDialog} der in \textit{Abbildung 11} zu sehen ist. Dieser Dialog enthält ein simples Eingabefeld in dem der Benutzer einen Grund eingeben kann der nicht aufgelistet ist. Dieser neue Grund wird beim Speichern in die Datenbank geschrieben und ist also beim nächsten Entfernen eines Tieres ebenfalls als Möglichkeit auszuwählen. \\
+Wird der \textit{AlertDialog} mit dem \textit{"Wählen"} Button geschlossen, wird das Tier aus der Liste entfernt, aber noch nicht gelöscht bzw. archiviert. Erst wenn auf \textit{"Speichern"} gedrückt wurde, werden die Änderungen auch wirklich in die Datenbank geschrieben. Klickt man auf \textit{"Abbrechen"} wird der vorherige Status der Liste wiederhergestellt und die Änderungen werden verworfen. \\[0.5em]
+Neben dem Bearbeitungsmodus können auch über das Kontextmenü Tiere entfernt bzw. bearbeitet werden.
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/animal_folder_context}
+\caption{Tierordner Kontextmenü}
+\end{figure}
+Um das Kontextmenü aufzurufen, muss der Benutzer lange auf dem Listeneintrag des gewünschten Tieres drücken, damit wird ein sogenanntes \textit{OnLongClick}-Event ausgelöst. Dieses Event wird von der \textit{Activity} abgefangen und das Kontextmenü wird als \textit{AlertDialog} angezeigt.\\
+Wie in der Abbildung zu erkennen ist, gibt es 4 Optionen. 
+Klickt man auf \textit{"Tier hat den Betrieb verlassen"} erscheint der Tierabgangsdialog aber ohne die Möglichkeit \textit{"Kein Grund"} auszuwählen. Dies ist deshalb so, da der Benutzer das Tier direkt über die Option \textit{"Löschen"} entfernen kann.\\
+Das Hinzufügen von Auffälligkeiten und Behandlung wird im Abschnitt \textit{3.4 Gesundheitsverwaltung} erläutert.\\
+Wird das Kontextmenü nicht im Bearbeitungsmodus aufgerufen, werden alle Änderungen sofort gespeichert. Befindet man sich im Bearbeitungsmodus können auch hier alle Änderungen mit \textit{"Abbrechen"} rückgängig gemacht werden. \\[0.5em]
+Klickt man im Tierordner auf einen Listeneintrag wird die Tierdetailansicht des jeweiligen Tieres geöffnet. Dies funktioniert durch einen \textit{Intent}. \textit{Intents} sind die Öffnungsbefehle von \textit{Activities}, denen man einfache Datentypen als Parameter mitgeben kann. In diesem Fall wird dem \textit{Intent} die ID des Tieres, vom dem man die Details sehen will, mitgegeben. Klick man auf die \includegraphics[width=0.7cm]{images/app_screenshots/plus_button} - Schaltfläche wird dem \textit{Intent} keine ID mitgegeben und somit wird ein neues Tier erstellt.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\includegraphics[width=7cm]{images/app_screenshots/animal_detail_with_birthdate} 
+    \caption{Tierdetails}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\includegraphics[width=7cm]{images/app_screenshots/animal_detail_with_birthdate_editmode}  
+    \caption{Tierdetails im Bearbeitungsmodus}
+  \end{minipage}
+\end{figure}
+Die \textit{AnimalDetailActivity} ist von der Klasse \textit{AbstractObjectDetailActivity} abgeleitet. Zu dieser \textit{Activity} werden mehrere \textit{Views} hinzugefügt. \\
+Die erste dieser \textit{Views} sind die Tierdaten. Der Tierordner-View erbt von der \textit{AbstractObjectBasicsView}. Das Layout dieses \textit{Views} wird in XML definiert und besteht fast hauptsächlich aus von uns implementierten UI-Elementen. Bei dem Tiernamen und Transponder handelt es sich um ein \textit{SimpleTextComponent} und beim Geburtsdatum um ein \textit{InfoObjComponent}. \\
+\subparagraph{SimpleTextComponent}
+Diese Komponente besteht aus einer \textit{TextView} als Titel und einem \textit{EditText} als Wertefeld. In einem XML-Layout kann es so eingesetzt werden:
+\begin{lstlisting}[language=java, captionpos=b, caption={SimpleTextComponent XML}]
+<at.mkw.inlocs.android.ui.common.components.SimpleTextComponent 
+      android:id="@+id/animal_name" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content" 
+      inlocs:labelText="@string/animalname" 
+      inlocs:defaultText="@string/enterText">
+</at.mkw.inlocs.android.ui.common.components.SimpleTextComponent>
+\end{lstlisting}
+In Java kann die Komponente dann noch weiter konfiguriert werden.
+\begin{lstlisting}[language=java, captionpos=b, caption={SimpleTextComponent in Java}]
+   animalName = (SimpleTextComponent) findViewById(R.id.animal_name);
+   animalName.addTextChangedListener(animalNameWatcher);
+   animalName.setOperationalContext(getActivity());
+\end{lstlisting}
+Mit der Methode \textit{addTextChangedListener} wird dem \textit{EditText} ein Eingabe-Listener zur Datenvalidierung zugewiesen und mit der Methode \textit{setOperationalContext} wird der Komponente die \textit{BasicActivity} in der sie sich befindet übergeben, damit kann die Komponente durch einen \textit{Listener} herausfinden ob sich die \textit{Activity} im Bearbeitungsmodus befindet.
+\subparagraph{InfoObjComponent}
+Die \textit{InfoObjComponent} besteht aus einer \textit{TextView} als Titel und einer weiteren \textit{TextView} als Wertefeld, der wirkliche Wert der Komponenten wird aber als Objekt gespeichert. Die Verwendung des \textit{InfoObjComponent} unterscheidet sich grundsätzlich nicht sehr von dem \textit{SimpleTextComponent}. Statt einem Eingabe-Listener kann mit \textit{setOnClickListener} ein \textit{OnClickListener} übergeben werden der das Klick-Event anfängt. Über dieses Klick-Event kann nun entweder ein \textit{AlerDialog}, eine \textit{Activity} oder etwas ganz anderes aufgerufen werden. \\
+Außerdem kann der Komponente noch ein Icon zugewiesen werden. Ist ein Icon definiert wird es im Bearbeitungsmodus durch einen Mülleimer ausgetauscht, ist keines definiert erscheint der Mülleimer trotzdem. Diesem Mülleimer kann auch ein \textit{OnClickListener} hinzugefügt werden, normalerweise um das Objekt zu entfernen. \\ [1em]
+In den Tierdetails wurden beiden \textit{SimpleTextComponents} Eingabe-Listener hinzugefügt um auf Duplikate zu prüfen. Außerdem dürfen die beiden Felder nicht leer gelassen werden. \\ 
+Beim Klicken auf das Geburtsdatum des Tieres öffnet sich eine sogenannte \textit{DateTimePickerActivity}.
+\subparagraph{DateTimePickerActivity}
+Die \textit{DateTimePickerActivity} wurde entwickelt um dem Benutzer das Eingeben eines Zeitpunkts zu erleichtern. 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\includegraphics[width=7cm]{images/app_screenshots/datetimepicker} 
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\includegraphics[width=7cm]{images/app_screenshots/datetimepicker2}  
+  \end{minipage}
+  \caption{DateTimePickerActivity}
+\end{figure}
+Wie in der Abbildung zu erkennen ist handelt es sich um eine einfache \textit{Activity}. Sie kann über einen \textit{Intent} aufgerufen werden und als Parameter können der Titel als \textit{String} und der anfängliche Zeitpunkt in Millisekunden als \textit{long} mitgegeben werden.\\
+Der Benutzer hat 3 verschiedene Möglichkeiten den Zeitpunkt einzugeben. Er kann entweder das Datum und die Zeit über die beiden oberen Buttons zuweisen, den Zeitpunkt die jetztige Zeit stellen oder über die \textit{RadioButtons} unten einen Zeitpunkt festlegen der eine gewisse Zeit zurückliegt.\\
+Klickt man auf die Schaltfläche links oben öffnet sich ein \textit{DatePickerDialog}, welcher in Android üblich ist um ein Datum auszuwählen. Klickt man auf die Zeit-Schaltfläche wird ein \textit{TimePickerDialog} geöffnet.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=4cm]{images/app_screenshots/datepicker} 
+    \caption{DatePickerDialog}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=4cm]{images/app_screenshots/timepicker}  
+    \caption{TimePickerDialog}
+  \end{minipage}
+\end{figure}
+Wird die Schaltfäche \textit{"Jetzt"} betätigt wird der Zeitpunkt auf die aktuelle Zeit gestellt, die Werte der oberen Schaltflächen werden aktualisiert und die Auswahl der \textit{RadioButtons} wird zurückgesetzt. Der Hintergrund dieser Schaltfläche ändert sich wenn sie ausgewählt wird. Dieser Hintergrund ist von der Klasse \textit{Drawable} abgeleitet und zeichnet einen inneren Schatten, dies war nötig da der gewünschte Effekt nicht anders zu erreichen war.\\
+Die \textit{RadioButtons} wurden so verändert, dass sie wie Buttons aussehen und haben wenn sie ausgewählt wurden den selben Hintergrund wie die \textit{"Jetzt"}-Schaltfäche. Wenn eine Zahl ausgewählt wird und weder \textit{"Minuten"}, \textit{"Stunden"} und \textit{"Tage"} ausgewählt ist, wird automatisch \textit{"Minuten"} selektiert. Wird eine Einheit ausgewählt und es ist noch keine Zahl selektiert wird automatisch \textit{"1"} gewählt. Wie schon bei der \textit{"Jetzt"}-Schaltfäche werden die beiden oberen Schaltflächen automatisch der Auswahl der \textit{"RadioButtons"} angepasst und umgekehrt.\\
+Mit den Buttons \textit{"Wählen"} und \textit{"Abbrechen"} kann die \textit{DateTimePickerActivity} beendet werden. Dazu wird das \textit{Result} festgelegt.
+\begin{lstlisting}[language=java, captionpos=b, caption={Setzen des ActivityResults}]
+  protected void onCancelButtonClick(View v) {
+    setResult(RESULT_CANCELED);
+    finish();
+  }
+
+  protected void onSelectButtonClick(View v) {
+    Intent i = new Intent();
+    i.putExtra("time", date.getTimeInMillis());
+    setResult(RESULT_OK, i);
+    finish();
+  }
+\end{lstlisting}
+Mit der Methode \textit{setResult} aus der \textit{Activity} Klasse kann das Ergebnis einer \textit{Activity} festgelegt werden. Dieses Ergebnis besteht aus einem \textit{Integer}, entweder \textit{RESULT\_OK} oder \textit{RESULT\_CANCELED}, und optional noch aus einem \textit{Intent}. In diesem Fall wird dem \textit{Intent} noch der aktuell ausgewählte Zeitpunkt als \textit{long} mitgegeben. Und mit \textit{finish} wird die \textit{Activity} beendet.\\ [1em]
+In den Tierdetails wird mit der Methode \textit{startActivityForResult} via \textit{Intent} die \textit{DateTimePickerActivity} gestartet. Anders als beim normalen Starten einer \textit{Activity} muss bei dieser Methode noch ein \textit{Integer} als RequestCode mitgegeben werden. Dieser RequestCode wird beim Zurückgeben des Ergebnisses mit der Methode \textit{onActivityResult} aus der Klasse \textit{Activity} wieder übergeben. Da die Methode \textit{onActResult} nur in \textit{Activites} verwendet werden kann und nicht in den von uns implementierten \textit{Views}, wurde in der \textit{BasicActivity} ein eigener \textit{ActivityResultListener} entwickelt. In jeder von \textit{BasicActvity} abgeleiteten \textit{Activity} können beliebig viele \textit{ActivityResultListener} registriert werden, an die das Ergebnis weitergeleitet wird. 
+\begin{lstlisting}[language=java, captionpos=b, caption={Beispiel ActivityResultListener}]
+private ActivityResultListener activityResultListener = 
+            new ActivityResultListener() {
+
+   @Override
+   public int[] getHandledRequestCodes() {
+     return new int[] {AnimalUtils.REQUEST_BIRTHDATE_ASSIGNMENT};
+   }
+
+   @Override
+   public void onActResult(int requestCode, int resultCode, 
+           Intent intent) {
+      if (requestCode == AnimalUtils.REQUEST_BIRTHDATE_ASSIGNMENT
+                && resultCode == Activity.RESULT_OK) {
+         Timestamp timestamp = new Timestamp(intent.getExtras()
+                                                    .getLong("time"));
+         birthdate.setItem(timestamp);
+         birthdate.setText(TimeUtil.getLocalizedDate(timestamp, 
+                                                               getActivity()));
+         birthdatePlaceholder.setVisible(false);
+      }
+   }
+};
+\end{lstlisting}
+Dies ist der Listener welcher in der Tierdaten \textit{View} verwendet wird. Über die Methode \textit{getHandledRequestCodes} wird festegelegt für welche RequestCodes der Listener Ergebnisse erhalten soll. \\[0.5em]
+Wird das Geburtsdatum über dem Mülleimer entfernt, nimmt ein \textit{PlaceholderComponent} den Platz des \textit{InfoObjComponent} ein.
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{images/app_screenshots/birthdate_placeholder}
+\caption{Geburtsdatum Placeholder}
+\end{figure}
+Das \textit{PlaceholderComponent} kann wie das \textit{InfoObjComponent} über XML eingebunden werden. Es können ein Icon und der Text definiert werden. Diese Komponente wird nur im Bearbeitungsmodus angezeigt und ist sonst gar nicht sichtbar. \\ 
+Wie beim \textit{InfoObjComponent} kann auch hier ein \textit{OnClickListener} hinzugefügt werden. In diesem Fall wird der selbe Listener hinzugefügt, der auch schon beim \textit{InfoObjComponent} des Geburtsdatums hinzugefügt wurde. \\[0.5em]
+Neben den Tierdaten gibt es noch 2 weitere Ansichten in den Tierdetails. Diese sind eine Liste der Auffälligkeiten und eine Liste der Behandlungen des Tieres. Wie schon bei der Tierliste im Tierordner handelt es sich dabei um von der \textit{AbstractObjectListView} abgeleitete Klassen. \\
+Dieser Teil wird im Abschnitt 3.4 Gesundheitsverwaltung genauer erklärt, hier wird nur das Prinzip der Listen in der Tierdetailansicht erläutert.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/animal_detail_consp} 
+    \caption{Liste im Tier}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/animal_detail_consp_editmode}  
+    \caption{Liste im Tier im Bearbeitungsmodus}
+  \end{minipage}
+\end{figure}
+Wie beim Geburtsdatum kann mit dem Klick auf den Mülleimer ein Eintrag entfernt werden. \\
+Wie man in \textit{Abbildung 39} erkennen kann, taucht auch hier ein \textit{PlaceholderComponent} im Bearbeitungsmodus auf. Dieser wird über den \textit{AbstractObjectListAdapter} wie ein normaler Eintrag hinzugefügt. \\
+Die Listen in der Tierdetailansicht sind nur sichtbar wenn sie auch Objekte beinhalten, ist dies nicht der Fall und der Benutzer befindet sich im Bearbeitungsmodus, wird der entsprechende Placeholder in der \textit{"Weitere Attribute"} Ansicht angezeigt.
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/animal_detail_add_attributes}
+\caption{Weitere Attribute}
+\end{figure} 
+Ist eine Liste sichtbar wird der Placeholder der Liste nicht mehr in dieser Ansicht angezeigt. Gibt es keine Placeholder die angezeigt werden können wird auch die Ansicht nicht angezeigt. \\ 
+Die \textit{AdditionalAttributesView} ist von \textit{AbstractMultiScreenView} abgeleitet und bekommt die Information welche Placeholder angezeigt werden soll durch die \textit{Activity}. Dazu gibt es in der \textit{AbstractTitleMultiScreenActivity} die Methoden \textit{registerPlaceholder} und \textit{notifyPlaceholderAdded}. Mit \textit{registerPlaceholder} kann ein neuer Placeholder hinzugefügt werden und mit \textit{notifyPlaceholderAdded} wird der \textit{Activity} mitgeteilt, dass ein bestimmter Placeholder angezeigt wird und somit in der \textit{AdditionalAttributesView} unötig wäre.
+Die \textit{"Weitere Attribute"} Ansicht ist ebenfalls nicht sichtbar wenn ein neues Tier erstellt wird, da man sonst zu noch nicht gespeicherten Tieren Auffälligkeiten oder Behandlungen hinzufügen könnte. \\[0.5em]
+Beim Klicken auf die \includegraphics[width=0.7cm]{images/app_screenshots/plus_button} - Schaltfläche in den Tierdetails wird der Hinzufügen-Dialog geöffnet.
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{images/app_screenshots/animal_detail_add_dialog}
+\caption{Hinufügen-Dialog}
+\end{figure}
+Der Hinzufügen-Dialog ist ein \textit{AlertDialog} mit dem man Attribute hinzufügen kann. Der Dialog erhält die Einträge die er anzeigen soll durch die registrierten Placeholder. Beim Klicken eines Eintrags wird das selbe Event ausgelöst das auch beim Klicken des Placeholders ausgelöst wird. Wird ein Placeholder nicht angezeigt wenn es schon einen Wert gibt, wie beim Geburtsdatum, wird der Eintrag nur angezeigt wenn es noch keinen Wert gibt.

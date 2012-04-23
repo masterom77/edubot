@@ -1,0 +1,48 @@
+
+\subsection{Synchronisierung}
+
+\subsubsection{Aufgaben}
+Die Aufgabe der Synchronisierung ist es, jene Daten die sich lokal am Handy befinden mit dem Server abzugleichen. Die Synchronisierung erfolg automatisch und der Benutzer hat keinen Einfluss darauf, aber er wird über den Status des Vorganges informiert.
+
+\subsubsection{Umsetzung}
+
+\subparagraph{Datenmodell}
+Das Datenmodell wurde von der MKWe enwickelt und ist auf Desktop, Server und Android-Client gleich.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=15.5cm]{images/erd}
+\caption{Datenmodell}
+\end{figure}
+\\
+Für jede dieser Tabellen gibt es eine entsprechende Klasse. \\[0.5em]
+Die Tabellen \textit{Modifications, LatestRevision} und \textit{Mapping} beinhalten POJO Sync bezogene Daten und werden nicht auf den Server synchronisiert. Die Daten der Tabellen \textit{Item, Animal, Device, User, CustomItem} und \textit{Assignment} hingegen schon.\\[0.5em]
+Die Tabelle \textit{CustomItem} wurde eingeführt um nicht für jede neue Klasse die synchronisiert werden soll, das Datenmodell ändern zu müssen. Sie besteht aus folgenden Feldern:
+\begin{itemize}
+\item{\textit{uuid}: Der Universal Unique Identifier des Objektes, welcher beim ersten Speichern des Objektes berechnet wird}
+\item{\textit{type}: Der volle Klassenname des Objektes}
+\item{\textit{value}: Die Werte des Objektes als XML-String}
+\item{\textit{version}: Die Version des XML-Strings um das Lesen der Daten abwärtskompatibel zu halten}
+\end{itemize}
+Dies wurde von der MKWe durch die \textit{CustomItemStorage} Klasse ermöglicht. Der \textit{CustomItemStorage} wandelt das zu speichernde Objekt durch einen vorher zu implementierenden \textit{Serializer} in einen XML-String um welcher dann in das \textit{value} Feld der \textit{CustomItem} Tabelle gespeichert wird. Dieser Prozess wird beim Lesen eines Objektes aus der Datenbank einfach umgekehrt.\\[0.5em]
+Ein Beispiel für das \textit{value} Feld der \textit{CustomItem} Tabelle:
+
+\begin{lstlisting}[language=XML, captionpos=b, caption={CustomItem Beispiel}]
+<obj type="at.mkw.inlocs.extension.health.common.ConspicuityType">
+	<prop type="java.lang.String" name="category" value="AG" />
+	<prop type="java.lang.Integer" name="number" value="4" />
+	<prop type="java.lang.Float" name="rating" value="0.0" />
+	<prop type="java.lang.Boolean" name="deleted" value="false" />
+	<prop type="java.lang.Integer" name="elapseTime" value="5" />
+	<prop type="java.lang.String" name="name" value="Fieber" />
+</obj>
+\end{lstlisting}
+
+\subparagraph{Datenanbindung}
+Die Datenanbindung der Applikation ist in 2 Bereiche aufgeteilt. Einer lokalen Datenbank, welche die Anmeldedaten der Benutzer speichert und mehreren Benutzerdatenbanken welche die eigentlichen Daten beinhalten. Für jeden Benutzer wird eine solche Datenbank angelegt. Die Datenbanken liegen als Datenbankdateien (Dateiendung \textit{.db}) auf dem Speicher des Android Gerätes. \\
+Der Datenbankzugriff wird für die Anmeldedatenbank über SQLite geregelt und der Zugriff auf die Benutzerdatenbanken erfolgt über ORMLite. Um ORMLite verwenden zu können, mussten wir Wrapper-Klassen für alle von der MKWe bereitgestellten Klassen erstellen, da ORMLite nur über Annotations funktioniert und wir die Klassen nicht verändern wollten.\\
+
+
+\subparagraph{Synchronisierungprozess}
+Um in regelmäßigen Abständen zu synchronisieren wurde die Synchronisierung in einem seperaten Prozess verlagert, einem sogenannten \textit{Service}. \textit{Services} sind Android Programme die anders als \textit{Activities} völlig im Hintergrund ablaufen. Dieses Projekt besteht hauptsächtlich aus \textit{Actvities} und dies ist der einzige \textit{Service}.\\
+Der Service wird nach dem Anmelden von der Applikation gestartet und startet die Synchronisierung alle 30 Sekunden. Dies geschieht in einem \textit{AsyncTask}, einer speziellen Thread-Implementation der Android-Plattform. Sollte die Authentifizierung fehlschlagen oder der Server offline gehen wird nicht synchronisiert und die UI wird darüber informiert. Läuft die Synchronisierung fehlerfrei wird der Status in Prozent konstant an die UI übergeben und nach dem Abschluss wird das Ergebnis, die neu hinzugefügten bzw. modifizierten Objekte, ebenfalls weitergegeben.
+
