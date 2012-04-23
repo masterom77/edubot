@@ -1,0 +1,20 @@
+\subsection{Aufgabenstellung}
+Aufgabe des Projektes \textit{SmartBow} ist es die täglich anfallenden Prozesse eines Landwirtschaftsbetriebes zu vereinfachen und zu optimieren. Dies soll durch die Digitaliserung von allen tierrelevanten Daten geschehen. Mit \textit{SmartBow} können alle Tiere eines Betriebes verwaltet werden, d. h. es können tierrelevante Daten, wie ein Symptom, erfasst und zugewiesen werden. Mit diesen Daten soll \textit{SmartBow} dem Benutzer auf einen Blick darstellen wo es im Stall Probleme gibt, und ihm unnütze Rundgänge ersparen. Der zweite Teil von \textit{SmartBow} ist ein ausgereiftes Lokalisierungssystem, mit dem es dem Benutzer möglich ist einzelne Tiere schneller zu finden.
+\\[0.5em]
+Im Rahmen der Matura bestand die Aufgabe der Diplomarbeit darin, diese oben genannte Funktionalität von \textit{SmartBow} auf einen mobilen Android-Client zu übertragen. Dabei wurde besonders auf Übersichtlichkeit und hohe Benutzbarkeit der Applikation geachtet. Ein weiterer Punkt war die Übersichtlichkeit und die Erweiterbarkeit des Programmcodes, da das Projekt von den Mitarbeitern der MKWe nach Projektabschluss weiterhin betreut werden soll.
+\\[0.5em]
+Konkret ergaben sich folgende Aufgabenbereiche:
+\begin{itemize}
+\item \textbf{Synchronisierung der Daten}\\
+Hier ist die Synchronisierung der lokal am Gerät gespeicherten Daten gemeint. Die Daten werden über das Netzwerk mit dem von der MKWe entwickletem Server synchronisiert. Dies dient dazu damit mehrere Clients auf dieselben Informationen zugreifen können. Damit die Synchronisierung funktionieren kann muss sich der Benutzer vorher am Server registrieren, was ebenfalls von der Applikation behandelt werden soll. 
+\item \textbf{Tierverwaltung}\\
+Dabei handelt es sich um das Erstellen, Bearbeiten und Löschen von Tieren. 
+\item \textbf{Gesundheitsverwaltung}\\
+Dieser Bereich betrifft die Erstellung, Verwaltung und Zuweisung von Auffälligkeiten und Medikationen. Die Gesundehitsverwaltung soll dem Benutzer ermöglichen schnell auf Krankheiten und Verletzungen zu reagieren und Zeit zu sparen. 
+\item \textbf{Qualitätssicherung}\\
+Die Aufgabe der Qualitätssicherung ist es die volle Funktionalität der Applikation zu gewährleisten. Dies wurde durch ein Testing Tool realisiert, welches nach jeder Änderung eine Palette von Tests durchführt und so das Programm auf Fehler überprüft. Neben dem automatisierten Tests, wurden auch von den Entwicklern öfters Fehler entdeckt. Diese Bugs wurden dann in die Platform \textit{Bugzilla} eingetragen und bei Gelegenheit ausgebessert.
+\item \textbf{Behandlung von Feedback}\\
+Im Projektablauf erhielten die Entwickler durchgehend Feedback von echten Benutzern die die Applikation bereits in ihrem Betrieb verwendeten. Aufgrund dieser Berichte wurden oft Änderungen am Programm vorgenommen und Prioritäten in der Projektplanung geändert.
+\end{itemize}  
+
+

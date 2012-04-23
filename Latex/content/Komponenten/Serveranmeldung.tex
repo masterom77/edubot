@@ -1,0 +1,180 @@
+
+\subsection{Serveranmeldung}
+
+\subsubsection{Aufgaben}
+Die Aufgabe der Serveranmelung ist es, sich am Server anzumelden und bei erfolgreicher Anmeldung den Benutzer lokal zu speichern. Eine weitere Aufgabe ist die Offline-Authentifizierung, die ein Arbeiten ohne Serververbindung ermöglicht. 
+
+\subsubsection{Aufbau}
+Die Serveranmelung besteht grundsätzlich aus 2 Teilbereichen, welche das Frontend und das dazugehörige Backend darstellen.
+\begin{itemize}
+\item{\textbf{Die Anmeldungsansicht als Frontend}}\\
+Dieser Screen, der eine Activity darstellt, sieht der Benutzer wenn er die Anwendung zum ersten Mal startet. Er besteht aus mehreren einzelnen Ansichten, jedoch wird beim ersten Start nur die "Neue Anmeldung" Maske angezeigt. Der Benutzer kann, bei mehreren vorhandenen Ansichten, durch ein horizontales Wischen zwischen den Ansichten wechseln. 
+Falls der Benutzer noch angemeldet ist, wird diese Ansicht automatisch  übersprungen und er wird zur nächsten Ansicht weitergeleitet.
+
+\textbf{Die einzelnen Ansichten:}
+\begin{itemize}
+\item{\textbf{Die "Neue Anmeldung" Maske}} \\
+Mit dieser Maske kann sich der Benutzer zum ersten Mal am Server anmelden. Der erste Teil dieser Maske besteht aus einem Eingabefeld für den Loginnamen,einem Eingabefeld für das Passwort und einer Checkbox  zur Auswahl ob das Passwort gespeichert werden soll.
+Der zweite Teil dieser Maske ist eher dynamisch und dient zur Eingabe der Serveradresse. Diese Addresse bekommt man entweder durch die automatische Suche nach einem vorhandenen Server, die bei Fund, die Adresse automatisch als Text des Auswahlbutton setzt. Falls kein Server gefunden wird, gibt es zwei Möglichkeiten.
+Entweder man wählt mittels Auswahlbutton und in dem zugehörigen Kontextmenü \textit{"Server ID..."}, dann kann man in dem darunterliegenden Textfeld manuell eine Server ID eingeben oder man wählt im Kontextmenü \textit{"Manuelle Eingabe"}, dann kann man in den darunterliegenden Textfeldern die Server IP-Adresse und den Server Port manuell eingeben.
+Den Anmeldeprozess startet man mit dem \textit{"Anmelden"} -Button, der am unteren Bildschirmrand angezeigt wird.
+
+\item{\textbf{Die Relogin Ansichten}}\\
+Diese Ansicht beinhaltet eine Liste der Benutzer die sich auf dem jeweiligen Server bereits angemeldet haben. Jedes Element besteht dabei aus dem Loginnamen und dem Zeitpunkt der letzten Anmeldung. Durch die Selection eines Elements startet der Anmeldeprozess. Falls das Passwort nicht bereits gespeichert wurde, erscheint ein Dialog der den Benutzer zur Eingabe des Passworts auffordert. Falls der Benutzer sein Passwort in Zunkunft speichern möchte, kann er die Checkbox "Passwort Speichern" anhaken.
+
+ 
+\end{itemize}
+\item{\textbf{Der Synchronisierungsservice als Backend}}\\
+Der Synchronisierungsservice arbeitet bei der Anmeldung als Backend. Sobald er die Nachricht mit den Logindaten bekommt, prüft er ab ob der Benutzer schon in der lokalen Datenbank vorhanden ist. Dieses Ergebnis ist entscheidend, ob er die eingegebenen Logindaten nur  mit den Daten aus der lokalen Datenbank überprüft oder eine Verbindung zum Server benötigt wird, um dort die Logindaten zu prüfen und diese bei positivem Resultat in die lokale Datenbank speichert. Falls beim Login alles gut läuft und der Server Online ist, startet die erste Synchronisierung. Diese Synchronisierung wird durch einen Ladebalken in der Loginansicht dargestellt. Ist diese abgeschlossen wird man zur nächsten Ansicht weitergeleitet und man kann alle verfügbaren Funktionen des Programms nutzen.
+
+\end{itemize}
+
+
+\subsubsection{Umsetzung}
+Wie schon erwähnt handelt es sich bei dem Loginscreen um eine Activity. Da wir mehrere Ansichten benötigen wurde auch bei dieser Activity ein Viewflow implementiert. Dieser ermöglicht es, mehrere Ansichten in einer Activity zu haben und mittels einem horizontalen Wischen zwischen den Ansichten zu wechseln.
+
+Auch bei dieser Activity konnte auf einen Teil der Abstraktion, die im nächsten Kapitel erkärt wird, zurückgegriffen werden. Jedoch handelt es sich hierbei nur um die BasicActivity, da man logischerweise vor dem Login noch keine Benutzerdatenbank zur Verfügung hat, die jedoch von der restlichen Abstraktion benötigt wird. Für die Abstraktion der einzelnen ViewFlow Ansichten gilt das selbe, jedoch wurde zur Vereinfachung des Codes eine AbstractLoginViewFlowView eingeführt. Diese behinhaltet die Definitionen der Abstraktionsmethoden, die der ViewFlow grundsätzlich benötigt. Diese Methoden müssen von den jeweiligen Ansichten implementiert werden.
+
+
+
+
+\subparagraph{Der ViewFlow}
+Der ViewFlow wird in fast allen Screens unseres Programms verwendet. Wie schon erwähnt ermöglicht er den Einsatz mehrerer Ansichten in einer Activity. Dieser ViewFlow, den wir als Grundlage verwendeten wurde von  Patrik Åkerfeldt entwickelt und als Open Source Projekt freigegeben.
+
+Der ViewFlow besteht grundsätzlich aus drei Komponenten:
+\begin{itemize}
+\item{Der TitleFlowIndicator}\\
+Der TitleFlowIndicator ist für das Anzeigen des Titels der angezeigten Ansicht zuständig. Zusätzlich werden die Titel der benachbarten Ansichten auf der linken bzw. rechten Seite angezeigt, somit kann der Benutzer daraus schließen, dass er mit einem Wischen zur benachbarten Ansicht kommt.\\ 
+\begin{figure}[htbp]
+\centering
+    \includegraphics[width=10cm]{images/app_screenshots/titleflowindicator}
+\caption{Der TitleFlowIndicator}
+\end{figure}
+
+\item{Der ViewFlow}\\
+Der ViewFlow ist für das Anzeigen der jeweiligen Ansicht zuständig. Ihm muss ein Adapter zugewiesen  werden, der für die Bereitstellung der Views zuständig ist. Der Adapter informiert ihn, wenn er sich aktualisieren soll und stellt ihm auch die zu anzeigende View zur Verfügung.
+
+\item{Der ViewFlowAdapter}\\
+Der ViewFlowAdapter ist eine Ableitung des BaseAdapter. Er ist für die Verwaltung der Ansicht zuständig und stellt diese der Elternansicht zur Verfügung. 
+
+Damit dieser funktioniert müssen folgende Methoden implementiert werden:
+\begin{itemize}
+\item{getTitle(int position)}\\
+Wie der Name schon sagt stellt diese Methode den Namen für die Ansicht zur Verfügung. Diesen Title benutzt der TitleFlowIndicator als Anzeigewert.
+\item{getCount()}\\
+Diese Methode gibt die Anzahl der Ansichten zurück.
+\item{getItem(int positon)}\\
+Diese Methode gibt das jeweilige Objekt zurück, das gerade angezeigt wird. 
+\item{getItemId(int position)}\\
+Diese View gibt den eindeutigen Identifier der View zurück. Dieser Identifier kann später für verschiedene Dinge genützt werden.
+\item{getView(int position, View convertView, ViewGroup parent)}\\
+Diese Methode gibt die jeweilige Ansicht die das Objekt repräsentiert zurück. Diese Methode wird von dem ViewFlow aufgerufen, um die zu anzeigende Ansicht zu bekommen.
+\end{itemize}
+\end{itemize}
+
+\subparagraph{Die "Neue Anmeldung" Maske}
+Wie schon erwähnt wird diese Maske bei dem ersten Programmstart angezeigt und man hat die Möglichkeit sich das erste Mal am Server anzumelden. Das Progamm ist so konzipiert, dass eine erste Serveranmeldung benötigt wird und ohne jeweiligen Server nicht benutzbar ist.
+
+Die Implementierung dieser Maske erfolgt durch die NewLoginVFView. Diese Klasse wurde von der AbstractLoginMultiScreenView abgeleitet. Wie schon erwähnt beinhaltet diese abstrakte Klasse, Methoden die der ViewFlowAdapter benötigt. Das Layout dieser Ansicht wird in einem XML-Dokument definiert und besteht ausschließlich aus Android-UI Elementen. Das Verhalten dieser Elemente wird von unserer Klasse gesteuert.
+
+Hier ein Screenshot des Grundlayouts:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/login_screen}
+\caption{Layout der "Neue Anmeldung" Maske}
+\end{figure}
+
+Die Textfelder für die Benutzernamen- und Passworteingabe  wurde mittels EditText Elementen implementiert, jedoch wurde im Gegensatz zum Feld für den Benutzernamen,  beim Passwortfeld das Attribute \textbf{“android:inputType=textPassword“} gesetzt. Dies hat die Funktion, dass das Textfeld das eingegebene Passwort in Sterne darstellt. Das \textit{"Passwort Speichern"} Feld wurde mittels einer CheckBox gelöst, die sich anhaken lässt.
+
+Die Eingabe der Stationinformationen läuft wesentlich dynamischer ab. Hierbei wird der Benutzer durch einen Server Suchprozess,der im folgenden Abschnitt erklärt wird, unterstützt.
+
+\textbf{Der Station Suchprozess}\\
+Dieser Suchprozess wurde eingeführt, um dem Benutzer das Finden einer Station zu erleichtern und er im besten Fall keine Ahnung von IP-Adressen haben muss.
+
+Dieser Prozess wird beim Laden der Ansicht gestartet und kann durch das Klicken dieses \includegraphics[width=0.7cm]{images/app_screenshots/login_search_button} - Buttons manuell gestartet werden.
+
+Bei diesem Prozess wird ein Broadcast in das lokale Netzwerk gesendet d.H. alle Geräte im Netzwerk bekommen diese Nachricht. Bekommt eine Station diese Nachricht, sendet sie ihre Informationen wieder zurück an den Sender der Nachricht.
+
+Während dieses Prozesses verschwindet der Hintergrund des Buttons und das Sync-Symbol beginnt sich zu drehen.
+
+\begin{lstlisting}[language=java, captionpos=b, caption={Rotationanimation des Buttons}]
+autoLookupRefresh.setBackgroundDrawable(null);
+
+RotateAnimation rotateAnimation = new RotateAnimation(0.0f, 360.0f,
+Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF, 0.5f);
+
+rotateAnimation.setRepeatCount(Animation.INFINITE);
+rotateAnimation.setDuration(2000);
+rotateAnimation.setInterpolator(new LinearInterpolator());
+autoLookupRefresh.startAnimation(rotateAnimation);
+\end{lstlisting}
+
+Nachdem dieser Prozess abgeschlossen ist ergeben sich 3 Möglichkeiten die Station-Informationen einzugeben:
+
+\begin{itemize}
+\item{\textbf{ Die Station wird im lokalen Netzwerk gefunden.}}\\
+Wird eine Station im Netzwerk gefunden, wird ihre Station Id automatisch als Text des Station Buttons gesetzt. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/login_station_found}
+\caption{Layout wenn Station gefunden wurde}
+\end{figure}
+
+Durch einen Klick auf diesen Button öffnet sich ein Kontextmenü, das als AlertDialog implementiert wurde. In diesem Kontextmenü könnte man entweder, falls vorhanden, eine andere Station auswählen oder auf eine der zwei anderen beschrieben Möglichkeiten wechseln. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/login_station_context}
+\caption{Station Kontextmenü}
+\end{figure}
+
+
+\item{Die Eingabe der Station ID}\\
+Falls keine Station gefunden wird, erscheint automatisch ein EditText Element für eine sogenannte Server ID. Bei dieser ID handelt es sich um eine global eindeutige Stationkennung. Global bedeutet in diesem Fall, dass es keine andere Smartbow Station gibt, die diese Kennung besitzt. Diese wird benötigt, da bei dieser Auswahl eine Verbindung zum ,über das Internet erreichbaren, Smartbow Forwarder hergestellt wird. Zu diesem Server verbinden sich alle lokalen Stations. Somit hat der Forwarder die Möglichkeit mittels eindeutiger ID, den Client zu der jeweiligen Station, weiterzuleiten.
+Auch hier besteht wieder die Möglichkeit, mittels Klick auf den Button und der Auswahl im bereits beschriebenen Kontextmenü, auf die manuelle Eingabe der Station-Informationen zu wechseln.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/login_station_id}
+\caption{Die Eingabe der Station ID}
+\end{figure}
+
+\item{Die manuelle Eingabe der Stationinformationen}\\
+Die letzte Möglichkeit ist es die Station IP-Adresse und die Station Portnummer manuell einzugeben.Dieser Weg wird auch verwendet, wenn zum Beispiel die Station sich nicht im selben Netz befindet und ein Router oder Switch den Broadcast nicht weiterleitet.
+
+Bei diesen beiden Feldern handelt es sich um AutoCompleteTextViews, mit denen eine automatische Vervollständigung möglich ist. Als Daten für diese Vervollständigung dienen die IP-Addressen und Portnummern, mit denen man sich bereits angemeldet hat. Diese Adressen und Nummern bekommen wir, mittels Abfrage, aus der Datenbank.
+
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/login_station_manual} 
+    \caption{Die manuelle Eingabe der Station Informatione}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/login_autocomplete}  
+    \caption{AutoComplete für IP-Adresse}
+  \end{minipage}
+\end{figure}
+
+
+
+
+\end{itemize}
+
+Durch einen Klick auf den Anmeldebutton wird die Maske überprüft, ob alle Felder richtig ausgefüllt wurden. Ist dies nicht der Fall und wurde zum Beispiel die IP-Adresse im falschen Format eingeben erscheint ein AlertDialog, der auf den jeweiligen Fehler hinweist. 
+
+Wenn alles in Ordnung ist, wird der Anmeldeprozess, der am Ende dieses Kapitel beschrieben wird, gestartet.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/app_screenshots/login_ip_alert}
+\caption{Fehlerdialog bei falscher Eingabe der Server IP-Adresse}
+\end{figure}
+
+\subparagraph{Die Listen der bereits angemeldeten Benutzer}Falls es schon angemeldete Benutzer in der Datenbank gibt, werden diese Ansichten angezeigt. Dabei wird für jede Station eine Ansicht erzeugt. Als Titel dient die jeweilige IP-Adresse der jeweiligen Station und die Benutzer werden dann in einer ListView dargestellt. Beim Benutzerelement handelt es sich um ein selbst erstelltes Listenelement. Das Layout dafür wurde in einer XML-Datei definiert und besteht aus einem Icon,dem Benutzernamen und dem Tag der letzten Anmeldung. Hier ein Screenshot des Grundlayouts der einzelnen Listen:\begin{figure}[H]\centering\includegraphics[width=7cm]{images/app_screenshots/relogin}\caption{Grundlayout der Benutzer Listen}\end{figure}Man hat die Möglichkeit, mittels ViewFlow und der dazugehörigen Wischgeste,  zwischen den Benutzerlisten und der "Neue Anmeldung" Maske zu wechseln. Hat man sich für einen Benutzer entschieden und selektiert diesen, gibt es zwei Möglichkeiten was passieren kann:\begin{itemize}\item{Der Passworteingabe Dialog erscheint}\\Dies passiert wenn das Passwort noch nicht gespeichert wurde. Es erscheint ein Dialog, der einen AlertDialog darstellt. Dieser beinhaltet ein Textfeld zur Passworteingabe und eine Checkbox zur Selektierung, ob das Passwort gespeichert werden soll.Drückt man nach der Eingabe den Anmelden-Button, startet der Anmeldeprozess, der am Ende dieses Kapitels erklärt wird.\begin{figure}[H]\centering\includegraphics[width=7cm]{images/app_screenshots/passwordDialog}\caption{Der Passwort Dialog}\end{figure}\item{Der Anmeldeprozess startet automatisch}\\Dies geschieht, wenn das Passwort bereits gespeichert wurde. Hierbei startet der Anmeldeprozess automatisch und verlangt nicht mehr nach einer Passworteingabe.\end{itemize}Falls man den jeweiligen Benutzer löschen will, muss man diesen Benutzer in der Liste lange drücken. Nun erscheint ein Kontextmenü, das als AlertDialog angezeigt wird. In diesem Kontextmenü gibt es derzeit nur eine Option und diese ist die Option \textit{"Benutzer löschen"}.Bei diesem Löschvorgang wird der Benutzer aus der Datenbank und seine zugehörige Benutzerdatenbank gelöscht.\begin{figure}[H]\centering\includegraphics[width=7cm]{images/app_screenshots/deleteUser}\caption{Der Dialog zum Löschen eines Benutzers}\end{figure}\subparagraph{Der Anmeldeprozess}Nun da alle Anmeldeparamenter eingeben sind,startet der Anmeldeprozess. Da die Anmeldung durch den Synchronizer durchgeführt wird, muss diese Anmeldung vom SyncService durchgeführt werden. Dazu sendet die LoginActivity eine Nachricht, die die Loginparameter beinhaltet und den Syncservice dazu auffordert, sich bei der Station anzumelden.Im SyncServer wird zwischen zwei Szenarios unterschieden:\begin{itemize}\item{Der Benutzer hat sich schon einmal angemeldet und befindet sich in der Datenbank}\\Falls sich der Benutzer bereits in der Datenbank befindet,versucht der SyncServer, mit den Daten aus der Datenbank, eine Verbindung mit der Station herzustellen, um ihr die Daten zur Überprüfung zu zuschicken.Ist diese erreichbar und bestätigt die Richtigkeit der Daten, so wird der LoginActivity dies weitergeleitet und zusätzlich startet die erste Synchronisierung.Ist die Station nicht erreichbar, so wird das Passwort mit dem lokal gespeicherten Passwort geprüft und das Ergebnis an die Loginactivity weitergeleitet. In diesem Fall kann jedoch keine Synchronisierung gestartet werden.\item{Der Benutzer meldet sich zum ersten Mal an}\\Bei diesem Szenario muss eine Verbindung zur Station hergestellt werden. Ist dies nicht möglich, so wird eine Nachricht an die LoginActivity geschickt, die diese Nachricht behandelt und dem Benutzer ein Feedback gibt.Falls eine Verbindung möglich ist, werden die Anmeldeparameter von der Station überprüft und das Ergebnis wird an den Syncservice gesendet. Ist alles in Ordnung speichert dieser den neuen Benutzer in die Datenbank und sendet der Loginacivity, dass alles in Ordnung ist und es wird die erste Synchronisierung gestartet. Falls es jedoch Probleme mit den Anmeldeparameter gibt, wird auch dies der Loginactivity weitergeleitet, jedoch kann auch hier keine Synchronisierung gestartet werden.\end{itemize}Die durchgeführte Verbindung zu Station wird in einem  AsyncTask, einer speziellen Thread-Implementation der Android-Plattform, durchgeführt. Dieser eigene Thread wird verwendet, da ab Android 4.0 Netzwerkverbindungen in einem eigenen Thread durchgeführt werden müssen.\begin{figure}[htbp]\centering    \includegraphics[width=15cm]{images/loginprozess}\caption{Der Anmeldeprozess}\end{figure}
+\newpageWährend dieses Prozesses wird in der Loginactivity eine \textit{"Bitte Warten"} AlertDialog angezeigt. Ist dieser Prozess abgeschlossen, reagiert die Acitivity auf die verschiedenen Antworten:\begin{itemize}\item{\textbf {Anmeldung war erfolgreich erste Synchronisierung wird gestartet}}\\War die Anmeldung und das damit verbundene Verbinden zur Station erfolgreich, startet die LoginActivity einen Dialog mit einem Ladebalken. Dieser ProgressDialog signalisiert, dass die erste Synchronisierung im Gange ist und bekommt vom SyncService, in regelmäßigen Abständen, die Standwerte der Synchronisierung. Dieser Dialog wurde eingeführt, da je nach dem wie viele Objekte sich auf der Station befinden, die erste komplette Synchronisation mehr Zeit benötigt. \begin{figure}[H]\centering\includegraphics[width=6.3cm]{images/app_screenshots/first_sync}\caption{Der Progressdialog für die erste Synchonisierung}\end{figure}\item{\textbf {Die Anmelde-Parameter sind falsch}}\\Wurden die Anmelde-Parameter falsch eingeben bzw. wurde das Passwort auf der Station geändert, wird in der Loginactivity ein AlertDialog angezeigt, der den Benutzer darauf hinweist, dass seine Eingaben falsch waren.\begin{figure}[H]\centering\includegraphics[width=7cm]{images/app_screenshots/login_wrong_pass}\caption{Der angezeigte Dialog bei falscher Eingabe der Anmelde-Parameter}\end{figure}\item{\textbf {Es besteht keine Verbindung zur Station}}\\Besteht keine Verbindung gibt es zwei Möglichkeiten wie die Activity darauf reagiert. Falls sich der Benutzer zum ersten Mal anmeldet und deshalb eine Verbindung zur Station benötigt wird, wird ein AlertDialog angezeigt der dem Benutzer signalisiert, dass er eine Verbindung zur Station braucht.\begin{figure}[H]\centering\includegraphics[width=7cm]{images/app_screenshots/login_no_server}\caption{Der Dialog bei fehlgeschlagenen Verbinden zur Station}\end{figure}Falls er sich bereits einmal angemeldet hat, werden  die Loginparameter nur lokal geprüft und er wird bei erfolgreichen Ausgang, ohne ProgressDialog, in das Programm weitergeleitet.\end{itemize}

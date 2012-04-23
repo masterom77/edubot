@@ -1,0 +1,253 @@
+
+\subsection{Gesundheitsverwaltung}
+
+\subsubsection{Aufgaben}
+Die Aufgabe der Gesundheitsverwaltung ist das Hinzufügen von Behandlungen und Auffälligkeiten zu einem Tier zu ermöglichen. Dazu gehören die Erstellung von Medikamenten und Auffälligkeitsarten und die Aufbereitung der Daten.
+\subsubsection{Aufbau}
+Die Gesundheitsverwaltung hat 2 Hauptbereiche. Die Erstellung und Verwaltung von Auffälligkeiten und die Erstellung und Verwaltung von Verabreichungen.
+\begin{itemize}
+\item{\textbf{Auffälligkeiten}} \\
+Auffälligkeiten sind Ungereimtheiten die ein Tier haben kann. Dabei kann es sich um Krankheitssymptome oder aber um ganz andere Dinge handeln. \\ 
+Grundsätzlich besteht die Verwaltung der Auffälligkeiten aus folgenden Bereichen:
+\begin{itemize}
+\item{\textbf{Der Auffälligkeitenliste in der Tierdetailansicht}} \\
+Die Liste ziegt alle nicht gelöschten Auffälligkeiten eines Tieres an. Es werden der Name der Auffälligkeit sowie die Kategorie und die Eintragungs- bzw. Austragungszeit im Listeneintrag angezeigt. Über das Kontextmenü hat der Benutzer die Möglichkeit eine Auffälligkeit zu löschen oder auf "abgeklungen" zu setzten, dies bedeutet das die Auffälligkeit nicht länger zutrifft.
+\item{\textbf{Der Detailansicht einer Auffälligkeit}} \\
+Wie schon bei der Tierdetailansicht wird diese gestartet wenn man entweder einen Listeneintrag anklickt oder wenn eine neue Auffälligkeit erstellt wird. In dieser Ansicht werden die genauen Daten einer Auffälligkeit, wie die Auffälligkeitsart, der Entdeckungszeitpunkt und der Endzeitpunkt angezeigt. Diese Werte können wieder über den Bearbeitungsmodus verändert werden. Genau wie beim Tier können über die Plus-Schaltfäche Attribute hinzugefügt werden und über den Such-Button wird die Suche gestartet.
+\item{\textbf{Der Maske zum Erstellen und Bearbeiten von Auffälligkeitsarten}} \\
+Über die Auswahl der Auffälligkeitsart in der Detailansicht können bestehende Arten bearbeitet und neue erstellt werden. Dies wird durch eine Maske ermöglicht. Mit der Maske können die Katalognummer, der Name, die Kategorie und die Standardendzeit bearbeitet werden.
+\end{itemize}
+\item{\textbf{Behandlungen}} \\
+Eine Behandlung ist die Verabreichung eines Medikaments bei einem Tier. \\
+Die Verwaltung der Behandlungen setzt sich zusammen aus:
+\begin{itemize}
+\item{\textbf{Der Behandlungsliste in der Tierdetailansicht}} \\
+Die Liste zeigt alle nicht gelöschten Behandlungen eines Tieres an. Es werden der Medikamentenname, der Verabreichungszeitpunkt, die Wartezeit bis zur nächstmöglichen Verabreichung und die Dosis angezeigt. Über das Kontextmenü kann eine Verbareichung wieder gelöscht werden.
+\item{\textbf{Der Detailansicht einer Behandlung}} \\
+Diese Ansicht wird gestartet wenn eine bestehende Behandlung geöffnet wird oder eine neue erstellt wird. Sie enthält Informationen über das Medikament, die Dosis, die Chargennummer, den Zeitpunkt der Verabreichung, der Wartezeit und der Beschreibung des Medikaments. 
+\item{\textbf{Der Maske zum Erstellen und Bearbeiten von Medikamenten}} \\
+Wie schon bei den Auffälligkeiten kann auch hier in der Verabreichung bei der Auswahl des Medikaments ein bestehendes bearbeitet und ein neues hinzugefügt werden. Über die Maske können der Name, die Chargennummer, der Preis, die Kapazität, die Verabreichungsart, die Standarddosis, die Wartezeit und die Beschreibung verändert werden.
+\item{\textbf{Behandlungsmaske}} \\
+Mit der Behandlungsmaske ist es möglich, zu einem oder mehreren Tieren mehrere Behandlungen und Auffälligkeiten aufeinmal hinzuzufügen.
+\end{itemize}
+\item{\textbf{Gesundheitsordner}} \\
+Der Gesundheitsordner kann wie der Tierordner über den Homescreen erreicht werden. Im Ordner gibt es 2 Listen zwischen denen man mithilfe von Tabs am unteren Rand des Ordners hin und her schalten kann. Eine Ansicht für alle Tiere mit offenen Auffälligkeiten und eine Ansicht für alle Tiere mit Verabreichungen. Die Listeneinträge sind gruppiert nach der Auffälligkeitsart bzw. dem Medikament.
+\end{itemize}
+
+\subsubsection{Umsetzung}
+Wie in Abschnitt \textit{3.3 Tierverwaltung} bereits erwähnt handelt es sich bei der Auffälligkeiten- und Behandlungsliste um 2 Klassen die von \textit{AbstractObjectListView} ableiten. 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=6.5cm]{images/app_screenshots/animal_detail_consp} 
+    \caption{Auffälligkeiten}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=6.5cm]{images/app_screenshots/animal_detail_treat}  
+    \caption{Behandlungen}
+  \end{minipage}
+\end{figure}
+Wie schon im Tierordner kann über einen langen Klick das Kontextmenü aufgerufen werden. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{images/app_screenshots/consp_context}
+\caption{Auffälligkeiten Kontextmenü}
+\end{figure}
+Das Kontextmenü in der Auffälligkeitenliste enthält 2 Einträge. Einen um die Auffälligkeit auf "abgeklungen" zu setzen, welcher nur sichtbar ist wenn die Auffälligkeit noch offen ist, und einen um die Auffälligkeit zu löschen.\\
+Wird eine Auffälligkeit auf "abgeklungen" gesetzt verändert sich das Icon des Eintrags und im Text unter dem Namen wird statt dem Beginn Zeitpunkt der Endzeitpunkt angezeigt.
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{images/app_screenshots/consp_closed}
+\caption{Abgeklungene Auffälligkeit}
+\end{figure}
+Das Kontextmenü der Behandlungen enthält nur den Eintrag zum Löschen. \\[0.5em]
+In der Auffälligkeitenliste werden alle offenen Auffälligkeiten nur einmal angezeigt, sofern die Standardendzeit der Auffälligkeit noch nicht vorbei ist. Dies bedeutet also das wenn bereits eine Auffälligkeit "Fieber" vorhanden ist deren Endzeit 5 Tage dauert und der Benutzer erstellt innerhalb dieser 5 Tage eine neue Auffälligkeit "Fieber" wird nur die ältere angezeigt. \\
+Der Algorithmus um eine Liste von Auffälligkeiten zusammenzufassen funktioniert folgendermaßen: 
+\begin{enumerate}
+\item{\textbf{Sortieren der Elemente}} \\
+Als allererstes wird die bestehende Liste so sortiert das die älteste Auffälligkeit an erster Stelle steht.
+\item{\textbf{Erstellen einer neuen Liste}} \\
+Nach dem Sortieren wird eine neue Liste erstellt die am Ende nur noch die anzuzeigenden Auffäligkeiten beinhaltet. 
+\item{\textbf{Prüfen ob die Auffälligkeit angezeigt werden soll}} \\
+In diesem Schritt wird die geordnete Liste iteriert. Für jede Auffälligkeit in der Liste wird geprüft ob die neue Liste schon eine mit der selben Art enthält. Ist dies der Fall wird geprüft ob eine der beiden Auffälligkeiten bereits abgeklungen ist, ist nur eine abgeklungen oder beide zu unterschiedlichen Zeiten, kommt die neuere Auffälligkeit in die Ergebnisliste. Sind beide noch offen oder zur selben Zeit abgeklungen folgt noch eine weitere Prüfung. Hier wird geprüft ob die neuere Auffälligkeit innerhalb der Standardendzeit der älteren erstellt wurde. Wurde sie innerhalb des Zeitraumes erstellt wird sie nicht zur Ergebnisliste hinzugefügt, andernfalls schon.
+\item{\textbf{Rückgabe des Ergebnisses}} \\
+Der Rückgabewert des Alogrithmuses ist die "zusammengefasste" Liste von Auffälligkeiten.
+\end{enumerate}
+Da es sich durch User-Tests erwiesen hat, dass es für den Benutzer seltsam ist wenn eine gerade neu erstellte Auffälligkeit nicht auftaucht weil sie zusammengefasst wurde, wurde für diesen Fall etwas ausgearbeitet.\\
+Wird eine neue Auffälligkeit erstellt wird im \textit{Activity Result} der Auffälligkeit die ID des neuen Objekts mitgegeben und in den Tierdetails geprüft ob von diesem Auffälligkeitstyp schon ein älteres vorhanden ist. Ist dies der Fall leuchtet der Listeneintrag der älteren Auffälligkeit grün auf.
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{images/app_screenshots/consp_highlighted}
+\caption{Leuchtende Auffälligkeit}
+\end{figure}
+Dies wird durch eine \textit{TransmissionDrawable} realisiert. Eine \textit{TransmissionDrawable} kann wie ein normaler Hintergrund zugewiesen werden und zeichnet einen animierten Farbübergang. In unserem Fall von Transparent zu Grün und wieder zurück.
+\subparagraph{Erstellen von Aufälligkeiten}
+Wie bereits erwähnt öffnet sich beim Anklicken des Listeneintrags oder beim Erstellen einer neuen Aufälligkeit, die Auffälligkeitsdetailansicht. \\
+Wie die Tierdetailansicht ist die Auffälligkeitsdetailansicht von der Klasse \textit{AbstractObjectDetailActivity} abgeleitet. Die \textit{Activity} enthält zwar den \textit{ViewFlow} aber es wird nur eine \textit{View} hinzugefügt. Diese \textit{View} ist wie die Tierdaten-\textit{View} abgeleitet von \textit{AbstractObjectBasicsView} nur eben für das Auffälligkeitenobjekt. 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/consp_detail} 
+    \caption{Auffälligkeitsansicht}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/consp_detail_editmode}  
+    \caption{Auffälligkeitsansicht im Bearbeitungsmodus}
+  \end{minipage}
+\end{figure}
+In der Auffälligkeitenansicht können die Art, der Startzeitpunkt und der Endzeitpunkt der Auffälligkeit bearbeitet werden. Außerdem wird noch die Kategorie angezeigt, diese kann jedoch nicht direkt editiert werden und wird durch die Auffälligkeitsart bestimmt. \\
+Die Eingabefelder für die Art und den Startzeitpunkt sind vom Typ \textit{InfoObjComponent}. Für den Endzeitpunkt wird entweder ein \textit{PlaceholderComponent} oder ein \textit{InfoObjComponent} angezeigt, je nachdem ob schon eine Endzeit eingetragen wurde. \\
+Beim Klicken auf den \textit{InfoObjComponent} des Start- oder Endzeitpunkts wird die \textit{DateTimePickerActivity} gestartet, mit welcher man den Zeitpunkt bestimmen kann. \\
+Klickt man auf den \textit{InfoObjComponent} der Auffälligkeitsart öffnet sich die Suche mit allen Auffälligkeitsarten. Die Suche wurde von \textit{Bernhard Pflug} entwickelt und funktioniert nach dem \textit{SmartDial}-Prinzip. Dies bedeutet, dass bei einem Klick auf die Taste \textit{"2"} nach den Buchstaben \textit{"A"}, \textit{"B"}, \textit{"C"} und nach der Ziffer \textit{"2"} gesucht wird. Dieses Konzept wurde gewählt, da sich gezeigt hat das es für einen Bauern im Stall sehr schwer ist die normale QWERTZ-Tastatur mit nur einem Finger zu bedienen. \\
+In der Suche finden sich alle Auffälligkeitsarten mit ihren Katalognummern und Namen. Von der Suche werden die Nummer, Name und die Kategorie berücksichtigt. \\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/consp_type_search} 
+    \caption{Auswahl der Auffälligkeitsart}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/consp_type_search_empty}  
+    \caption{Der Placeholder in der Suche}
+  \end{minipage}
+\end{figure}
+Die Suche zeigt das Ergebnis der Suche in einer Liste an. Klick man auf einen Listeneintrag wird dieser ausgwählt und die Suche wird beendet. Über ein \textit{ActivtyResult} wird der Auffälligkeitsansicht die ausgewählte Art übergeben und der \textit{InfoObjComponent} wird mit der neuen Art aktualisiert. \\
+Klick man lange auf eine Auffälligkeitsart öffnet sich das Kontextmenü. Das Kontextmenü enthält einen Eintrag um die Art zu bearbeiten.  
+Gibt es noch keine Auffälligkeitsarten oder die Suche liefert keine Ergbnisse wird der Placeholder in der Liste angezeigt. Über diesen Placeholder oder über die \includegraphics[width=0.7cm]{images/app_screenshots/plus_button} - Schaltfläche kann eine neue Auffälligkeitsart erstellt werden. \\
+Ändert oder Erstellt man eine Auffälligkeitsart öffnet sich eine neue \textit{Actvity}, welche generisch von \textit{AbstractObjectDetailActvity} für das Auffälligkeitsartenobjekt abgeleitet ist.  
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/consp_type} 
+    \caption{Auffälligkeitsartenmaske}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/consp_type_auto}  
+    \caption{AutoComplete bei der Kategorie}
+  \end{minipage}
+\end{figure}
+In dieser Ansicht ist es möglich die Nummer, den Namen, die Kategorie und die Standardendzeit der Auffälligkeitsart zu bearbeiten. \\
+Bei dem Feld zur Eingabe der Nummer, des Namens und der Kategorie handelt es sich um \textit{SimpleTextComponents}. Nummer sowie Name der Art müssen eindeutig sein, sonst können die Änderungen nicht gespeichert werden. Bei der Eingabe der Kategorie spring nach der Eingabe des ersten Buchstabens eine Liste mit bestehenden Kategorien auf. Dies mit der \textit{AutoCompleteTextView} von Android implementiert, dieser Komponente kann über einen \textit{Adapter} eine Liste von \textit{Strings} mitgegeben werden. Je nach Eingabe werden dann jene Einträge angezeigt welche passen. Da die \textit{AutoCompleteTextView} von \textit{EditText} ableitet und sie sich wenn keine Liste mitgegeben wurde wie ein normales \textit{EditText} verhält, wurde in der \textit{SimpleTextComponent} die \textit{EditText} Komponente durch die \textit{AutoCompleteView} ausgetauscht. \\
+Die Eingabe der Standardendzeit wurde durch 2 \textit{Android Wheels} realisiert. Das \textit{Wheel} ist ein Open Source Projekt von Yuri Kanivets. Es ist einer iOS Komponente nachgebaut und hat die selben Funktionen wie ein Spinner. \\
+Bei unserer Maske verwenden wir ein \textit{Wheel} für die Werte \textit{1 - 7} und ein weiteres für \textit{"Tage"}, \textit{"Wochen"} und \textit{"Lebenslang"}. Wird \textit{Lebenslang} ausgewählt wird das erste \textit{Wheel} uneditierbar. Die Auswahl wird beim Speichern in Tage umgerechnet, sollte \textit{"Lebenslang"} gewählt worden sein wird \textit{-1} gespeichert. 
+\subparagraph{Erstellen von Behandlungen}
+Zur Erstellung einer neuer Behandlung wurde eine spezielle Maske entwickelt. Mit dieser Maske ist es möglich mehreren Tieren, beliebig viele Behandlungen und Auffälligkeiten hinzufügen. Dieses Konzept ergab sich durch genaue Analyse der Arbeitsschritte eines Landwirtes.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/therapy} 
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/therapy2}  
+  \end{minipage}
+  \caption{Behandlungsmaske}
+\end{figure}
+Beim Erstellen der Behandlungsmaske gab es leider Layoutprobleme mit dem \texit{ViewFlow} und daher konnte nicht von der Klasse \textit{AbstractMultiScreenActivity} abgeleitet werden. Aus diesem Grund musste der Code zum Erstellen der Titelleiste aus der Superklasse kopiert werden und direkt von \textit{BusinessActvity} abgeleitet werden. Im Backlog der MKWe ist geplant dies in die Abstrahierung einzubauen. \\[0.5em]
+Die Behandlungsmaske ist in 3 Teile aufgeteilt, die Tiere, die Verabreichungen bzw. Behandlungen und die Auffälligkeiten welche vom Benutzer hinzugefügt werden können. \\
+Die Tierliste ist eine \textit{ScrollView} welche horizontal durchgescrollt werden kann. Wird über den Placeholder oder durch den Hinzufügen-Button rechts oben ein neues Tier hinzugefügt, wird der \textit{ScrollView} ein neues \textit{LinearLayout} hinzugefügt. Ausgewählt wird ein Tier wie bei der Auffälligkeitsart durch die Suche. \\
+Die Verabreichungs- und Behandlungsliste sehen zwar aus wie \texit{ListViews}, sind aber normale \textit{LinearLayout}. Zu diesen Layouts wird für jeden Eintrag dynamisch ein neuer \textit{View} hinzugefügt. Über den Mülleimer können die Einträge, wie bei den anderen Listen, wieder gelöscht werden. \\[0.5em]
+Mit einem Klick auf den Verabreichungs-Placeholder öffnet sich eine neue \textit{Activity}.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=7cm]{images/app_screenshots/treat_detail} 
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=7cm]{images/app_screenshots/treat2}  
+  \end{minipage}
+  \caption{Verabreichungsmaske}
+\end{figure}
+Die \textit{Activity} erbt von \textit{AbstractObjectDetailActivity} und wird auch dann aufgerufen wenn eine bestehende Behandlung angezeigt werden soll. \\
+In dieser Ansicht ist es möglich das Medikament, die Dosis, den Zeitpunkt, die Chargennummer und die Beschreibung der neuen Verabreichung zu ändern. Weiters wird auch noch die Wartezeit angezeigt, welche aber nicht editierbar ist. Standardwerte für Dosis, Chargennummer, Wartezeit und Beschreibung sind im Medikament gespeichert und werden bei der Auswahl des Medikaments automatisch eingetragen. Der Benutzer hat nun die Möglichkeit diese Werte vor den abspeichern der Behandlung zu verändern. Werden die Werte verändert, werden die neuen Werte automatisch als neue Standardwerte in das Medikament eingetragen. \\
+Die Auswahl der Dosis erfolgt über das \textit{CounterComponent}. Wie schon das \textit{SimpleTextComponent} und das \textit{InfoObjComponent} wurde diese Komponente selbst entwickelt. Sie kann wie die anderen über XML zum Layout hinzugefügt werden. Ist die Activity nicht im Bearbeitungsmodus sind die "+" und "-" Buttons nicht sichtbar. Zusätzlich kann der \textit{CounterComponent} noch eine Einheit wie zum Beispiel "ml" zugewiesen werden. \\
+Die Eingabe der Chargennummer erfolgt über ein \textit{SimpleTextComponent} ohne jegliche Validierung. Das Auswählen des Zeitpunktes erfolgt durch ein \textit{InfoObjComponent} mit dem die \textit{DateTimePickerActivity} aufgerufen wird. Die Beschreibung ist ebenfalls ein \textit{InfoObjComponent} und zeigt bei einem Klick einen einfachen \textit{AlertDialog} mit einem \textit{EditText} zum Eingeben der Beschreibung an. \\
+Beim Klicken auf das \textit{InfoObjComponent} der Medikation wird die Suche mit allen vorhandenen Medikamenten geöffnet.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.5cm]{images/app_screenshots/treat_search}  
+  \caption{Medikationsauswahl}
+\end{figure}
+Wie schon bei der Auffälligkeitsart kann mit einem einfachen Klick das Medikatment ausgewählt werden und durch einen langen Klick bearbeitet werden. \\
+Liefert die Suche kein Ergebnis wird ein Placeholder zum Erstellen eines neuen Medikamentes angezeigt. Über die \includegraphics[width=0.7cm]{images/app_screenshots/plus_button} - Schaltfläche kann ebenfalls ein neues Medikament erzeugt werden. \\
+Das Erstellen und Bearbeiten von Medikatmenten erfolgt mit der Medikamentenmaske.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{7 cm}
+  	\centering
+  	\includegraphics[width=6cm]{images/app_screenshots/treat_type} 
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{7 cm}
+	\centering
+	\includegraphics[width=6cm]{images/app_screenshots/treat_type2}  
+  \end{minipage}
+  \caption{Medikamentenmaske}
+\end{figure}
+In dieser \textit{Actvity} können folgende Attribute eines Medikaments bearbeitet werden:
+\begin{itemize}
+\item{\textbf{Medikamentenname}} \\
+Die Eingabe des Medikamentennamens erfolgt durch ein \textit{SimpleTextComponent}. Sollte der eingegebene Name bereits verwendet werden wird ein Fehler angezeigt.
+\item{\textbf{Chargennummer}} \\
+Wie auch der Name wird die Chargennummer über eine \textit{SimpleTextComponent} eingegeben, welche nur nummerische Werte zulässt. Die Chargennummer muss ebenfalls eindeutig sein.
+\item{\textbf{Chargenpreis}} \\
+Der Chargenpreis wird über ein \textit{InfoObjComponent} angezeigt, welches bei einem Klick einen \textit{AlertDialog} aufruft. Der Dialog enthält 4 \textit{Android Wheels}, 3 für den Betrag und 1 für die Währung (Euro oder Dollar). 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.4cm]{images/app_screenshots/price_dialog} 
+  \caption{Preisdialog}
+\end{figure}
+Die Auswahl des Betrags erfolgt durch die Auswahl der Hunderter-, Zehner- und Einserstelle mit dem jeweiligen \textit{Wheel}. Jedes dieser \textit{Wheels} hat einen Werte bereich von 0-9. 
+\item{\textbf{Kapazität}} \\
+Die Eingabe der Gesamtkapazität eines Medikaments erfolgt über einen fast identischen Dialog wie bei dem Chargenpreis. Der einzige Unterschied ist das statt der Währung die Einheiten \textit{"ml"}, \textit{"Stück"} und \textit{"g"} zur Auswahl hat. Da die Kapazität und die Standarddosis immer die selbe Einheit haben müssen wird sie bei einer Änderung automatisch bei beiden geändert. 
+\item{\textbf{Standarddosis}} \\
+Die Standarddosis wird mit dem gleichen Dialog eingegeben der auch bei der Kapazität benutzt wird.
+\item{\textbf{Verabreichungsart}} \\
+Bei einem Klick auf das \textit{InfoObjComponent} der Verabreichungsart öffnet sich ein \textit{AlertDialog} mit einer Single Choice Auswahlmöglichkeit. Es kann zwischen den Optionen \textit{"Intramuskulär"},  \textit{"Subkutan"},  \textit{"Oral"} und  \textit{"Andere"} ausgwählt werden.
+\item{\textbf{Wartezeit}} \\
+Die Wartezeit wird ebenfalls über ein \textit{InfoObjComponent} angezeigt. Auch wenn die Zeit in Tagen gespeichert ist, wird sie bei einem passenden Wert in Wochen oder Monate dargestellt. Betragt die Wartezeit also ein vielfaches von 7 werden Wochen angezeigt und betragt sie ein vielfaches von 30 wird die Warteziet in Monaten angezeigt. \\
+Bei einem Klick auf die Komponente öffnet sich der selbe Dialog wie beim Chargenpreis, mit dem Unterschied das statt der Währung \textit{"Tage"}, \textit{"Wochen"} oder \textit{"Monate"} ausgewählt werden können.
+\item{\textbf{Beschreibung}} \\
+Wird auf das Beschreibungs-\textit{InfoObjComponent} geklickt öffnet sich ein \textit{AlertDialog}, der eine einfache Texteingabe ermöglicht.
+\end{itemize}
+\subparagraph{Der Gesundheitsordner}
+Der Gesundheitsordner kann über den Homescreen erreicht werden. Die \textit{Activity} erbt von \textit{AbstractTitleMultiScreenActivity}, zur dieser \textit{Activity} werden 2 \textit{NavigationGroups} hinzugefügt. Die \textit{NavigationGroups} wurden von \textit{Bernhard Pflug} entwickelt und ermöglichen über Tabs zwischen mehreren \textit{ViewFlows} hin und her zu schalten. \\
+Der Gesundheitsordner enthält 2 solche \texit{NavigationGroups}. Jede \textit{NavigationGroup} enthält eine Ansicht welche von \texit{AbstractMultiScreenView} erbt. Diese Ansichten enhalten eine \textit{ListView}. 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{3.6 cm}
+  	\centering
+  	\includegraphics[width=3.6cm]{images/app_screenshots/health_consp} 
+  \end{minipage}
+  \begin{minipage}[t]{3.6 cm}
+	\centering
+	\includegraphics[width=3.6cm]{images/app_screenshots/health_consp2}  
+  \end{minipage}
+  \begin{minipage}[t]{3.6 cm}
+  	\centering
+  	\includegraphics[width=3.6cm]{images/app_screenshots/health_treat} 
+  \end{minipage}
+  \begin{minipage}[t]{3.6 cm}
+	\centering
+	\includegraphics[width=3.6cm]{images/app_screenshots/health_treat2}  
+  \end{minipage}
+  \caption{Gesundheitsordner}
+\end{figure}
+Wie in den Abbildungen zu erkennen ist, enthält einer der Tabs alle offenen Auffälligkeiten und der andere alle Behandlungen. Klick man auf eine Auffälligkeit bzw. Behandlung werden alle Tiere die ein solche Auffälligkeit bzw. Behandlungen haben in einer von \textit{AbstractObjectListView} abgeleiteten Liste angezeigt. Mit einem Klick auf den Zurück-Button des Geräts wird die Tierliste geschlossen und diee Auffälligkeiten bzw. Behandlungen sind wieder sichtbar. 

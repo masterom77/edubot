@@ -1,0 +1,16 @@
+
+@misc{ versions,
+   	author = "{Black Pixel}",
+   	title  = "Versions, a Subversion Client for Mac",
+   	year   = "2012",
+   	note   = "Online im Internet: URL: http://www.versionsapp.com/ [Stand 02.03.2012]"
+} 
+
+@Book{ test,
+	author    = "Milton {Abramowitz}",
+	title     = "Handbook",
+ 	publisher = "Dover",
+ 	year      =  1964,
+ 	address   = "New York"
+}
+ 
