@@ -1,0 +1,74 @@
+
+\subsection{Kommando-System}
+
+\subsubsection{Aufgaben}
+Dem Roboter sollen schnell und einfach Befehle mitgeteilt werden können, weshalb hierfür ein gut funktionierendes System benötigt wird. Befehle sollten direkt der Edubot-Klasse übergeben werden können, welche sich um die Ausführung letzterer kümmern sollte. Die Befehle der  Zukünftig sollen auch neue Befehle hinzufügt werden können um die API flexibel und ausbaufähig zu halten.
+
+\subsubsection{Aufbau}
+Das Kommando-System ist relativ simpel aufgebaut und beruht auf einer ähnlichen Architektur wie das Adapter-System. Als Fundament des Systems dient das Interface ICommand verwendet. Die individuellen Commands müssen dieses Interface implementieren und sollen sich selbst um die durchzuführenden Aktionen kümmern, weshalb sie die vordefinierte Methode Execute implementieren müssen. Weiters soll jedes Command selbstständig prüfen ob seine Ausführung zu diesem Zeitpunkt zulässig ist, weshalb das Command innerhalb der Execute-Methode Zugriff auf das State-Property des jeweiligen Adapters benötigt. Auch für zukünftige entwickelte Commands wird vor der eigentlichen Durchführung eine Validierung des Adapter-States empfohlen.
+
+\subsubsection{Umsetzung}
+\textbf{ICommand}
+\newline
+Wie bereits im Aufbau angemerkt, beruht das gesamte System auf dem Interface IAdapter, welches den Grundaufbau eines Befehls festlegt. Dieser Aufbau besteht lediglich aus der im Anschluss beschriebenen Methode.
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei Aufruf dieser Methode werden die Voraussetzungen für das Ausführen des Befehls geprüft und anschließend die individuellen Aktionen durchgeführt werden. Die Methode erhält als Parameter ein Objekt vom Typ IAdapter, welches den ausführenden Adapter enthält. Durch diesen Adapter besteht erst die Möglichkeit eine Zustandsvalidierung durchzuführen. Weiters empfohlen die zum Command gehörige Adapter-Methode in einem eigenen Thread zu starten um den Adapter selbst nicht unnötig lang zu blockieren.
+\end{itemize}
+
+Im Anschluss folgt nun eine Auflistung und Beschreibung aller im Zuge der Diplomarbeit entwickelt Commands.
+
+\textbf{StartCommand}
+\newline
+Dieser Befehl dient zum Einschalten und Initialisieren des Roboters und stellt im Regelfall den ersten Befehl dar, der an den Roboter geschickt wird. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei der Zustandsvalidierung wird geprüft ob sich der Adapter im SHUTDOWN-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird eine IllegalStateException ausgelöst und Ausführung des Befehls abgebrochen. Ist dies nicht der Fall so wird das State-Property auf HOMING gesetzt und das OnHoming-Event ausgelöst (mehr dazu im Kapitel Event-System). Zuletzt wird noch ein Thread gestartet, der die Start-Methode des Adapter ausführt.
+\end{itemize}
+
+\textbf{ShutdownCommand}
+\newline
+Dieser Befehl dient zum Herunterfahren des Roboters und stellt im Regelfall den letzten Befehl dar, der an den Roboter geschickt wird. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei der Zustandsvalidierung wird geprüft ob sich der Adapter im READY-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird eine IllegalStateException ausgelöst und Ausführung des Befehls abgebrochen. Ist dies nicht der Fall so wird das State-Property auf SHUTTING\_DOWN gesetzt und das OnHoming-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die Shutdown-Methode des Adapter ausführt.
+\end{itemize}
+
+\textbf{MVSCommand}
+\newline
+Dieser Befehl dient zum Verfahren einer linearen Bewegung durch den Roboter. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei der Zustandsvalidierung wird geprüft ob sich der Adapter im READY-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird eine IllegalStateException ausgelöst und Ausführung des Befehls abgebrochen. Ist dies nicht der Fall so wird das RequiresPrecalculation-Property des Adapters geprüft. Ist dieser Wert auf true gesetzt, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der LinearInterpolation-Klasse berechnet. Anschließend wird die SetInterpolationResult-Methode des Adapters aufgerufen, der das Interpolationergebnis in Form eines InterpolationResult-Objekts übergeben wird. Im nächsten Schritt wird das State-Property auf MOVING gesetzt und das OnMovementStarted-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die MoveStraight-Methode des Adapter ausführt.
+\end{itemize}
+
+\textbf{MVCCommand}
+\newline
+Dieser Befehl dient zum Verfahren einer zirkularen Bewegung durch den Roboter. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei der Zustandsvalidierung wird geprüft ob sich der Adapter im READY-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird eine IllegalStateException ausgelöst und Ausführung des Befehls abgebrochen. Ist dies nicht der Fall so wird das RequiresPrecalculation-Property des Adapters geprüft. Ist dieser Wert auf true gesetzt, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der CircularInterpolation-Klasse berechnet. Anschließend wird die SetInterpolationResult-Methode des Adapters aufgerufen, der das Interpolationergebnis in Form eines InterpolationResult-Objekts übergeben wird. Im nächsten Schritt wird das State-Property auf MOVING gesetzt und das OnMovementStarted-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die MoveCircular-Methode des Adapter ausführt.
+\end{itemize}
+
+\textbf{UseToolCommand}
+\newline
+Dieser Befehl dient zum Aktivieren oder Deaktiveren des verwendeten Werkzeugs. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Bei der Zustandsvalidierung wird geprüft ob sich der Adapter im READY-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird eine IllegalStateException ausgelöst und Ausführung des Befehls abgebrochen. Anschließend wird das State-Property auf MOVING gesetzt und das OnToolUsed-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die UseTool-Methode des Adapter ausführt. 
+\end{itemize}
+
+\textbf{AbortCommand}
+\newline
+Dieser Befehl dient zum sofortigen Abbruch jeglicher Aktionen die der Roboter im Moment durchführt. Die Execute-Methode ist dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{Execute}
+\newline
+Da ein Abbruch aus Sicherheitsgründen jederzeit möglich sein muss, wird bei diesem Befehl auf etwaige Zustandsvalidierung verzichtet. Anschließend wird die Warteschlange des Roboters geleert um die Gefahr durch nachfolgende Befehle zu eliminieren und das OnAbort-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die Abort-Methode des Adapter ausführt. 
+\end{itemize}

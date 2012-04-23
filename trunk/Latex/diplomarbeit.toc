@@ -10,4 +10,54 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{Verzeichnis der Listings}{IV}{section*.5}
 \defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1}Komponenten der API}{1}{section.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.1}Die Edubot-Klasse}{1}{subsection.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.1.1}Aufgaben}{1}{subsubsection.1.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.1.2}Aufbau}{1}{subsubsection.1.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.1.3}Umsetzung}{1}{subsubsection.1.1.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.2}Adapter-System}{3}{subsection.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.2.1}Aufgaben}{3}{subsubsection.1.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.2.2}Aufbau}{3}{subsubsection.1.2.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.2.3}Umsetzung}{3}{subsubsection.1.2.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.3}Listener-System}{12}{subsection.1.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.3.1}Aufgaben}{12}{subsubsection.1.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.3.2}Aufbau}{12}{subsubsection.1.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.3.3}Umsetzung}{12}{subsubsection.1.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.4}Zustands-System}{15}{subsection.1.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.4.1}Aufgaben}{15}{subsubsection.1.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.4.2}Aufbau}{15}{subsubsection.1.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.4.3}Umsetzung}{15}{subsubsection.1.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.5}Kommando-System}{18}{subsection.1.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.5.1}Aufgaben}{18}{subsubsection.1.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.5.2}Aufbau}{18}{subsubsection.1.5.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.5.3}Umsetzung}{18}{subsubsection.1.5.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.6}Event-System}{22}{subsection.1.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.6.1}Aufgaben}{22}{subsubsection.1.6.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.6.2}Aufbau}{22}{subsubsection.1.6.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {1.6.3}Umsetzung}{22}{subsubsection.1.6.3}
+\defcounter {refsection}{0}\relax 
 \contentsline {section}{Literatur}{VI}{section*.6}

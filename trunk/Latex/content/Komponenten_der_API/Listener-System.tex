@@ -1,0 +1,59 @@
+\subsection{Listener-System}
+
+\subsubsection{Aufgaben}
+Da die verschiedenen Adapter Informationen über den aktuellen Zustand des Roboters von außen (Anwendung, Steuerung,...) erhalten, wird eine Möglichkeit benötigt mit der man den Adaptern den Abschluss von Befehlen mitteilen kann.
+
+\subsubsection{Aufbau}
+Die Idee dazu ist die Verwendung sogenannter Listener (von “to listen”, horchen) welche die Änderung des Zustands von außen ermöglichen. Jeder Adapter besitzt abhängig von seinem Typ einen entsprechenden Listener. Der Grund dafür ist das die Art der Kommunikation je nach Adapter unterschiedlich ist. So kommuniziert der VirtualAdapter über Events Gegenseite, während der Edubot- und KEBA-Adapter über Netzwerk mit einer Steuerung kommunizieren. Um auch hier eine Erweiterung zu ermöglichen wird die abstrakte IStateListener verwendet, welche im anschließenden Kapitel näher beschrieben wird.
+
+\subsubsection{Umsetzung}
+\textbf{IStateListener}
+\newline
+Die abstrakte Klasse IStateListener definiert die zu implementierenden Methoden in Hinsicht auf eine erfolgreiche Verwendung als Listener. Weiters benötigt ein Listener den Adapter dem er angehört, weshalb das Property Adapter in die Klasse eingebettet wurde:
+\begin{itemize}
+\item \textbf{Adapter}
+\newline
+Das Property Adapter ist vom Typ IAdapter und enthält den Adapter, dessen Zustand aktualisiert werden soll. Da der Adaptertyp hierbei nicht fix festgelegt werden soll, wird die abstrakte Klasse IAdapter verwendet. 
+Weiters müssen abgeleitete Klassen die folgenden Methoden implementieren:
+\item \textbf{Start}
+\newline
+Bei Aufruf dieser Methode soll der Adapter mit überwachen von Zustandsveränderungen beginnen. Die Art mit der eine Zustandsveränderung festgestellt wird hängt von der Implementierung ab.
+\item \textbf{Stop}
+\newline
+Bei Aufruf dieser Methode soll die Überwachung der Zustandsveränderungen gestoppt werden.
+\item \textbf{UpdateState}
+\newline
+Diese Methode erhält als Parameter den neuen State-Wert und dient zum manuellen Verändern des State-Properties. Sollte das State-Property nicht manuell geändert werden dürfen, so sollte in dieser Methode eine InvalidStateUpdateException ausgelöst werden.
+\end{itemize}
+
+\textbf{VirtualStateListener [WIRKLICH NÖTIG?]}
+\newline
+Dieser Listener wurde speziell für die Verwendung mit dem VirtualAdapter entwickelt. Die Klasse ist relativ simpel aufgebaut da die Start- bzw. Stop-Methoden keine Implementierung enthalten. Lediglich die Methode UpdateState setzt das State-Property des Adapter auf den neuen Wert.
+\newline
+\newline
+
+\textbf{NetworkStateListener}
+Da der Edubot- und der KEBA-Adapter über Netzwerk mit der Steuerung kommunizieren und von dieser auch Daten empfangen müssen, benötigen sie eine Möglichkeit parallel zu der Ausführung von Befehlen auf eingehende Informationen der Steuerung zu reagieren. 
+Dazu wurde die NetworkStateListener-Klasse implementiert, deren Aufgabe es ist in einem separaten Thread auf eingehende Daten reagiert. Aufgrund der Tatsache, das der Adapter selbst nichts von der physikalischen Verfahrbewegung mitbekommt, weiß er auch nicht wann diese abgeschlossen ist und der nächste Befehl ausgeführt werden kann. Diese Aufgabe wird vom NetworkStateListener übernommen, indem er auf eingehende Nachrichten mit Statusinformationen wartet und entsprechend das State-Property des Roboters setzt.
+Für jeden Adapter von Typ Edubot oder KEBA wird eine eigene NetworkStateListener-Instanz verwendet. Da die Steuerungssoftware auf unterschiedlichen Ports läuft und daher die NetworkStateListener isoliert voneinander auf Netzwerkverkehr horchen, sollte es in dieser Hinsicht zu keinen Überschneidungen kommen.
+Die Klasse NetworkStateListener ist von IStateListener abgeleitet und wurde zusätzlich zu den geerbten Properties um folgende Variablen erweitert:
+Socket
+Dabei handelt es sich um den Socket über den Informationen von der Steuerung empfangen werden. Die Verbindung zur Steuerung wird vom StateListener weder aufgebaut noch getrennt. Diese Aufgaben fallen der überstehenden Instanz zu.
+StateListener
+Beim StateListener handelt es sich um ein Thread-Objekt, welches die ListenOnState-Methode in einem eigenen Thread ausführt und dadurch erst ein paralleles Empfangen von Daten ermöglicht.
+Da die Klasse von IStateListener abgeleitet ist, mussten folgende Methoden implementiert werden:
+Start
+Bei Aufruf der Start-Methode wird das StateListener-Objekt neu instanziert und der Thread gestartet. Der NetworkStateListener beginnt ab diesem Zeitpunkt mit dem Empfangen und Weiterleiten von Zustandsinformationen. 
+Stop
+Bei Aufruf der Stop-Methode wird der aktuell laufende Thread mit Hilfe der Abort-Methode gestoppt und das StateListener-Objekt auf null gesetzt. Von der Steuerung gesendete Nachrichten werden nun nicht mehr verarbeitet.
+UpdateState
+Da der NetworkStateListener seine Status-Updates ausschließlich über das Netzwerk erhält ist das manuelle Aktualisieren des State-Properties unzulässig. Aus diesem Grund wird bei Aufruf der Methode UpdateState eine InvalidStateUpdateException ausgelöst.
+Zusätzlich zu diesen Methoden enthält die Klasse die Methode:
+ListenOnState
+Die ListenOnState-Methode kümmert sich um das Empfangen und Analysieren von Nachrichten, sowie um das Durchführen der daraus folgenden Status-Updates. 
+Die Methode läuft, solange das IsConnected-Property der Socket-Klasse true zurückgibt, da dies eine bestehende Verbindung indiziert. Ist der Socket verbunden so wird im nächsten Schritt mit dem Available-Property geprüft ob Daten empfangen wurden. Falls auch dieses Property auf true gesetzt ist, so werden die bisher empfangenen Bytes mit Hilfe der Receive-Methode des Socket gelesen und an einen dynamische Liste angehängt. 
+Dieser Vorgang wird solange durchgeführt bis socket.Available false zurückliefert, da zu diesem Zeitpunkt die gesamte Nachricht empfangen wurde. 
+Anschließend wird mit Hilfe der Encoding.UTF8.Decode-Methode das byte[] in einen String konvertiert und in der Variable message gespeichert.
+Diese Variable wird einer switch-Kontrollstruktur übergeben und in den verschiedenen Zweigen entsprechend darauf reagiert. 
+Handelt es sich bei der empfangenen Nachricht um den String “ready” so wird der State des Adapters auf READY gesetzt und damit der nächste Befehle aus der Warteschlange, falls einer vorhanden ist, ausgeführt.
+Wird der String “shutdown” empfangen, indiziert dies das erfolgreiche Herunterfahren des Roboters und der State des Adapters wird auf SHUTDOWN gesetzt. Nachdem die Nachricht verarbeitet wurde, wird die Liste, welche beim Empfangen von Daten verwendet wird (siehe weiter oben), mit Hilfe der Clear-Methode geleert und die nächste Nachricht kann empfangen werden.

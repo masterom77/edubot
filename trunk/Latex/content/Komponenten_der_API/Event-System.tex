@@ -1,0 +1,19 @@
+
+\subsection{Event-System}
+
+\subsubsection{Aufgaben}
+Es soll möglich sein über bestimmte Ereignisse während des Betriebs auch softwaretechnisch reagieren zu. Dadurch wird die API um ein weiteres Anwendungspektrum erweitert und ermöglicht beispielsweise eine vollständige Überwachung der Zustände durch eine, die API-verwendende, Drittsoftware.
+
+\subsubsection{Aufbau}
+Um diese Aufgabe erfüllen zu können, wird das Observer-Pattern verwendet, dessen Umsetzung in C\# durch sogenannte Delegates (siehe Listing) erleichtert wird. In der API wird dazu das Event-Delegate verwendet, welches die Struktur einer Methode, welche bei Eintreten eines Ereignisses ausgeführt werden sollen, definiert. 
+\newline
+Die abstrakte Klasse IAdapter besitzt für jedes wichtige Ereignis ein Property vom Typ Event, welchem benutzerdefinierten Methoden, die Eintreten des Events ausgeführt werden sollen, mitgegeben werden können. Somit kann ein Entwickler nach seinen Vorstellungen auf Zustandsänderungen eines Adapters reagieren.
+
+\subsubsection{Umsetzung}
+\textbf{Event}
+\newline
+Das Event-Delegate definiert eine Methoden-Struktur, die folgende Bedingungen erfüllt:
+\newline
+Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parameter ein Object sender, welches den Auslöser des Events enthält. Als zweiten Parameter muss die Methode ein EventArgs-Object args, welches zusätzliche Informationen zum Ereignis enthält, übernehmen.
+\newline
+Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind in den Kapiteln Adapter-System und Command-System bereits detailliert beschrieben, werden jedoch aus Gründen der Übersichtlichkeit jedoch in der nachstehenden Tabelle nochmals zusammengefasst.
