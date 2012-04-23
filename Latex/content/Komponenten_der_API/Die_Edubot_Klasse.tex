@@ -1,0 +1,35 @@
+
+\subsection{Die Edubot-Klasse}
+
+\subsubsection{Aufgaben}
+Eines der Hauptziele bei der Entwicklung der API war es, die Verwendung so einfach wie möglich zu gestalten. Die Bedienung sollte selbsterklärend und effizient sein und dennoch genug Möglichkeiten zur Weiterentwicklung bilden.
+
+\subsubsection{Aufbau}
+Aufgrund der gegebenen Aufgabe, wurde die Edubot-Klasse entwickelt, welche intern alle benötigten Informationen über die verwendeten Steuerungen und die dazugehörigen Roboter enthält. Durch die anfangs sehr unklare Situation in Bezug auf die Hardware, wurde diese Klasse möglichst flexibel gehalten und dient prinzipiell als Verwalter der verschiedenen Adapter (siehe Adapter-System), sowie als Verteiler für eingehende Befehle. 
+
+\subsubsection{Umsetzung}
+\textbf{Edubot}
+\newline
+Die Edubot-Klasse ist relativ simpel und dient prinzipell mehr zu einer erleichterten Bedienung der API. Das Adapter-System ist hier durch ein Dictionary mit registrierten IAdapter-Objekten verankert, durch welches bei Übergabe eine Befehls iteriert wird und der Befehl dabei an die individuellen Adapter übergeben wird. Es können beliebig viele Adapter bei der Edubot-Klasse registriert werden, jedoch kann es, abhängig von der Rechnerleistung und der verwendeten Adapter, ab einer bestimmten Anzahl zu Performance-Einbußen kommen.
+Die Klasse definiert folgende Properties und Variablen:
+\begin{itemize}
+\item \textbf{RegisteredAdapters}
+\newline
+Dieses Property repräsentiert ein Verzeichnis mit den registrierten Adaptern, welches durch ein Dictionary mit einem String als Schlüssel und einem IAdapter-Objekt als Wert realisiert ist. Zum Verwalten des Verzeichnisses sollten die von der Klasse zur Verfügung gestellten Methoden RegisterAdapter beziehungsweise DeregisterAdapter verwendet werden. Das RegisteredAdapter-Property ist nach außen hin sichtbar um lesenden Zugriff, wie beispielsweise das Abfragen der registrierten Adapter oder das Herausholen eines IAdapter-Objekts, zu ermöglichen. 
+\end{itemize}
+
+Die Edubot-Klasse besitzt nach außen nur drei Methoden, mit denen jedoch ein großer Teil der Gesamtkapazität der API genutzt werden kann. Diese Methoden werden im folgenden Abschnitt beschrieben:
+\begin{itemize}
+\item \textbf{RegisterAdapter}
+\newline
+Diese Methode übernimmt als ersten Parameter den String name und als weiteren das IAdapter-Objekt adapter. Bei Aufruf wir der mitgegebene Adapter unter dem angegebenen Namen im Dictionary registeredAdapter eingetragen. Das direkte Hinzufügen eines Eintrags wird nicht empfohlen, da zusätzlich zum Hinzufügen auch geprüft wird ob der mitgegebene Schlüssel oder Adapter bereits im Verzeichnis registriert ist.
+Das Hinzufügen von zwei oder mehreren Einträgen mit dem selben Schlüssel würde eine ArgumentExceptions auslösen, während das mehrfache Hinzufügen von ein und demselben IAdapter-Objekt zu einer fehlerhaften Befehlsverteilung führen würde, da bei der Iteration durch das Verzeichnis der verteilte Befehl mehrfach an denselben Adapter weitergegeben werden würde. 
+Als Rückgabewert wird bei erfolgreichem Hinzufügen des Adapters true, andernfalls false zurückgeben.
+\item \textbf{DeregisterAdapter}
+\newline
+Diese Methode übernimmt als Parameter einen String, welcher den Schlüssel des zu entfernenden Verzeichniseintrags enthält. Ist ein entsprechender Eintrag vorhanden so wird dieser entfernt und die Methode gibt true, anderfalls false zurück.
+\item \textbf{Execute}
+\newline
+Die Execute-Methode der Edubot-Klasse übernimmt als Parameter einen Befehl der von den registrierten Adaptern ausgeführt werden soll. Die eigentliche Arbeit dieser Methode besteht in der Weitergabe des Befehls an die registrierten Adapter, wodurch das Betreiben mehrerer Adapter vereinfacht wird. 
+\end{itemize}
+

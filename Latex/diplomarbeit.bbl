@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex version 1.5 $
+% $ biblatex version 1.7 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -16,75 +16,7 @@
   {}
 \endgroup
 
-\entry{versions}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{Black Pixel}}{B.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{B1}
-  \strng{fullhash}{B1}
-  \field{sortinit}{B}
-  \field{note}{Online im Internet: URL: http://www.versionsapp.com/ [Stand
-  02.03.2012]}
-  \field{title}{Versions, a Subversion Client for Mac}
-  \field{year}{2012}
-\endentry
-
-\entry{subclipse}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{CollabNet, Inc.}}{C.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{C1}
-  \strng{fullhash}{C1}
-  \field{sortinit}{C}
-  \field{note}{Online im Internet: URL: http://subclipse.tigris.org/ [Stand
-  12.03.2012]}
-  \field{title}{Subclipse}
-  \field{year}{2012}
-\endentry
-
-\entry{tortoisesvn}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{CollabNet, Inc.}}{C.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{C1}
-  \strng{fullhash}{C1}
-  \field{sortinit}{C}
-  \field{note}{Online im Internet: URL: http://tortoisesvn.tigris.org/ [Stand
-  12.03.2012]}
-  \field{title}{TortoiseSVN}
-  \field{year}{2012}
-\endentry
-
-\entry{mylyn}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{The Eclipse Foundation}}{T.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{T1}
-  \strng{fullhash}{T1}
-  \field{sortinit}{T}
-  \field{note}{Online im Internet: http://www.eclipse.org/mylyn/ [Stand
-  12.03.2012]}
-  \field{title}{Mylyn}
-  \field{year}{2012}
-\endentry
-
-\entry{subversion}{misc}{}
+\entry{android}{misc}{}
   \name{author}{1}{}{%
     {{}%
      {{Wikipedia}}{W.}%
@@ -96,59 +28,8 @@
   \strng{fullhash}{W1}
   \field{sortinit}{W}
   \field{note}{Online im Internet: URL:
-  http://de.wikipedia.org/wiki/Apache\_Subversion [Stand 12.03.2012]}
-  \field{title}{Apache Subversion}
-  \field{year}{2012}
-\endentry
-
-\entry{bugzilla}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{Wikipedia}}{W.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{W1}
-  \strng{fullhash}{W1}
-  \field{sortinit}{W}
-  \field{note}{Online im Internet: http://de.wikipedia.org/wiki/Bugzilla [Stand
-  12.03.2012]}
-  \field{title}{Bugzilla}
-  \field{year}{2012}
-\endentry
-
-\entry{eclipse}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{Wikipedia}}{W.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{W1}
-  \strng{fullhash}{W1}
-  \field{sortinit}{W}
-  \field{note}{Online im Internet: URL:
-  http://de.wikipedia.org/wiki/Eclipse\_(IDE) [Stand 12.03.2012]}
-  \field{title}{Eclipse (IDE)}
-  \field{year}{2012}
-\endentry
-
-\entry{sqlite}{misc}{}
-  \name{author}{1}{}{%
-    {{}%
-     {{Wikipedia}}{W.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{W1}
-  \strng{fullhash}{W1}
-  \field{sortinit}{W}
-  \field{note}{Online im Internet: URL: http://de.wikipedia.org/wiki/Sqlite
-  [Stand 12.03.2012]}
-  \field{title}{SQLite}
+  \\http://de.wikipedia.org/wiki/Android\_(Betriebssystem) [Stand 10.04.2012]}
+  \field{title}{Android (Betriebssystem)}
   \field{year}{2012}
 \endentry
 
