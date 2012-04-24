@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.1.9)  23 APR 2012 20:59
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.1.9)  24 APR 2012 20:11
 entering extended mode
 **C:/src/Latex/diplomarbeit.tex
 (C:/src/Latex/diplomarbeit.tex
@@ -1143,12 +1143,12 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.16 \item \textbf
-                  {Kommandozeile}\\ [1] [2])
-(C:\src\Latex\content/Einleitung/Projektumgebung.tex [3] [4] [5])
+                  {Kommandozeile}\\ [1] [2] [3])
+(C:\src\Latex\content/Einleitung/Projektumgebung.tex [4] [5] [6])
 (C:\src\Latex\content/Einleitung/Lizenz.tex)
-(C:\src\Latex\content/Einleitung/Projektziele.tex [6])
+(C:\src\Latex\content/Einleitung/Projektziele.tex)
 (C:\src\Latex\content/Einleitung/Projektablauf.tex) [7]
-(C:\src\Latex\content/Einleitung/Innovation.tex)
+(C:\src\Latex\content/Einleitung/Innovation.tex [8])
 (C:\src\Latex\content/Einleitung/Persoenliche_Erfahrung.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--10
   
@@ -1160,33 +1160,24 @@ Overfull \hbox (15.70316pt too wide) in paragraph at lines 6--10
 ch Software-Entwicklung 
  []
 
-[8])) [9] (C:\src\Latex\content/Komponenten_der_API/section.tex
-(C:\src\Latex\content/Komponenten_der_API/Die_Edubot_Klasse.tex [10]) [11]
-(C:\src\Latex\content/Komponenten_der_API/Adapter-System.tex [12] [13]
+[9])) [10] (C:\src\Latex\content/Komponenten_der_API/section.tex
+(C:\src\Latex\content/Komponenten_der_API/Die_Edubot_Klasse.tex [11]) [12]
+(C:\src\Latex\content/Komponenten_der_API/Adapter-System.tex [13] [14]
 Overfull \hbox (38.518pt too wide) in paragraph at lines 48--51
-\T1/cmss/m/n/12 punkt in Form ei-nes \T1/cmss/m/sl/12 Point3D\T1/cmss/m/n/12 -O
-bjekts. Ab-hän-gig da-von, wor-auf das \T1/cmss/m/sl/12 RequiresPrecalculation-
+\T1/cmss/m/n/12 punkt in Form ei-nes \T1/cmss/m/it/12 Point3D\T1/cmss/m/n/12 -O
+bjekts. Ab-hän-gig da-von, wor-auf das \T1/cmss/m/it/12 RequiresPrecalculation-
 
  []
 
-[14]
+[15]
 Overfull \hbox (6.59392pt too wide) in paragraph at lines 70--73
-\T1/cmss/m/n/12 Der \T1/cmss/m/sl/12 Edu-bo-tA-d-ap-ter \T1/cmss/m/n/12 dient a
+\T1/cmss/m/n/12 Der \T1/cmss/m/it/12 Edu-bo-tA-d-ap-ter \T1/cmss/m/n/12 dient a
 ls Schnitt-stel-le zum klei-ne-ren Mo-dell un-se-res SCARA-Roboters.
  []
 
-[15] [16] [17] [18] [19]) [20]
-(C:\src\Latex\content/Komponenten_der_API/Listener-System.tex [21]
-Underfull \hbox (badness 10000) in paragraph at lines 29--34
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 29--34
-
- []
-
-) [22] [23] (C:\src\Latex\content/Komponenten_der_API/Zustands-System.tex
+[16] [17] [18] [19] [20]) [21]
+(C:\src\Latex\content/Komponenten_der_API/Listener-System.tex [22] [23]
+[24]) [25] (C:\src\Latex\content/Komponenten_der_API/Zustands-System.tex
 Underfull \hbox (badness 10000) in paragraph at lines 11--34
 
  []
@@ -1196,14 +1187,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--34
 
  []
 
-[24] [25])
+[26] [27])
 Underfull \hbox (badness 10000) in paragraph at lines 35--13
 
  []
 
-[26] (C:\src\Latex\content/Komponenten_der_API/Kommando-System.tex [27]
-[28] [29]) [30] (C:\src\Latex\content/Komponenten_der_API/Event-System.tex)
-[31])
+[28] (C:\src\Latex\content/Komponenten_der_API/Kommando-System.tex [29]
+[30]) [31] (C:\src\Latex\content/Komponenten_der_API/Event-System.tex) [32])
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 106.
@@ -1219,7 +1209,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 113.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 113.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 113.
 Package rerunfilecheck Info: File `diplomarbeit.out' has not changed.
-(rerunfilecheck)             Checksum: 81108DC345677E20EC8ECD057659E9DB;2874.
+(rerunfilecheck)             Checksum: 407F2DD46E5DC15F9375056056F7512C;2894.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1227,13 +1217,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package logreq Info: Writing requests to 'diplomarbeit.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 15887 strings out of 494045
- 255909 string characters out of 3145973
+ 15889 strings out of 494045
+ 255930 string characters out of 3145973
  483564 words of memory out of 3000000
- 18803 multiletter control sequences out of 15000+200000
+ 18804 multiletter control sequences out of 15000+200000
  18029 words of font info for 38 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
- 42i,12n,56p,1212b,1871s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,11n,56p,1212b,1927s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\e
 csx1440.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec
 \dpi600\ecsx1728.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jk
@@ -1250,9 +1240,9 @@ ec\dpi600\ecss1728.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
 jknappen\ec\dpi600\ecss1440.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\p
 k\ljfour\jknappen\ec\dpi600\ecss2488.pk><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on diplomarbeit.pdf (39 pages, 2534470 bytes).
+Output written on diplomarbeit.pdf (40 pages, 2534353 bytes).
 PDF statistics:
- 901 PDF objects out of 1000 (max. 8388607)
- 83 named destinations out of 1000 (max. 500000)
+ 895 PDF objects out of 1000 (max. 8388607)
+ 84 named destinations out of 1000 (max. 500000)
  358 words of extra memory for PDF output out of 10000 (max. 10000000)
 
