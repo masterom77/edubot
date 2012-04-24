@@ -1,33 +1,0 @@
-
-\subsection{Android und Java}
-
-\subsubsection{Android OS}
-Android OS ist sowohl ein Betriebsystem als auch eine Software-Plattform für mobile Geräte. Es handelt sich dabei um ein quelloffenes Betriebsystem, das von der Open Handset Alliance entwickelt wird. Dabei übernimmt Google die führende Rolle und kontrolliert die Entwicklung. \footcite[vgl.][]{android}\subparagraph{Architektur des Android OS}Als Basis dient ein Linux-Kernel, der die hardwarenahen Aufgaben wie die Speicher- und Prozessverwaltung übernimmt. Darüber hinaus basiert das Android Betriebssystem auf einem leicht modifizierten Java. Dabei dienen die einzelnen Android-Java-Klassenbibliotheken als Bindeglied zwischen den Applikationen und dem Linux-Kernel. Sie ermöglichen zum Beispiel den Zugriff auf den Display-Treiber, um etwas am Display anzeigen zu können. Über dieser Schicht gibt es dann noch die Applikation Frameworks die einzelne Anwendungsaufgaben wie das Verwalten der Activities übernehmen und somit dem Entwickler einiges abnehmen. Die oberste Schicht ist die Anwendung selbst die auch in dem modifizierten Java geschrieben ist. Dabei kann es sich um eine Anwendung des Betriebssystems handeln  oder  um eine zusätzlich installierte Anwendung.\footcite[vgl.][]{android}
-
-\begin{figure}[htbp]
-\centering
-  \fbox{
-    \includegraphics[width=15cm]{images/android_architecture}
-  }
-\caption{Android Architektur}
-\end{figure}
-\newpage
-
-\subsubsection{Dalvik und JVM}
-Die Java Virtual Machine ist für die Ausführung des Java-Bytescodes zuständig.  Sie versteht den kompilierten Byte-Code, der durch das Kompilieren des Javaquellcodes entstanden ist. Das Programm läuft dann sozusagen virtuell in der Java Virtual Machine und übernimmt die Kommunikation im Maschinencode zu dem jeweiligen Betriebsystem. So entsteht eine Plattformunabhängigkeit des Programms, da sie nichts über den jeweiligen Maschinencode wissen muss.\footcite[vgl.][]{dalvik}
-Im Entwicklungsprozess für Android OS sieht diese Struktur ähnlich aus, jedoch werden nach dem Kompilieren des Java-Codes noch Android spezifische Informationen durch den Dalvikcompiler hinzugefügt, einzelne Klassen werden zusammengefasst und es entsteht aus dem Java-Bytecode ein Dalvik-Bytecode, der von der Dalvik Virtual Machine in den jeweiligen Maschinencode übersetzt wird.Noch ein wesentlicher Unterschied ist, dass die Dalvik Virtual Machine einen Algorithmus benutzt, der es im Gegensatz zum Algorithmus der JVM, ermöglicht die Register eines Prozessors zu nutzen. Dies wird speziell für die ARM-Prozessoren genutzt, da diese spezielle Registerprozessoren sind.\footcite[vgl.][]{dalvik}
-
-
-
-\subsubsection{Programmiersprache Java}
-Java ist eine objektorientierte Programmiersprache und ein eingetragenes Warenzeichen des Unternehmens Oracle. Sie ist der Hauptbestandteil der Java-Technologie, diese besteht aus dem Java-Entwicklungswerkzeug mit dem die Programme entwickelt werden und der Java-Laufzeitumgebung in der die Programme später ausgeführt werden. Java ist eine plattformunabhängige  Programmiersprache und läuft somit auf fast allen gängigen Betriebssystemen.\footcite[vgl.][]{java}Hauptsächlich dient Java zur Formulierung von Programmen. Java-Code ist ein für den Menschen verständlicher Text, welcher mit dem sogenannten Java-Compiler zum maschinenverständlichen Code wird. Jedoch gibt es bei Java einen sehr großen Unterschied zu anderen Programmiersprachen. Da jedes Betriebssystem den maschinenverständlichen Code anders interpretiert, wäre eine Plattformunabhängigkeit nicht möglich. Java löst dieses Problem mit einer virtuellen Maschine, die den kompilierten Code versteht und als Zwischenschicht zur echten Hardware dient.\footcite[vgl.][]{java}
-
-Hier ein kurzes Code-Beispiel:
-\begin{lstlisting}[language=java, captionpos=b, caption={Hello World}]
-class HelloWorldApp {
-    public static void main(String[] args) {
-        System.out.println("Hello World!"); // Display the string.
-    }
-}
-\end{lstlisting}
-

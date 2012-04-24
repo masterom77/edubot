@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.1.9)  24 APR 2012 20:11
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.1.9)  24 APR 2012 20:40
 entering extended mode
 **C:/src/Latex/diplomarbeit.tex
 (C:/src/Latex/diplomarbeit.tex
@@ -1044,7 +1044,7 @@ LaTeX Info: Redefining \nameref on input line 11.
 \@outlinefile=\write4
 
 (C:\src\Latex\misc/title.tex
-<images/htl_logo.jpg, id=179, 1540.75626pt x 770.88pt>
+<images/htl_logo.jpg, id=183, 1540.75626pt x 770.88pt>
 File: images/htl_logo.jpg Graphic file (type jpg)
 
 <use images/htl_logo.jpg>
@@ -1160,7 +1160,8 @@ Overfull \hbox (15.70316pt too wide) in paragraph at lines 6--10
 ch Software-Entwicklung 
  []
 
-[9])) [10] (C:\src\Latex\content/Komponenten_der_API/section.tex
+[9]) (C:\src\Latex\content/Einleitung/Danksagung.tex)) [10]
+(C:\src\Latex\content/Komponenten_der_API/section.tex
 (C:\src\Latex\content/Komponenten_der_API/Die_Edubot_Klasse.tex [11]) [12]
 (C:\src\Latex\content/Komponenten_der_API/Adapter-System.tex [13] [14]
 Overfull \hbox (38.518pt too wide) in paragraph at lines 48--51
@@ -1209,7 +1210,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 113.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 113.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 113.
 Package rerunfilecheck Info: File `diplomarbeit.out' has not changed.
-(rerunfilecheck)             Checksum: 407F2DD46E5DC15F9375056056F7512C;2894.
+(rerunfilecheck)             Checksum: 4136A5E8A92A3DEE4F375A864E84EEF9;2955.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1217,10 +1218,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package logreq Info: Writing requests to 'diplomarbeit.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 15889 strings out of 494045
- 255930 string characters out of 3145973
+ 15897 strings out of 494045
+ 256171 string characters out of 3145973
  483564 words of memory out of 3000000
- 18804 multiletter control sequences out of 15000+200000
+ 18808 multiletter control sequences out of 15000+200000
  18029 words of font info for 38 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
  42i,11n,56p,1212b,1927s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1240,9 +1241,9 @@ ec\dpi600\ecss1728.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
 jknappen\ec\dpi600\ecss1440.pk> <C:\Users\Film\AppData\Local\MiKTeX\2.9\fonts\p
 k\ljfour\jknappen\ec\dpi600\ecss2488.pk><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on diplomarbeit.pdf (40 pages, 2534353 bytes).
+Output written on diplomarbeit.pdf (40 pages, 2535333 bytes).
 PDF statistics:
- 895 PDF objects out of 1000 (max. 8388607)
- 84 named destinations out of 1000 (max. 500000)
- 358 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 900 PDF objects out of 1000 (max. 8388607)
+ 85 named destinations out of 1000 (max. 500000)
+ 366 words of extra memory for PDF output out of 10000 (max. 10000000)
 
