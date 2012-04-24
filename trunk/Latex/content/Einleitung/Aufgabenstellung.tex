@@ -18,10 +18,18 @@ Ein Kommandozeilen Tool soll es ermöglichen einzelne Befehle in einer einfachen
 \item \textbf{Handbuch}\\
 Die Anwendersoftware soll einen eigenen Berreich für die Anzeige eines Handbuches bieten. Das zur verfügung gestellte Handbuch soll nicht nur einen groben Überblick über die Funktionsweise der Anwendung geben, sondern vielmehr einen erweiterten Einblick in die Funktionsweise aller Teilberreiche diese Projekts bieten. Es soll dem Leser ermöglicht werden mehr über Robotik und den Aufbau eines einfachen Roboters zu erfahren und die zur Verfügung gestellte API zu nutzen.
 \end{itemize}
-\subsubsection{API}
-
-(TODO)
-
+\subsubsection{Hardwareinterface - API}
+Eine Programmierschnittstelle ein Form einer als .dll einbindbaren dll soll alle wesentlichen Aufgaben übernehmen die zum Betrieb des Roboters nötig sind. Eine Anwendung die den Roboter benutzen will soll nur noch die eintsprechenden Funktionenen der API aufrufen müssen. Die von der API zu übernehmenden Aufgaben sind vor allem:
+\begin{itemize}
+\item \textbf{Invers Kinemematik}\\
+Das Hardwareinterface soll die Aufgabe der Berrechnung aller Motorbewegungen übernehmen können welche zum erreichen eines Punktes nötig sind.
+\item \textbf{Interpolation}\\
+Es soll durch Aufruf der Entsprechenden Funktionen möglich sein, alle Punkte berrechnen zu lassen die nötig sind um eine bestimmte Form (z.B.: Kreis, Linie) zu fahren.
+\item \textbf{Kommunikation mit dem Roboter}\\
+Ebenfalls Aufgabe der Hardwareschnittstelle ist es, die Kommunikation mit dem Roboter über Netzwerk aufzubauen und zu verwalten, die ensprechenden Parameter für die Verbindung kommen hierfür von der die API benutzenden Anwendung. Für die Kommunikation mit dem Roboter muss ein entsprechendes Ereignissystem zur Verfügung gestellt werden, dass Ereignisse und Befehle an den Roboter schicken kann und Rückmeldungen verarbeitet.
+\item \textbf{Kommunikation mit der Endanwendung}\\
+Einer Anwendung welche die API verwendet, soll ausreichend Rückmeldung über den Status der Roboter und der Verbindung gegeben werden. Ebenfalls notwendig ist es, die Ergebnisse der Berechnungen and die Anwendung übergeben zu können, um beispielsweise eine Animation zu betreiben die den Roboter visualisiert.
+\end{itemize}
 \subsubsection{Hardware}
 Im Bereich der Hardware ergeben sich zwei verschiedene, von einander nur lose abhängige Teilaufgaben:
 \begin{itemize}
@@ -29,7 +37,7 @@ Im Bereich der Hardware ergeben sich zwei verschiedene, von einander nur lose ab
 Von der Firma KEBA zur Verfügung gestellte Komponenten sollen bei Abschluss dieses Projektes so weit programmiert und vorbereitet sein, dass der problemlose Einbau in eine nach Abschluss des Projektes eventuell im Rahmen eines weiteren Projektes zu erstellende Mechanik gewährleistet ist. Zu diesem Zweck muss sowohl eine Netzwerkschnittstelle auf der SPS, als auch eine Anbindung für die Motoren implementiert sein. Weiters muss für die richtige Nutzung der durch die SPS zur Verfügung gestellten Grundbewegungen gesorgt werden.
 Als weiterer Punkt soll eine die Grobplanung, der Teile der Alumechanik, sowie die Konstruktion der Einzelteile in Form von CNC Programmen vorhanden sein.
 \item \textbf{Edubot Modell}\\
-Unter dem Namen "Edubot Modell" solle ein Eigenständiger über die Netzwerkschnittstelle ansteuerbare Roboter aus Holz zur Verfügung gestellt werden. Dieser Roboter soll von der Software kommende Befehle Ausführen und die entsprechenden Bewegungen Ausführen. Um die Aufgabenstellung dieser Komponente genauer beschreiben zu können ist sie hier zusätzlich unterteilt:
+Unter dem Namen "'Edubot Model"' soll ein eigenständiger über die Netzwerkschnittstelle ansteuerbarer Roboter aus Holz zur Verfügung gestellt werden. Dieser Roboter soll von der Software kommende Befehle Ausführen und die entsprechenden Bewegungen Ausführen. Um die Aufgabenstellung dieser Komponente genauer beschreiben zu können ist sie hier zusätzlich unterteilt:
 \begin{itemize}
 \item \textbf{Steuerung}\\
 Als Taktgeber für die Beiden Schrittmotoren soll ein Microcontroller, welcher im Laufe des Projektes ausgewählt und beschafft werden muss, dienen. Dieser Mikrocontroller soll über eine Netzwerkverbindung die benötigten Informationen von der auf dem PC laufenden Anwendung zugesant bekommen.
