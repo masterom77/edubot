@@ -1,0 +1,37 @@
+ \subsection{LaTeX} 
+
+\subsubsection{Allgemeines}
+Bei Latex handelt es sich grob gesagt um ein Softwarepaket zum erstellen von Dokumenten. Latex baut auf dem bereits 1978 erstmals veröffentlichten Textsatzprogramm Tex auf. Da das schreiben von Dokumenten in Tex sehr kompliziert und Aufwändig ist, wurde mit Latex zu Anfang der 1980er Jahre ein freies Makropaket zur Verfügung gestellt, welches Anhand verschiedener vorgefertigter Layout-Styles das Anfertigen von Dokumente wesentlich vereinfacht und die wesentlichen Vorteile von Tex für einen größeren Kreis von Anwendern zugänglich macht.(http://automatisierungstechnik.fh-pforzheim.de/index.php?id=348, http://de.wikipedia.org/wiki/LaTeX )
+
+Da wir uns während der Entwicklung unseres Projektes nur sehr wenig mit Latex beschäftigten fand eine genauere Auseinandersetzung mit diesem Thema erst im Rahmen dieser schriftlichen Ausarbeitung statt. Dies ist auch der Grund warum dieses Kapitel hier sehr genau bearbeitet wurde und daher auch etwas umfangreicher Ausfällt.
+
+Der wohl gravierendste Unterschied zu den meisten herkömmlichen und bekannten Textverarbeitungsprogrammen ist vor allem, dass bei Latex bewusst auf einen “What you see is what you get” (WYSIWG) Editor verzichtet wird und die Erstellung des Layouts unabhängig von der Erstellung des Textes geschieht.
+\subsubsection{Funktionsweise und Verwendete Software}
+Um ein Dokument mit Latex zu erstellen sind ein Editor, ein Softwarepaket welches Latex unterstützt, sowie ein Programm zur Betrachtung von PDF Dateien notwendig. Als Editor kam bei dieser Diplomarbeit die freie Software Texnic Center zum Einsatz. Die Grundfunktionalität von Latex wurde vom Miktex Softwarepaket zur Verfügung gestellt und die Erstellten PDF Dokumente wurden mithilfe von Adobe Reader betrachtet.
+Der erste Schritt bei der Erstellung eines Dokuments ist das Anlegen eines neuen Dokuments in Texnic Center. In dieses Dokument müssen nun der gewünschte Inhalt und die zur Formatierung benötigten Markup Elemente geschrieben werden. Es ist hierbei möglich, Inhalte aus anderen Latex Dateien einzubinden.
+Nun muss das Dokument noch Kompiliert werden. Dies ist ebenfalls wieder über die Oberfläche von Texnic Center möglich, wobei dieses die zu Kompilierenden Dateien an Miketex, welches die Kompilierung vornimmt und schließlich eine Ausgabe in Form einer PDF Datei anfertigt.
+Die erstellte PDF Datei kann nun mithilfe von Adobe Reader angezeigt und gedruckt werden.
+\subsubsection{Merkmale und Entscheidungskriterien}
+Zerteilung des Dokuments in Teildokumente:
+In Latex ist es möglich, jedes Kapitel als eigene Datei auszugliedern und unabhängig zu bearbeiten. Erst beim “Compilieren” des Dokuments werden die einzelnen Dokumente zusammengefügt und als einzelnes Dokument mit Formatierung ausgegeben.
+Diese Funktion von Latex ist vor allem dann sehr nützlich, wenn mehrere Nutzer zur gleichzeitig und unabhängig voneinander an dem selben Gesamtdokument schreiben wollen und die Synchronisierung der Dateien durch eine Versionsverwaltungssoftware eingerrichtet ist.
+Dieser Aspekt von Latex hatte auf unserer Entscheidung vergleichsweise großen Einfluss, da ohne diese Funktion das gleichzeitige Arbeiten an verschiedenen Kapitel mit großem Aufwand verbunden gewesen wäre.(http://latex.tugraz.at/latex/warum)
+\begin{itemize}
+\item \textbf{Gute Übersicht über den Text}\\
+Durch die Trennung von Text und Layout Elementen fällt die Bearbeitung des Inhalts leichter da eine Irritation durch Formatierungen oder Bilder wegfällt.
+Die im ersten Punkt dieser Aufzählung genannte Möglichkeit zur Teilung eines Dokuments in mehrere Dateien ermöglicht außerdem einen besseren Überblick bei der Erstellung langer Dokumente. Da die einzelnen Kapitel in einer simplen Ordnerstruktur angeordnet sind muss nicht ein einzelnes sehr langes Dokument durchsucht werden, sondern es kann direkt die benötigte Datei ausgewählt werden.
+\item \textbf{Gute Übersicht über die Formatierung}
+Da man in Latex das Layout mithilfe einer Markup Sprache erstellt, fällt es vegleichsweise leicht, Überblick über sämtliche vorgenommenen Formatierungen zu behalten. Damit können Fehler die in einem WYSIWG schwer erkennbar sind und oft erst beim Druck problematisch werden schneller erkannt werden.
+Die einfache Einbindung eines extern erstellten Layouts bietet zudem den Vorteil, dass ein einmal vorgefertigtes Layout problemlos wiederverwendet werden kann.
+Vor allem der zuletzt genannte Vorteil kann als wichtigster Grund für unsere Entscheidung für Latex genannt werden, da sich durch die Zusammenarbeit mit anderen Projektgruppen und das Zurückgreife auf Material vergangener Diplomarbeit ein Großteil des Aufwand zur Layouterstellung einsparen ließ.
+\item textbf{Plattformunabhängigkeit}
+Da das Basissystem Tex durch mehrere verschiedene Softwarepakete implementiert wird, die meisten dieser Pakete auch Unterstützung für die Latex Erweiterung bieten und für die unterschiedlichsten Betriebssysteme angeboten werden ist man bei der Verwendung von Latex nicht an eine bestimmte Plattform gebunden, da jedoch für die Entwicklung unserer Software ohnehin auf allen Rechnern Microsoft Windows zum Einsatz kam hatte dieses Argument nur sehr wenig Einfluss und wurde nur in Hinblick auf eine mögliche spätere Weiterverwendung des Layouts und der gewonnenen Erfahrungen einbezogen.
+\end{itemize}
+\subsubsection{Alternativen}
+\begin{itemize}
+\item \textbf{Microsoft Word}
+Die Software Microsoft Word ist ein Textverarbeitungsprogramm und als solches sehr etabliert. Für die Erstellung von Dokumenten stellt Microsoft Word einen WYSIWG Editor bereit, das heißt Text und Layout werden einer Datei gemeinsam erstellt und der Benutzer kann über verschiedene Werkzeuge direkt Formatierungen vornehmen. Die angewendeten Formatierungen werden sofort Angezeigt und der Editor versucht nach Möglichkeit das Dokument immer so darzustellen wie es im gedruckten Zustand aussehen wird. Dies bietet den Vorteil dass man sich weder mit der Eingabe der Formatierung in Form von Markup befehlen befassen muss, noch den Umweg über das Compilieren gehen muss um einen Eindruck von der Druckversion zu bekommen.
+Ein Grund warum Microsoft Word für das Schreiben dieser Arbeit nicht zum Einsatz kam ist, dass mit wachsender Seitenzahl Navigation und Überblick schnell ein Problem darstellen und viel Zeit in Anspruch nehmen. Schlussendlich ausschlaggebend war zusätzlich das starke Übergewicht an verschiedenen kleinen Vorteilen die das Softwarepaket Latex bietet und auf welche im Kapitel [todo] Merkmale und Entscheidungskriterien eingegangen wird.
+\item \textbf{OpenOffice}
+Eine weitere Alternative in Form einer auf dem WYSIWYG Prinzip basierenden Textverarbeitungssoftware stellt OpenOffice dar. Aufgrund der hier ebenfalls auftretenden Probleme durch schlechte Übersicht in großen Dokumenten, sowie schlechten Erfahrungen mit dem Bedienkomfort aus vergangenen Projekten wurde diese Software jedoch nur am Rande als Alternative betrachtet.
+\end{itemize}
