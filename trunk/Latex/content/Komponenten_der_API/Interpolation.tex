@@ -1,0 +1,104 @@
+
+\subsection{Interpolation}
+
+\subsubsection{Aufgaben}
+Der Roboter soll in der Lage sein lineare beziehungsweise zirkulare Bewegungen durchzuführen, weshalb das Verfahren der linearen beziehungsweise zirkularen Interpolation benötigt wird. Je nach Verfahren wird eine Reihe an Zwischenpunkten berechnet, die den Start- und den Zielpunkt verbinden.
+
+\subsubsection{Aufbau}
+Um diese Aufgaben technisch umzusetzen, wurde die Klasse Interpolation entwickelt. Diese verfügt über die statischen Methoden InterpolateLinear und InterpolateCircular, welche als Ergebnis ein Objekt vom Typ InterpolationResult liefern. Da jedes Verfahren eine unterschiedliche Anzahl an Eingangsparametern übernimmt, werden diese erst in der Umsetzung näher beschrieben. Genauso wie die Kinematics-Klasse könnte diese Klasse ebenfalls in anderen, nicht roboter-bezogenen, Anwendungen verwendet werden.
+
+\subsubsection{Umsetzung}
+\textbf{InterpolationResult}\\
+Die Objekt der Klasse InterpolationResult stellt, wie der Name vermuten lässt, das Ergebnis einer Interpolation dar. Da dabei viele Daten generiert werden, verfügt die Klasse über die folgenden Properties
+\begin{itemize}
+\item \textbf{Angles}\\
+Beim Angles-Property handelt es sich um eine Liste von InterpolationStep-Objekten, welche die absoluten Winkelstellungen der Achsen an jedem berechneten Punkt enthält. 
+\item \textbf{Steps}\\
+Das Steps-Property stellt ebenfalls eine List von InterpolationStep-Objekten dar, beinhaltet jedoch die Differenz zwischen zwei Winkelstellungen. Theoretisch könnten diese auch durch Iteration durch das Angles-Property berechnet werden, jedoch würde dies zu Performance-Einbußen führen. 
+\end{itemize}
+Weiters wurde die ToString-Methode überschrieben und die Konvertierung in eine, über das Netzwerk übertragbare, Form zu erleichtern:
+\begin{itemize}
+\item \textbf{ToString}
+Die ToString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der GHI-Steuerung beziehungsweise der SPS ausgelegt ist. Die Einträge werden folgendermaßen konvertiert:\\
+\end{itemize}
+\textbf{InterpolationStep}\\
+Eine Instanz der InterpolationStep-Klasse beinhaltet Informationen zu den Winkelstellungen der Achsen an einem bestimmten Punkt. Um diese Aufgabe erfüllen zu können, sind folgende Properties definiert:
+\begin{itemize}
+\item \textbf{Alpha1}\\
+Das Property Alpha1 beinhaltet die Winkelstellung der ersten Achse in Grad.
+\item \textbf{Alpha2}\\
+Das Property Alpha2 beinhaltet die Winkelstellung der zweiten Achse in Grad.
+\item \textbf{Alpha3}\\
+Das Property Alpha3 beinhaltet die Winkelstellung der dritten Achse in Grad.
+\end{itemize} 
+Weiters wurde auch hier die ToString-Methode überschrieben um die Konvertierung zu vereinfachen:
+\begin{itemize}
+\item \textbf{ToString}
+Die ToString-Methode der Klasse InterpolationStep liefert die gespeicherten Informationen in folgendem Format:\\
+\end{itemize}
+
+\textbf{Interpolation}\\
+Die Interpolations-Klasse übernimmt die Berechnung des Pfades vom Start- zum Zielpunkt. Dieser Pfad sieht je nach Verfahren unterschiedlich aus. Im Fall der linearen Interpolation handelt es sich dabei um eine Gerade, im Fall der zirkularen Interpolation um ein Kreissegment. Die Klasse definiert die Methoden InterpolateLinear und InterpolateCircular in welchen die jeweiligen Berechnungen durchgeführen und als Ergebnis ein Objekt vom Typ InterpolationResult liefern.
+\begin{itemize}
+\item \textbf{InterpolateLinear}\\
+Die InterpolateLinear-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine lineare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte.\\
+Die Vorgehensweise sieht dabei wie folgt aus:
+\begin{enumerate}
+\item Berechnung der Koordinaten-Differenzen:\\
+Im ersten Schritt wird die Differenz zwischen den $x$-, $y$- und $z$-Koordinaten des Start- und Zielpunkts berechnet. Auf diese Differenzen wird im folgenden als $d_x$, $d_y$ und $d_z$ referenziert. 
+\item Berechnung der Distanz $d$:\\
+Anschließend wird die Distanz zwischen Start und Zielpunkt $d$ mit Hilfe des Satzes des Pythagoras im, durch $d_x$, $d_y$ und $d$ definierten, rechtwinkeligen Dreieck berechnet.
+\begin{align*}
+d = \sqrt{d_x^2+d_y^2}
+\end{align*}
+\item Festlegen der Schrittanzahl:\\
+Mit Hilfe der Distanz wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von $d$ entspricht.
+\item Berechnung der Steigungen:\\
+Nun werden noch die Steigungen benötigt, welche festlegen um wieviel die $x$,$y$ und $z$-Koordinaten des nächsten Zwischenpunkts erhöht werden.
+\begin{align*}
+k_x & = \frac{d_x}{n}\\
+k_y & = \frac{d_y}{n}\\
+k_z & = \frac{d_z}{n}
+\end{align*}
+\item Berechnung der Zwischenpunkte:\\
+In einer Schleife wird bei jeder Iteration die $x$-,$y$- und $z$-Koordinate des Startpunkts um die entsprechende Steigung erhöht. Daraus lassen sich die folgenden Funktionen zur Berechnung eines Zwischenpunkts ableiten:
+\begin{align*}
+x_n & = n k_x + x_0\\
+y_n & =  n k_y + y_0\\
+z_n & = n k_z + z_0 
+\end{align*}
+Die Winkelstellungen an einem spezifischen Zwischenpunkt werden mit Hilfe der inversen Kinematik berechnet. Das Ergebnis dieser Berechnung ist ein InterpolationStep-Objekt, welcher dem Angles-Property des InterpolationResult-Objekts hinzufügt wird. Da das Ergebnis des zuvor berechneten Punkts ebenfalls gespeichert wird, kann die Winkeldifferenz zwischen neuem und altem Punkt durch Subtraktion der InterpolationSteps berechnet werden. Dieser Wert wird dem Steps-Property des InterpolationResult-Objekt hinzufügt.
+\item Rückgabe des Ergebnisses
+Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Objekt alle wichtigen Informationen aus den Berechnungen enthält, wird dieses an die aufrufende Methode zurückgegeben.
+\end{enumerate}
+\item \textbf{InterpolateCircular}\\
+Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start-, einen Mittel- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
+Die Vorgehensweise sieht dabei wie folgt aus:
+\begin{enumerate}
+\item Berechnung des Kreisradius\\
+Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob sich Start- und Zielpunkt überhaupt Teil des durch den Mittelpunkt angegebenen Kreises liegt. Dazu wird jeweils die Differenz zwischen Mittelpunkt und dem Start- beziehungsweise Zielpunkt berechnet. Dazu werden\\
+Anschließend wird die Distanz zwischen Start und Zielpunkt $d$ mit Hilfe des Satzes des Pythagoras im, durch $d_x$, $d_y$ und $d$ definierten, rechtwinkeligen Dreieck berechnet.
+\begin{align*}
+d_x = \sqrt{d_x^2+d_y^2}
+\end{align*}
+\item Festlegen der Schrittanzahl:\\
+Mit Hilfe der Distanz wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von $d$ entspricht.
+\item Berechnung der Steigungen:\\
+Nun werden noch die Steigungen benötigt, welche festlegen um wieviel die $x$,$y$ und $z$-Koordinaten des nächsten Zwischenpunkts erhöht werden.
+\begin{align*}
+k_x & = \frac{d_x}{n}\\
+k_y & = \frac{d_y}{n}\\
+k_z & = \frac{d_z}{n}
+\end{align*}
+\item Berechnung der Zwischenpunkte:\\
+In einer Schleife wird bei jeder Iteration die $x$-,$y$- und $z$-Koordinate des Startpunkts um die entsprechende Steigung erhöht. Daraus lassen sich die folgenden Funktionen zur Berechnung eines Zwischenpunkts ableiten:
+\begin{align*}
+x_n & = n k_x + x_0\\
+y_n & =  n k_y + y_0\\
+z_n & = n k_z + z_0 
+\end{align*}
+Die Winkelstellungen an einem spezifischen Zwischenpunkt werden mit Hilfe der inversen Kinematik berechnet. Das Ergebnis dieser Berechnung ist ein InterpolationStep-Objekt, welcher dem Angles-Property des InterpolationResult-Objekts hinzufügt wird. Da das Ergebnis des zuvor berechneten Punkts ebenfalls gespeichert wird, kann die Winkeldifferenz zwischen neuem und altem Punkt durch Subtraktion der InterpolationSteps berechnet werden. Dieser Wert wird dem Steps-Property des InterpolationResult-Objekt hinzufügt.
+\item Rückgabe des Ergebnisses
+Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Objekt alle wichtigen Informationen aus den Berechnungen enthält, wird dieses an die aufrufende Methode zurückgegeben.
+\end{enumerate}
+\end{itemize}
