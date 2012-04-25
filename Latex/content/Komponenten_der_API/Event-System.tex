@@ -17,3 +17,21 @@ Das Event-Delegate definiert eine Methoden-Struktur, die folgende Bedingungen er
 Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parameter ein Object sender, welches den Auslöser des Events enthält. Als zweiten Parameter muss die Methode ein EventArgs-Object args, welches zusätzliche Informationen zum Ereignis enthält, übernehmen.
 \newline
 Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind in den Kapiteln Adapter-System und Command-System bereits detailliert beschrieben, werden jedoch aus Gründen der Übersichtlichkeit jedoch in der nachstehenden Tabelle nochmals zusammengefasst.
+
+\begin{tabular}{|p{5cm}|p{9cm}|}
+\hline \rowcolor{lightgray}
+\textbf{Ereignis} & \textbf{Zeitpunkt des Eintretens}\\
+\hline
+\textit{OnHoming} & Bei Ausführung eines StartCommands, nach erfolgreicher Zustandsvalidierung.\\
+\hline
+\textit{OnMovementStarted} & Bei Ausführung eines MVS- oder MVCCommands, nach erfolgreicher Zustandsvalidierung und Pfadberechnung.\\
+\hline
+\textit{OnToolUsed} & Bei Ausführung eines UseToolCommands, nach erfolgreicher Zustandsvalidierung.\\
+\hline
+\textit{OnShuttingDown} & Bei Ausführung eines ShutdownCommands, nach erfolgreicher Zustandsvalidierung.\\
+\hline
+\textit{OnAbort} & Bei Ausführung eines AbortCommands, nach Leeren der Warteschlange\\ 
+\hline
+\textit{OnStateChanged} & Bei jeder Änderung des Zustands-Properties des Adapters.\\
+\hline
+\end{tabular}

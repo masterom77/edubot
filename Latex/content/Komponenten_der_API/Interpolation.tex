@@ -75,20 +75,27 @@ Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Obj
 Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start-, einen Mittel- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
 Die Vorgehensweise sieht dabei wie folgt aus:
 \begin{enumerate}
-\item Berechnung des Kreisradius\\
-Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob sich Start- und Zielpunkt überhaupt Teil des durch den Mittelpunkt angegebenen Kreises liegt. Dazu wird jeweils die Differenz zwischen Mittelpunkt und dem Start- beziehungsweise Zielpunkt berechnet. Dazu werden\\
-Anschließend wird die Distanz zwischen Start und Zielpunkt $d$ mit Hilfe des Satzes des Pythagoras im, durch $d_x$, $d_y$ und $d$ definierten, rechtwinkeligen Dreieck berechnet.
+\item Prüfung des Start- und Zielpunkts\\
+Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob sich Start- und Zielpunkt überhaupt Teil des durch den Mittelpunkt angegebenen Kreises liegt. Dazu wird jeweils die Differenz zwischen Mittelpunkt $M$ und dem Startpunkt $S$ beziehungsweise Zielpunkt $Z$ berechnet. Dazu werden die jeweiligen Distanzen zwischen den $x$- und $y$-Koordinaten verwendet und mit Hilfe dieser die Gesamtdistanz berechnet.\\
 \begin{align*}
-d_x = \sqrt{d_x^2+d_y^2}
+d_{\overrightarrow{MS}} & = \sqrt{d_{x\overrightarrow{MS}}^2 + d_{y\overrightarrow{MS}}^2}\\
+d_{\overrightarrow{MZ}} & = \sqrt{d_{x\overrightarrow{MZ}}^2 + d_{y\overrightarrow{MZ}}^2}
 \end{align*}
-\item Festlegen der Schrittanzahl:\\
-Mit Hilfe der Distanz wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von $d$ entspricht.
-\item Berechnung der Steigungen:\\
-Nun werden noch die Steigungen benötigt, welche festlegen um wieviel die $x$,$y$ und $z$-Koordinaten des nächsten Zwischenpunkts erhöht werden.
+Sind diese Werte gleich, so stellen sie den Kreisradius $r$ dar und beweisen, dass beide Punkte sich am Kreisrand befinden, andernfalls wird eine MVCException ausgelöst und die Berechnung abgebrochen. 
+\item Berechnung der Distanz $d$\\
+Nun wird noch die Distanz zwischen Start- und Zielpunkt $d$, erneut mit Hilfe der $x$- beziehungsweise $y$-Differenz und dem Satz des Pythagoras, berechnet.
 \begin{align*}
-k_x & = \frac{d_x}{n}\\
-k_y & = \frac{d_y}{n}\\
-k_z & = \frac{d_z}{n}
+d = \sqrt{d_x^2 + d_y^2}
+\end{align*}
+\item Berechnung des Differenzwinkels $\varphi$:\\
+Mit Hilfe des nun entstandenen, gleichschenkeliges Dreieck, welches durch $d$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
+\begin{align*}
+d^2 & = r^2 + r^2 - 2rr \cos \varphi \\
+d^2 & = 2r^2 - 2r^2 \cos \varphi \\
+d^2 & = 2r^2(1 - \cos \varphi) \\
+\frac{d^2}{2r^2} & = 1 - \cos \varphi \\
+\cos \varphi & = 1 - \frac{d^2}{2r^2} \\
+\varphi & = \arccos (1 - \frac{d^2}{2r^2})
 \end{align*}
 \item Berechnung der Zwischenpunkte:\\
 In einer Schleife wird bei jeder Iteration die $x$-,$y$- und $z$-Koordinate des Startpunkts um die entsprechende Steigung erhöht. Daraus lassen sich die folgenden Funktionen zur Berechnung eines Zwischenpunkts ableiten:
