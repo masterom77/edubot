@@ -148,7 +148,10 @@ namespace HTL.Grieskirchen.Edubot.Settings
         //}
 
         public List<string> VisualizableAdapters {
-            get { return edubot.RegisteredAdapters.Keys.ToList(); }
+            get
+            {
+                edubot = Edubot.API.Edubot.GetInstance(); 
+                return edubot.RegisteredAdapters.Keys.ToList(); }
         }
 
 

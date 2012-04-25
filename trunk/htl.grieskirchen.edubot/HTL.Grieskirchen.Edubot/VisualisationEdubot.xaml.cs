@@ -292,7 +292,7 @@ namespace HTL.Grieskirchen.Edubot
                 Mesh6_G_2Arm1_Model.Transform = transformGroup;
                 //MeshPen2.Transform = transformGroup;
                 Mesh7_G_2Arm1_Model.Transform = transformGroup;
-                Mesh8_Model.Transform = transformGroup;
+                //Mesh8_Model.Transform = transformGroup;
                 posSecondaryEngine = transformGroup.TransformBounds(Mesh5_Motor1_Model.Content.Bounds);
 
 
@@ -375,28 +375,28 @@ namespace HTL.Grieskirchen.Edubot
         #region ---------------------Rendering---------------------
         protected override void OnRender(DrawingContext drawingContext)
         {
-            if (configuration.VisualizationEnabled)
-            {
-                vpVisualization.Visibility = Visibility.Visible;
-                if (configuration.ShowGrid)
-                {
-                //    RenderGrid(drawingContext);
-                }
-                base.OnRender(drawingContext);
-                //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(0, ActualHeight / 2 - 1), new Point(ActualWidth, ActualHeight / 2 - 1));
-                //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(ActualWidth / 2 - 1, 0), new Point(ActualWidth / 2 - 1, ActualHeight));
-                if (configuration.ShowLabels)
-                {
-                //    RenderLabels(drawingContext);
-                }
-            }
-            else
-            {
-                base.OnRender(drawingContext);
-                vpVisualization.Visibility = Visibility.Hidden;
-                FormattedText text = new FormattedText("Visualisierung deaktiviert", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Red);
-                drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Width / 2, ActualHeight / 2 - text.Height / 2));
-            }
+            //if (configuration.VisualizationEnabled)
+            //{
+            //    Visualization.Visibility = Visibility.Visible;
+            //    if (configuration.ShowGrid)
+            //    {
+            //    //    RenderGrid(drawingContext);
+            //    }
+            //    base.OnRender(drawingContext);
+            //    //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(0, ActualHeight / 2 - 1), new Point(ActualWidth, ActualHeight / 2 - 1));
+            //    //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(ActualWidth / 2 - 1, 0), new Point(ActualWidth / 2 - 1, ActualHeight));
+            //    if (configuration.ShowLabels)
+            //    {
+            //    //    RenderLabels(drawingContext);
+            //    }
+            //}
+            //else
+            //{
+            //    base.OnRender(drawingContext);
+            //    vpVisualization.Visibility = Visibility.Hidden;
+            //    FormattedText text = new FormattedText("Visualisierung deaktiviert", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Red);
+            //    drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Width / 2, ActualHeight / 2 - text.Height / 2));
+            //}
         }
 
         protected void RenderGrid(DrawingContext drawingContext)
