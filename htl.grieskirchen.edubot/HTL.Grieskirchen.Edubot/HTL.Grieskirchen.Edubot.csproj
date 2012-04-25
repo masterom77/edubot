@@ -102,6 +102,9 @@
     <Compile Include="Visualisation3D.xaml.cs">
       <DependentUpon>Visualisation3D.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualisationEdubot.xaml.cs">
+      <DependentUpon>VisualisationEdubot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualisationExternal.xaml.cs">
       <DependentUpon>VisualisationExternal.xaml</DependentUpon>
     </Compile>
@@ -140,6 +143,10 @@
     <Page Include="Visualisation3D.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualisationEdubot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="VisualisationExternal.xaml">
       <SubType>Designer</SubType>
@@ -248,7 +255,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "C:\Users\Philipp\Documents\HelpNDoc\Output\html\" "C:\src\htl.grieskirchen.edubot\HTL.Grieskirchen.Edubot\bin\Debug\doc\" /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

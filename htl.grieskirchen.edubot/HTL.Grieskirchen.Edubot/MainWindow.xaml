@@ -498,7 +498,7 @@
         </TabControl>
         <StatusBar Grid.ColumnSpan="2" Grid.Row="5"></StatusBar>
         <Viewbox Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb3DVisualisation" Stretch="Uniform">
-            <my:Visualisation3D Grid.Column="1" Grid.Row="2" Width="600" Height="600" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
+            <my:VisualisationEdubot Grid.Column="1" Grid.Row="2" Width="600" Height="600" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
         </Viewbox>
             <!--<Button Content="Visualisierung in eigenem Fenster anzeigen" Grid.Column="1" Grid.Row="1" Height="33" HorizontalAlignment="Left" Margin="4,97,0,0" Name="ExtVis" VerticalAlignment="Top" Width="157" Click="ExtVis_Click" />-->
         <Viewbox Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb2DVisualisation" Stretch="Uniform">

@@ -198,8 +198,9 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 if (sender is VirtualAdapter)
                 {
-                    //visualisation3D.Angles = mse.Result.Angles;
+                    visualisation3D.Angles = mse.Result.Angles;
                     visualisation2D.Angles = mse.Result.Angles;
+                    
                     //visualisationAbove.Angles = ace.Result.Steps;
 
                     
