@@ -162,13 +162,13 @@ Bei Aufruf der \textit{MoveStraight}-Methode wird der Steuerung der Auftrag zu e
 \newline
 Bei Aufruf der \textit{MoveCircular}-Methode verhält der Adapter ähnlich wie bei der \textit{MoveStraight}-Methode. Auch hier wird wieder ein String an die Steuerung gesendet, jedoch mit dem Kürzel “mvc:” als Prefix und zusätzlich zum Zielpunkt den Mittelpunkt der zirkularen Verfahrbewegung. Beim Erhalt dieses Befehls, wird der String in seine Bestandteile (Befehlsart, Zielpunkt und Mittelpunkt) aufgeteilt. Mit Hilfe dieser Informationen wird erneut mit dem Zirkularinterpolationsverfahren der Firma KEBA eine Reihe an Motorenbewegung berechnet. Die Durchführung dieser Bewegungen wird von unserer SPS-Software geregelt und erzeugt die gewünschte Zirkularbewegung. 
 Nach Abschluss der Verfahrbewegung sendet die Steuerung einen String mit Inhalt “ready”, woraufhin der NetworkStateListener bei Erhalt dieser Nachricht den State des ihm zugehörigen Adapters auf \textit{READY} setzt und der nächste Befehl, falls vorhanden, ausgeführt wird.
-\item \textbf{UseTool [TODO]}
+\item \textbf{UseTool}
 \newline
-Bei Aufruf der UseTool-Methode wird der Steuerung ein String beginnend mit “ust:” und anschließend einem, vom ausgewählten Werkzeug abhängigen, Kürzel sowie einem boolschen Wert, welcher aussagt ob das Werkzeug aktiviert oder deaktiviert werden soll. Nach Ausführung dieses Befehls sendet die Steuerung erneut einen “ready”-String, nach dessen Erhalt das State-Attribut auf READY gesetzt wird. 
-\item \textbf{Abort [TODO]}
+Bei Aufruf der UseTool-Methode wird der SPS ein String beginnend mit “ust:” und anschließend einem, vom ausgewählten Werkzeug abhängigen, Kürzel sowie einem boolschen Wert, welcher aussagt ob das Werkzeug aktiviert oder deaktiviert werden soll. Nach Ausführung dieses Befehls sendet die SPS erneut einen “ready”-String, nach dessen Erhalt das State-Attribut auf READY gesetzt wird. 
+\item \textbf{Abort}
 \newline
-Der Aufruf der Abort-Methode sollte zum sofortigen Abbruch jeglicher Aktion des Roboters führen. Dazu wird ein String mit “abo” an die Steuerung gesendet, woraufhin diese ihre aktuelle Aktion unverzüglich unterbricht und die Stromabsenkung der Motoren abstellt. 
-\item \textbf{SetInterpolationResult [TODO]}
+Der Aufruf der Abort-Methode sollte zum sofortigen Abbruch jeglicher Aktion des Roboters führen. Dazu wird ein String mit “abo” an die Steuerung gesendet, woraufhin diese ihre aktuelle Aktion unverzüglich unterbricht. 
+\item \textbf{SetInterpolationResult}
 \newline
-Bei Aufruf dieser Methode wird das übergebene InterpolationResult in einer Variable des Adapters gespeichert, auf die später bei der Übertragung von MVS oder MVC-Commands zugegriffen wird.
+Diese Methode erfüllt im KebaAdapter keinen besonderen Nutzen, da die Pfadberechnung von der SPS durchgeführt wird.
 \end{itemize}
