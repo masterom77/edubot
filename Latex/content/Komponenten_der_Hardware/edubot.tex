@@ -1,6 +1,6 @@
- \subsection{Edubot Modell}
+\subsection{Edubot Modell Hardware}
 \subsubsection{Allgemeines}
-Das Edubot Modell stellt im Allgemeinen einen aus Holz gefertigten Roboterarm mit RR Kinematik dar. Ursprünglich war geplant das Modell zusätzlich mit einer vertikalen Transversalen Achse zu versehen um einen 3 Dimensionalen Arbeitsraum zu schaffen. Aufgrund der hohen Komplexität des Baus einer solchen Achse und der engen zeitlichen Grenzen, wurden lediglich die Vorraussetzungen für das Hinzufügen einer solchen dritten Achse geschaffen. Als Werkzeug verwendet das derzeitige Edubot Modell einen Laser der es ihm ermöglicht dunkle, weiche Oberflächen zu gravieren.
+Das Edubot Modell stellt im Allgemeinen einen aus Holz gefertigten Roboterarm mit RR Kinematik dar. Ursprünglich war geplant das Modell zusätzlich mit einer vertikalen Transversalen Achse zu versehen um einen 3 Dimensionalen Arbeitsraum zu schaffen. Aufgrund der hohen Komplexität des Baus einer solchen Achse und der engen zeitlichen Grenzen, wurden lediglich die Vorraussetzungen für das Hinzufügen dieser dritten Achse geschaffen. Als Werkzeug verwendet das derzeitige Edubot Modell einen Laser der es ihm ermöglicht dunkle, weiche Oberflächen zu gravieren.
 
 \subparagraph{Sicherheitshinweis}
 
@@ -22,10 +22,42 @@ Da die Motorwellen der vorhandenen Schrittmotoren weder über Zahnräder, noch e
 Gelöst wurde dieses Problem durch ein Stück Gummischlauch, welches exakt den Zwischenraum zwischen Motorwelle und der benötigten Wellenverängerung ausfüllte. Dieser Gummischlauch wurde über die Motorwelle gezogen, anschließend wurde die zuvor eingeschnittene Wellenverlängerung über die Motorwelle gestülpt. Im fall der primären Motorwelle wurde zur fixierung noch eine passende [todo] an der Verbindungsstelle angebracht um von außen Druck auszuüben und durch zusammenpressen von Motorwelle und Wellenverlängerung ein Durchrutschen zu verhindern. Im fall der sekundären Motorwelle wird das die selbe Aufgabe vom Kugellager erledigt. Abbildungen auf denen die beschriebene Problemlösung ersichtlich ist finden sich im Kapitel "'Bau der Mechanik".'
 \end{itemize}
 \subsubsection{Bau der Mechanik}
-\subsubsection{Mikrocontrollerprogramm}
-Da das auf dem Mikrocontroller 
+Beim Bau der Mechanik wurde großteils nach dem zuvor im Zuge der Konstruktionsplanung erstellten 3D Modell vorgegangen. Das Material für die Achsen wurde beinahe Ausschließlich aus 2,5 cm Dicken Dreischichtplatten gewonnen, als Wellenverlängerungen für die Motoren dienen Alurohre mit einem Durchmesser von 10 mm. 
+Beim Bau des Roboters wurde in folgendenden Schritten vorgegangen:
+\begin{itemize}
+\item \textbf{Zurechtschneiden einer Grundplatte und Anbringung der Basis}\\
+Der Erste Schritt beim Bau des Modells war das grobe Zurechtschneiden der Grundplatte, welche später die gesamte Arbeitsfläche des Armes Abdeken sollte und die Stabilität des Arms gewährleistet.
+Direkt auf diese Grundplatte wurde dann die Basis des Roboters gschraubt. Bei der Basis handelt es sich um eine senkrecht aufgestellte Platte, an der später die Halterung für die primäre Achse befestigt wurde.
+[Grafik]
+\item \textbf{Bau des ersten Gelenks}\\
+Das erste Gelenk des  Edubot Modells wurde direkt mit der Basis verschraubt und bietet damit einen sehr hohen Grad an Stabilität. Grundsätzlich basiert das Gelenk auf der Form eines liegenden U's welches über zwei Kugellager eine etwa 1 cm dicke Motorwellenverlängerung aus Alluminium hält. An diese Motorwellenverlängerung ist in weiterer Folge die primäre Achse des Motors so festgekelmmt, dass sie im 90$^\circ$ Winkel zur senkrecht stehenden Wellenverlängerung stehen.
+
+\item \textbf{Befestigung der ersten Achse}\\
+Für das Anklemmen der Achse an die Wellenverlängerung wurde wurde die Achse mit eiener 1 cm dicken dicken Bohrung versehen durch welche die Wellenverlängerung exakt passt. Zusätzlich wurde die Achse der länge durch die Mitte des Lochs etwa 4 cm eingeschnitten. Durch das spätere anbringen von Schrauben (entsprechende Bohrungen waren zuvor nötig), welche den entstandenen Spalt zusammenziehen können, wurde es möglich das gebohrte loch nach durchstecken der Wellenverlängerung zusätzlich zu verleinern und somit die Achse fest einzuklemmen.
+Die erste Achse (primäre Achse) hat eine Länge von etwa 20 cm.
+\item \textbf{Bau des Zweiten Gelenks}\\
+Das zweite Gelenk wurde an direkt mit der primären Achse verschraubt und basiert wieder auf dem selben Prinzip wie das erste Gelenk. Beim Bau des zweiten Gelenks ergaben sich zwei kleine Unterschiede gegenüber dem großen Gelenk. Der erste Unterschied ist, dass das zweite Gelenk kleiner ist und aus Gewichtsgründen der Fokus nicht nur auf der Stabilität de Konstruktion lag. 
+Der zweite Unterschied ist die Positionierung der Achse. Beim ersten Gelenk wurde die Achse zwischen den beiden Kugellagern, in der Mitte der U-Förmögen Konstruktion angebracht, beim zweiten Gelenk wurde die Achse unterhalb des U's angebracht. Diese Abänderung der ursprünglichen Konstruktion führt nur zu einem geringen stabiliätsverlust und erweitert den Arbeitsberreich des Roboters stark.
+\item \textbf{Befestigung der zweiten Achse}\\
+Bei der Befestigung der zweiten Achse (sekundär Achse) wurde im Prinzip gleich vorgegangen wie bei der ersten Achse (primär Achse), für eine genauere Beschreibung siehe den Punkt "Befestigung der ersten Achse" weiter oben in dieser Aufzählung.
+\item \textbf{Befestigung der Motoren}\\
+Der Motor der Primären Achse wurde direkt mit der Grundlatte des Motors verschraubt und läuft damit wenig Gefahr durch Verwindung oder Verrutschen die Positionierung des Arms zu verfälschen.
+Der Motor der Sekundären Achse Achse wurde an das zweite Gelenk geschraubt, welches seinerseits direkt mit der primären Achse verbunden ist. Durch die Positionierung des zweiten Motors ohne zusätzlichen Abstsand direkt über dem zweiten Gelenk war es möglich die Verbindung mit der Wellenverlängerung direkt im Gelenk herzustellen und damit auf eine Komplexere Konstruktion zu verzichten. Die folgende Grafik zeigt am Beispiel des ersten Motors, wie die Verbindung der Motorwelle mit der Wellenverlängerung gelöst wurde: [todo]
+\end{itemize}
+\subsubsection{Planung der Elektronik}
+Die Planung der Elektronik war ein stetiger Prozess und ging einher mit dem Versuchsweisen Aufbau der jeweiligen Planungsergebnisse. Grob unterteilen lässt sich die Entwicklung jedoch in zwei Phasen:
+\begin{itemize}
+\item \textbf{Versuchsweiser Aufbau mit direkter Ansteuerung}\\
+In einem ersten Anlauf wurde der Versuch unternommen, die gesammte Ansteuerung der Microcontroller und damit auch deren Versorgung mit dem Entsprechenden Taktsignal welches zum Verfahren der Schritte 
+\item \textbf{Versuchsweiser Aufbau mit Microcontroller Steuerung}\\
+\end{itemize}
+Die folgende Grafik zeigt die Schematische Darstellung der Elektronik des Edubot Modells wie sie schlussendlich bei der Abgabe dieses Projektes verbaut war. Bei der Erstellung der Grafik wurde zu gunsten der Übersichtlichkeit nicht darauf geachtet dass sich die Anschlüsse an den der Realität entsprechendenden Seiten der Bauteile befinden, die Farbzuordnungen der Verbindungen entsprechen jedoch jenen der Tatsächlich verbauten Hardware.
+\subsubsection{Bau der Elektronik}
+Wie bereits im vorhergehenden Kapitel erwähnt waren Bau und Planung der Elektronik ein stetiger Prozess und miteinander eng verwoben. Aus diesem Grund wird hier nicht näher auf die einzelnen Schritte die beim Bau der Elektronik vorgenommen wurden eingegangen, sondern lediglich die Endausfertigung kurz erklärt.
+\subsubsection{Mikrocontroller}
+Für die Steuerung der Takt
 \subsubsection{Kostenaufstellung}
-Die Kosten für den Bau des Edubot Modells wurden zum großteil von der HTL Grieskirchen übernommen, da das fertige Modell bei Projektabschluss auch der Schule übergeben wurde. Beim Bau des Roboters entstanden folgende Kosten:
+Die Kosten für den Bau des Edubot Modells wurden zum großteil von der HTL Grieskirchen übernommen, da das fertige Modell mit Projektabschluss auch der Schule übergeben wurde. Beim Bau des Roboters entstanden folgende Kosten:
 
 \begin{tabular}{|p{11cm}|p{3cm}|}
 \hline \rowcolor{lightgray}
@@ -40,5 +72,9 @@ Die Kosten für den Bau des Edubot Modells wurden zum großteil von der HTL Grie
 4 Kugellager & 19\euro{}\\
 \hline
 1 Microcontroller vom Typ GHI Embedded Master Breakout Board 1.0 (gebraucht) & 30\euro{}\\ 
+\hline
+2qm Dreischichtplatte & 30\euro{}\\ 
+\hline
+Schrauben und sonstige Kleinteile (gebraucht) & 30\euro{}\\ 
 \hline
 \end{tabular}
