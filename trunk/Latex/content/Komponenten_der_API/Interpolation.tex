@@ -76,33 +76,52 @@ Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellun
 Die Vorgehensweise sieht dabei wie folgt aus:
 \begin{enumerate}
 \item Prüfung des Start- und Zielpunkts\\
-Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob sich Start- und Zielpunkt überhaupt Teil des durch den Mittelpunkt angegebenen Kreises liegt. Dazu wird jeweils die Differenz zwischen Mittelpunkt $M$ und dem Startpunkt $S$ beziehungsweise Zielpunkt $Z$ berechnet. Dazu werden die jeweiligen Distanzen zwischen den $x$- und $y$-Koordinaten verwendet und mit Hilfe dieser die Gesamtdistanz berechnet.\\
+Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob sich Start- und Zielpunkt überhaupt Teil des durch den Mittelpunkt angegebenen Kreises liegt. Dazu wird jeweils die Differenz zwischen Mittelpunkt $M$ und dem Startpunkt $S$ beziehungsweise Zielpunkt $Z$ berechnet. Dazu werden die jeweiligen Distanzen zwischen den $x$- und $y$-Koordinaten verwendet und mit Hilfe dieser die Gesamtdistanz berechnet.
 \begin{align*}
 d_{\overrightarrow{MS}} & = \sqrt{d_{x\overrightarrow{MS}}^2 + d_{y\overrightarrow{MS}}^2}\\
 d_{\overrightarrow{MZ}} & = \sqrt{d_{x\overrightarrow{MZ}}^2 + d_{y\overrightarrow{MZ}}^2}
 \end{align*}
 Sind diese Werte gleich, so stellen sie den Kreisradius $r$ dar und beweisen, dass beide Punkte sich am Kreisrand befinden, andernfalls wird eine MVCException ausgelöst und die Berechnung abgebrochen. 
-\item Berechnung der Distanz $d$\\
+\item Berechnung der Distanz $d_{\overrightarrow{SZ}}$\\
 Nun wird noch die Distanz zwischen Start- und Zielpunkt $d$, erneut mit Hilfe der $x$- beziehungsweise $y$-Differenz und dem Satz des Pythagoras, berechnet.
 \begin{align*}
-d = \sqrt{d_x^2 + d_y^2}
+d_{\overrightarrow{SZ}} = \sqrt{d_{x\overrightarrow{SZ}}^2 + d_{y\overrightarrow{SZ}}^2}
 \end{align*}
 \item Berechnung des Differenzwinkels $\varphi$:\\
-Mit Hilfe des nun entstandenen, gleichschenkeliges Dreieck, welches durch $d$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
+Mit Hilfe des entstandenen, gleichschenkeliges Dreieck, welches durch $d_{\overrightarrow{SZ}}$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
 \begin{align*}
-d^2 & = r^2 + r^2 - 2rr \cos \varphi \\
-d^2 & = 2r^2 - 2r^2 \cos \varphi \\
-d^2 & = 2r^2(1 - \cos \varphi) \\
-\frac{d^2}{2r^2} & = 1 - \cos \varphi \\
-\cos \varphi & = 1 - \frac{d^2}{2r^2} \\
-\varphi & = \arccos (1 - \frac{d^2}{2r^2})
+d_{\overrightarrow{SZ}}^2 & = r^2 + r^2 - 2rr \cos \varphi \\
+d_{\overrightarrow{SZ}}^2 & = 2r^2 - 2r^2 \cos \varphi \\
+d_{\overrightarrow{SZ}}^2 & = 2r^2(1 - \cos \varphi) \\
+\frac{d_{\overrightarrow{SZ}}^2}{2r^2} & = 1 - \cos \varphi \\
+\cos \varphi & = 1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2} \\
+\varphi & = \arccos (1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2})
+\end{align*}
+\item Berechnung der Bogenlänge $s$:
+Mit dem Differenzwinkel $\varphi$ wird die tatsächliche Wegsstrecke, die Bogenlänge $s$, berechnet.
+\begin{align*}
+s = \frac{2r \pi \varphi}{360}
+\end{align*}
+\item Berechnung des Startwinkels $\alpha$:\\
+Da der Startpunkt in Bezug auf den Mittelpunkt nicht zwingend bei 0$^\circ$ liegen muss, wird der sogenannte Startwinkel $\alpha$ mit dem Kosinus im rechtwinkeligen Dreieck berechnet. Das verwendete Dreieck ist durch die $x$ und $y$-Differenz zwischen Start- und Mittelpunkt, sowie den Radius $r$ definiert.
+\begin{align*}
+\cos \alpha & = \frac{d_{x\overrightarrow{MS}}}{r}\\
+\alpha & = \arccos \frac{d_{x\overrightarrow{MS}}}{r}
+\end{align*}
+\item Festlegen der Schrittanzahl:\\
+Mit Hilfe der Bogenlänge $s$ wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von  $s$ entspricht.
+\item Überprüfung der Quadranten\\
+Aufgrund der Tatsache, dass die Arkussinus-Funktion lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Start beziehungsweise der Zielpunkt befindet überprüft werden. Befindet einer dieser Punkte  im 3. oder 4. Quadranten so wird Vorzeichen des entsprechenden Winkels, $\alpha$ beim Startpunkt beziehungsweise $\varphi$ beim Zielpunkt, umgedreht. Alternativ könnte man auch 180$^\circ$ zum betroffenen Winkel addieren.
+\item Berechnung der Winkelsteigung:\\
+Nun wird der Differenzwinkel $\varphi$ durch die Schrittanzahl $n$ dividiert um die Winkelsteigung zu erhalten, welche nach jedem berechneten Zwischenpunkt zum Startwinkel addiert wird.
+\begin{align*}
+k & = \frac{\varphi}{n}
 \end{align*}
 \item Berechnung der Zwischenpunkte:\\
-In einer Schleife wird bei jeder Iteration die $x$-,$y$- und $z$-Koordinate des Startpunkts um die entsprechende Steigung erhöht. Daraus lassen sich die folgenden Funktionen zur Berechnung eines Zwischenpunkts ableiten:
+In einer Schleife wird bei jeder Iteration die Winkelsteigung zum Startwinkel addiert und anschließend mit Hilfe desselben, in Punkt 5 beschriebenen, rechtwinkeligen Dreiecks berechnet. Die gesuchte $x$ beziehungsweise $y$-Koordinate des nächsten Zwischenpunkts wird über die Sinus- beziehungsweise Kosinusfunktion berechnet und zu der entsprechenden Koordinate des Mittelpunkts addiert.
 \begin{align*}
-x_n & = n k_x + x_0\\
-y_n & =  n k_y + y_0\\
-z_n & = n k_z + z_0 
+\cos \alpha & = \frac{x}{r} & \sin \alpha & = \frac{y}{r}\\
+x & = r \cos \alpha & y & = r \cos \alpha
 \end{align*}
 Die Winkelstellungen an einem spezifischen Zwischenpunkt werden mit Hilfe der inversen Kinematik berechnet. Das Ergebnis dieser Berechnung ist ein InterpolationStep-Objekt, welcher dem Angles-Property des InterpolationResult-Objekts hinzufügt wird. Da das Ergebnis des zuvor berechneten Punkts ebenfalls gespeichert wird, kann die Winkeldifferenz zwischen neuem und altem Punkt durch Subtraktion der InterpolationSteps berechnet werden. Dieser Wert wird dem Steps-Property des InterpolationResult-Objekt hinzufügt.
 \item Rückgabe des Ergebnisses
