@@ -10,3 +10,9 @@ Die universelle Robotersimulation ist immer vorhanden und passt sich automatisch
 
 Bei der Erstellung der Visualisierungen wurde jeweils zuvor ein dreidimensionales Modell in Google SketchUp angefertigt. Dieses Modell wurde durch Google SketchUp in Form einer .obj Datei exportiert und später mithilfe von Microsoft Expression Blend konvertiert. Die einzelnen Schritte werden in den nächsten Kapiteln genauer beschrieben.
 \subsubsection{Anfertigung und Vorbereitung der Modelle}
+Wie bereits erwähnt wurden die 3D Modelle zuerst im Programm SketchUp angefertigt. Dies ist mithilfe der von Google zur Verfügung gestellten Software bereits nach kurzer Einarbeitungszeit möglich. 
+Prinzipiell basiert die Erstellung von 3D Modellen in SketchUp auf dem Prinzip, zuerst Flächen zu zeichnen und diese dann mit einem Entsprechenden Tool zu einem Körper auseinander zu "'ziehen"'.
+
+Das fertige Modell des Roboters wurde im nächsten Schritt als "'.obj"' Datei gespeichert. Beim "'.obj"' Dateityp handelt es sich um einen von der Firma Wavefront entwickelten offenen Dateityp zur Speicherung von 3D Modellen. Das dreidimmensionsale Objekt wird dabei in seine einzelnen Formen aufgeteilt und in Form von einzelnen Koordinatennetzen die sich als normaler Text in in der Datei finden gespeichert.
+
+Der große Vorteil der eben beschriebenen Speicherung als "'.obj"' Datei ist die vielfältige Wiederverwendbarkeit des Modells. So ist es etwa möglich, das Modell mithilfe der Software Microsoft Expression Blend zu öffnen und für die Verwendung in WPF entsprechend zu konvertieren. Die entsprechende "'.obj"' muss hierzu lediglich auf die Arbeitsfläche des XAML Designers eines WPF Projektes gezogen werden. Microsoft Expression Blend übernimmt dann alle Vorgänge die zur Umrechnung nötig sind und bettet das 3D Modell in die XAML Datei ein. Sämtliche Informationen zur Geometrie des Modells werden dabei in der XAML Datei gespeichert und die einzelnen Komponenten werden jeweils als 
