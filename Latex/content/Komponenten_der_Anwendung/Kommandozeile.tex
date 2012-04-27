@@ -1,0 +1,18 @@
+
+\subsection{Kommandozeile}
+
+\subsubsection{Aufgaben}
+Die Kommandozeile stellt dem Anwender die Möglichkeit zur Verfügung, Befehle in einer einfachen Scriptsprache in ein Textfeld einzugeben und diese per Klick auf einen Button auszuführen. Es soll möglich sein eine Reihe an Befehlen einzugeben, die anschließend vom Roboter, in der angegebenen Reihenfolge, ausgeführt werden. Weiters soll der Benutzer in einer Konsole über Fehler beziehungsweise die erfolgreiche Übersetzung der Befehle informiert werden.
+
+\subsubsection{Aufbau}
+Die Benutzeroberfläche für diesen Anwendungszweck besteht aus zwei Textfeldern, wobei nur eines editierbar und somit zur Eingabe vom Befehlen geeignet ist. Das andere Textfeld stellt die Konsole dar und dient der Ausgabe von Informationen während der Kompilierung des eingegebenen Scripts. Bei Klick auf den entsprechenden Button, analysiert die Klasse CommandParser den eingegebenen Text auf richtige Syntax. Fehlen Semikolons oder Klammern so wird eine InvalidSyntaxException, mit einer passenden Meldung ausgelöst. Diese Meldung wird in der Konsole angezeigt und informiert den Benutzer über Fehler im Code. Ist die Syntax des Befehls richtig, so wird dieser, gemeinsam mit den Parameterwerten, der CommandBuilder-Klasse übergeben. Diese Klasse ermittelt um welches Command es sich genau handelt und versucht ein entsprechend Objekt aus der Edubot-API zu erzeugen. Wird bei der Generierung eine fehlerhafte Parameteranzahl beziehungsweise ungültige Werte entdeckt, so wird eine InvalidParameterException mit Details über den Fehler ausgelöst und in der Konsole angezeigt. Das erzeugte Objekt wird einer Liste mit Befehlen hinzugefügt, welche nach erfolgreicher Kompilierung an die Edubot-Klasse übergeben wird.
+
+\subsubsection{Umsetzung}
+Durch die, von der API zur Verfügung gestellte, Kommando-Infrastruktur war die Umsetzung dieser Aufgabe relativ einfach. Die größte Herausforderung war das Entwickeln der CommandParser-Klasse, da diese eine gültige Syntax gewährleisten muss.
+
+CommandParser
+Die CommandParser-Klasse übernimmt die Syntax-Validierung des eingegebenen Texts und gibt erhaltene Informationen über Befehlsart und Parameterwerte an die CommandBuilder-Klasse weiter. Die Klasse verfügt nur über eine statische Methode und zwar:
+\begin{itemize}
+\item Parse
+Dieser Methode wird als Parameter der zu kompilierende Text mitgegeben. Bei Aufruf von CommandParser.Parse wird der mitgegebenen Text zuerst mit Hilfe der Split-Methode der String Klasse 
+CommandBuilder
