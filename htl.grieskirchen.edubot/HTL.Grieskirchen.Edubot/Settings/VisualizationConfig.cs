@@ -16,7 +16,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
         public VisualizationConfig() {
             //steps = 10;
             //speed = 50;
-            //edubot = API.Edubot.GetInstance();
+            edubot = API.Edubot.GetInstance();
             //length = "150";
             //length2 = "150";
             //selectedTool = "Virtuell";
@@ -87,65 +87,33 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
-        bool useLongest;
+        
+        string visualizedAdapter;
 
-        public bool UseLongest
+        public string VisualizedAdapter
         {
-            get { return useLongest; }
+            get { return visualizedAdapter; }
             set
             {
-                useLongest = value;
-                useFollowing = !value;
-                //NotifyPropertyChanged("UseLongest");
-                //if (useLongest)
-                //    VisualizedAdapter = GetLongestAdapter();
+                visualizedAdapter = value;
+                IAdapter adapter = null;
+                API.Edubot edubot = API.Edubot.GetInstance();
+                if (edubot.RegisteredAdapters.TryGetValue(value, out adapter))
+                {
+                    length = adapter.Length.ToString();
+                    length2 = adapter.Length2.ToString();
+                    if (adapter.EquippedTool == Tool.VIRTUAL)
+                    {
+                        selectedTool = "Virtuell";
+                    }
+                }
+                else
+                {
+                    edubot.RegisteredAdapters.TryGetValue(NAME2D, out adapter);
+                }
+                Apply();
             }
         }
-
-        bool useFollowing;
-
-        public bool UseFollowing
-        {
-            get { return useFollowing; }
-            set
-            {
-                useFollowing = value;
-                useLongest = !value;
-                NotifyPropertyChanged("UseFollowing");
-                //if (useFollowing)
-                //{
-                //    NotifyPropertyChanged("VisualizableAdapters");
-                //    VisualizedAdapter = visualizedAdapter;
-                //}
-            }
-        }
-
-        //string visualizedAdapter;
-
-        //public string VisualizedAdapter
-        //{
-        //    get { return visualizedAdapter; }
-        //    set
-        //    {
-        //        visualizedAdapter = value;
-        //        IAdapter adapter = null;
-        //        API.Edubot edubot = API.Edubot.GetInstance();
-        //        if (edubot.RegisteredAdapters.TryGetValue(VisualizedAdapter, out adapter))
-        //        {
-        //            length = adapter.Length.ToString();
-        //            length2 = adapter.Length2.ToString();
-        //            if (adapter.Tool is VirtualTool) {
-        //                selectedTool = "Virtuell";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new Exception("No adapter found");
-        //        }
-        //        NotifyPropertyChanged("VisualizedAdapter");
-        //        Apply();
-        //    }
-        //}
 
         public List<string> VisualizableAdapters {
             get
@@ -187,8 +155,8 @@ namespace HTL.Grieskirchen.Edubot.Settings
                         break;
                 }
 
-                edubot.RegisterAdapter(NAME2D, new VirtualAdapter(realTool2D, float.Parse(length), float.Parse(length2)));
-                edubot.RegisterAdapter(NAME3D, new VirtualAdapter(realTool3D, float.Parse(length), float.Parse(length2)));
+                edubot.RegisterAdapter(NAME2D, new VirtualAdapter(Tool.VIRTUAL, float.Parse(length), float.Parse(length2)));
+                edubot.RegisterAdapter(NAME3D, new VirtualAdapter(Tool.VIRTUAL, float.Parse(length), float.Parse(length2)));
                
                 NotifyPropertyChanged("VisualizedAdapter");
             }

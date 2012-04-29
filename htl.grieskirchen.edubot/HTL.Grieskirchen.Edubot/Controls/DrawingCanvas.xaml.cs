@@ -279,11 +279,11 @@ namespace HTL.Grieskirchen.Edubot.Controls
                     if (firstPoint)
                     {
                         //move to starting pointn of stroke without drawing a line --> Z = 0
-                        commands.Add(new MVSCommand(new API.Point3D(x, y, 0)));
+                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 0)));
                         firstPoint = false;
                     }
                     else {
-                        commands.Add(new MVSCommand(new API.Point3D(x, y, 1)));
+                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 1)));
                     }
                 }
             }

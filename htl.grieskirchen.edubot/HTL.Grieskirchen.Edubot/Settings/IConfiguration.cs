@@ -16,6 +16,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             get { return selectedTool; }
             set { selectedTool = value;
             NotifyPropertyChanged("SelectedTool");
+                
             }
         }
 

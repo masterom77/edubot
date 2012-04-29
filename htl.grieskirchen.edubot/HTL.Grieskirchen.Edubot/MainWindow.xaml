@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls"
         xmlns:validators="clr-namespace:HTL.Grieskirchen.Edubot.Validation" 
-        Title="Edubot" Height="768" Width="1024" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png">
+        Title="Edubot" Height="768" Width="1024" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" SizeChanged="ClosePopup" LocationChanged="ClosePopup">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Validation.ErrorTemplate">
@@ -278,7 +278,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btDASaveSettings" Click="btDASaveSettings_Click">Einstellungen speichern</Button>
+                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btDASaveSettings" Click="btDASaveSettings_Click">Verbinden</Button>
                             </Grid>
                         </Grid>
 
@@ -425,11 +425,12 @@
                                     </Grid.RowDefinitions>
                                     <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
                                     <Label Grid.Row="1" Content="Visualisierter Adapter:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <Grid Margin="5" Grid.Row="1" Grid.Column="1">
+                                    <ComboBox Name="cbVisualizedAdapter" Margin="5" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" SelectedItem="{Binding Path=VisualizedAdapter}"></ComboBox>
+                                    <!--<Grid Margin="5" Grid.Row="1" Grid.Column="1">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="10"></RowDefinition>
                                             <RowDefinition Height="6" />
-                                            <RowDefinition Height="26*"></RowDefinition>
+                                            <RowDefinition Height="26"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <RadioButton VerticalAlignment="Center" Content="Größte Spannweite" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=UseLongest}" Grid.RowSpan="2" Checked="rbUseLongestAdapter_Checked" Name="rbUseLongestAdapter"></RadioButton>
                                         <RadioButton Grid.Row="2" VerticalAlignment="Center" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Name="rbUseSpecificAdapter" IsChecked="{Binding Path=UseFollowing}" Checked="rbUseSpecificAdapter_Checked">
@@ -442,7 +443,7 @@
                                                 <ComboBox MinWidth="100" Grid.Column="1" Name="cbVisualizedAdapter" IsEditable="False" IsEnabled="{Binding ElementName=rbUseSpecificAdapter, Path=IsChecked}" SelectionChanged="cbVisualizedAdapter_SelectionChanged"></ComboBox>
                                             </Grid>
                                         </RadioButton>
-                                    </Grid>
+                                    </Grid>-->
                                     
                                 </Grid>
                             </Border>
