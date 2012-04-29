@@ -9,18 +9,27 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     public class InterpolationStep
     {
         public static InterpolationStep operator +(InterpolationStep step1, InterpolationStep step2) {
-            InterpolationStep step = new InterpolationStep();
-            step.alpha1 = step1.alpha1 + step2.alpha1;
-            step.alpha2 = step1.alpha2 + step2.alpha2;
-            return step;
+            return new InterpolationStep(step1.Target+step2.Target, step1.Alpha1 + step2.Alpha1,step1.Alpha2+step2.Alpha2,step1.Alpha3+step2.Alpha3);
         }
 
-        public static InterpolationStep operator -(InterpolationStep step1, InterpolationStep step2)
+        public static InterpolationStep operator - (InterpolationStep step1, InterpolationStep step2)
         {
-            InterpolationStep step = new InterpolationStep();
-            step.alpha1 = step1.alpha1 - step2.alpha1;
-            step.alpha2 = step1.alpha2 - step2.alpha2;
-            return step;
+            return new InterpolationStep(step1.Target - step2.Target, step1.Alpha1 - step2.Alpha1, step1.Alpha2 - step2.Alpha2, step1.Alpha3 - step2.Alpha3);
+        }
+
+        public InterpolationStep(Point3D target, float alpha1, float alpha2, float alpha3) {
+            this.target = target;
+            this.alpha1 = alpha1;
+            this.alpha2 = alpha2;
+            this.alpha3 = alpha3;
+        }
+
+        Point3D target;
+
+        public Point3D Target
+        {
+            get { return target; }
+            set { target = value; }
         }
 
         float alpha1;
