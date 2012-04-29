@@ -89,12 +89,12 @@ namespace HTL.Grieskirchen.Edubot.Settings
         {
             API.Edubot edubot = API.Edubot.GetInstance();
             edubot.DeregisterAdapter(NAME);
-            ITool realTool = null;
-            switch (selectedTool) {
-                case "Virtuell": realTool = new VirtualTool();
-                    break;
-            }
-            edubot.RegisterAdapter(NAME, new EdubotAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress), port));
+            Tool realTool = Tool.VIRTUAL;
+            //switch (selectedTool) {
+            //    case "Virtuell": realTool = Tool.VIRTUAL;
+            //        break;
+            //}
+            edubot.RegisterAdapter(NAME, new EdubotAdapter(realTool,System.Net.IPAddress.Parse(ipAddress), port));
             new System.Threading.Thread(ActualizeConnectionState).Start();
         }
     }

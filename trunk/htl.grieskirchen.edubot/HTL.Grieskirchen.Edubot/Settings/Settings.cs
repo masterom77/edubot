@@ -9,21 +9,27 @@ using HTL.Grieskirchen.Edubot.API.Adapters;
 namespace HTL.Grieskirchen.Edubot.Settings
 {
     [Serializable]
-    public class Settings
+    public class Settings : INotifyPropertyChanged
     {
 
         public Settings() {
-            defaultConfig = new EdubotAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
+            edubotConfig = new EdubotAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
             kebaConfig = new KebaAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
-            visualizationConfig = new VisualizationConfig() { Length = "150", Length2 = "150", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, UseLongest = true, UseFollowing = false, SelectedTool = "Virtuell" };
+            visualizationConfig = new VisualizationConfig() { Length = "150", Length2 = "150", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, SelectedTool = "Virtuell", VisualizedAdapter = VisualizationConfig.NAME2D };
+            edubotConfig.PropertyChanged += Save;
+            kebaConfig.PropertyChanged += Save;
+            visualizationConfig.PropertyChanged += Save;
         }
 
-        EdubotAdapterConfig defaultConfig;
+        private void Save(object sender, EventArgs e) {
+            Settings.Save(this);
+        }
+        EdubotAdapterConfig edubotConfig;
 
-        public EdubotAdapterConfig DefaultConfig
+        public EdubotAdapterConfig EdubotConfig
         {
-            get { return defaultConfig; }
-            set { defaultConfig = value; }
+            get { return edubotConfig; }
+            set { edubotConfig = value; }
         }
 
         KebaAdapterConfig kebaConfig;
@@ -72,9 +78,9 @@ namespace HTL.Grieskirchen.Edubot.Settings
         }
 
         public void Apply() {
-            if (defaultConfig.AutoConnect)
+            if (edubotConfig.AutoConnect)
             {
-                defaultConfig.Apply();
+                edubotConfig.Apply();
             }
             if (kebaConfig.AutoConnect)
             {
@@ -82,6 +88,15 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
             visualizationConfig.Apply();
             Settings.Save(this);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(String property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 }

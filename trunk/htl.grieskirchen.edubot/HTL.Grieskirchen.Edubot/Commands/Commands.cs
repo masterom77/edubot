@@ -11,7 +11,6 @@ namespace HTL.Grieskirchen.Edubot.Commands
         MVC,
         USETOOL,
         START,
-        SHUTDOWN,
-        SET_INTERPOLATION
+        SHUTDOWN
     }
 }

@@ -85,7 +85,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
                 case "Virtuell": realTool = new VirtualTool();
                     break;
             }
-            edubot.RegisterAdapter(NAME, new KebaAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress), senderPort, receiverPort));
+            //edubot.RegisterAdapter(NAME, new KebaAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress), senderPort, receiverPort));
         }
     }
 }
