@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using HTL.Grieskirchen.Edubot.API.Adapters.Listeners;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
@@ -18,30 +19,23 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint receiverEndpoint;
         Thread stateListener;
 
-        public KebaAdapter()
-            : base()
+        public KebaAdapter(Tool tool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int senderPort, int receiverPort)
+            : base(tool, length, length2, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            type = AdapterType.KEBA;
             state = State.SHUTDOWN;
-            requiresPrecalculation = true;
+            requiresPrecalculation = false;
             //Connect();
         }
 
-        public KebaAdapter(ITool tool, float length, float length2, IPAddress ipAdress, int senderPort, int receiverPort)
-            : base(tool, length, length2)
+        public KebaAdapter(Tool tool,float length, float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int senderPort, int receiverPort)
+            : base(tool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            type = AdapterType.KEBA;
+            
             state = State.SHUTDOWN;
-
-            senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            senderEndpoint = new IPEndPoint(ipAdress, senderPort);
-
-            receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            receiverEndpoint = new IPEndPoint(ipAdress, receiverPort);
-
             requiresPrecalculation = false;
-            Connect();
+            //Connect();
         }
+
 
         public void SetNetworkConfiguration(IPAddress ipAddress, int port)
         {
@@ -75,7 +69,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             Point3D target = (Point3D)param;
             senderSocket.Connect(senderEndpoint);
             senderSocket.Send(Encoding.UTF8.GetBytes("mvs:" + target.ToString()));
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         public override void MoveCircularTo(object param)
@@ -86,7 +80,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             Point3D center = (Point3D)parameters[1];
             senderSocket.Connect(senderEndpoint);
             senderSocket.Send(Encoding.UTF8.GetBytes("mvc:" + target.ToString() + "&" + center.ToString()));
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         public override void UseTool(object param)
@@ -96,11 +90,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             senderSocket.Connect(senderEndpoint);
             senderSocket.Send(buffer);
             senderSocket.Disconnect(true);
-        }
-
-        public override void SetInterpolationResult(Interpolation.InterpolationResult result)
-        {
-           
         }
 
         public override void Start(object param)
@@ -150,5 +139,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             senderSocket.Send(Encoding.UTF8.GetBytes("abort"));
         }
+
     }
 }

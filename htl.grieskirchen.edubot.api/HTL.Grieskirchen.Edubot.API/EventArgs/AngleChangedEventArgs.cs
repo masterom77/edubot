@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HTL.Grieskirchen.Edubot.API.Interpolation;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using HTL.Grieskirchen.Edubot.API.Interpolation;
 
-namespace HTL.Grieskirchen.Edubot.API.EventArgs
-{
-    public class AngleChangedEventArgs : System.EventArgs
-    {
+//namespace HTL.Grieskirchen.Edubot.API.EventArgs
+//{
+//    public class AngleChangedEventArgs : System.EventArgs
+//    {
         
-        InterpolationResult result;
+//        InterpolationResult result;
 
-        public InterpolationResult Result
-        {
-            get { return result; }
-            set { result = value; }
-        }
+//        public InterpolationResult Result
+//        {
+//            get { return result; }
+//            set { result = value; }
+//        }
 
-        //AxisType axisType;
+//        //AxisType axisType;
 
-        //public AxisType AxisType
-        //{
-        //    get { return axisType; }
-        //}
+//        //public AxisType AxisType
+//        //{
+//        //    get { return axisType; }
+//        //}
 
-        public AngleChangedEventArgs(InterpolationResult result) : base() {
-            //this.axisType = axisType;
-            this.result = result;
-        }
-    }
-}
+//        public AngleChangedEventArgs(InterpolationResult result) : base() {
+//            //this.axisType = axisType;
+//            this.result = result;
+//        }
+//    }
+//}

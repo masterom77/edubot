@@ -19,10 +19,19 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         {
             if (adapter.State != State.SHUTDOWN)
                 throw new InvalidStateException("Start-Command kann nicht ausgeführt werden, da sich der Roboter bereits eingeschaltet wurde");
-            adapter.State = State.HOMING;
-            if (adapter.OnHoming != null)
-                adapter.OnHoming(adapter, new HomingEventArgs(Configuration.AnglePerStep));
+            adapter.RaiseHomingEvent(new HomingEventArgs(Configuration.AnglePerStep));
             new System.Threading.Thread(adapter.Start).Start();
+        }
+
+
+        public FailureEventArgs CanExecute(IAdapter adapter)
+        {
+            if (adapter.State != State.SHUTDOWN)
+            {
+                return new FailureEventArgs(adapter.State, new InvalidStateException("Start-Command kann nicht ausgeführt werden, da der Roboter sich im "+adapter.State+"-Zustand befindet"));
+            }
+            return null;
+            
         }
     }
 }

@@ -36,16 +36,26 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         public void Execute(IAdapter adapter)
         {
             InterpolationResult result = null;
-            if (adapter.State == State.SHUTDOWN)
-                throw new InvalidStateException("MVC-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet");
+            
             if (adapter.RequiresPrecalculation) {
-                result = new CircularInterpolation().CalculatePath(adapter.Tool.ToolCenterPoint, target,center, adapter.Length, adapter.Length2);
-                adapter.SetInterpolationResult(result);
+                result = Interpolation.Interpolation.InterpolateCircular(adapter, target,center);
+                if (result != null)
+                    adapter.InterpolationResult = result;
+                else
+                    return;
             }
-            adapter.State = State.MOVING;
-            if (adapter.OnMovementStarted != null)
-                adapter.OnMovementStarted(adapter, new MovementStartedEventArgs(result));
+            adapter.RaiseMovementStartedEvent(new MovementStartedEventArgs(result));
             new System.Threading.Thread(adapter.MoveCircularTo).Start(new object[]{target,center});
+        }
+
+        public FailureEventArgs CanExecute(IAdapter adapter)
+        {
+            if (adapter.State == State.SHUTDOWN)
+            {
+                return new FailureEventArgs(State.READY, new InvalidStateException("MVC-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
+            }
+
+            return null;  
         }
     }
 }

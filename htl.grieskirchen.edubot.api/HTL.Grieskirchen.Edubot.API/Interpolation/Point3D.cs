@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HTL.Grieskirchen.Edubot.API
+namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
     public class Point3D
     {
@@ -44,6 +44,27 @@ namespace HTL.Grieskirchen.Edubot.API
             get { return z; }
             set { z = value; }
         }
+
+        public static Point3D operator + (Point3D point1, Point3D point2){
+            return new Point3D(point1.x + point2.x, point1.y + point2.y, point1.z + point2.z);
+        }
+
+        public static Point3D operator -(Point3D point1, Point3D point2)
+        {
+            return new Point3D(point1.x - point2.x, point1.y - point2.y, point1.z - point2.z);
+        }
+
+        public static Point3D operator *(Point3D point1, Point3D point2)
+        {
+            return new Point3D(point1.x * point2.x, point1.y * point2.y, point1.z * point2.z);
+        }
+
+        public static Point3D operator *(Point3D point1, float factor)
+        {
+            return new Point3D(point1.x*factor, point1.y*factor, point1.z*factor);
+        }
+
+
 
         public override string ToString()
         {
