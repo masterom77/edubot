@@ -9,10 +9,11 @@ Die Benutzeroberfläche für diesen Anwendungszweck besteht aus zwei Textfeldern
 
 \subsubsection{Umsetzung}
 Durch die, von der API zur Verfügung gestellte, Kommando-Infrastruktur war die Umsetzung dieser Aufgabe relativ einfach. Die größte Herausforderung war das Entwickeln der CommandParser-Klasse, da diese eine gültige Syntax gewährleisten muss.
-
-CommandParser
+\\
+\textbf{CommandParser}\\
 Die CommandParser-Klasse übernimmt die Syntax-Validierung des eingegebenen Texts und gibt erhaltene Informationen über Befehlsart und Parameterwerte an die CommandBuilder-Klasse weiter. Die Klasse verfügt nur über eine statische Methode und zwar:
 \begin{itemize}
 \item Parse
-Dieser Methode wird als Parameter der zu kompilierende Text mitgegeben. Bei Aufruf von CommandParser.Parse wird der mitgegebenen Text zuerst mit Hilfe der Split-Methode der String Klasse 
-CommandBuilder
+Dieser Methode wird als Parameter der zu kompilierende Text mitgegeben. Bei Aufruf von CommandParser.Parse wird der mitgegebenen Text zuerst mit Hilfe der Split-Methode der String Klasse und ";" als Trennzeichen aufgeteilt. Anschließend wird durch das entstandene Array iteriert und jeder Eintrag analysiert. Im ersten Schritt wird mit Hilfe der Contain-Methode geprüft ob der String ein "("- und ein ")"-Zeichen enthält. Falls dem nicht so ist, so wird eine InvalidSyntaxExceptions ausgelöst. Im nächsten Schritt des Analyseprozesses wird der Name des eingegebenen Befehls mit Hilfe der Substring-Methode extrahiert, welcher sich zwischen dem ersten Zeichen und dem ersten Auftreten eines "("-Zeichens befinden sollte.  
+\\
+\textbf{CommandBuilder}
