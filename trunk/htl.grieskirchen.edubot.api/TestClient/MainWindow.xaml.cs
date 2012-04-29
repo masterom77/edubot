@@ -29,14 +29,21 @@ namespace TestClient
         public MainWindow()
         {
             InitializeComponent();
+            
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 200, 230);
-            EdubotAdapter adapter2 = new EdubotAdapter(new VirtualTool(), 200, 230, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            VirtualAdapter adapter;// = new VirtualAdapter(Tool.VIRTUAL, 200, 200, 50f,1);
+            //adapter.OnFailure += ShowError;
+            EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            adapter = new VirtualAdapter(adapter2);
            
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
-            edubot.RegisterAdapter("demo2", adapter2);
+            //edubot.RegisterAdapter("demo2", adapter2);
             adapter.OnMovementStarted += NotifyVisualisation;
+        }
+
+        public void ShowError(object sender, EventArgs e) {
+            MessageBox.Show(((FailureEventArgs)e).ThrownException.ToString());
         }
 
         public void NotifyVisualisation(object sender, EventArgs e){
@@ -95,8 +102,8 @@ namespace TestClient
 
         private void SendAngle(object sender, RoutedEventArgs e)
         {
-            EdubotAdapter adapter = new EdubotAdapter(new VirtualTool(), 200, 225, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
-            adapter.SetInterpolationResult(new InterpolationResult() { Steps = new List<InterpolationStep> { new InterpolationStep() { Alpha1 = float.Parse(tbAlpha1.Text), Alpha2 = float.Parse(tbAlpha2.Text) } } });
+            EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 225, 135,-135,160,-160,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            adapter.InterpolationResult = new InterpolationResult() { Steps = new List<InterpolationStep> { new InterpolationStep(new Point3D(0, 0, 0), float.Parse(tbAlpha1.Text), float.Parse(tbAlpha2.Text), 0) } };
             adapter.Start(0.1125f);
             System.Threading.Thread.Sleep(1000);
             adapter.MoveStraightTo(new Point3D(300,0,0));

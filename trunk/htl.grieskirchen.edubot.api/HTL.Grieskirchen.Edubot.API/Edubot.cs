@@ -21,7 +21,7 @@ namespace HTL.Grieskirchen.Edubot.API
             //InitAxis();
             //interpolation = new LinearInterpolation();
             registeredAdapters = new Dictionary<string, IAdapter>();
-            state = State.SHUTDOWN;
+            //state = State.SHUTDOWN;
             //tool = new VirtualTool();
             //tool.X = 300;
             //tool.Y = 0;
@@ -73,85 +73,66 @@ namespace HTL.Grieskirchen.Edubot.API
         //public delegate void Event(object sender, System.EventArgs args);
 
         #region ------------------Events----------------------
-        Event onStartup;
-        /// <summary>
-        /// Triggered after the robot has started.
-        /// </summary>
-        public Event OnStartup
-        {
-            get { return onStartup; }
-            set { onStartup = value; }
-        }
+        //Event onStartup;
+        ///// <summary>
+        ///// Triggered after the robot has started.
+        ///// </summary>
+        //public Event OnStartup
+        //{
+        //    get { return onStartup; }
+        //    set { onStartup = value; }
+        //}
 
-        Event onConnectionEstablished;
-        /// <summary>
-        /// Triggered after the connection to the physical robot is established.
-        /// </summary>
-        public Event OnConnected
-        {
-            get { return onConnectionEstablished; }
-            set { onConnectionEstablished = value; }
-        }
 
-        Event onDiconnected;
-        /// <summary>
-        /// Triggered after the connection to the physical robot is lost or closed.
-        /// </summary>
-        public Event OnDiconnected
-        {
-            get { return onDiconnected; }
-            set { onDiconnected = value; }
-        }
+        //Event onShutdown;
+        ///// <summary>
+        ///// Triggered before the robot is shutting down.
+        ///// </summary>
+        //public Event OnShutdown
+        //{
+        //    get { return onShutdown; }
+        //    set { onShutdown = value; }
+        //}
 
-        Event onShutdown;
-        /// <summary>
-        /// Triggered before the robot is shutting down.
-        /// </summary>
-        public Event OnShutdown
-        {
-            get { return onShutdown; }
-            set { onShutdown = value; }
-        }
+        //Event onAxisAngleChanged;
+        ///// <summary>
+        ///// Triggered if the angle of an axis has changed. The specific axis can be found in the event arguments.
+        ///// </summary>
+        //public Event OnAxisAngleChanged
+        //{
+        //    get { return onAxisAngleChanged; }
+        //    set { onAxisAngleChanged = value; }
+        //}
 
-        Event onAxisAngleChanged;
-        /// <summary>
-        /// Triggered if the angle of an axis has changed. The specific axis can be found in the event arguments.
-        /// </summary>
-        public Event OnAxisAngleChanged
-        {
-            get { return onAxisAngleChanged; }
-            set { onAxisAngleChanged = value; }
-        }
+        //Event onInterpolationChanged;
+        ///// <summary>
+        ///// Triggered if the interpolation type of the robot has changed.
+        ///// </summary>
+        //public Event OnInterpolationChanged
+        //{
+        //    get { return onInterpolationChanged; }
+        //    set { onInterpolationChanged = value; }
+        //}
 
-        Event onInterpolationChanged;
-        /// <summary>
-        /// Triggered if the interpolation type of the robot has changed.
-        /// </summary>
-        public Event OnInterpolationChanged
-        {
-            get { return onInterpolationChanged; }
-            set { onInterpolationChanged = value; }
-        }
+        //Event onToolUsed;
+        ///// <summary>
+        ///// Triggered if the robot's tool was activated or deactivated.
+        ///// </summary>
+        //public Event OnToolUsed
+        //{
+        //    get { return onToolUsed; }
+        //    set { onToolUsed = value; }
+        //}
 
-        Event onToolUsed;
-        /// <summary>
-        /// Triggered if the robot's tool was activated or deactivated.
-        /// </summary>
-        public Event OnToolUsed
-        {
-            get { return onToolUsed; }
-            set { onToolUsed = value; }
-        }
-
-        Event onStateChanged;
-        /// <summary>
-        /// Triggered if the robot's state has changed.
-        /// </summary>
-        public Event OnStateChanged
-        {
-            get { return onStateChanged; }
-            set { onStateChanged = value; }
-        }
+        //Event onStateChanged;
+        ///// <summary>
+        ///// Triggered if the robot's state has changed.
+        ///// </summary>
+        //public Event OnStateChanged
+        //{
+        //    get { return onStateChanged; }
+        //    set { onStateChanged = value; }
+        //}
         #endregion
 
         #region ------------------Public Properties-----------------------
@@ -159,46 +140,46 @@ namespace HTL.Grieskirchen.Edubot.API
         /// <summary>
         /// Gets the current state of the robot.
         /// </summary>
-        public State State
-        {
-            get { return state; }
-            private set {
-                State old = state;
-                state = value;
-                if (OnStateChanged != null)
-                {
-                    OnStateChanged(null, new StateChangedEventArgs(old, value));
-                }
-            }
-        }
+        //public State State
+        //{
+        //    get { return state; }
+        //    private set {
+        //        State old = state;
+        //        state = value;
+        //        if (OnStateChanged != null)
+        //        {
+        //            OnStateChanged(null, new StateChangedEventArgs(old, value));
+        //        }
+        //    }
+        //}
 
-        bool isConnected;
-        /// <summary>
-        /// Gets the state of the physical connection. True means that the robot is physically connected.
-        /// </summary>
-        public bool IsConnected
-        {
-            get { return isConnected; }
-        }
+        //bool isConnected;
+        ///// <summary>
+        ///// Gets the state of the physical connection. True means that the robot is physically connected.
+        ///// </summary>
+        //public bool IsConnected
+        //{
+        //    get { return isConnected; }
+        //}
 
-        IInterpolationType interpolation;
+        //IInterpolationType interpolation;
         /// <summary>
         /// Gets or sets the interpolation type, which is used for calculating the path of
         /// the robot's movements.
         /// </summary>
-        public IInterpolationType Interpolation
-        {
-            get { return interpolation; }
-            set
-            {
-                IInterpolationType old = interpolation;
-                interpolation = value;
-                if (onInterpolationChanged != null)
-                {
-                    OnInterpolationChanged(null, new InterpolationChangedEventArgs(old, value));
-                }
-            }
-        }
+        //public IInterpolationType Interpolation
+        //{
+        //    get { return interpolation; }
+        //    set
+        //    {
+        //        IInterpolationType old = interpolation;
+        //        interpolation = value;
+        //        if (onInterpolationChanged != null)
+        //        {
+        //            OnInterpolationChanged(null, new InterpolationChangedEventArgs(old, value));
+        //        }
+        //    }
+        //}
 
 
         #endregion
@@ -225,7 +206,7 @@ namespace HTL.Grieskirchen.Edubot.API
         ///// The tool of the robot
         ///// </summary>
         //ITool tool;
-        Queue<Point3D> targetCoordinates;
+        //Queue<Point3D> targetCoordinates;
        
 
         #endregion
@@ -417,18 +398,16 @@ namespace HTL.Grieskirchen.Edubot.API
 
         public bool RegisterAdapter(string name, IAdapter adapter)
         {
-            if (registeredAdapters.ContainsValue(adapter))
+            if (registeredAdapters.ContainsKey(name) || registeredAdapters.ContainsValue(adapter))
                 return false;
-
+           
             registeredAdapters.Add(name, adapter);
             return true;
         }
 
         public bool DeregisterAdapter(string name)
         {
-            if (!registeredAdapters.Remove(name))
-                return false;
-            return true;
+            return registeredAdapters.Remove(name);
         }
 
         #endregion

@@ -28,16 +28,26 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         public void Execute(IAdapter adapter)
         {
             InterpolationResult result = null;
-            if (adapter.State == State.SHUTDOWN)
-                throw new InvalidStateException("MVS-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet");
             if (adapter.RequiresPrecalculation) {
-                result = new LinearInterpolation().CalculatePath(adapter.Tool.ToolCenterPoint, target, adapter.Length, adapter.Length2);
-                adapter.SetInterpolationResult(result);
+                result = Interpolation.Interpolation.InterpolateLinear(adapter, target);
+                if (result != null)
+                    adapter.InterpolationResult = result;
+                else
+                    return;
             }
-            adapter.State = State.MOVING;
-            if (adapter.OnMovementStarted != null)
-                adapter.OnMovementStarted(adapter, new MovementStartedEventArgs(result));
+            adapter.RaiseMovementStartedEvent(new MovementStartedEventArgs(result));
             new System.Threading.Thread(adapter.MoveStraightTo).Start(target);
+        }
+
+
+        public FailureEventArgs CanExecute(IAdapter adapter)
+        {
+            if (adapter.State == State.SHUTDOWN)
+            {
+                return new FailureEventArgs(State.READY, new InvalidStateException("MVS-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
+            }
+            
+            return null;
         }
     }
 }

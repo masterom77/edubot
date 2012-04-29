@@ -18,8 +18,8 @@ namespace EduBot
 {
     public partial class Form1 : Form
     {
-        VirtualAdapter adapter = new VirtualAdapter(new VirtualTool(), 150f, 150f);
-        VirtualAdapter adapter2 = new VirtualAdapter(new VirtualTool(), 150f, 150f);
+        VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 150f, 150f,50f,1);
+        VirtualAdapter adapter2 = new VirtualAdapter(Tool.VIRTUAL, 150f, 150f, 50f, 1);
 
         public Form1()
         {
@@ -33,7 +33,7 @@ namespace EduBot
             adapter2.OnMovementStarted += OnUpdate2;
             //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             new Thread(ControllerCircle).Start(); 
-            EdubotAdapter a = new EdubotAdapter(new VirtualTool(), 150,150, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
+            EdubotAdapter a = new EdubotAdapter(Tool.VIRTUAL, 150,150, 135,-135, 160,-160,System.Net.IPAddress.Parse("127.0.0.1"), 12000);
             edubot.RegisterAdapter("default",a);
             //bool conTest = a.TestConnectivity();
             List<ICommand> commands = new List<ICommand>();
@@ -107,7 +107,7 @@ namespace EduBot
 
         
         private void React(object src,  EventArgs args) {
-            Console.WriteLine((args as AngleChangedEventArgs).Result.ToString());
+            Console.WriteLine((args as MovementStartedEventArgs).Result.ToString());
         }
 
         private void button4_Click(object sender, EventArgs e)

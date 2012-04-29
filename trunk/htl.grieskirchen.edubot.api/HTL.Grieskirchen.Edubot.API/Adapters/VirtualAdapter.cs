@@ -12,27 +12,53 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         InterpolationResult result;
 
-        public VirtualAdapter()
-            : base()
+        public VirtualAdapter(IAdapter adapter)
+            : base(adapter.EquippedTool, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission, adapter.MaxPrimaryAngle, adapter.MinPrimaryAngle, adapter.MaxPrimaryAngle, adapter.MinSecondaryAngle)
         {
-            type = AdapterType.VIRTUAL;
             requiresPrecalculation = true;
             Listener = new VirtualStateListener();
         }
 
-        public VirtualAdapter(ITool tool, float length, float length2) : base(tool, length, length2)
+        public VirtualAdapter(Tool tool, float length, float length2)
+            : base(tool, length, length2)
         {
-            this.tool = tool;
-            this.length = length;
-            this.requiresPrecalculation = true;
-            type = AdapterType.VIRTUAL;
+            requiresPrecalculation = true;
             Listener = new VirtualStateListener();
         }
+
+        public VirtualAdapter(Tool tool, float length, float length2, float verticalToolRange, float transmission)
+            : base(tool, length, length2, verticalToolRange, transmission)
+        {
+            requiresPrecalculation = true;
+            Listener = new VirtualStateListener();
+        }
+
+        public VirtualAdapter(Tool equippedTool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
+            : base(equippedTool, length, length2, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
+        {
+            requiresPrecalculation = true;
+            Listener = new VirtualStateListener();
+        }
+
+        public VirtualAdapter(Tool equippedTool, float length, float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
+            : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
+        {
+            requiresPrecalculation = true;
+            Listener = new VirtualStateListener();
+        }
+        //public VirtualAdapter(Tool tool, float length, float length2) : base(tool, length, length2)
+        //{
+        //    this.tool = tool;
+        //    this.length = length;
+        //    this.requiresPrecalculation = true;
+        //    type = AdapterType.VIRTUAL;
+        //    Listener = new VirtualStateListener();
+        //}
 
         public override void MoveStraightTo(object param)
         {
             Point3D target = (Point3D)param;
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         public override void MoveCircularTo(object param)
@@ -40,21 +66,16 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             object[] parameters = (object[])param;
             Point3D target = (Point3D)parameters[0];
             Point3D center = (Point3D)parameters[1];
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         public override void UseTool(object param)
         {
         }
 
-        public override void SetInterpolationResult(InterpolationResult result)
-        {
-            this.result = result;  
-        }
-
         public override void Start(object param)
         {
-            tool.ToolCenterPoint = new Point3D(length + length2, 0, 0);
+            //toolCenterPoint = new Point3D(length + length2, 0, distanceBottom);
             //State = State.READY;
         }
 
@@ -67,5 +88,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             Shutdown();
         }
+
     }
 }

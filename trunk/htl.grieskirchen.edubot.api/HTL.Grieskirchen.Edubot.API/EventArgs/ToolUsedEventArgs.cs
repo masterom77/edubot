@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HTL.Grieskirchen.Edubot.API.EventArgs
 {
-    public class ToolEventArgs : System.EventArgs
+    public class ToolUsedEventArgs : System.EventArgs
     {
         bool activated;
 
@@ -14,7 +14,7 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
             get { return activated; }
         }
 
-        public ToolEventArgs(bool activated) : base() {
+        public ToolUsedEventArgs(bool activated) : base() {
             this.activated = activated;
         }
     }

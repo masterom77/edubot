@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.API.Adapters.Listeners;
 using System.Threading;
+using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
@@ -20,18 +21,45 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         IPEndPoint endpoint;
         InterpolationResult result;
 
+        //Constructor for original Edubot-Model
+        public EdubotAdapter(Tool equippedTool, IPAddress ipAdress, int port)
+            : base(equippedTool, 200, 230, 80, 10, 145, -145, 135, -135)
+        {
+            requiresPrecalculation = true;
+            SetNetworkConfiguration(ipAdress, port);
+        }
+
         /// <summary>
-        /// Initializes a new instance of the DefaultAdapter class.
+        /// Constructor for RR-Kinematic with angle restrictions
         /// </summary>
         /// <param name="tool">An instance of the tool, that is currently installed on the robot</param>
         /// <param name="length">The length of the first Axis in millimeters</param>
         /// <param name="length2">The length of the second Axis in millimeters</param>
         /// <param name="ipAdress">The IP address of controller</param>
         /// <param name="port">The port, on which the program of the controller is listening</param>
-        public EdubotAdapter(ITool tool, float length,float length2, IPAddress ipAdress, int port)
-            : base(tool, length, length2)
+        public EdubotAdapter(Tool equippedTool, float length,float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int port)
+            : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            type = AdapterType.DEFAULT;
+            requiresPrecalculation = true;
+            SetNetworkConfiguration(ipAdress, port);
+            //Connect();
+        }
+
+        /// <summary>
+        /// Constructor for RR-Kinematic with angle restrictions
+        /// </summary>
+        /// <param name="equippedTool"></param>
+        /// <param name="length"></param>
+        /// <param name="length2"></param>
+        /// <param name="maxPrimaryAngle"></param>
+        /// <param name="minPrimaryAngle"></param>
+        /// <param name="maxSecondaryAngle"></param>
+        /// <param name="minSecondaryAngle"></param>
+        /// <param name="ipAdress"></param>
+        /// <param name="port"></param>
+        public EdubotAdapter(Tool equippedTool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int port)
+            : base(equippedTool, length, length2,maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
+        {
             requiresPrecalculation = true;
             SetNetworkConfiguration(ipAdress, port);
             //Connect();
@@ -108,7 +136,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             byte[] content = Encoding.UTF8.GetBytes("mvs:" + result.ToString());
             socket.Send(content);
 
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         /// <summary>
@@ -125,7 +153,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             socket.Send(content);
             //socket.Disconnect(true);
 
-            tool.ToolCenterPoint = target;
+            toolCenterPoint = target;
         }
 
         public override void UseTool(object param)
@@ -141,29 +169,21 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Start(object param)
         {
-            //if (!socket.Connected)
-            //    Connect();
             Connect();
-                socket.Send(Encoding.UTF8.GetBytes("hom:"+socket.LocalEndPoint.ToString()+";"+MathHelper.ConvertToTicks(Configuration.AnglePerStep)));
+            socket.Send(Encoding.UTF8.GetBytes("hom:"+socket.LocalEndPoint.ToString()));
         }
 
         public override void Shutdown()
         {
             
             socket.Send(Encoding.UTF8.GetBytes("sht"));
-            //Disconnect();
         }
-
-        public override void SetInterpolationResult(Interpolation.InterpolationResult result)
-        {
-            this.result = result;
-        }
-
-
 
         public override void Abort()
         {
             socket.Send(Encoding.UTF8.GetBytes("abo"));
         }
+
+        
     }
 }
