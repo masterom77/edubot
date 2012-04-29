@@ -296,7 +296,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             double distance = Math.Sqrt(point.X * point.X + point.Y * point.Y);
             bool isXYValid = Math.Round(distance, 2) <= length + length2 && distance >= Math.Abs(length - length2);
-            bool isZValid = toolCenterPoint.Z == float.NaN || (Math.Round(point.Z,4) >= 0 && point.Z <= verticalToolRange);
+            bool isZValid = float.IsNaN(toolCenterPoint.Z) || (Math.Round(point.Z,4) >= 0 && point.Z <= verticalToolRange);
             return isXYValid && isZValid;
         }
 

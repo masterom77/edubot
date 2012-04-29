@@ -31,10 +31,10 @@ namespace TestClient
             InitializeComponent();
             
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter;// = new VirtualAdapter(Tool.VIRTUAL, 200, 200, 50f,1);
+            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200);
             //adapter.OnFailure += ShowError;
             EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
-            adapter = new VirtualAdapter(adapter2);
+            //adapter = new VirtualAdapter(adapter2);
            
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
