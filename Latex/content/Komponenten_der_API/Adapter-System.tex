@@ -14,10 +14,28 @@ Jeder Adapter muss die abstrakte Klasse \textit{IAdapter} implementieren, welche
 \begin{itemize}
 \item \textbf{Length}
 \newline
-Gibt die Länge der ersten Roboterachse an. Die Längenangabe kann dabei in einer beliebigen Einheit sein, da es bei der Berechnung lediglich auf das Verhältnis der beiden Roboterachsen ankommt.
+Gibt die Länge der ersten Roboterachse, gemessen an der Distanz zwischen dem Mittelpunkt der ersten und zweiten der Motorwelle, an. Die Längenangabe kann dabei in einer beliebigen Einheit sein, da es bei der Berechnung lediglich auf das Verhältnis der beiden Roboterachsen ankommt.
 \item \textbf{Length2}
 \newline
-Gibt die Länge der zweiten Roboterachse an. Für die korrekte Pfadberechnung muss dieser Wert in derselben Einheit wie “Length” angegeben sein.
+Gibt die Länge der zweiten Roboterachse an, gemessen an der Distanz zwischen dem Mittelpunkt der zweiten Motorwelle und dem Werkzeugmittelpunkt, an. Für die korrekte Pfadberechnung muss dieser Wert in derselben Einheit wie “Length” angegeben sein.
+\item \textbf{VerticalToolRange}
+\newline
+Gibt die Distanz zwischen dem Werkzeugmittelpunkt und der Arbeitsfläche an. Für die korrekte Pfadberechnung muss dieser Wert in derselben Einheit wie “Length” angegeben sein.
+\item \textbf{Transmission}
+\newline
+Gibt an um wie viel Grad sich der Motor der transversalen Achse drehen muss, um die diese eine Einheit (z.B.: Millimeter) nach unten zu verschieben.
+\item \textbf{MaxPrimaryAngle}
+\newline
+Gibt den Maximalwinkel an, den die erste Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Maximalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MaxValue festzulegen.
+\item \textbf{MinPrimaryAngle}
+Gibt den Minimalwinkel an, den die erste Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Minimalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MinValue festzulegen.
+\newline
+\item \textbf{MaxSecondaryAngle}
+Gibt den Maximalwinkel an, den die zweite Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Maximalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MaxValue festzulegen.
+\newline
+\item \textbf
+Gibt den Minimalwinkel an, den die zweite Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Minimalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MinValue festzulegen.
+\newline
 \item \textbf{RequiresPrecalculation}
 \newline
 Diese Eigenschaft legt fest ob beim Durchführen von Bewegungskommandos(MVS, MVC,...) die Pfadberechnung von der API durchgeführt wird oder ein eigener Algorithmus verwendet wird. Wenn dieser Wert auf true gesetzt ist, wird vor der Durchführung des Bewegungskommandos die Pfadberechnung durchgeführt und mittels der Methode \textit{SetInterpolationResult} dem Adapter das Ergebnis mitgegeben.
