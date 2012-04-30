@@ -27,10 +27,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
             this.equippedTool = equippedTool;
-            toolCenterPoint = new Point3D((int)length + length2, 0, float.NaN);
+            toolCenterPoint = new Point3D((int)length + length2, 0, 0);
             this.length = length;
             this.length2 = length2;
-            this.verticalToolRange = float.NaN;
+            this.verticalToolRange = 0;
             this.transmission = 0;
             this.maxPrimaryAngle = float.MaxValue;
             this.minPrimaryAngle = float.MinValue;
@@ -53,7 +53,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
             this.equippedTool = equippedTool;
-            toolCenterPoint = new Point3D((int)length + length2, 0, float.NaN);
+            toolCenterPoint = new Point3D((int)length + length2, 0, 0);
             this.length = length;
             this.length2 = length2;
             this.verticalToolRange = float.NaN;
@@ -296,7 +296,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             double distance = Math.Sqrt(point.X * point.X + point.Y * point.Y);
             bool isXYValid = Math.Round(distance, 2) <= length + length2 && distance >= Math.Abs(length - length2);
-            bool isZValid = float.IsNaN(toolCenterPoint.Z) || (Math.Round(point.Z,4) >= 0 && point.Z <= verticalToolRange);
+            bool isZValid = Math.Round(point.Z, 4) >= 0 && Math.Round(point.Z,4) <= verticalToolRange;
             return isXYValid && isZValid;
         }
 
@@ -336,7 +336,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
             if (OnFailure != null)
             {
-                OnFailure(this, args);
+                OnFailure(this, new FailureEventArgs(args.NewState, args.ThrownException));
             }
             else {
                 throw args.ThrownException;
@@ -391,8 +391,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         internal void RaiseToolUsed(ToolUsedEventArgs args)
         {
             if (OnToolUsed != null)
-                OnToolUsed(this, args);
-            
+                OnToolUsed(this, args);            
         }
     }
 }

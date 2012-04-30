@@ -90,10 +90,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// </summary>
         /// <exception cref="System.Net.Sockets.SocketException"></exception>
         public void Connect() {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.Connect(endpoint);
-            Listener = new NetworkStateListener(this, socket);            
-            Listener.Start();
+            
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                socket.Connect(endpoint);
+                Listener = new NetworkStateListener(this, socket);
+                Listener.Start();
         }
 
         /// <summary>
@@ -121,8 +122,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// </summary>
         public void Disconnect()
         {
-            Listener.Stop();
-            socket.Disconnect(true);
+            try
+            {
+                Listener.Stop();
+                socket.Disconnect(true);
+            }
+            catch (Exception e) {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         /// <summary>
@@ -132,11 +139,17 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void MoveStraightTo(object param)
         {
             //socket.SendBufferSize = Int32.MaxValue;
+            try{
             Point3D target = (Point3D)param;
             byte[] content = Encoding.UTF8.GetBytes("mvs:" + result.ToString());
             socket.Send(content);
 
             toolCenterPoint = target;
+            }
+            catch (Exception e)
+            {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         /// <summary>
@@ -145,15 +158,20 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// <param name="param"></param>
         public override void MoveCircularTo(object param)
         {
-
-            object[] parameters = (object[])param;
-            Point3D target = (Point3D)parameters[0];
-            Point3D center = (Point3D)parameters[1];
-            byte[] content = Encoding.UTF8.GetBytes("mvc:" + result.ToString());
-            socket.Send(content);
-            //socket.Disconnect(true);
-
-            toolCenterPoint = target;
+            try
+            {
+                object[] parameters = (object[])param;
+                Point3D target = (Point3D)parameters[0];
+                Point3D center = (Point3D)parameters[1];
+                byte[] content = Encoding.UTF8.GetBytes("mvc:" + result.ToString());
+                socket.Send(content);
+                //socket.Disconnect(true);
+                toolCenterPoint = target;
+            }
+            catch (Exception e)
+            {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         public override void UseTool(object param)
@@ -162,26 +180,49 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //byte[] buffer = new byte[1];
             //buffer[0] = Convert.ToByte(activate);
             //socket.Connect(endpoint);
-            socket.Send(Encoding.UTF8.GetBytes("ust:" + param.ToString()));
+            try
+            {
+                socket.Send(Encoding.UTF8.GetBytes("ust:" + param.ToString()));
+            }
+            catch (Exception e) {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
             //socket.Disconnect(true);
 
         }
 
         public override void Start(object param)
         {
-            Connect();
-            socket.Send(Encoding.UTF8.GetBytes("hom:"+socket.LocalEndPoint.ToString()));
+            try
+            {
+                Connect();
+                socket.Send(Encoding.UTF8.GetBytes("hom:" + socket.LocalEndPoint.ToString()));
+            }
+            catch (Exception e) {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         public override void Shutdown()
         {
-            
-            socket.Send(Encoding.UTF8.GetBytes("sht"));
+            try
+            {
+                socket.Send(Encoding.UTF8.GetBytes("sht"));
+            }
+            catch (Exception e) {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         public override void Abort()
         {
+            try{
             socket.Send(Encoding.UTF8.GetBytes("abo"));
+            }
+            catch (Exception e)
+            {
+                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+            }
         }
 
         

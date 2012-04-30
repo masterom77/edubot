@@ -39,7 +39,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         public void Execute(IAdapter adapter)
         {
             adapter.State = State.MOVING;
-           
+            adapter.RaiseToolUsed(new ToolUsedEventArgs(activate));
             new System.Threading.Thread(adapter.UseTool).Start(activate);
         }
 

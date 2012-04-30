@@ -68,71 +68,22 @@ namespace HTL.Grieskirchen.Edubot.API
             get { return registeredAdapters; }
         }
 
-        //List<IAdapter> registeredAdapters;
-
-        //public delegate void Event(object sender, System.EventArgs args);
-
         #region ------------------Events----------------------
-        //Event onStartup;
-        ///// <summary>
-        ///// Triggered after the robot has started.
-        ///// </summary>
-        //public Event OnStartup
-        //{
-        //    get { return onStartup; }
-        //    set { onStartup = value; }
-        //}
+        public event Event OnStateChanged;
 
+        public event Event OnMovementStarted;
 
-        //Event onShutdown;
-        ///// <summary>
-        ///// Triggered before the robot is shutting down.
-        ///// </summary>
-        //public Event OnShutdown
-        //{
-        //    get { return onShutdown; }
-        //    set { onShutdown = value; }
-        //}
+        public event Event OnToolUsed;
 
-        //Event onAxisAngleChanged;
-        ///// <summary>
-        ///// Triggered if the angle of an axis has changed. The specific axis can be found in the event arguments.
-        ///// </summary>
-        //public Event OnAxisAngleChanged
-        //{
-        //    get { return onAxisAngleChanged; }
-        //    set { onAxisAngleChanged = value; }
-        //}
+        public event Event OnHoming;
 
-        //Event onInterpolationChanged;
-        ///// <summary>
-        ///// Triggered if the interpolation type of the robot has changed.
-        ///// </summary>
-        //public Event OnInterpolationChanged
-        //{
-        //    get { return onInterpolationChanged; }
-        //    set { onInterpolationChanged = value; }
-        //}
+        public event Event OnAbort;
 
-        //Event onToolUsed;
-        ///// <summary>
-        ///// Triggered if the robot's tool was activated or deactivated.
-        ///// </summary>
-        //public Event OnToolUsed
-        //{
-        //    get { return onToolUsed; }
-        //    set { onToolUsed = value; }
-        //}
+        public event Event OnShuttingDown;
 
-        //Event onStateChanged;
-        ///// <summary>
-        ///// Triggered if the robot's state has changed.
-        ///// </summary>
-        //public Event OnStateChanged
-        //{
-        //    get { return onStateChanged; }
-        //    set { onStateChanged = value; }
-        //}
+        public event Event OnShutDown;
+
+        public event Event OnFailure;
         #endregion
 
         #region ------------------Public Properties-----------------------
@@ -184,33 +135,6 @@ namespace HTL.Grieskirchen.Edubot.API
 
         #endregion
 
-        #region ------------------Private Properties----------------------
-        ///// <summary>
-        ///// The primary axis of the robot, which is located on the top of the scaffold.
-        ///// </summary>
-        //Axis primaryAxis;
-        ///// <summary>
-        ///// The secondary axis of the robot, which is located at the end of the first axis.
-        ///// </summary>
-        //Axis secondaryAxis;
-        ///// <summary>
-        ///// The vertical axis of the robot, which is located at the end of the second axis.
-        ///// </summary>
-        //Axis verticalAxis;
-        ///// <summary>
-        ///// The tool axis of the robot, which is located above the actual tool,
-        ///// </summary>
-        //Axis toolAxis;
-
-        ///// <summary>
-        ///// The tool of the robot
-        ///// </summary>
-        //ITool tool;
-        //Queue<Point3D> targetCoordinates;
-       
-
-        #endregion
-
         #region ------------------Public Methods-------------------
 
         public void Execute(ICommand cmd) {
@@ -220,187 +144,20 @@ namespace HTL.Grieskirchen.Edubot.API
                 currentAdapter.Execute(cmd);
             }
         }
-        ///// <summary>
-        ///// Moves the tool to the specified 3D-Point (x,y,z).
-        ///// </summary>
-        ///// <param name="x">The x-coordinate.</param>
-        ///// <param name="y">The y-coordinate.</param>
-        ///// <param name="z">The z-coordinate.</param>
-        //public void MoveTo(int x, int y, int z) {
-            
-        //        Thread thread = new Thread(MoveTo);
-        //        thread.Start(new Point3D(x, y, z));
-        //}
-         
-        //private void MoveTo(object coordinates) {
-        //    //int[] coords = (int[])coordinates;
-        //    //int x = coords[0];
-        //    //int y = coords[1];
-        //    //int z = coords[2];
-        //    Point3D target = (Point3D) coordinates;
-        //    InterpolationResult result = null;
-        //    State = State.MOVING;
-        //    if(registeredAdapters.Count == 0)
-        //        throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
-        //    foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
-        //    {
-        //        IAdapter currentAdapter = entry.Value;
-        //        if (currentAdapter.RequiresPrecalculation)
-        //        {
-        //            result = interpolation.CalculatePath(currentAdapter.Tool, target, currentAdapter.Length);
-        //            currentAdapter.SetInterpolationResult(result);
-        //        }
-
-        //        if (OnAxisAngleChanged != null)
-        //        {
-        //            OnAxisAngleChanged(entry.Key, new AngleChangedEventArgs(result));
-        //        }
-
-        //        currentAdapter.MoveTo(target);
-                
-        //        currentAdapter.Tool.X = target.X;
-        //        currentAdapter.Tool.Y = target.Y;
-        //        currentAdapter.Tool.Z = target.Z;
-
-        //    }
-        //    State = State.READY;
-        //}
-
-        ///// <summary>
-        ///// Activates or deactivates the robot's tool.
-        ///// </summary>
-        ///// <param name="activate">True if the tool should be activated, false if the tool should be deactivated.</param>
-        //public void UseTool(bool activate)
-        //{
-        //    Thread thread = new Thread(UseTool);
-        //    thread.Start(activate);
-
-
-        //}
-
-        //private void UseTool(object activate) {
-        //    State = State.MOVING;
-        //    if (registeredAdapters.Count == 0)
-        //        throw new ArgumentException("Es ist kein Adapter registriert. Verwenden Sie die \"RegisterAdapter\"-Methode der Edubot-Klasse.");
-        //    foreach (KeyValuePair<AdapterType, IAdapter> adapter in registeredAdapters)
-        //    {
-        //        adapter.Value.UseTool((bool)activate);
-        //        if (OnToolUsed != null)
-        //        {
-        //            OnToolUsed(adapter.Key, new ToolEventArgs((bool)activate));
-        //        }
-        //    }
-        //    State = State.READY;
-        //}
-
-
-        ///// <summary>
-        ///// Turns the robot on
-        ///// </summary>
-        //public void Start()
-        //{
-        //    if (State == State.SHUTDOWN)
-        //    {
-        //        State = State.STARTING;
-        //        foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
-        //        {
-
-        //            IAdapter currentAdapter = entry.Value;
-        //            currentAdapter.Start();
-        //            if (OnStartup != null)
-        //            {
-        //                OnStartup(entry.Key, new System.EventArgs());
-        //            }
-        //        }
-        //        State = State.READY;
-        //    }
-        //    else {
-        //        throw new InvalidStateException("Starting the robot isn't possible since it's current state is: " + State);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Turns the robot off.
-        ///// </summary>
-        //public void Shutdown()
-        //{
-        //    if (State != State.SHUTDOWN)
-        //    {
-        //        State = State.SHUTTING_DOWN;
-                
-        //        foreach (KeyValuePair<AdapterType, IAdapter> entry in registeredAdapters)
-        //        {
-        //            IAdapter currentAdapter = entry.Value;
-        //            if (OnShutdown != null)
-        //            {
-        //                OnShutdown(entry.Key, new System.EventArgs());
-        //            }
-        //            currentAdapter.Shutdown();
-                    
-        //        }
-        //        State = State.SHUTDOWN;
-        //    }
-        //    else {
-        //        throw new InvalidStateException("Shutting down the robot isn't possible since it's current state is: " + State);
-        //    }
-        //}
-
-
-        ///// <summary>
-        ///// Trys to connect to the physical robot
-        ///// </summary>
-        ///// <returns>Returns true if the connections was successfully established, else returns false</returns>
-        //public bool Connect()
-        //{
-        //    if (new Random().Next(2) == 0/*try to connect by using the Controller class*/)
-        //    {
-        //        isConnected = true;
-        //        if (OnConnected != null)
-        //        {
-        //            OnConnected(null, new System.EventArgs());
-        //        }
-        //    }
-        //    else
-        //    {
-        //        isConnected = false;
-        //    }
-        //    return isConnected;
-        //}
-
-        ///// <summary>
-        ///// Trys to disconnect the physical robot
-        ///// </summary>
-        ///// <returns>Returns true if the connections was successfully established, else returns false</returns>
-        //public bool Disconnect()
-        //{
-        //    if (new Random().Next(2) == 0/*try to disconnect by using the Controller class*/)
-        //    {
-        //        isConnected = false;
-        //        if (OnDiconnected != null)
-        //        {
-        //            OnDiconnected(null, new System.EventArgs());
-        //        }
-        //    }
-        //    else
-        //    {
-        //        isConnected = true;
-        //    }
-        //    return isConnected;
-        //}
-
-        //public void RegisterAdapter(AdapterType adapter)
-        //{
-        //    if (registeredAdapters.ContainsKey(adapter))
-        //        throw new AdapterException(adapter, "Der Adapter ist bereits registriert: \"" + adapter.ToString() + "\"");
-
-        //    registeredAdapters.Add(adapter, AdapterFactory.GetAdapter(adapter));
-        //}
-
+        
         public bool RegisterAdapter(string name, IAdapter adapter)
         {
             if (registeredAdapters.ContainsKey(name) || registeredAdapters.ContainsValue(adapter))
                 return false;
-           
+
+            adapter.OnHoming += OnHoming;
+            adapter.OnFailure += OnFailure;
+            adapter.OnAbort += OnAbort;
+            adapter.OnMovementStarted += OnMovementStarted;
+            adapter.OnShutDown += OnShutDown;
+            adapter.OnShuttingDown += OnShuttingDown;
+            adapter.OnToolUsed += OnToolUsed;
+            adapter.OnStateChanged += OnStateChanged;
             registeredAdapters.Add(name, adapter);
             return true;
         }

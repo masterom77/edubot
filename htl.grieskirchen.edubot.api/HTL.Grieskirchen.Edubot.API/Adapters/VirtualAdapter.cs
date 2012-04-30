@@ -75,7 +75,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Start(object param)
         {
-            //toolCenterPoint = new Point3D(length + length2, 0, distanceBottom);
+            toolCenterPoint = new Point3D(length + length2, 0, verticalToolRange);
             //State = State.READY;
         }
 

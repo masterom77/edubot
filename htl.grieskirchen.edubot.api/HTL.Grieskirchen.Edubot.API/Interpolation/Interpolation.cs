@@ -28,11 +28,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
             float difX = target.X - toolX;
             float difY = target.Y - toolY;
-            float difZ = 0;
-            if (!float.IsNaN(toolZ))
-            {
-                difZ = target.Z - toolZ;
-            }
+            float difZ = target.Z - toolZ;
+            
             float distance = (float)Math.Sqrt(difX * difX + difY * difY);
             steps = (int)Math.Ceiling(distance);
             //if (length == length2)
@@ -79,11 +76,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
             float difX = target.X - adapter.ToolCenterPoint.X;
             float difY = target.Y - adapter.ToolCenterPoint.Y;
-            float difZ = 0;
-            if (!float.IsNaN(adapter.ToolCenterPoint.Z))
-            {
-                difZ = target.Z - adapter.ToolCenterPoint.Z;
-            }
+            float difZ = target.Z - adapter.ToolCenterPoint.Z;
+
             float distance = (float)Math.Sqrt(difX * difX + difY * difY);
             steps = (int)Math.Ceiling(distance);
 

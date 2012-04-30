@@ -69,7 +69,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             steps = new List<InterpolationStep>();
             points = new List<Point3D>();
             this.incrZ = slopeZ;
-        }
+       } 
 
         //private void GenerateAccelerationData() {
         //    for (int pos = 0; pos < steps.Count - 1; pos++)
