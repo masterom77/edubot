@@ -33,8 +33,7 @@ namespace TestClient
             edubot = Edubot.GetInstance();
             VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200);
             //adapter.OnFailure += ShowError;
-            EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
-            //adapter = new VirtualAdapter(adapter2);
+            EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL, 200, 200, 135,-135,160,-165,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
            
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
@@ -43,7 +42,7 @@ namespace TestClient
         }
 
         public void ShowError(object sender, EventArgs e) {
-            MessageBox.Show(((FailureEventArgs)e).ThrownException.ToString());
+            Console.WriteLine(((FailureEventArgs)e).ThrownException.ToString());
         }
 
         public void NotifyVisualisation(object sender, EventArgs e){

@@ -7,25 +7,25 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
 {
     public class FailureEventArgs : System.EventArgs
     {
-        Exception thrownException;
+        volatile Exception thrownException;
 
         public Exception ThrownException
         {
             get { return thrownException; }
         }
 
-        State? newState;
+        volatile State newState;
 
-        public State? NewState
+        public State NewState
         {
             get { return newState; }
         }
 
-        public FailureEventArgs(System.Exception thrownException)
-        {
-            this.newState = null;
-            this.thrownException = thrownException;
-        }
+        //public FailureEventArgs(System.Exception thrownException)
+        //{
+        //    this.newState = null;
+        //    this.thrownException = thrownException;
+        //}
 
         public FailureEventArgs(State newState, System.Exception thrownException) {
             this.newState = newState;
