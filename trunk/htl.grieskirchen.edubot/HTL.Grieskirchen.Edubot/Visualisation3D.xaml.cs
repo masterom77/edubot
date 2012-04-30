@@ -77,6 +77,7 @@ namespace HTL.Grieskirchen.Edubot
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
         private List<Point> drawnPoints;
+        private double positionTertiaryAxis;
 
         #region ---------------------Properties---------------------
         
@@ -308,17 +309,35 @@ namespace HTL.Grieskirchen.Edubot
             get { return angleSecondaryAxis; }
             set
             {
-                //int dir = value < 0 ? -1 : 1;
+                
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the angle of the secondary Axis of the virtual robot
+        /// </summary>
+        public double PositionTertiaryAxis
+        {
+            get { return positionTertiaryAxis; }
+            set
+            {
                 Transform3DGroup transformGroup = new Transform3DGroup();
+                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(0, 0, 0)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));
 
+
+                MeshPrimaryAxis.Transform = transformGroup;
+                MeshSecondaryEngine.Transform = transformGroup;
                 MeshPen.Transform = transformGroup;
                 //MeshPen2.Transform = transformGroup;
                 MeshSecondaryAxis.Transform = transformGroup;
+                posSecondaryEngine = transformGroup.TransformBounds(MeshSecondaryEngine.Content.Bounds);
 
 
-                angleSecondaryAxis = value;
+                anglePrimaryAxis = value;
+                AngleSecondaryAxis = AngleSecondaryAxis;
             }
         }
 
@@ -331,12 +350,14 @@ namespace HTL.Grieskirchen.Edubot
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+
                 foreach (InterpolationStep step in angles)
                 {
                     ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                    //Dispatcher.Invoke(updateSecondaryAngle, );
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -367,6 +388,15 @@ namespace HTL.Grieskirchen.Edubot
         private void UpdateSecondaryAxis(float val)
         {
             AngleSecondaryAxis = val;
+        }
+
+        /// <summary>
+        /// Updates the teriary axis of the virtual robot
+        /// </summary>
+        /// <param name="val">A float, containing the new angle of the secondary axis</param>
+        private void UpdateTertiaryAxis(float val)
+        {
+            PositionTertiaryAxis = val;
         }
 
         #endregion

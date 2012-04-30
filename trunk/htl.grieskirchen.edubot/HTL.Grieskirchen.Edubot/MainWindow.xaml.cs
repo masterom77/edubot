@@ -176,67 +176,7 @@ namespace HTL.Grieskirchen.Edubot
         #endregion
 
 
-                //AxisData d;
-
-                //Update Visualisation
-                if (sender is EdubotAdapter)
-                {
-                    Console.WriteLine("DEFAULT!");
-                }
-                if (sender is VirtualAdapter)
-                {
-                    visualisation3D.Angles = mse.Result.Angles;
-                    visualisation2D.Angles = mse.Result.Angles;
-                    
-                    //visualisationAbove.Angles = ace.Result.Steps;
-
-                    
-
-                    //Socket sock = new Socket(AddressFamily.InterNetwork,
-                    //     SocketType.Stream,
-                    //     ProtocolType.Tcp);
-                    //const int Port = 12000;
-                    //const string IPv4 = "192.168.0.40";
-
-                    //IPAddress ipo = IPAddress.Parse(IPv4);
-                    //IPEndPoint ipEo = new IPEndPoint(ipo, Port);
-                    //sock.Connect(ipEo);
-                    //sock.Send(Encoding.UTF8.GetBytes(ace.Result.ToString()));
-                    //sock.Close();
-
-                    //    windowVisualisation.visualisation3D.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                    //    windowVisualisation.visualisationAbove.MoveAnglePrimaryAxis(ace.Result.Ticks, ace.Result.Speed);
-
-                }
-                //if (ace.AxisType == AxisType.SECONDARY) {
-                //    visualisation3D.MoveAngleSecondaryAxis(ace.Ticks, ace.Speed);
-                    
-                //    //    windowVisualisation.visualisation3D.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                //    //    windowVisualisation.visualisationAbove.MoveAngleSecondaryAxis(ace.Result.Ticks, ace.Result.Speed);
-                    
-                //}
-
-            } 
-            if (e is StateChangedEventArgs)
-            {
-                StateChangedEventArgs sce = e as StateChangedEventArgs;
-                Console.WriteLine("Old State: " + sce.OldState.ToString());
-                Console.WriteLine("New State: " + sce.NewState.ToString());
-            } if (e is InterpolationChangedEventArgs)
-            {
-                InterpolationChangedEventArgs ice = e as InterpolationChangedEventArgs;
-                Console.WriteLine("Old State: " + ice.OldValue != null ? ice.OldValue.ToString():"null");
-                Console.WriteLine("New State: " + ice.NewValue != null ? ice.NewValue.ToString():"null");
-
-            } if (e is ToolEventArgs)
-            {
-                ToolEventArgs tce = e as ToolEventArgs;
-                Console.WriteLine("Activated: " + tce.Activated);
-            }
-            Console.WriteLine("--------------------------");
-            
-           
-        }
+                
 
         #region -----------------------------Toolbar Commands-----------------------------
 
@@ -715,7 +655,9 @@ namespace HTL.Grieskirchen.Edubot
 
         private void Notify2DVisualization(object sender, EventArgs e) {
              
-            visualisation2D.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+            
+            visualisation2D.Animate(((MovementStartedEventArgs)e).Result);
+            
         }
 
         private void Notify3DVisualization(object sender, EventArgs e)
