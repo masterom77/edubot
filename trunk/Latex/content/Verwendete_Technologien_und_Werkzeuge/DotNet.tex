@@ -1,1 +1,15 @@
 \subsection{.Net Framework}
+\subsubsection{Allgemein}
+%http://de.wikipedia.org/wiki/.NET
+Das .Net Framework ist eine von Microsoft zur Verfügung gestellte Plattform zur Entwicklung und ausführung von Programmen. Dazu  besteht das .Net Framework sowohl aus einer Sammlung von Klassenbibliotheken, Programmierschnittstellen und Dienstprogrammen, als auch aus einer Laufzeitumgebung (Common Language Runtime) zur Ausführung der programmierten Software.
+Software die das .Net Framework verwendet kann in zahlreichen unterschiedlichen Sprachen geschrieben werden, da der Code zuerst in eine Zwischensprache übersetzt und erst dann durch die Laufzeitumgebung ausgeführt wird. Durch diese Übersetzung des Codes in die sogenannte "'Common Intermediate Language"' wird es möglich, Programmteile über verschiedene Programmiersprachen hinweg wiederverwendbar zu machen. 
+Das .Net Framework befindet sich derzeit in Version 4.0 und kam auch in dieser Version bei diesem Projekt zum Einsatz
+Durch das zur Verfügung stellen einer eigenen Laufzeitumgebung sind in .Net erstellte Programme grundsätzlich Plattformunabhängig. Microsoft stellt die Laufzeitumgebung jedoch nur für Windows bereit, für die Verwendung auf Unix basierten Systemen gibt es freie Projekte wie zum Beispiel "'Mono"', die versuchen die .Net Laufzeitumgebung nachzustellen.
+
+\subsubsection{Alternativen}
+Aus unserer Sicht ergaben sich für die Verwendung des .Net Frameworks keine ernstzunehmenden alternativen. Es währe lediglich möglich gewesen  mit "'Mono"' einen nachbau des .Net Frameworks zu benutzen und damit in den Vorteil zu kommen den problemlosen Einsatz auf unterschiedlichen Systemen gewährleisten zu können. Der große Nachteil von "'Mono"' ist jedoch dass der Funktionsumfang gegenüber dem normalen .Net Framework deutlich geringer ist und neuere Technologien wie beispielsweise WPF noch garnicht unterstützt werden. 
+Eine weitere Alternative hätte die Programmierung des gesamten Projektes, mit Ausnahme des Mikrocontrollers, in Java geboten. Hierbei währen dann die Laufzeitumgebung "'Java virtual machine"' und die Programmbibliotheken des "Java Development Kits"' zum Einsatz gekommen. Die Umsetzung des Projektes in Java hätte jedoch eine längere Einarbeitungszeit mit sich gebracht und die Erstellung von Funktionen wie beispielsweise der Visualisierung deutlich erschwert
+
+\subsubsection{Einsatz im Projekt}
+Das .Net Framework kam in unserem Projekt vor allem bei der Programmierung der API, sowie der Anwendung zum Einsatz. Bei der Programmierung des Mikrocontrollers kam eine eigene für Minimalsysteme optimierte Version zum Einsatz. Auf diese wird in einem eigenen Kapitel näher Eingegangen.
+
