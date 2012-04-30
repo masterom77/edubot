@@ -70,14 +70,14 @@
     <Compile Include="EventArgs\FailureEventArgs.cs" />
     <Compile Include="EventArgs\HomingEventArgs.cs" />
     <Compile Include="EventArgs\MovementStartedEventArgs.cs" />
-    <Compile Include="Exceptions\AdapterException.cs" />
+    <Compile Include="Exceptions\ControllerException.cs" />
     <Compile Include="Edubot.cs" />
     <Compile Include="EventArgs\AngleChangedEventArgs.cs" />
     <Compile Include="EventArgs\StateChangedEventArgs.cs" />
     <Compile Include="EventArgs\ToolUsedEventArgs.cs" />
     <Compile Include="EventArgs\InterpolationChangedEventArgs.cs" />
     <Compile Include="Exceptions\InvalidCenterPointException.cs" />
-    <Compile Include="Exceptions\MVCException.cs" />
+    <Compile Include="Exceptions\NetworkException.cs" />
     <Compile Include="Exceptions\PointOutOfRangeException.cs" />
     <Compile Include="Exceptions\IllegalStateUpdateException.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />
