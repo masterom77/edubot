@@ -47,6 +47,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
                                 adapter.State = State.SHUTDOWN;
                                 socket.Disconnect(false);
                                 break;
+                            case "err":
+                                adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.SHUTDOWN, new ControllerException(message.Substring(4))));
+                                break;
                         }
                         data.Clear();
                         message = "";

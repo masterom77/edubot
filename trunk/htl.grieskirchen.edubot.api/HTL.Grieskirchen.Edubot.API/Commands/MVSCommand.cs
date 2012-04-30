@@ -27,6 +27,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public void Execute(IAdapter adapter)
         {
+            adapter.State = State.MOVING;
             InterpolationResult result = null;
             if (adapter.RequiresPrecalculation) {
                 result = Interpolation.Interpolation.InterpolateLinear(adapter, target);

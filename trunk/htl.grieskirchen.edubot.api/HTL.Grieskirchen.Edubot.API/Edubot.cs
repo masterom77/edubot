@@ -162,10 +162,24 @@ namespace HTL.Grieskirchen.Edubot.API
             return true;
         }
 
+
         public bool DeregisterAdapter(string name)
         {
+            IAdapter adapter;
+            if (registeredAdapters.TryGetValue(name, out adapter)) {
+                adapter.OnHoming -= OnHoming;
+                adapter.OnFailure -= OnFailure;
+                adapter.OnAbort -= OnAbort;
+                adapter.OnMovementStarted -= OnMovementStarted;
+                adapter.OnShutDown -= OnShutDown;
+                adapter.OnShuttingDown -= OnShuttingDown;
+                adapter.OnToolUsed -= OnToolUsed;
+                adapter.OnStateChanged -= OnStateChanged;
+            }
             return registeredAdapters.Remove(name);
         }
+
+       
 
         #endregion
     }
