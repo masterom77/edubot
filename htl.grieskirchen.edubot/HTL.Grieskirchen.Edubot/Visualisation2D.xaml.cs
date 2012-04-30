@@ -44,6 +44,7 @@ namespace HTL.Grieskirchen.Edubot
         private double angleSecondaryAxis;
         private System.Threading.Thread animationThread;
         private List<Point> drawnPoints;
+        private double tertiarySpeed;
 
         #region ---------------------Properties---------------------
 
@@ -134,12 +135,22 @@ namespace HTL.Grieskirchen.Edubot
             set
             {
                 angles = value;
-                if (configuration.VisualizationEnabled)
+                
+            }
+        }
+
+        public void Animate(InterpolationResult result) { 
+            
+            angles = result.Angles;
+            tertiarySpeed = result.IncrZ;
+            
+            if (configuration.VisualizationEnabled)
                 {
                     animationThread = new System.Threading.Thread(StartAnimation);
                     animationThread.Start();
                 }
-            }
+            
+            
         }
 
 
@@ -174,6 +185,7 @@ namespace HTL.Grieskirchen.Edubot
                 AngleSecondaryAxis = AngleSecondaryAxis;
             }
         }
+
         public double AngleSecondaryAxis
         {
             get { return angleSecondaryAxis; }
@@ -184,6 +196,7 @@ namespace HTL.Grieskirchen.Edubot
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
                 transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));
 
+                
                 MeshPen.Transform = transformGroup;
                 //MeshPen2.Transform = transformGroup;
                 MeshSecondaryAxis.Transform = transformGroup;
@@ -192,11 +205,31 @@ namespace HTL.Grieskirchen.Edubot
                 angleSecondaryAxis = value;
             }
         }
+
+        public double PositionTertiaryAxis
+        {
+            get { return angleSecondaryAxis; }
+            set
+            {
+                //int dir = value < 0 ? -1 : 1;
+                Transform3DGroup transformGroup = new Transform3DGroup();
+                transformGroup.Children.Add(new TranslateTransform3D(new Vector3D(0,0,value)));
+                
+                
+                MeshPen.Transform = transformGroup;
+                
+
+
+                angleSecondaryAxis = value;
+            }
+        }
+
         private void StartAnimation() {
             try
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                UpdateCallback updateTertiaryPosition = new UpdateCallback(UpdateTertiaryAxis);
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
                 foreach (InterpolationStep step in angles)
                 {
@@ -204,6 +237,7 @@ namespace HTL.Grieskirchen.Edubot
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                    Dispatcher.Invoke(updateTertiaryPosition, tertiarySpeed);
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -224,6 +258,11 @@ namespace HTL.Grieskirchen.Edubot
         private void UpdateSecondaryAxis(float val)
         {
             AngleSecondaryAxis = val;
+        }
+
+        private void UpdateTertiaryAxis(float val)
+        {
+            PositionTertiaryAxis = val;
         }
 
         #endregion
