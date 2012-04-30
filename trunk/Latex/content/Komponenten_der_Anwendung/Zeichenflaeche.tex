@@ -1,0 +1,81 @@
+
+\subsection{Zustands-System}
+
+\subsubsection{Aufgaben}
+Die Software soll dem Anwender ermöglichen in einer Zeichenfläche eine einfache Zeichnung zu erstellen. Dazu stehen im einige Werkzeuge zum Zeichnen von Quadraten, Kreisen und Linien zur Verfügungn. Es soll jedoch auch möglich sein freihändig zu zeichnen, wodurch der Benutzer frei nach seinen Wünschen ein Bild malen kann. Die fertige Zeichnung soll anschließend automatisch in Befehle für den Roboter übersetzt werden, welcher die Figur nachzeichnet.
+
+\subsubsection{Aufbau}
+Für diese Aufgabe wird ein eigenes Control, basierend auf dem InkCanvas von WPF, sowie Teile der Edubot-API verwendet. Das InkCanvas ermöglicht dem Benutzer das Erstellen von Freihandzeichnungen und kann sogar bestimmte Gestiken erkennen. Da diese Funktion in unserer Applikation jedoch nicht benötigt wird, haben wir uns nicht näher damit beschäftigt. Welche Aktion nun ausgeführt wird, wenn der Benutzer in das InkCanvas klickt, hängt von der Eigenschaft InkCanvasEditingMode ab, welche folgende Werte annehmen kann:
+\begin{itemize}
+\item EraseByPoint - Ermöglicht das Löschen einzelner Punkte
+\item EraseByStroke - Ermöglicht das Löschen einzelner Pinselstriche, welche im weiteren Kontext auch Strokes, genannt werden. Ein Pinselstrich sind alle Punkte die ein Benutzer in einem Durchzug zeichnet.
+\item GestureOnly - Ermöglicht das Erkennen von Gestiken
+\item Ink - Ermöglicht das Erstellen von Freihandzeichnungen
+\item InkAndGesture - Ermöglicht das Erstellen von Freihandzeichnungen und das Erkennen von Gestiken.
+\item None - Es wird keine Aktion ausgeführt
+\item Select - Ermöglicht das Selektieren und Löschen von Pinselstrichen
+\end{itemize}
+In der Anwendung kommen die Modi EraseByPoint, EraseByStroke, Ink und Select zum Einsatz. Die Selektion letzterer erfolgt über eine, links vom InkCanvas befindliche, Werkzeugleiste. Um dem Benutzer das Zeichnen von Kreisen, Rechtecken und Linien zu ermöglichen wird eine eigene Enumeration mit Namen InkCanvasDrawingMode verwendet. Diese beinhaltet folgende Werte:
+\begin{itemize}
+\item EraseByPoint - Ermöglicht das Löschen einzelner Punkte
+\item EraseByStroke - Ermöglicht das Löschen einzelner Pinselstriche, welche im weiteren Kontext auch Strokes, genannt werden. Ein Pinselstrich sind alle Punkte die ein Benutzer in einem Durchzug zeichnet.
+\item Line - Ermöglicht das Erstellen von Linie
+\item Rectangle - Ermöglicht das Erstellen von Rechtecken
+\item Ellipse - Ermöglicht das Erstellen von Ellipsen
+\end{itemize}
+
+Das  Da in die Zeichenfläche auch die Undo/Redo-Funktion unterstützen sollte, wurde in unserem Control das Memento-Pattern verwendet.
+
+\subsubsection{Umsetzung}
+Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, welche eine vorgegeben Anzahl an Zuständen enthält. Die Bedeutung dieser Zustände kann der folgenden Tabelle entnommen werden.
+\newline
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline \rowcolor{lightgray}
+\textbf{Zustand} & \textbf{Bedeutung}\\
+\hline
+\textit{SHUTDOWN} & Der Roboter ist ausgeschaltet und kann derzeit keine Befehle ausführen. Lediglich ein Start-Befehl wird vom Adapter in diesem Zustand akzeptiert.\\
+\hline
+\textit{HOMING} & Der Roboter hat einen Start-Befehl erhalten und beginnt nun mit der initialen Kalibrierung der Achsen. Dieser Zustand wird als “Homing” bezeichnet, da der Roboter zu einem vorgegebenen Startpunkt (seinem “Home”-Punkt) fährt. Zu diesem Zeitpunkt kann kein neuer Befehl durchgeführt werden.\\
+\hline
+\textit{READY} & Der Roboter ist bereit den nächsten Befehl durchzuführen. Dieser Zustand besteht nach jedem erfolgreich durchgeführten Befehl mit Ausnahme des Shutdown-Befehls \\
+\hline
+\textit{MOVING} & Der Roboter hat einen Verfahrbefehl erhalten und befindet sich gerade in einer Bewegung. Er ist derzeit nicht in der Lage den nächsten Befehl auszuführen.\\
+\hline
+\textit{SHUTTING\_DOWN} & Der Roboter hat den Befehl zum Herunterfahren erhalten und führt derzeit abschließende Aktionen durch.\\ 
+\hline
+\end{tabular}
+\newline
+\newline
+Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Das State-Property sollte grundsätzlich, mit Ausnahme des VirtualAdapters, nie manuell gesetzt werden, da Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der im Kapitel 4.g beschriebenen Listener verarbeitet werden. Weiters wird in den Execute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand eine InvalidStateException ausgelöst.
+\newline
+\newline
+Das State-Property ist im IAdapter definiert und besitzt zusätzliche Logik im Setter, welche im Anschluss beschrieben wird. Bei einer Änderung des State-Properties wird in einer if-Anweisung der aktuelle Zustand des Roboters geprüft, welcher bei initial auf \textit{SHUTDOWN} gesetzt ist. Befindet sich der Roboter Zustand \textit{READY} oder \textit{SHUTDOWN} wird der nächste Befehl ausgeführt. Durch diesen Mechanismus wird die Warteschlange des Adapters Schritt für Schritt abgearbeitet.
+\newpage
+Das folgende Beispiel demonstriert einen Standard-Ablauf und veranschaulicht die Funktionsweise des Zustand-Systems.
+\newline
+\newline
+\begin{tabular}{|p{10cm}|p{4cm}|}
+\hline \rowcolor{lightgray} \hline
+\textbf{Situation} & \textbf{Zustand}\\
+\hline
+Der Roboter befindet sich im ausgeschalteten Zustand. Der Anwender startet ein beliebiges Programm das mit der Edubot-API arbeitet. & \textit{SHUTDOWN}\\
+\hline
+Die Anwendung übergibt mit der Execute-Methode eine Befehlsfolge (Start, MoveStraight, Shutdown) an die Edubot-Klasse der API, welche die Befehle an die registrierten Adapter weiterleitet. Der Adapter führt den ersten Befehl (Start) aus. & \textit{HOMING}\\
+\hline
+Das Homing-Verfahren ist abgeschlossen und die Steuerung sendet diese Information an die API. Der Roboter ist nun bereit den nächsten Befehl durchzuführen. & \textit{HOMING}\\
+\hline
+Die Information über den Abschluss des Verfahrens wird vom zuständigen Listener empfangen, welcher den Zustand des Adapters aktualisiert. & \textit{READY}\\
+\hline
+Durch das Ändern des State-Properties auf READY wird der nächste Befehl (MVS) aus der Warteschlange geholt und ausgeführt. & \textit{MOVING}\\
+\hline
+Die Steuerung erhält den MVS-Befehl, wodurch der Roboter die gewünschte Verfahrbewegung durchführt. Nach Abschluss der Bewegung sendet die Steuerung wieder ein Statusupdate an die API.	 & MOVING\\
+\hline
+Der Listener erhält die Information über den Abschluss des Befehls und setzt folglich das State-Property des Adapters auf READY. & \textit{READY}\\
+\hline
+Nun wird erneut, ausgelöst durch den Mechanismus im Setter des State-Properties, der nächste Befehl (Shutdown) aus der Warteschlange geholt und ausgeführt. & \textit{SHUTTING\_DOWN}\\
+\hline
+Nachdem der Shutdown-Befehl von der Steuerung erhalten wurde, werden letzte Arbeiten durchgeführt und der Roboter heruntergefahren. Die Steuerung sendet erneut ein Status-Update an die API. & \textit{SHUTTING\_DOWN}\\
+\hline
+Nach Erhalt dieser Information, werden vom Listener neben dem Aktualisieren des State-Properties noch weitere Aktionen durchgeführt (z.B. Netzwerkverbindung trennen). & \textit{SHUTDOWN}\\
+\hline
+\end{tabular}
