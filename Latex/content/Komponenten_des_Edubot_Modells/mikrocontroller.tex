@@ -1,0 +1,112 @@
+\subsection{Mikrocontroller}
+\subsubsection{Allgemein}
+
+Der Mikrocontroller ist die Basiskomponente des Edubot Modells, nimmt eingehende Verbindungen aus dem Netzwerk an, überprüft die IP Adresse auf ihre Berechtigung und ermöglicht dann den Empfang von Positionsdaten und die Weitergabe von solchen in Form von Spannungsänderungen an den mit der Motorsteuerung verbundenen Ausgängen.
+
+Die Verwendung eines Mikrocontrollers wurde Notwendig, da unter Microsoft Windows sehr viele Prozesse gleichzeit ausgeführt werden und der Thread zur Taktaufgabe daher in unregelmäßigen Abständen ausgeführt wird. Damit wird auch die Ausgabe des Taktsignals instabil.
+
+Der von uns verwendete Mikrocontroller wurde von der Firma GHI vertrieben, trägt als genaue Bezeichnung GHI Embedded Masters Breakout Bord v1.0 und verfügt über einen Prozessor in ARM Architektur, sowie diverse Ein- und Ausgänge. Im Funktionsumfang des gewählten Mikrocontrollers ergäben sich auch verschiedene Möglichkeiten wie der direkte Anschluss von LCD Pannels oder auch externen persistenten Speichermedien wie USB Stickts. Aus diesem Grund finden sich unter den Pins des Controllers zahlreiche speziell für diese Anwendungszwecke bestimmte Ausgänge, diese werden jedoch bei diesem Projekt nicht verwendet.
+
+Zum Überspielen der Software, die Vornahme von Updates oder zur Durchführung der Fehlerbehebung verfügt der Mikrocontroller über einen USB Anschluss. Weiters verfügt der Controller über einen Netzwerkanschluss mit RJ-45 Stecker über den Socket Verbindungen aufgebaut und Daten übertragen werden können.
+
+Grundsätzlich ist die Programmierung des Mikrocontrollers mithilfe des .Net Micro Frameworks von Microsoft über die Entwicklungsumgebung Visual Studio vornehmbar. Der über das .Net Micro Framework ausgeführte Programmcode stellt jedoch keine optimale Performance zur Verfügung, da der Controller nicht über einen Just-In-Time Compiler zur Laufzeit vorbereite wird, sondern mithilfe eines Interpreters verarbeitet wird. Aus diesem Grund gibt es die Möglich einzelne Methoden in nativem Code und damit direkt in der Programmiersprache C zu schreiben, diese Methoden auf den Controller zu übertragen und später aus dem .Net Micro Framework aufgerufen werden. Sehr zeitkritische oder leistungsintensive Methoden sollten daher ausgegliedert werden. Ein Beispiel für die Anwendung dieses Mechanismen bietet die Methode des Mikrocontrollers welche für die Taktgebung verantwortlich ist.
+
+Um ein Programm für das GHI Embedded Masters Breakout Board v1.0 schreiben zu können müssen auf dem benutzten PC eine lauffähige Version von Visual Studio, sowie das aktuelle .Net Micro Framework installiert werden (Achtung, Version von .Net Micro Framwork und der Firmware sollen müssen übereinstimmen. Zusätzlich muss für den Zugriff auf Spezialfunktionen wie etwa den Ethernet Port oder eine erweiterte Anzahl an Ein- und Ausgängen das entsprechende Entwicklungsbibliothek von GHI installiert werden. Als letzte Voraussetzung gilt, bei Verwendung des USB Ports für den Entwicklungsvorgang, die Installation der entsprechenden GHI USB Driver.  
+
+Die folgenden Unterkapitel dienen dazu den Aufbau und die Programmierung der auf dem Mikrocontroller ausgeführten Software genauer zu erklären.
+
+\subsubsection{Die Klasse Executer}
+Die Klasse Executer ist die Basiskompente der Steuerungssoftware. Sie beinhaltet die Main Methode und wird bei Programmstart ausgeführt.
+Auf Grund der beschränkten Multithreading Möglichkeiten des .Net Microframworks müssen alle Zeitkritischen Operationen im Hauptthread durchgeführt werden. Der Haupthread ist jener Thread der zu Beginn die Main() Methode aufruft.
+
+Die Aufgabe dieser Klasse ist die Verwaltung zahlreicher statischer Variablen die dafür sorgen dass zentrale Daten aus allen Threads verwendet werden können.
+Des weiteren befindet sich in der Main Methode dieser Klasse die Programmlogik die zur Initialisierung, sowie zur Erzeugung einer Instanz der Kasse ThreadManager und Ausführung der dort definierten Methode StartThreads().
+
+Die Klasse Executer wurde als statische Klasse implementiert da sie die beim Programmstart auszuführende Klasse ist. Üblicherweise ist diese Klasse bereits beim Anlegen eines neuen Projektes vorhanden.
+
+In der Klasse selbst befinden sich zahlreiche Deklarationen von öffentlichen statischen Objekten welche von verschiedenen Threads gemeinsam genutzt werden.
+
+\begin{itemize}
+\item \textbf{Main() - Methode}\\
+Die Main Methode der Executer Klasse weist einigen der beschriebenen statischen Objekte Werte zu und aktiviert beispielsweise die Netzwerkschnittstelle.
+
+Wurde in der Main Methode eine Instanz der NetworkManager Klasse erzeugt und die dazugehörige Methode StartThreads() Methode aufgerufen, Gerät der Hauptthread in der Main Methode in eine Dauerschleife welche durchwegs den aktuellen Wert der statischen Variable action überwacht und bei Änderung mithilfe eines Switch Konstrukts die jeweilige gewählte Aufgabe erledigt.
+
+Bei der Initialisierung werden auch zwei statische Objekte der Klasse Engine instanziert. Ein Objekt dieser Klasse stellt in Form von Objekten der GHI internen Klasse OutputPort den Zugriff auf die benötigten Ports des jeweiligen Motors bereit. Die Auswahl des durch das Engine abgebildeten Motors geschieht beim Anlegen über den Konstruktor (Integer Wert: 1 für PrimaryEngine, 2 für secondary Engine). Der Konstruktor initialisiert hierbei die jeweils benötigten Ports und macht sie über Properties zugreifbar.
+
+\item \textbf{Move() - Methode}\\
+
+Ebenfalls in der Executer Klasse befindet sich die Methode Move(). Dies geschieht aus dem Grund dass es sich hierbei um einen zeitkritische auszuführenden Vorgang ausführende Methode handelt und diese damit im höher priorisierten Hauptthread des Programms laufen muss.
+
+Die Move()  Methode ist für die Ausgabe des Taktes und damit der Geschwindigkeit, sowie Einstellung der Richtung über das setzen des entsprechenden Ausgangsports.
+
+Um dieser Aufgabe gerecht zu werden läuft die Methode mithilfe von Schleifen durch die einzelnen Arrays welche die aufbereiteten Daten der anzufahrenden Punkte in Form von Integer Werten für die Anzahl der zu fahrenden Schritte, sowie Boolean Werten für die Richtung der Bewegungen.
+Die dafür benötigten Array befinden sich in Form von statischen Objekten in der Executer Klasse und werden bei Einlangen von Positionsdaten über die Netzwerkschnittstelle mit bereits konvertierten Werten gefüllt wird.
+
+Die einzelnen 'Werte in den statischen Arrays stellen jeweils die Schrittzahlen dar die zum Erreichen eines Punktes (beispielsweise eines Interpolationspunktes zum Fahren einer Gerade) je Motor gefahren werden müssen. Beim durchlaufen dieses Arrays wird jeweils zuvor die benötigte Richtung - positiv (im Uhreigersinn) oder negativ (gegen den Uhrzeigersinn) - durch setzen des entsprechenden Richtungspins über die Variable engineDir (Boolean) des jeweiligen Engine Objektes.
+
+Im nächsten und wichtigsten Schritt werden die einzelnen Steps an die Schrittmotorsteuerung übermittelt. Ein Step wird immer dann durch die Schrittmotorsteuerung gefahren, wenn an dem entsprechenden Port eine Spannungsrampe erkannt wird. Daher ist es nötig für jeden Schritt die engineFreq Variable des jeweiligen Engine Objektes zuerst true und dann false oder umgekehrt zu setzen.
+
+Wie bereits erwähnt befinden sich die Informationen zu den anzufahrenden Punkten in einzelnen statischen Integer Arrays. Für jeden Motor existiert hierbei ein Objekt mit einer Liste der jeweils zu fahrenden Schritte. In einer Schleife wird nun dieses Array durchlaufen und für jeden darin enthaltenen Schritt ein Schritt an die Motorsteuerung übergeben.
+
+Um eine geradlinige Bewegung zu Erzeugen müssen jeweils die zwei Werte in den Array die den selben Index besitzen gleichzeitig Ausgeführt werden und es muss auf die Synchronisation der beiden Motoren geachtet werden. Dies geschieht mit Hilfe einer Variable rel des Typs double die das Verhältnis der Schritte eines Wertpärchens (Werte mit gleichem Index) darstellt und in der Schleife in welcher die Einzelnen Schritte gesendet werden die Relation der einzuhaltenden Pausen zwischen den Schritten eines jeweiligen Motors.
+
+\end{itemize}
+\subsubsection{Der Taktgeber}
+Die Hauptaufgabe des Mikrocontrollers ist die Ausgabe des Taktes für den Betrieb des Motors. Sie erfolgt über die Move() Methode der Executer Klasse, welche aus performance Gründen immer im Haupthread ausgeführt wird. 
+
+Weitere Informationen über die Realisierung des Taktgebers können dem Punkt Move() - Methode des vorhergehenden Unterkapitels entnommen werden.
+\subsubsection{Die Engine Klasse}
+Um die Verwaltung einzelner Motoren zu vereinfachen wurde die Klasse Engine erstellt. 
+
+Aufgabe
+Wie bereits erwähnt ist die Hauptaufgabe der Engine Klasse die Verwaltung einzelner Motoren. Dafür initialisiert sie im Konstruktor die benötigten Output Objekte mit den Pins die für den über einen Integer Parameter angegebenen Motor. In der derzeitigen Ausbauphase verfügt Edubot lediglich über zwei Motoren, aus diesem Grund können als Parameter für den Konstruktor entweder die Zahl 1 - für den Motor der primären Achse und die Zahl 2 - für den Motor der Sekundären Achse mitgegeben werden.
+
+Die einzelnen OutputPort Objekte werden mit Standardwerten initialisiert. Es werden folgende Pins initialisiert und den aufgelisteten Variablen auf die daneben aufgelisteten Standardwerte gesetzt:
+
+\begin{tabular}{|p{3cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+\hline \rowcolor{lightgray}
+\textbf{Variablenname} & \textbf{Funktion} & \textbf{Standardwert} &\textbf{Pin}\\
+\hline
+engineEnabled & Ein-/Ausschalten des Motors & false, Motor ist eingeschaltet & primary: EMX.Pin.IO0 secondary: EMX.Pin.IO4\\
+\hline
+engineFreq & Taksignal, bei Spannungsrampe wird ein Schritt gefahren & false & primary: EMX.Pin.IO2 secondary: EMX.Pin.IO6\\
+\hline
+engineDir & Richtung in die Schritte gefahren werden & false, gegen den Uhrzeigersinn & primary: EMX.Pin.IO1 secondary: EMX.Pin.IO5\\
+\hline
+enginePowerDown & Ein-/Ausschalten der Automatischen Stromabsenkung bei Stillstand & false, Spannungsabsenkung ist aktivert & primary: EMX.Pin.IO3 secondary: EMX.Pin.IO7\\
+\hline
+\end{tabular}
+
+Um nun auf eine der genannten Funktionen eines Motors Zugriff zu bekommen benötigt man lediglich eine Instanz der Engine Klasse die dem gewählten Motor entspricht. Setzt man nun beispielsweise mit dem Aufruf
+
+engineEnabled.Write(true);
+
+den engineEnabled Pin auf true, lässt alo eine Spannung von etwa 5V anliegen, so wird der Motor ausgeschaltet. (Die Schrittmotorsteuerung schaltet den Motor aus wenn Spannung anliegt und nicht umgekehrt
+\subsubsection{Die ThreadManager Klasse}
+Da für das gleichzeitige Empfangen, Umrechnen und Ausgeben von Schritten mehrere Threads benötigt werden, gibt es in der Software des Mikrocontrollers eine eigene Klasse ThreadManager. Sie beinhaltet sowohl die Methoden zum Konvertieren der erhaltenen Winkel in Schritte, als auch alle Methoden die für die Kommunikation mit dem PC benötigt werden.
+
+Die ThreadManager Klasse beinhaltet einzelne Methoden welche während des Betriebs parallel ausgeführt werden müssen. Um dies zu bewerkstelligen startet die Methode jeweils zur Ausführung einer Methode einen neuen Thread. Zusätzlich zu den Methoden enthält die Klasse das für das horchen auf Verbindungen benötigte Socket Objekt server.
+
+\begin{itemize}
+\item \textbf{ListenForClients() - Methode}\\
+Wird die StartThreads() Methode eines ThreadManager Objekts aufgerufen, so wird für die Methode ListenForClients() ein neuer Thread gestartet. Der frisch erzeugte Thread beschäftigt sich fortan in einer Dauerschleife mit dem warten auf neue Verbindung, ist bereits eine aktive Verbindung vorhanden, so nimmt die Methode keine neuen Verbindungen an.
+
+Versucht sich ein Client mit dem Mikrocontroller zu verbinden während der erklärte Thread auf Verbindungen horcht, so wird durch server.Accept() (server heißt das auf Verbindungen horchende Socket Objekt das im Konstruktor definiert wurde) ein neuer Client Socket erzeugt der fortan die Verbindung repräsentiert und als statisches Objekt in der Executor Klasse gespeichert wird.
+
+\item \textbf{ListenForData() - Methode}\\
+Wurde die neue Verbindung erfolgreich aufgebaut erzeugt die Methode ListenForClients() ein neuer Thread für das empfangen von Daten über die neue Verbindung. Die Methode die durch den neuen Thread ausgeführt wird heißt ListenForData() und wartet solange die Verbindung von clientsocket besteht auf übertragene Daten. 
+Die Information ob eine Verbindung besteht wird durch die statische Boolean Variable acceptNewClient der Klasse Executer global zur Verfügung gestellt und hält beispielsweise auch die ListenForClients() Methode davon ab neue Verbindungen zu akzeptieren.
+
+Die Methode ListenForData() fragt durch eine Schleife, solange die Verbindung besteht, beim clientsocket Objekt nach ob neue Daten für den Empfang bereitstehen. Ist dies der Fall, so werden diese als Byte Array geladen und danach in eine Zeichenfolge konvertiert.
+
+Ebenfalls in der ListenForData() Methode kommt wir aufgrund des Commands in den ersten drei Zeichen der Nachricht entschieden welche Operation als nächstes ausgeführt wird (Homing, LinearMovement, CircularMovement etc.)
+
+Wurde vom Client eine Operation angefordert welche die Extraktion der zu Verfahrenden Schritte aus den empfangenen Daten voraussetzt (beispielsweise LinearMovement), so wird ein neuer Thread mit der Methode Calculate() erzeugt, welcher nun beginnt die einzelnen als Winkel übergebenen Teilbewegungen in Schritte um zurechnen.
+
+Gleichzeitig wird in der Executer Klasse die statische Variable state verändert, dadurch wird im Haupthread die Move() Methode aufgerufen und die bereits berechneten Schritte werden abgefahren.
+
+\item \textbf{Calculate() - Methode}\\
+Wie oben beschrieben wird diese Methode in einem eigenständigen Thread aufgerufen um Empfangene Daten aus der vom Client gesendeten Zeichenkette zu extrahieren, umzurechnen und die statisch in der Executer gespeicherten Arrays mit den Informationen zu den Schrittzahlen von Teilstrecken sowie den dazugehörigen Richtungen mit Daten zu befüllen, während der Hauptthread mithilfe der Move() Methode der Executer Klasse bereits Daten aus den Arrays abruft und an die Schrittmotorsteuerungen ausgibt, mehr dazu in Die Klasse Executer im Unterkapitel "Move() - Methode"
+\end{itemize}
+\subsubsection{Der Homing Algorithmus}

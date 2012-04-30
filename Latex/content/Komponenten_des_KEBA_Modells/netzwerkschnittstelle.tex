@@ -1,0 +1,46 @@
+\subsection{Netzwerkschnittstell}
+Die Netzwerkschnittstelle des KEBA Modells ist auf der SPS implementiert und soll die Kommunikation mit der Roboter API ermöglichen, diese Kommunikation verläuft über Sockets und unterscheidet sich im Prinzip wenig von jener auf dem Edubot Modell, lediglich die Art der Implementierung unterscheidet sich auf Grund der unterschiedlichen Programmierumgebungen sehr stark.
+
+\subsubsection{OSCAT Library}
+Um auf einer SPS von Keba eine Netzwerkschnittstelle für den Zugriff über Ethernet zu programmieren, ist die Verwendung der freien Funktionsbibliothek OSCAT notwendig. 
+
+Zuerst muss hierbei die Standard OSCAT Bibliothek ins Projekt eingebunden werden, in unserem Fall handelte es sich um die Version 3.3.0 der Standardbibliothek.
+
+Um nun Zugriff auf die benötigten Netzwerkfunktionen von OSCAT zu bekommen muss noch die OSCAT Network Library eingebunden werden, diese befand sich zum Zeitpunkt der Entwicklung dieses Projektes in der Version 1.1.1. 
+
+Richtig eingebunden stellt die OSCAT Funktionsbibliothek alle benötigten Funktionen zum Herstellen einer Verbindung über Sockets zur Verfügung.
+
+\subsubsection{Implementierung}
+Auf die genau Implementierung der Netzwerkkommunikation auf der SPS wird hier nur oberflächlich eingegangen, genauere Informationen hierzu sind der Dokumentation der OSCAT Network Library und dem Source Code der SPS zu entnehmen, welcher im Rahmen der Diplomarbeit gemeinsam mit der restlichen Software des Edubot Systems abgegeben wurde. Im Folgenden erfolgt lediglich eine Kurze Aufzählung der wichtigsten Objekte und ihrer Verwendung:
+\begin{itemize}
+\item \textbf{IP\_CONTROL}\\
+Der Typ IP\_CONTROL ist der zentrale Baustein einer Netzwerkkommunikation mit OSCAT. Über ein Objekt dieses Typs werden alle wichtigen Operationen zur Komunikation, wie beispielsweise das anlegen eines Sockets und das Empfangen der Daten abgewickelt. Zum Verbindungsaufbau über ein IP\_CONTROL Objekt ist es lediglich Nötig, dieses mit den entsprechenden Parametern anzulegen und in periodischen Abständen zu Überprüfen ob bereits eine Verbindung hergestellt wurde, dies geschieht über das state Attribut des IP\_CONTROL Objekts, welches jederzeit den Verbindungsstatus in Form eines Integer Wertes beinhaltet, die möglichen Werte dieses Attributs sind der OSCAT Network Library Dokumentation zu entnehmen
+
+\item \textbf{IP\_C}\\
+Zur Erzeugung eines IP\_CONTROL Objekts muss ein IP\_C Objekt übergeben werden, welches alle nötigen Parameter für die Verbindung enthält. Zwar verfügt das IP\_CONTROL selbst bereits über einige entsprechende Attribute, diese sollen jedoch nur als default Werte verwendet und von denen im IP\_C Objekt überschrieben werden. 
+Wichtige Attribute eines IP\_C Objekts sind zum Beispiel C\_MODE, welches angibt welche Art der Verbindung aufgebaut werden soll, C\_ENABLE zum freigeben der Verbindung und R\_OBSERVE zur Aktivierung des Dateiempfangs.
+
+\item \textbf{NETWORK\_BUFFER}\\
+Bei der Erzeugung eines IP\_CONTROL Objekts muss um das Senden beziehungsweise Empfangen von Nachrichten zu ermöglichen je ein Objekt vom Typ NETWORK\_BUFFER als Lesebuffer und eines als Schreibbuffer mitgegeben werden. Ein Objekt vom Typ NETWORK\_BUFFER ist grundsätzlich dazu da entweder empfangene Daten zu einem Stream zu Sammeln um sie später komfortabel auslesen zu können oder zu sendende Daten für die Netzwerkübertragung aufzubereiten um sie später als den zulässigen Blockgrößen entsprechende Pakete zu versenden.
+\end{itemize}
+
+\subsubsection{Ablauf der Netzwerkkommunikation}
+Kurz zusammengefasst muss für die Herstellung einer Netzwerkverbindung ein IP\_C Objekt angelegt werden und die wichtigsten Attribute müssen gesetzt werden, siehe Auflistung oben.
+Ebenfalls zu Beginn müssen zwei NETWORK\_BUFFER Objekte für das Senden und Empfangen von Daten angelegt und initialisiert werden.
+
+Nun kann ein zuvor angelegtes IP\_CONTROL aufgerufen werden und die vorher instanzierten Objekte werden direkt übergeben. Durch diesen Schritt beginnt die SPS auf eingehende Verbindungen zu horchen.
+Ein Beispiel für den Aufruf des IP\_CONTROL's könnte folgendermaßen aussehen:
+
+IP\_CONTROL1(PORT:=400 ,TIME\_OUT:=T\#1s,IP\_C:= IP\_C1,S\_BUF:=S\_BUF1, R\_BUF:=R\_BUF1 );
+
+Durch regelmäßiges überprüfen des state Attributs des IP\_CONTROL Objektes kann nun festgestellt werden wenn eine neue Verbindung hergestellt wurde. Bekommt das state den Wert 254, wurde die Verbindung erfolgreich Aufgebaut und es kann weiter zur Übertragung von Daten weiter gegangen werden.
+
+Hierzu fragt man in regelmäßigen Abständen die Größe des vorher mitgegebenen Lesebuffers, im obigen Beispielfall R\_BUF1 ab und überprüft ob sie größer als 0 ist. Ist dies der Fall, so wurden Daten empfangen und im Lesebuffer abgelegt. Der Buffer kann nun wie ein Array durchlaufen werden und enthält an jeder Stelle einen einzelnen Byte Wert. Die empfangenen Byte Werte können mithilfe einer einfachen selbst geschriebenen Funktion (siehe BYTE\_TO\_CHAR Funktion im Source Code) in eine Zeichenkette umgewandelt werden
+
+Mithilfe einer weiteren selbst geschriebenen Funktion (siehe InterpretToArray Funktion im Source Code) wurde die vorher erzeugte Zeichenkette in ein Array vom Typ Integer umgewandelt um die empfangenen Positionsdaten später komfortabel auslesen und Verwenden zu können.
+
+Nun kann entweder der Lesebuffer zurückgesetzt werden um auf neue Daten zum Empfang zu warten, oder die Verbindung beendet werden. Achtung, an dieser Stelle hat die OSCAT Network Lib einen Fehler und es muss um ein Abstürzen der SPS zu verhindern zuerst die Zeile:
+
+SysSockClose(diSocket:=IP\_CONTROL1.socket);
+
+ausgeführt werden um den Socket Manuell zu schließen, erst dann kann über das C\_ENABLED Attribut des übergebenen IP\_C Objekts der Empfang durch das IP\_CONTROL gestoppt werden.
