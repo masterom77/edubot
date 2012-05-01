@@ -564,7 +564,8 @@ namespace HTL.Grieskirchen.Edubot
         public void ShowError(object sender, EventArgs args) {
             FailureEventArgs fea = (FailureEventArgs)args;
             appendTextDelegate = AppendText;
-            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate, fea.ThrownException.ToString());
+            
+            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate, fea.ThrownException.Message);
         }
 
         
@@ -577,14 +578,23 @@ namespace HTL.Grieskirchen.Edubot
         {
             if (btConnect.Content.ToString() == "Verbinden")
             {
-                btConnect.Content = "Trennen";
                 if ((bool)rbEdubot.IsChecked)
                 {
-                    //settings.EdubotConfig.Apply();
-                    rbEdubotModel.IsChecked = true;
-                    rbVirtualModel.IsChecked = false;
-                    rbVirtualModel.IsEnabled = false;
-                    
+                    EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, IPAddress.Parse(edubotConfig.IpAddress), edubotConfig.Port);
+                    ConnectingScreen screen = new ConnectingScreen(adapter);
+                    screen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                    screen.ShowDialog();
+                    if (screen.DialogResult == false)
+                    {
+                        MessageBox.Show("Verbindungstest fehlgeschlagen");
+                        return;
+                    }
+                        btConnect.Content = "Trennen";
+                        edubot.RegisterAdapter("Edubot", adapter);
+                        //settings.EdubotConfig.Apply();
+                        if (!visualizationConfig.IsEdubotModelSelected)
+                            visualizationConfig.IsEdubotModelSelected = true;
+                        rbVirtualModel.IsEnabled = false;
                 }
                 else {
                     //settings.KebaConfig.Apply();
@@ -601,7 +611,7 @@ namespace HTL.Grieskirchen.Edubot
                 btConnect.Content = "Verbinden";
                 if ((bool)rbEdubot.IsChecked)
                 {
-                    edubot.DeregisterAdapter(EdubotAdapterConfig.NAME);
+                    edubot.DeregisterAdapter("Edubot");
                     rbVirtualModel.IsEnabled = true;
                 }
                 else

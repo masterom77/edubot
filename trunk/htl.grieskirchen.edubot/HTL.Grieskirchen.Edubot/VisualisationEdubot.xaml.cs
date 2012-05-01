@@ -336,19 +336,32 @@ namespace HTL.Grieskirchen.Edubot
             {
                 if (configuration.VisualizationEnabled && configuration.IsEdubotModelSelected)
                 {
+                    //Visualiserungsmodell Edubot wurde ausgewählt
+                    //Edubot-Modell hat fixe Längen und Winkelbeschränkungen
                     configuration.Length = "200";
                     configuration.Length2 = "230";
-                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length),float.Parse(configuration.Length2));
+                    configuration.VerticalToolRange = "80";
+                    configuration.Transmission = "5";
+                    configuration.MaxPrimaryAngle = "145";
+                    configuration.MinPrimaryAngle = "-145";
+                    configuration.MaxSecondaryAngle = "135";
+                    configuration.MinSecondaryAngle = "-135";
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, 200,230,80,5,145,-145,135,-135);
+                    //Event-Handler hinzufügen
                     visualisationAdapter.OnAbort += StopAnimation;
                     visualisationAdapter.OnMovementStarted += StartMoving;
                     visualisationAdapter.OnHoming += StartHoming;
                     visualisationAdapter.OnToolUsed += UseTool;
-                    anglePrimaryAxis = 0;
-                    angleSecondaryAxis = 0;
+                    //Werkzeug auf Startpunkt setzen
+                    AnglePrimaryAxis = 0;
+                    AngleSecondaryAxis = 0;
+                    //Adapter registrieren
                     API.Edubot.GetInstance().RegisterAdapter("EdubotVisualization", visualisationAdapter);
                 }
                 else
                 {
+                    //Virtuelles Visualisierungsmodell wurde ausgewählt
+                    //Event-Handler - falls vorhanden - entfernen und Adapter deregistrieren
                     if (visualisationAdapter != null)
                     {
                         visualisationAdapter.OnAbort -= StopAnimation;
