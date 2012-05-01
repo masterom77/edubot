@@ -38,6 +38,76 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
+        private string verticalToolRange;
+
+        public string VerticalToolRange
+        {
+            get { return verticalToolRange; }
+            set
+            {
+                verticalToolRange = value;
+                NotifyPropertyChanged("VerticalToolRange");
+            }
+        }
+
+        private string transmission;
+
+        public string Transmission
+        {
+            get { return transmission; }
+            set { transmission = value;
+            NotifyPropertyChanged("Transmission");
+            }
+        } 
+
+        private string maxPrimaryAngle;
+
+        public string MaxPrimaryAngle
+        {
+            get { return maxPrimaryAngle; }
+            set
+            {
+                maxPrimaryAngle = value;
+                NotifyPropertyChanged("MaxPrimaryAngle");
+            }
+        }
+
+        private string minPrimaryAngle;
+
+        public string MinPrimaryAngle
+        {
+            get { return minPrimaryAngle; }
+            set
+            {
+                minPrimaryAngle = value;
+                NotifyPropertyChanged("MinPrimaryAngle");
+            }
+        }
+
+        private string maxSecondaryAngle;
+
+        public string MaxSecondaryAngle
+        {
+            get { return maxSecondaryAngle; }
+            set
+            {
+                maxSecondaryAngle = value;
+                NotifyPropertyChanged("MaxSecondaryAngle");
+            }
+        }
+
+        private string minSecondaryAngle;
+
+        public string MinSecondaryAngle
+        {
+            get { return minSecondaryAngle; }
+            set
+            {
+                minSecondaryAngle = value;
+                NotifyPropertyChanged("MinSecondaryAngle");
+            }
+        }
+
 
         int steps;
 
@@ -120,6 +190,11 @@ namespace HTL.Grieskirchen.Edubot.Settings
         public void Reset() {
             Length = "300";
             Length2 = "300";
+            VerticalToolRange = "50";
+            MaxPrimaryAngle = float.MaxValue.ToString();
+            MinPrimaryAngle = float.MinValue.ToString();
+            MaxSecondaryAngle = float.MaxValue.ToString();
+            minSecondaryAngle = float.MinValue.ToString();
             VisualizationEnabled = true;
             AnimateHoming = false;
             ShowGrid = false;

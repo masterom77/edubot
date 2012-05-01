@@ -1,0 +1,13 @@
+﻿<Window x:Class="HTL.Grieskirchen.Edubot.Controls.ConnectingScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Verbindungsaufbau" Height="100" Width="344" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" ResizeMode="NoResize" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterOwner" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Content="Es wird versucht eine Verbindung mit der Steuerung herzustellen" FontSize="10" HorizontalAlignment="Left" Margin="8,5,0,0" Name="label1" VerticalAlignment="Top" />
+        <ProgressBar IsIndeterminate="True" Grid.Row="1" HorizontalAlignment="Stretch" Name="pbConnecting"  VerticalAlignment="Stretch" Margin="5" />
+    </Grid>
+</Window>
