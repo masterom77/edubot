@@ -19,7 +19,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         Socket socket;
         IPEndPoint endpoint;
-        InterpolationResult result;
 
         //Constructor for original Edubot-Model
         public EdubotAdapter(Tool equippedTool, IPAddress ipAdress, int port)
@@ -141,7 +140,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //socket.SendBufferSize = Int32.MaxValue;
             try{
             Point3D target = (Point3D)param;
-            byte[] content = Encoding.UTF8.GetBytes("mvs:" + result.ToString());
+            byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ToString());
             socket.Send(content);
 
             toolCenterPoint = target;
@@ -163,7 +162,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 object[] parameters = (object[])param;
                 Point3D target = (Point3D)parameters[0];
                 Point3D center = (Point3D)parameters[1];
-                byte[] content = Encoding.UTF8.GetBytes("mvc:" + result.ToString());
+                byte[] content = Encoding.UTF8.GetBytes("mvc:" + InterpolationResult.ToString());
                 socket.Send(content);
                 //socket.Disconnect(true);
                 toolCenterPoint = target;
