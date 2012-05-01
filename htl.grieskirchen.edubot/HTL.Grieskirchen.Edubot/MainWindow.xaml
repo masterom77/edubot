@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls"
         xmlns:validators="clr-namespace:HTL.Grieskirchen.Edubot.Validation" 
-        Title="Edubot" Height="768" Width="1024" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" SizeChanged="ClosePopup" LocationChanged="ClosePopup">
+        Title="Edubot" Height="800" Width="1200" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" SizeChanged="ClosePopup" LocationChanged="ClosePopup">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Validation.ErrorTemplate">
@@ -37,9 +37,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="35"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -99,7 +100,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Popup Visibility="Hidden" Name="puAutocomplete" Placement="Mouse">
                         <ListBox x:Name="lbAutocomplete"                                 
@@ -110,8 +110,7 @@
                     </Popup>
                     <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" Name="tbCodeArea" TextChanged="tbCodeArea_TextChanged" KeyDown="tbCodeArea_KeyDown" PreviewKeyDown="tbCodeArea_PreviewKeyDown"></TextBox>
                     <Button Grid.Row="1" Height="20" Content="Ausführen" Name="btExecute" Click="Execute"></Button>
-                    <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Grid.Row="2" Margin="0,0,0,0" Name="tbConsole"></TextBox>
-                </Grid>
+                    </Grid>
             </TabItem>
             <TabItem Header="Zeichenfläche">
                 <Grid>
@@ -170,70 +169,44 @@
 
             </TabItem>
             <TabItem Header="Einstellungen" Name="tiSettings">
-                <TabControl TabStripPlacement="Left">
-                    <TabItem Height="30" Header="Edubot-Adapter" Name="tiDASettings">
-                        <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Roboter" FontSize="13" FontWeight="Bold" Margin="5,0,0,0"></Label>
+                    <Border Grid.Row="1" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Border Margin="5" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5">
-                                <Grid>
+                            <Label Grid.Row="0" Content="Steuerung verbinden:"></Label>
+                            <RadioButton VerticalAlignment="Top" Grid.Column="1" IsChecked="True" VerticalContentAlignment="Top" Name="rbEdubot">
+                                <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold">Edubot</Label>
+                            </RadioButton>
+                            <Grid Grid.Column="1" Grid.Row="1" Name="gEdubotData">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0">Werkzeug:</Label>
-                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="cbDASelectedTool" SelectedValue="{Binding Tool, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FieldsEnabled}"></ComboBox>
-                                    <Label Grid.Row="1" Grid.Column="0">Achsenlänge 1:</Label>
-                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength" IsEnabled="{Binding FieldsEnabled}">
-                                            <TextBox.Text>
-                                                <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <Label>mm</Label>
-                                    </StackPanel>
-                                    <Label Grid.Row="2" Grid.Column="0">Achsenlänge 2:</Label>
-                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDALength2" IsEnabled="{Binding FieldsEnabled}">
-                                            <TextBox.Text>
-                                                <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <Label>mm</Label>
-                                    </StackPanel>
-
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="1" Margin="5" CornerRadius="5" BorderThickness="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0">IP-Adresse:</Label>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbDAIpAddress" IsEnabled="{Binding FieldsEnabled}">
+                                <Label Grid.Row="1" Grid.Column="0" IsEnabled="{Binding ElementName=rbEdubot,Path=IsChecked}">IP-Adresse:</Label>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbEdubotIPAddress" IsEnabled="{Binding ElementName=rbEdubot,Path=IsChecked}">
                                         <TextBox.Text>
                                             <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -242,8 +215,8 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Label Grid.Row="1" Grid.Column="0">Port:</Label>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbDAPort" IsEnabled="{Binding FieldsEnabled}">
+                                <Label Grid.Row="2" Grid.Column="0" IsEnabled="{Binding ElementName=rbEdubot,Path=IsChecked}">Port:</Label>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbEdubotPort" IsEnabled="{Binding ElementName=rbEdubot,Path=IsChecked}">
                                         <TextBox.Text>
                                             <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -252,102 +225,23 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Label Grid.Row="2" Grid.Column="0">Status:</Label>
-                                    <Label Grid.Row="2" Grid.Column="1" Name="lbDAIpState" HorizontalAlignment="Left" Content="{Binding ConnectionState}">
-                                        <Label.Style>
-                                            <Style TargetType="{x:Type Label}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ConnectionState}" Value="Nicht verbunden">
-                                                        <Setter Property="Foreground" Value="Red"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ConnectionState}" Value="Verbunden">
-                                                        <Setter Property="Foreground" Value="Green"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Label.Style>
-                                    </Label>
-                                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="chkDAAutoConnect" IsChecked="{Binding AutoConnect}" IsEnabled="{Binding FieldsEnabled}">Automatisch beim Programmstart verbinden</CheckBox>
-                                </Grid>
-                            </Border>
-                            <Grid Grid.Row="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btDASaveSettings" Click="btDASaveSettings_Click">Verbinden</Button>
-                            </Grid>
-                        </Grid>
-
-                    </TabItem>
-
-                    <TabItem Height="30" Header="Keba-Adapter" Name="tiKESettings">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Border Margin="5" CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray">
-                                <Grid>
+                                    </Grid>
+                            <RadioButton VerticalAlignment="Top" Grid.Column="2" IsEnabled="True" Name="rbKeba">
+                                <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold">KEBA</Label>
+                            </RadioButton>
+                                <Grid Grid.Column="2" Grid.Row="1" Name="gKebaData">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0">Werkzeug:</Label>
-                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="cbKESelectedTool" SelectedValue="{Binding Tool, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                                    <Label Grid.Row="1" Grid.Column="0">Achsenlänge 1:</Label>
-                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKELength">
-                                            <TextBox.Text>
-                                                <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <Label>mm</Label>
-                                    </StackPanel>
-                                    <Label Grid.Row="2" Grid.Column="0">Achsenlänge 2:</Label>
-                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                        <TextBox Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKELength2">
-                                            <TextBox.Text>
-                                                <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validators:LengthValidationRule></validators:LengthValidationRule>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <Label>mm</Label>
-                                    </StackPanel>
-
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="1" Margin="5" CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0">IP-Adresse:</Label>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbKEIpAddress">
+                                <Label Grid.Row="1" Grid.Column="0" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}">IP-Adresse:</Label>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbKebaIPAddress" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}">
                                         <TextBox.Text>
                                             <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -356,18 +250,8 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Label Grid.Row="1" Grid.Column="0">Empfänger-Port:</Label>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKEReceiverPort">
-                                        <TextBox.Text>
-                                            <Binding Path="ReceiverPort" UpdateSourceTrigger="PropertyChanged">
-                                                <Binding.ValidationRules>
-                                                    <validators:PortValidationRule></validators:PortValidationRule>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                    <Label Grid.Row="2" Grid.Column="0">Sender-Port:</Label>
-                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKESenderPort">
+                                <Label Grid.Row="2" Grid.Column="0" Content="Sender-Port:" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}"></Label>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKebaSenderPort" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}">
                                         <TextBox.Text>
                                             <Binding Path="SenderPort" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
@@ -376,135 +260,185 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <Label Grid.Row="3" Grid.Column="0">Status:</Label>
-                                    <Label Grid.Row="3" Grid.Column="1" Name="lbKEIpState" HorizontalAlignment="Left" Content="{Binding ConnectionState}">
-                                        <Label.Style>
-                                            <Style TargetType="{x:Type Label}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Content}" Value="Disconnected">
-                                                        <Setter Property="Foreground" Value="Red"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Content}" Value="Connected">
-                                                        <Setter Property="Foreground" Value="Green"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Label.Style>
-                                    </Label>
-                                    <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="chkKEAutoConnect" IsChecked="{Binding AutoConnect}">Automatisch beim Programmstart verbinden</CheckBox>
+                                <Label Grid.Row="3" Grid.Column="0" Content="Empfänger-Port" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}"></Label>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Width="75" HorizontalAlignment="Left" Name="tbKebaReceiverPort" IsEnabled="{Binding ElementName=rbKeba,Path=IsChecked}">
+                                        <TextBox.Text>
+                                            <Binding Path="ReceiverPort" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <validators:PortValidationRule></validators:PortValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                 </Grid>
-                            </Border>
-                            <Grid Grid.Row="2">
+                            <Button Grid.Row="2" Grid.Column="2" Margin="5" Content="Verbinden" Name="btConnect" Click="btConnect_Click">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="IsEnabled" Value="false" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=rbEdubot, Path=IsChecked}" Value="true" />
+                                                    <Condition Binding="{Binding ElementName=tbEdubotIPAddress, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=tbEdubotPort, Path=(Validation.HasError)}" Value="false" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="true" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=rbKeba, Path=IsChecked}" Value="true" />
+                                                    <Condition Binding="{Binding ElementName=tbKebaIPAddress, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=tbKebaSenderPort, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=tbKebaReceiverPort, Path=(Validation.HasError)}" Value="false" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="true" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Label Grid.Row="2" Content="Visualisierung" FontSize="13" FontWeight="Bold" Margin="5,0,0,0"></Label>
+                    <Grid Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Border BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
+                            <Grid ShowGridLines="False" Name="gVisualizationData">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Grid.Column="1" Margin="5" Name="btKESaveSettings">Einstellungen speichern</Button>
-                            </Grid>
-                        </Grid>
+                                <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
+                                <Label Grid.Row="1" Content="Modell:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                <StackPanel Grid.Column="1" Grid.Row="1">
+                                <RadioButton Name="rbEdubotModel" Margin="5" Checked="rbEdubotModel_Checked" IsChecked="{Binding IsEdubotModelSelected}">
+                                        <Label Content="Edubot Modell"></Label>
+                                    </RadioButton>
+                                <RadioButton Name="rbVirtualModel" Grid.Column="1" Grid.Row="2" Margin="5,0,0,5" Checked="rbVirtualModel_Checked">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Virtuelles Modell"></Label>
+                                            <Label Grid.Column="1" Content="Achsenlänge 1:" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
+                                        <TextBox Name="tbLength" Grid.Column="2" Margin="5" Width="100" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
+                                                <TextBox.Text>
+                                                    <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                            <Label Grid.Column="3" Content="Achsenlänge 2:" Grid.Row="1" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
+                                            <TextBox Name="tbLength2" Grid.Column="4" Margin="5" Width="100" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
+                                                <TextBox.Text>
+                                                    <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </Grid>
+                                    </RadioButton>
+                                </StackPanel>
+                                <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
+                                <CheckBox Grid.Row="2" Grid.Column="1" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
+                                <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Homing animieren" VerticalAlignment="Center" Margin="5" Name="cbAnimateHoming" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=AnimateHoming}"></CheckBox>
 
-                    </TabItem>
-                    <TabItem Header="Visualisierung" Height="30" Name="tiVisualization" >
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Border BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
-                                <Grid ShowGridLines="False">
+                                <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                <Grid Grid.Row="4" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="50"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
-                                    <Label Grid.Row="1" Content="Visualisierter Adapter:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <ComboBox Name="cbVisualizedAdapter" Margin="5" Grid.Row="1" Grid.Column="1" Width="150" HorizontalAlignment="Left" SelectedItem="{Binding Path=VisualizedAdapter}"></ComboBox>
-                                    <!--<Grid Margin="5" Grid.Row="1" Grid.Column="1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="10"></RowDefinition>
-                                            <RowDefinition Height="6" />
-                                            <RowDefinition Height="26"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <RadioButton VerticalAlignment="Center" Content="Größte Spannweite" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=UseLongest}" Grid.RowSpan="2" Checked="rbUseLongestAdapter_Checked" Name="rbUseLongestAdapter"></RadioButton>
-                                        <RadioButton Grid.Row="2" VerticalAlignment="Center" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Name="rbUseSpecificAdapter" IsChecked="{Binding Path=UseFollowing}" Checked="rbUseSpecificAdapter_Checked">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition></ColumnDefinition>
-                                                    <ColumnDefinition></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="Folgender" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                                <ComboBox MinWidth="100" Grid.Column="1" Name="cbVisualizedAdapter" IsEditable="False" IsEnabled="{Binding ElementName=rbUseSpecificAdapter, Path=IsChecked}" SelectionChanged="cbVisualizedAdapter_SelectionChanged"></ComboBox>
-                                            </Grid>
-                                        </RadioButton>
-                                    </Grid>-->
-                                    
+                                    <Slider IsSnapToTickEnabled="True" Name="sldSpeed" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="100" Minimum="0" Value="{Binding Path=Speed}"></Slider>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldSpeed, Path=Value}"></Label>
+                                        <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="%"></Label>
+                                    </StackPanel>
                                 </Grid>
-                            </Border>
-                            <Border Grid.Row="1" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5" Margin="5">
-                                <Grid>
+                                <Label Grid.Row="5" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
+                                <Grid Grid.Row="5" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="50"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <CheckBox Grid.Row="0" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
-                                    <CheckBox Grid.Row="1" Grid.Column="0" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
-                                    <Label Grid.Row="2" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <Grid Grid.Row="2" Grid.Column="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition Width="50"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Slider IsSnapToTickEnabled="True" Name="sldSpeed" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="100" Minimum="0" Value="{Binding Path=Speed}"></Slider>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldSpeed, Path=Value}"></Label>
-                                            <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="%"></Label>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Label Grid.Row="4" Content="Schrittanzahl:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                    <Grid Grid.Row="4" Grid.Column="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition Width="50"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Slider IsSnapToTickEnabled="True" Name="sldStepSize" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="20" Minimum="1" Value="{Binding Path=Steps}"></Slider>
-                                        <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldStepSize, Path=Value}"></Label>
-                                    </Grid>
+                                    <Slider IsSnapToTickEnabled="True" Name="sldStepSize" TickPlacement="BottomRight" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" Maximum="20" Minimum="1" Value="{Binding Path=Steps}"></Slider>
+                                    <Label HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Content="{Binding ElementName=sldStepSize, Path=Value}"></Label>
                                 </Grid>
-                            </Border>
-                        </Grid>
-                        
-                    </TabItem>
-                </TabControl>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <StackPanel HorizontalAlignment="Right" Grid.Row="5" Orientation="Horizontal">
+                        <Button Name="btResetSettings" Content="Einstellungen zurücksetzen" Padding="5" Margin="5" Click="btResetSettings_Click"></Button>
+                        <Button Name="btSaveSettings" Content="Einstellungen speichern" Padding="5" Margin="5" Click="btSaveSettings_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="IsEnabled" Value="false" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=tbEdubotIPAddress, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbEdubotPort, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbKebaIPAddress, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbKebaSenderPort, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbKebaReceiverPort, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbLength, Path=(Validation.HasError)}" Value="false" />
+                                                <Condition Binding="{Binding ElementName=tbLength2, Path=(Validation.HasError)}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="true" />
+                                        </MultiDataTrigger>                                        
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+                
                 
             </TabItem>
             <TabItem Header="Handbuch">
-                <WebBrowser Name="wbManual">
+                <WebBrowser Name="wbManual" >
                     
                 </WebBrowser>
             </TabItem>
         </TabControl>
-        <StatusBar Grid.ColumnSpan="2" Grid.Row="5"></StatusBar>
-        <Viewbox Grid.Column="1" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb3DVisualisation" Stretch="Uniform">
-            <my:VisualisationEdubot Grid.Column="1" Grid.Row="2" Width="600" Height="600" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
-        </Viewbox>
+        <Label Grid.Row="4">Ausgabe:</Label>
+        <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Grid.Row="5" Margin="0,0,0,0" Name="tbConsole"></TextBox>
+        <Grid Grid.Column="1" Grid.RowSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Column="1" Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb3DVisualisation" Stretch="Uniform">
+                <my:VisualisationEdubot Grid.Column="1" Grid.Row="2" Width="600" Height="600" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
+            </Viewbox>
             <!--<Button Content="Visualisierung in eigenem Fenster anzeigen" Grid.Column="1" Grid.Row="1" Height="33" HorizontalAlignment="Left" Margin="4,97,0,0" Name="ExtVis" VerticalAlignment="Top" Width="157" Click="ExtVis_Click" />-->
-        <Viewbox Grid.Column="1" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb2DVisualisation" Stretch="Uniform">
-            <my:Visualisation2D HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="600" Width="600"/>
-        </Viewbox>
+            <Viewbox Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="vb2DVisualisation" Stretch="Uniform">
+                <my:Visualisation2D HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="600" Width="600"/>
+            </Viewbox>
+        </Grid>
+        
         <!--<my:Visualisation3D Grid.Column="1" Grid.Row="2" Width="Auto" Height="{Binding Height}" HorizontalAlignment="Stretch" Margin="0" x:Name="visualisation3D"/>
         <my:Visualisation2D Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="Auto" Width="{Binding Height}"/>-->
         <!--<my:Visualisation2D Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="visualisation2D" VerticalAlignment="Stretch" Height="Auto" Width="Auto" />-->

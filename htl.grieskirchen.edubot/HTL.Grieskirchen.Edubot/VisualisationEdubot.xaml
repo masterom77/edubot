@@ -7,9 +7,10 @@
              d:DesignHeight="600" d:DesignWidth="600">
     <Grid>
         
-        <Viewport3D ClipToBounds="True" Margin="127,91,138,79">
+        <Viewport3D ClipToBounds="True" Margin="127,91,138,79" Name="vpVisualization">
             <Viewport3D.Camera>
                 <PerspectiveCamera FieldOfView="45" FarPlaneDistance="3652.3" NearPlaneDistance="0.1" Position="-252.9,832.4,970.4" LookDirection="0.200720480529247,-0.705406247917093,-0.679789168857256" />
+                <!--<PerspectiveCamera FieldOfView="65" FarPlaneDistance="3652.3" NearPlaneDistance="0.1" Position="-300,417.4,1278.4" LookDirection="0.2,-0.5,-2" />-->
             </Viewport3D.Camera>
             <ModelVisual3D x:Name="World">
                 <ModelVisual3D x:Name="AmbientLightContainer">

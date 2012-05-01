@@ -13,6 +13,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Ink;
 using HTL.Grieskirchen.Edubot.API.Commands;
+using HTL.Grieskirchen.Edubot.API.Adapters;
+using HTL.Grieskirchen.Edubot.Settings;
+using System.ComponentModel;
 
 namespace HTL.Grieskirchen.Edubot.Controls
 {
@@ -35,6 +38,33 @@ namespace HTL.Grieskirchen.Edubot.Controls
             MouseLeftButtonDown += SetOrigin;
             MouseLeftButtonUp += AddStrokes;
             MouseMove += UpdateShape;
+        }
+
+        VirtualAdapter visualisationAdapter;
+
+        public VirtualAdapter VisualisationAdapter
+        {
+            get { return visualisationAdapter; }
+            set { visualisationAdapter = value;
+            Remeasure();
+            }
+        }
+
+        private VisualizationConfig configuration;
+
+        public VisualizationConfig Configuration
+        {
+            get { return configuration; }
+            set { configuration = value;
+            configuration.PropertyChanged += ApplyConfiguration;
+            }
+        }
+
+        private void ApplyConfiguration(object sender, PropertyChangedEventArgs args) {
+            if (args.PropertyName == "Length2") {
+                
+                VisualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2),90,-90,45,-45);
+            }
         }
 
         #region Undo/Redo
@@ -264,8 +294,8 @@ namespace HTL.Grieskirchen.Edubot.Controls
             }
         }
 
-        public List<MVSCommand> GenerateMovementCommands() {
-            List<MVSCommand> commands = new List<MVSCommand>();
+        public List<API.Commands.ICommand> GenerateMovementCommands() {
+            List<API.Commands.ICommand> commands = new List<API.Commands.ICommand>();
             bool firstPoint;
             int sizePerQuadrant = (int)ActualHeight/2;
             
@@ -275,15 +305,16 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 {
                     int x = (int) point.X - sizePerQuadrant;
                     int y = (int)((ActualHeight - point.Y) - sizePerQuadrant);// -sizePerQuadrant;
-
                     if (firstPoint)
                     {
                         //move to starting pointn of stroke without drawing a line --> Z = 0
+                        commands.Add(new UseToolCommand(false));
                         commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 0)));
+                        commands.Add(new UseToolCommand(true));
                         firstPoint = false;
                     }
                     else {
-                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 1)));
+                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 0)));
                     }
                 }
             }
@@ -297,7 +328,8 @@ namespace HTL.Grieskirchen.Edubot.Controls
             {
                 RenderGrid(drawingContext);
             }
-            drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(300, 300), 300, 300);
+            RenderWorkingArea(drawingContext);
+            //drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(300, 300), 300, 300);
             drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(0, ActualHeight / 2), new Point(ActualWidth, ActualHeight / 2));
             drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(ActualWidth / 2, 0), new Point(ActualWidth / 2, ActualHeight));
             if (IsDrawingShape && Mouse.LeftButton == MouseButtonState.Pressed){
@@ -384,6 +416,67 @@ namespace HTL.Grieskirchen.Edubot.Controls
             int radiusY = (int)(currentPosition.Y - origin.Y) / 2;
             drawingContext.DrawEllipse(null, new Pen(Brushes.Black, DefaultDrawingAttributes.Width), new Point(origin.X + radiusX, origin.Y + radiusY), Math.Abs(radiusX), Math.Abs(radiusY));
                         
+        }
+
+        protected void RenderWorkingArea(DrawingContext drawingContext)
+        {
+            if (visualisationAdapter != null)
+            {
+                float radius = visualisationAdapter.Length + visualisationAdapter.Length2;
+
+                if (visualisationAdapter.MaxPrimaryAngle == float.MaxValue && visualisationAdapter.MaxSecondaryAngle == float.MaxValue && visualisationAdapter.MinPrimaryAngle == float.MinValue && visualisationAdapter.MinSecondaryAngle == float.MinValue)
+                {
+                    drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(radius, radius), radius, radius);
+                }
+                else
+                {
+                    Point startPoint;
+                    Point endPoint;
+
+                    float xPrimMax = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
+                    float yPrimMax = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
+float xPrimMin = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle));
+                    float yPrimMin = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle));
+                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), new Point(xPrimMax, yPrimMax), new Point(xPrimMin, yPrimMin),new Size(radius,radius), visualisationAdapter.MaxPrimaryAngle+Math.Abs(visualisationAdapter.MinPrimaryAngle) > 180);
+
+                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), new Point(xPrimMax);
+                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), endPoint);
+
+                    float xSecMax = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle));
+                    float ySecMax = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle));
+                    float xSecMin = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle));
+                    float ySecMin = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle));
+                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), new Point(xSecMax, ySecMax), new Point(xSecMin, ySecMin), new Size(visualisationAdapter.Length2, visualisationAdapter.Length2), visualisationAdapter.MaxSecondaryAngle > 180);
+                   
+                    //startPoint = new Point(x, y);
+                    //x = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle + visualisationAdapter.MinSecondaryAngle));
+                    //y = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle + visualisationAdapter.MinSecondaryAngle));
+                    //endPoint = new Point(x, y);
+                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), startPoint);
+                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), endPoint);
+                    
+                    //DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), startPoint, endPoint, new Size(radius, radius), visualisationAdapter.MaxPrimaryAngle+visualisationAdapter.MaxSecondaryAngle + Math.Abs(visualisationAdapter.MinPrimaryAngle) + Math.Abs(visualisationAdapter.MinSecondaryAngle) >180);
+                }
+            }
+        }
+
+
+        //http://blogs.vertigo.com/personal/ralph/Blog/Lists/Posts/Post.aspx?ID=5
+        void DrawArc(DrawingContext drawingContext, Brush brush,
+    Pen pen, Point start, Point end, Size radius, bool isLargeArc)
+        {
+            PathGeometry geometry = new PathGeometry();
+            PathFigure figure = new PathFigure();
+            geometry.Figures.Add(figure);
+            figure.StartPoint = start;
+            figure.Segments.Add(new ArcSegment(end, radius,
+                0, isLargeArc, SweepDirection.Counterclockwise, true));
+            drawingContext.DrawGeometry(brush, pen, geometry);
+        }
+
+        private void Remeasure() {
+            this.Width = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
+            this.Height = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
         }
         #endregion
     }
