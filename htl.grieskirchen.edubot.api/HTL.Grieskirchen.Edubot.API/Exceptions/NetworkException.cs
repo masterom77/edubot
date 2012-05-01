@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HTL.Grieskirchen.Edubot.API.Adapters;
+using System.Net.Sockets;
 
 namespace HTL.Grieskirchen.Edubot.API.Exceptions
 {
-    public class AdapterException : Exception
+    public class NetworkException : Exception
     {
-        AdapterType adapter;
 
-        public AdapterException(AdapterType adapter, string msg) : base(msg) {
-            this.adapter = adapter;
+        public NetworkException(string msg) : base(msg) {
+        
         }
     }
 }
