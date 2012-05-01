@@ -54,7 +54,8 @@ namespace HTL.Grieskirchen.Edubot
         {
             get { return configuration; }
             set { configuration = value;
-            configuration.PropertyChanged += InvalidateDrawing;
+            configuration.PropertyChanged += ApplyConfiguration;
+              
             }
         }
 
@@ -62,16 +63,49 @@ namespace HTL.Grieskirchen.Edubot
         public VirtualAdapter VisualisationAdapter
         {
             get { return visualisationAdapter; }
-            set { visualisationAdapter = value;
-            visualisationAdapter.OnAbort += StopAnimation;
-            visualisationAdapter.OnHoming += StartHoming;
-            InvalidateVisual();
-            }
+        }
+
+        //public void SetVisualisationAdapter(VirtualAdapter adapter)
+        //{
+        //    if (visualisationAdapter != null) {
+        //        RemoveVisualisationAdapter();
+        //    }
+        //    visualisationAdapter = adapter;
+        //    visualisationAdapter.OnAbort += StopAnimation;
+        //    visualisationAdapter.OnMovementStarted += StartMoving;
+        //    visualisationAdapter.OnHoming += StartHoming;
+        //    visualisationAdapter.OnToolUsed += UseTool;
+        //    InvalidateVisual();
+        //}
+
+        //public VirtualAdapter RemoveVisualisationAdapter()
+        //{
+        //    visualisationAdapter.OnAbort -= StopAnimation;
+        //    visualisationAdapter.OnMovementStarted -= StartMoving;
+        //    visualisationAdapter.OnHoming -= StartHoming;
+        //    visualisationAdapter.OnToolUsed -= UseTool;
+        //    InvalidateVisual();
+        //    return visualisationAdapter;
+        //}
+
+        private void UseTool(object sender, EventArgs args)
+        {
+            visualisationAdapter.State = API.State.READY;
         }
 
         private void StartHoming(object sender, EventArgs args)
         {
             new System.Threading.Thread(Home).Start(args);
+        }
+
+        private void StartMoving(object sender, EventArgs args)
+        {
+            if (configuration.VisualizationEnabled)
+            {
+                animationThread = new System.Threading.Thread(Move);
+                animationThread.Start(((MovementStartedEventArgs)args).Result);
+            }
+           // new System.Threading.Thread(Move).Start(args);
         }
 
         private void Home(object args)
@@ -81,44 +115,79 @@ namespace HTL.Grieskirchen.Edubot
                 HomingEventArgs e = (HomingEventArgs)args;
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                bool primaryCorrected = false;
-                bool secondaryCorrected = false;
+                if (configuration.AnimateHoming)
+                {
+                    bool primaryCorrected = false;
+                    bool secondaryCorrected = false;
+                    float ticks = 5;
+                    while (!primaryCorrected || !secondaryCorrected)
+                    {
+                        ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                        System.Threading.Thread.Sleep((int)ticks);
+                        if (anglePrimaryAxis > e.CorrectionAngle || anglePrimaryAxis < -e.CorrectionAngle)
+                        {
+                            if (anglePrimaryAxis > e.CorrectionAngle)
+                            {
+                                Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis - e.CorrectionAngle));
+                            }
+                            else
+                            {
+                                Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis + e.CorrectionAngle));
+                            }
+                        }
+                        else
+                        {
+                            primaryCorrected = true;
+                        }
+
+                        if (angleSecondaryAxis > e.CorrectionAngle || angleSecondaryAxis < -e.CorrectionAngle)
+                        {
+                            if (angleSecondaryAxis > e.CorrectionAngle)
+                            {
+                                Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis - e.CorrectionAngle));
+                            }
+                            else
+                            {
+                                Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis + e.CorrectionAngle));
+                            }
+                        }
+                        else
+                        {
+                            secondaryCorrected = true;
+                        }
+                    }
+                }
+                else
+                {
+                   
+                    Dispatcher.Invoke(updatePrimaryAngle,new object[]{ 0f});
+                    Dispatcher.Invoke(updateSecondaryAngle, new object[]{0f});
+                
+                }
+                visualisationAdapter.State = API.State.READY;
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+
+            }
+        }
+
+
+        
+
+        public void Move(object args) {
+            InterpolationResult result = (InterpolationResult)args;
+            try
+            {
+                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                while (!primaryCorrected || !secondaryCorrected)
+                foreach (InterpolationStep step in result.Angles)
                 {
                     ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
                     System.Threading.Thread.Sleep((int)ticks);
-                    if (anglePrimaryAxis > e.CorrectionAngle || anglePrimaryAxis < -e.CorrectionAngle)
-                    {
-                        if (anglePrimaryAxis > e.CorrectionAngle)
-                        {
-                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis - e.CorrectionAngle));
-                        }
-                        else
-                        {
-                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis + e.CorrectionAngle));
-                        }
-                    }
-                    else
-                    {
-                        primaryCorrected = true;
-                    }
-
-                    if (angleSecondaryAxis > e.CorrectionAngle || angleSecondaryAxis < -e.CorrectionAngle)
-                    {
-                        if (angleSecondaryAxis > e.CorrectionAngle)
-                        {
-                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis - e.CorrectionAngle));
-                        }
-                        else
-                        {
-                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis + e.CorrectionAngle));
-                        }
-                    }
-                    else
-                    {
-                        secondaryCorrected = true;
-                    }
+                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -149,19 +218,66 @@ namespace HTL.Grieskirchen.Edubot
                     animationThread = new System.Threading.Thread(StartAnimation);
                     animationThread.Start();
                 }
+                //if (configuration.VisualizationEnabled)
+                //{
+                //    animationThread = new System.Threading.Thread(StartAnimation);
+                //    animationThread.Start();
+                //}
             
             
         }
 
-
+        
 
         #endregion
+        #region Settings
+
+        private void ApplyConfiguration(object sender, PropertyChangedEventArgs property)
+        {
+
+            if (property.PropertyName == "Length" || property.PropertyName == "Length2")
+            {
+                if (visualisationAdapter != null)
+                {
+                    visualisationAdapter.Length = float.Parse(configuration.Length);
+                    visualisationAdapter.Length2 = float.Parse(configuration.Length2);
+                }
+                //SCALE AXES
+            }
+            if (property.PropertyName == "IsEdubotModelSelected") {
+                anglePrimaryAxis = 0;
+                angleSecondaryAxis = 0;
+            }
+            if (property.PropertyName == "VisualizationEnabled")
+            {
+                if (configuration.VisualizationEnabled)
+                {
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2));
+                    visualisationAdapter.OnAbort += StopAnimation;
+                    visualisationAdapter.OnMovementStarted += StartMoving;
+                    visualisationAdapter.OnHoming += StartHoming;
+                    visualisationAdapter.OnToolUsed += UseTool;
+                    API.Edubot.GetInstance().RegisterAdapter("2DVisualization", visualisationAdapter);
+                }
+                else
+                {
+                    if (visualisationAdapter != null)
+                    {
+                        visualisationAdapter.OnAbort -= StopAnimation;
+                        visualisationAdapter.OnMovementStarted -= StartMoving;
+                        visualisationAdapter.OnHoming -= StartHoming;
+                        visualisationAdapter.OnToolUsed -= UseTool;
+                        API.Edubot.GetInstance().DeregisterAdapter("2DVisualization");
+                    }
+                }
+            }
+            InvalidateVisual();
+        }
+        #endregion
+
 
         #region ---------------------Animation-----------------------
 
-        private void InvalidateDrawing(object sender, PropertyChangedEventArgs property) {
-            InvalidateVisual();
-        }
 
         delegate void UpdateCallback(float val);
         public double AnglePrimaryAxis
@@ -224,7 +340,8 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
-        private void StartAnimation() {
+        private void StartAnimation()
+        {
             try
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
@@ -241,8 +358,8 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 visualisationAdapter.State = API.State.READY;
             }
-            catch (System.Threading.ThreadAbortException) {
-                
+            catch (System.Threading.ThreadAbortException)
+            {
             }
         }
 

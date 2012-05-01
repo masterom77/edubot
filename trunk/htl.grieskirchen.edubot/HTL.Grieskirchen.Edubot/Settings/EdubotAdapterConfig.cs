@@ -10,11 +10,11 @@ namespace HTL.Grieskirchen.Edubot.Settings
     [Serializable]
     public class EdubotAdapterConfig : IConfiguration
     {
-        public const string NAME = "Default";
+        public const string NAME = "Edubot";
 
         public EdubotAdapterConfig() {
-            availableTools = new Dictionary<string, ITool>();
-            availableTools.Add("Virtuell", new VirtualTool());
+            //availableTools = new Dictionary<string, ITool>();
+            //availableTools.Add("Virtuell", new VirtualTool());
         }
 
         string ipAddress;
@@ -37,54 +37,12 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
-        bool autoConnect;
-
-        public bool AutoConnect
-        {
-            get { return autoConnect; }
-            set { autoConnect = value;
-            NotifyPropertyChanged("AutoConnect");
-            }
+        public void Reset() {
+            IpAddress = "192.168.0.40"; 
+            Port = 12000; 
+            SelectedTool = "Virtuell";
         }
-
-        [NonSerialized]
-        string connectionState = "Nicht verbunden";
         
-        public string ConnectionState
-        {
-            get
-            {
-                return connectionState;
-            }
-            set {
-                connectionState = value;
-                NotifyPropertyChanged("ConnectionState");
-                NotifyPropertyChanged("FieldsEnabled");
-            }
-        }
-
-        public bool FieldsEnabled {
-            get {
-                return connectionState == "Nicht verbunden" || connectionState == "Verbindung fehlgeschlagen";
-            }
-        }
-
-        private void ActualizeConnectionState() {
-            IAdapter adapter;
-            ConnectionState = "Nicht verbunden";
-            if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter))
-            {
-                ConnectionState = "Verbindung testen...";
-                if (((EdubotAdapter)adapter).TestConnectivity())
-                {
-                    ConnectionState = "Bereit";
-                }
-                else {
-                    ConnectionState = "Verbindung fehlgeschlagen";
-                }
-            }   
-        }
-
         public override void Apply()
         {
             API.Edubot edubot = API.Edubot.GetInstance();
@@ -95,7 +53,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             //        break;
             //}
             edubot.RegisterAdapter(NAME, new EdubotAdapter(realTool,System.Net.IPAddress.Parse(ipAddress), port));
-            new System.Threading.Thread(ActualizeConnectionState).Start();
+            //new System.Threading.Thread(ActualizeConnectionState).Start();
         }
     }
 }

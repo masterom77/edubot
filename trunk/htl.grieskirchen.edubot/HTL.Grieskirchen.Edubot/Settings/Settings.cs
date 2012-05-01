@@ -11,19 +11,41 @@ namespace HTL.Grieskirchen.Edubot.Settings
     [Serializable]
     public class Settings : INotifyPropertyChanged
     {
-
+        
         public Settings() {
-            edubotConfig = new EdubotAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
-            kebaConfig = new KebaAdapterConfig() { Length = "150", Length2 = "150", IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
-            visualizationConfig = new VisualizationConfig() { Length = "150", Length2 = "150", VisualizationEnabled = true, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, SelectedTool = "Virtuell", VisualizedAdapter = VisualizationConfig.NAME2D };
-            edubotConfig.PropertyChanged += Save;
-            kebaConfig.PropertyChanged += Save;
-            visualizationConfig.PropertyChanged += Save;
+            edubotConfig = new EdubotAdapterConfig() {IpAddress = "192.168.0.100", Port = 3000, SelectedTool = "Virtuell" };
+            kebaConfig = new KebaAdapterConfig() { IpAddress = "192.168.0.101", ReceiverPort = 3000, SenderPort = 3001, SelectedTool = "Virtuell" };
+            visualizationConfig = new VisualizationConfig() { Length = "300", Length2 = "300", VisualizationEnabled = true, AnimateHoming = false, ShowGrid = false, ShowLabels = false, Speed = 50, Steps = 10, SelectedTool = "Virtuell", IsEdubotModelSelected=true};
+            //edubotConfig.PropertyChanged += Save;
+            //kebaConfig.PropertyChanged += Save;
+            //visualizationConfig.PropertyChanged += Save;
         }
 
-        private void Save(object sender, EventArgs e) {
+        public void Save() {
             Settings.Save(this);
         }
+
+        public void Reset()
+        {
+            edubotConfig.IpAddress = "192.168.0.100";
+            edubotConfig.Port = 3000;
+            edubotConfig.SelectedTool = "Virtuell";
+            kebaConfig.IpAddress = "192.168.0.101";
+            kebaConfig.ReceiverPort = 3000;
+            kebaConfig.SenderPort = 3001;
+            kebaConfig.SelectedTool = "Virtuell";
+            visualizationConfig.Length = "300";
+            visualizationConfig.Length2 = "300";
+            visualizationConfig.VisualizationEnabled = true;
+            visualizationConfig.AnimateHoming = false;
+            visualizationConfig.ShowGrid = false;
+            visualizationConfig.ShowLabels = false;
+            visualizationConfig.Speed = 50;
+            visualizationConfig.Steps = 10;
+            visualizationConfig.SelectedTool = "Virtuell";
+            Settings.Save(this);
+        }
+
         EdubotAdapterConfig edubotConfig;
 
         public EdubotAdapterConfig EdubotConfig
@@ -60,7 +82,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             Settings settings = null;
             try
             {
-                stream = new System.IO.FileStream("settings.xml", System.IO.FileMode.Create);
+                stream = new System.IO.FileStream("settings.xml", System.IO.FileMode.Open);
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(Settings));
                 settings = (Settings)serializer.Deserialize(stream);
             }
@@ -78,16 +100,16 @@ namespace HTL.Grieskirchen.Edubot.Settings
         }
 
         public void Apply() {
-            if (edubotConfig.AutoConnect)
-            {
-                edubotConfig.Apply();
-            }
-            if (kebaConfig.AutoConnect)
-            {
-                kebaConfig.Apply();
-            }
+            //if (edubotConfig.AutoConnect)
+            //{
+            //    edubotConfig.Apply();
+            //}
+            //if (kebaConfig.AutoConnect)
+            //{
+            //    kebaConfig.Apply();
+            //}
             visualizationConfig.Apply();
-            Settings.Save(this);
+            //Settings.Save(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

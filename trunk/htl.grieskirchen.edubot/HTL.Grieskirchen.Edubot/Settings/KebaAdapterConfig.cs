@@ -48,43 +48,50 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
-        bool autoConnect;
+        //bool autoConnect;
 
-        public bool AutoConnect
-        {
-            get { return autoConnect; }
-            set { autoConnect = value;
-            NotifyPropertyChanged("AutoConnect");
-            }
-        }
+        //public bool AutoConnect
+        //{
+        //    get { return autoConnect; }
+        //    set { autoConnect = value;
+        //    NotifyPropertyChanged("AutoConnect");
+        //    }
+        //}
 
-        public string ConnectionState
-        {
-            get
-            {
-                IAdapter adapter;
-                string state = "Disconnected";
-                if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter)) {
-                    if (((EdubotAdapter)adapter).TestConnectivity())
-                    {
-                        state = "Connected";
-                    }
-                }                
-                return state;
-            }
+        //public string ConnectionState
+        //{
+        //    get
+        //    {
+        //        IAdapter adapter;
+        //        string state = "Disconnected";
+        //        if (API.Edubot.GetInstance().RegisteredAdapters.TryGetValue(NAME, out adapter)) {
+        //            if (((EdubotAdapter)adapter).TestConnectivity())
+        //            {
+        //                state = "Connected";
+        //            }
+        //        }                
+        //        return state;
+        //    }
+        //}
+
+        public void Reset() {
+            IpAddress = "192.168.0.101";
+            ReceiverPort = 3000;
+            SenderPort = 3001;
+            SelectedTool = "Virtuell";
         }
 
         public override void Apply()
         {
-            API.Edubot edubot = API.Edubot.GetInstance();
-            edubot.DeregisterAdapter(NAME);
+            //API.Edubot edubot = API.Edubot.GetInstance();
+            //edubot.DeregisterAdapter(NAME);
 
-            ITool realTool = null;
-            switch (selectedTool)
-            {
-                case "Virtuell": realTool = new VirtualTool();
-                    break;
-            }
+            //ITool realTool = null;
+            //switch (selectedTool)
+            //{
+            //    case "Virtuell": realTool = new VirtualTool();
+            //        break;
+            //}
             //edubot.RegisterAdapter(NAME, new KebaAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress), senderPort, receiverPort));
         }
     }

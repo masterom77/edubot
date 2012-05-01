@@ -8,8 +8,8 @@
     <Grid>
              <Viewport3D ClipToBounds="True" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="vpVisualization">
             <Viewport3D.Camera>
-                <PerspectiveCamera FieldOfView="60" FarPlaneDistance="100" LookDirection="-6,-6,-2" NearPlaneDistance="0.1" Position="10,11,3.2" UpDirection="0,1,0"/>
-                <!--<PerspectiveCamera FieldOfView="10.8" LookDirection="0,-1,0" Position="0,100,0" UpDirection="-1,0,0"/>-->
+                <!--<PerspectiveCamera FieldOfView="60" FarPlaneDistance="100" LookDirection="-6,-6,-2" NearPlaneDistance="0.1" Position="10,11,3.2" UpDirection="0,1,0"/>-->
+                <PerspectiveCamera FieldOfView="10.8" LookDirection="0,-1,0" Position="0,100,0" UpDirection="-1,0,0"/>
                 <!--<PerspectiveCamera FieldOfView="31" FarPlaneDistance="100" LookDirection="0,-7,-1" NearPlaneDistance="0.1" Position="0,35,5" UpDirection="-1,0,0"/>-->
             </Viewport3D.Camera>
             <ModelVisual3D x:Name="World" >

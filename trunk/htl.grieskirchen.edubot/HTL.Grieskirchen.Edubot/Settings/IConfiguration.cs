@@ -20,41 +20,41 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
-        protected string length;
+        //protected string length;
 
-        public string Length
-        {
-            get { return length; }
-            set
-            {
-                length = value;
-                NotifyPropertyChanged("Length");
-            }
-        }
+        //public string Length
+        //{
+        //    get { return length; }
+        //    set
+        //    {
+        //        length = value;
+        //        NotifyPropertyChanged("Length");
+        //    }
+        //}
 
-        protected string length2;
+        //protected string length2;
 
-        public string Length2
-        {
-            get { return length2; }
-            set
-            {
-                length2 = value;
-                NotifyPropertyChanged("Length2");
-            }
-        }
+        //public string Length2
+        //{
+        //    get { return length2; }
+        //    set
+        //    {
+        //        length2 = value;
+        //        NotifyPropertyChanged("Length2");
+        //    }
+        //}
 
-        [NonSerialized]
-        protected Dictionary<String, ITool> availableTools;
+        //[NonSerialized]
+        //protected Dictionary<String, ITool> availableTools;
 
-        public List<String> AvailableTools {
-            get
-            {
-                if (availableTools == null) {
-                    availableTools = new Dictionary<string, ITool>();
-                } 
-                return availableTools.Keys.ToList(); }
-        }
+        //public List<String> AvailableTools {
+        //    get
+        //    {
+        //        if (availableTools == null) {
+        //            availableTools = new Dictionary<string, ITool>();
+        //        } 
+        //        return availableTools.Keys.ToList(); }
+        //}
 
         protected void NotifyPropertyChanged(String property)
         {

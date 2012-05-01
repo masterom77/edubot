@@ -168,7 +168,7 @@ namespace HTL.Grieskirchen.Edubot
             set
             {
                 configuration = value;
-                configuration.PropertyChanged += InvalidateDrawing;
+                configuration.PropertyChanged += ApplyConfiguration;
             }
         }
 
@@ -176,16 +176,50 @@ namespace HTL.Grieskirchen.Edubot
         public VirtualAdapter VisualisationAdapter
         {
             get { return visualisationAdapter; }
-            set { visualisationAdapter = value;
-            visualisationAdapter.OnAbort += StopAnimation;
-            visualisationAdapter.OnHoming += StartHoming;
-            InvalidateVisual();
-            }
+        }
+
+        //public void SetVisualisationAdapter(VirtualAdapter adapter)
+        //{
+        //    if (visualisationAdapter != null)
+        //    {
+        //        RemoveVisualisationAdapter();
+        //    }
+        //    visualisationAdapter = adapter;
+        //    visualisationAdapter.OnAbort += StopAnimation;
+        //    visualisationAdapter.OnMovementStarted += StartMoving;
+        //    visualisationAdapter.OnHoming += StartHoming;
+        //    visualisationAdapter.OnToolUsed += UseTool;
+        //    InvalidateVisual();
+        //}
+
+        //public VirtualAdapter RemoveVisualisationAdapter()
+        //{
+        //    visualisationAdapter.OnAbort -= StopAnimation;
+        //    visualisationAdapter.OnMovementStarted -= StartMoving;
+        //    visualisationAdapter.OnHoming -= StartHoming;
+        //    visualisationAdapter.OnToolUsed -= UseTool;
+        //    InvalidateVisual();
+        //    return visualisationAdapter;
+        //}
+
+        private void UseTool(object sender, EventArgs args)
+        {
+            visualisationAdapter.State = API.State.READY;
         }
 
         private void StartHoming(object sender, EventArgs args)
         {
             new System.Threading.Thread(Home).Start(args);
+        }
+
+        private void StartMoving(object sender, EventArgs args)
+        {
+            if (configuration.VisualizationEnabled)
+            {
+                animationThread = new System.Threading.Thread(Move);
+                animationThread.Start(((MovementStartedEventArgs)args).Result);
+            }
+            // new System.Threading.Thread(Move).Start(args);
         }
 
         private void Home(object args)
@@ -195,44 +229,54 @@ namespace HTL.Grieskirchen.Edubot
                 HomingEventArgs e = (HomingEventArgs)args;
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                bool primaryCorrected = false;
-                bool secondaryCorrected = false;
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                while (!primaryCorrected || !secondaryCorrected)
+                if (configuration.AnimateHoming)
                 {
-                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                    System.Threading.Thread.Sleep((int)ticks);
-                    if (anglePrimaryAxis > e.CorrectionAngle || anglePrimaryAxis < -e.CorrectionAngle)
+                    bool primaryCorrected = false;
+                    bool secondaryCorrected = false;
+                    float ticks = 5;
+                    while (!primaryCorrected || !secondaryCorrected)
                     {
-                        if (anglePrimaryAxis > e.CorrectionAngle)
+                        ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                        System.Threading.Thread.Sleep((int)ticks);
+                        if (anglePrimaryAxis > e.CorrectionAngle || anglePrimaryAxis < -e.CorrectionAngle)
                         {
-                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis - e.CorrectionAngle));
+                            if (anglePrimaryAxis > e.CorrectionAngle)
+                            {
+                                Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis - e.CorrectionAngle));
+                            }
+                            else
+                            {
+                                Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis + e.CorrectionAngle));
+                            }
                         }
                         else
                         {
-                            Dispatcher.Invoke(updatePrimaryAngle, (float)(anglePrimaryAxis + e.CorrectionAngle));
+                            primaryCorrected = true;
                         }
-                    }
-                    else
-                    {
-                        primaryCorrected = true;
-                    }
 
-                    if (angleSecondaryAxis > e.CorrectionAngle || angleSecondaryAxis < -e.CorrectionAngle)
-                    {
-                        if (angleSecondaryAxis > e.CorrectionAngle)
+                        if (angleSecondaryAxis > e.CorrectionAngle || angleSecondaryAxis < -e.CorrectionAngle)
                         {
-                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis - e.CorrectionAngle));
+                            if (angleSecondaryAxis > e.CorrectionAngle)
+                            {
+                                Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis - e.CorrectionAngle));
+                            }
+                            else
+                            {
+                                Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis + e.CorrectionAngle));
+                            }
                         }
                         else
                         {
-                            Dispatcher.Invoke(updateSecondaryAngle, (float)(angleSecondaryAxis + e.CorrectionAngle));
+                            secondaryCorrected = true;
                         }
                     }
-                    else
-                    {
-                        secondaryCorrected = true;
-                    }
+                }
+                else
+                {
+
+                    Dispatcher.Invoke(updatePrimaryAngle, new object[] { 0f });
+                    Dispatcher.Invoke(updateSecondaryAngle, new object[] { 0f });
+
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -241,6 +285,30 @@ namespace HTL.Grieskirchen.Edubot
 
             }
         }
+
+        public void Move(object args)
+        {
+            InterpolationResult result = (InterpolationResult)args;
+            try
+            {
+                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                foreach (InterpolationStep step in result.Angles)
+                {
+                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    System.Threading.Thread.Sleep((int)ticks);
+                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                }
+                visualisationAdapter.State = API.State.READY;
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+
+            }
+        }
+
 
         private List<InterpolationStep> angles;
         /// <summary>
@@ -252,15 +320,47 @@ namespace HTL.Grieskirchen.Edubot
             set
             {
                 angles = value;
-                if (configuration.VisualizationEnabled)
-                {
-                    animationThread = new System.Threading.Thread(StartAnimation);
-                    animationThread.Start();
-                }
+                //if (configuration.VisualizationEnabled)
+                //{
+                //    animationThread = new System.Threading.Thread(StartAnimation);
+                //    animationThread.Start();
+                //}
             }
         }
 
         #endregion
+
+        private void ApplyConfiguration(object sender, PropertyChangedEventArgs property)
+        {
+            if (property.PropertyName == "VisualizationEnabled" || property.PropertyName == "IsEdubotModelSelected")
+            {
+                if (configuration.VisualizationEnabled && configuration.IsEdubotModelSelected)
+                {
+                    configuration.Length = "200";
+                    configuration.Length2 = "230";
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length),float.Parse(configuration.Length2));
+                    visualisationAdapter.OnAbort += StopAnimation;
+                    visualisationAdapter.OnMovementStarted += StartMoving;
+                    visualisationAdapter.OnHoming += StartHoming;
+                    visualisationAdapter.OnToolUsed += UseTool;
+                    anglePrimaryAxis = 0;
+                    angleSecondaryAxis = 0;
+                    API.Edubot.GetInstance().RegisterAdapter("EdubotVisualization", visualisationAdapter);
+                }
+                else
+                {
+                    if (visualisationAdapter != null)
+                    {
+                        visualisationAdapter.OnAbort -= StopAnimation;
+                        visualisationAdapter.OnMovementStarted -= StartMoving;
+                        visualisationAdapter.OnHoming -= StartHoming;
+                        visualisationAdapter.OnToolUsed -= UseTool;
+                        API.Edubot.GetInstance().DeregisterAdapter("EdubotVisualization");
+                    }
+                }
+            }
+            InvalidateVisual();
+        }
 
         #region ---------------------Animation-----------------------
 
@@ -326,26 +426,26 @@ namespace HTL.Grieskirchen.Edubot
         /// <summary>
         /// Starts the animation of the virtual robot
         /// </summary>
-        private void StartAnimation() {
-            try
-            {
-                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                foreach (InterpolationStep step in angles)
-                {
-                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                    System.Threading.Thread.Sleep((int)ticks);
-                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
-                }
-                visualisationAdapter.State = API.State.READY;
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
+        //private void StartAnimation() {
+        //    try
+        //    {
+        //        UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+        //        UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+        //        float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+        //        foreach (InterpolationStep step in angles)
+        //        {
+        //            ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+        //            System.Threading.Thread.Sleep((int)ticks);
+        //            Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+        //            Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+        //        }
+        //        visualisationAdapter.State = API.State.READY;
+        //    }
+        //    catch (System.Threading.ThreadAbortException)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         private void StopAnimation(object sender, EventArgs args)
         {
@@ -375,84 +475,75 @@ namespace HTL.Grieskirchen.Edubot
         #region ---------------------Rendering---------------------
         protected override void OnRender(DrawingContext drawingContext)
         {
-            //if (configuration.VisualizationEnabled)
-            //{
-            //    Visualization.Visibility = Visibility.Visible;
-            //    if (configuration.ShowGrid)
-            //    {
-            //    //    RenderGrid(drawingContext);
-            //    }
-            //    base.OnRender(drawingContext);
-            //    //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(0, ActualHeight / 2 - 1), new Point(ActualWidth, ActualHeight / 2 - 1));
-            //    //drawingContext.DrawLine(new Pen(Brushes.Gray, 3), new Point(ActualWidth / 2 - 1, 0), new Point(ActualWidth / 2 - 1, ActualHeight));
-            //    if (configuration.ShowLabels)
-            //    {
-            //    //    RenderLabels(drawingContext);
-            //    }
-            //}
-            //else
-            //{
-            //    base.OnRender(drawingContext);
-            //    vpVisualization.Visibility = Visibility.Hidden;
-            //    FormattedText text = new FormattedText("Visualisierung deaktiviert", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Red);
-            //    drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Width / 2, ActualHeight / 2 - text.Height / 2));
-            //}
-        }
-
-        protected void RenderGrid(DrawingContext drawingContext)
-        {
-            float stepSize = (float)ActualWidth / (configuration.Steps* 2);
-            for (int col = 0; col < configuration.Steps * 2; col++)
+            if (configuration.VisualizationEnabled)
             {
-                drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(0, stepSize * col), new Point(ActualWidth, stepSize * col));
-            }
-            for (int row = 0; row < configuration.Steps * 2; row++)
-            {
-                drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(stepSize * row, 0), new Point(stepSize * row, ActualHeight));
-            }
-        }
-
-        protected void RenderLabels(DrawingContext drawingContext)
-        {
-            double stepSize;
-            double pixelPerPoint;
-            double length;
-            if (visualisationAdapter != null)
-            {
-                length = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
-                stepSize = (int)(length / (configuration.Steps * 2));
-                pixelPerPoint = ActualWidth / length;
+                vpVisualization.Visibility = Visibility.Visible;
+                
+                base.OnRender(drawingContext);
             }
             else
             {
-                length = ActualWidth;
-                stepSize = (int)(ActualWidth / configuration.Steps);
-                pixelPerPoint = 1;
-            }
-            //double offset = ActualWidth / steps;
-
-            for (int col = 0; col < configuration.Steps * 2 + 1; col++)
-            {
-                float yPos = (float) (col * stepSize * pixelPerPoint);
-                int y = (int)(length/2-(col * stepSize));
-                if (y == 0) {
-                    continue;
-                }
-                FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
-                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , yPos-text.Height/2));
-            }
-            for (int row = 0; row < configuration.Steps * 2 + 1; row++)
-            {
-                float xPos = (float)(row * stepSize * pixelPerPoint);
-                int x = (int)(length / 2 - (row * stepSize));
-                if (x == 0)
-                {
-                    continue;
-                }
-                FormattedText text = new FormattedText(x.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
-                drawingContext.DrawText(text, new Point(xPos - text.Width / 2, ActualWidth / 2 + 5));
+                base.OnRender(drawingContext);
+                vpVisualization.Visibility = Visibility.Hidden;
+                FormattedText text = new FormattedText("Visualisierung deaktiviert", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Red);
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 - text.Width / 2, ActualHeight / 2 - text.Height / 2));
             }
         }
+
+        //protected void RenderGrid(DrawingContext drawingContext)
+        //{
+        //    float stepSize = (float)ActualWidth / (configuration.Steps* 2);
+        //    for (int col = 0; col < configuration.Steps * 2; col++)
+        //    {
+        //        drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(0, stepSize * col), new Point(ActualWidth, stepSize * col));
+        //    }
+        //    for (int row = 0; row < configuration.Steps * 2; row++)
+        //    {
+        //        drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(stepSize * row, 0), new Point(stepSize * row, ActualHeight));
+        //    }
+        //}
+
+        //protected void RenderLabels(DrawingContext drawingContext)
+        //{
+        //    double stepSize;
+        //    double pixelPerPoint;
+        //    double length;
+        //    if (visualisationAdapter != null)
+        //    {
+        //        length = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
+        //        stepSize = (int)(length / (configuration.Steps * 2));
+        //        pixelPerPoint = ActualWidth / length;
+        //    }
+        //    else
+        //    {
+        //        length = ActualWidth;
+        //        stepSize = (int)(ActualWidth / configuration.Steps);
+        //        pixelPerPoint = 1;
+        //    }
+        //    //double offset = ActualWidth / steps;
+
+        //    for (int col = 0; col < configuration.Steps * 2 + 1; col++)
+        //    {
+        //        float yPos = (float) (col * stepSize * pixelPerPoint);
+        //        int y = (int)(length/2-(col * stepSize));
+        //        if (y == 0) {
+        //            continue;
+        //        }
+        //        FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
+        //        drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , yPos-text.Height/2));
+        //    }
+        //    for (int row = 0; row < configuration.Steps * 2 + 1; row++)
+        //    {
+        //        float xPos = (float)(row * stepSize * pixelPerPoint);
+        //        int x = (int)(length / 2 - (row * stepSize));
+        //        if (x == 0)
+        //        {
+        //            continue;
+        //        }
+        //        FormattedText text = new FormattedText(x.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
+        //        drawingContext.DrawText(text, new Point(xPos - text.Width / 2, ActualWidth / 2 + 5));
+        //    }
+        //}
         #endregion
     }
 }
