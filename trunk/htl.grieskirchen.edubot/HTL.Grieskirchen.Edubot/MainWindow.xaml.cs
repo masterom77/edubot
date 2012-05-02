@@ -300,7 +300,7 @@ namespace HTL.Grieskirchen.Edubot
 
                 if ((bool)dialog.ShowDialog())
                 {
-                    Open(dialog.FileName);
+                   tbCodeArea.Text = Open(dialog.FileName);
                 }
             }
         }
@@ -320,7 +320,7 @@ namespace HTL.Grieskirchen.Edubot
 
         private void SaveChanges() {
             if (!saved) {
-                MessageBoxResult response = MessageBox.Show("Möchten Sie die Änderungen in \"" + currentFile.Substring(currentFile.LastIndexOf('\\')+1)+"\" speichern?", "Edubot", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                MessageBoxResult response = MessageBox.Show("Möchten Sie die Änderungen in \"" +(currentFile == null ? "\"Script1\"" : currentFile.Substring(currentFile.LastIndexOf('\\')+1))+"\" speichern?", "Edubot", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
                 if (response == MessageBoxResult.Yes) {
                     if (currentFile == null)

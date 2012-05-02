@@ -33,6 +33,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeComponent();
 
             posSecondaryEngine = MeshSecondaryEngine.Content.Bounds;
+            offsetZ = 0;
             drawnPoints = new List<Point>();
             AnglePrimaryAxis = 0;
             AnglePrimaryAxis = 0;
@@ -40,6 +41,7 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         private Rect3D posSecondaryEngine;
+        private double offsetZ;
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
         private System.Threading.Thread animationThread;
@@ -177,6 +179,7 @@ namespace HTL.Grieskirchen.Edubot
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                UpdateCallback updateTertiaryAngle = new UpdateCallback(UpdateTertiaryAxis);
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
                 foreach (InterpolationStep step in result.Angles)
                 {
@@ -184,6 +187,7 @@ namespace HTL.Grieskirchen.Edubot
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                    Dispatcher.Invoke(updateTertiaryAngle, result.Angles.Count);
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -204,24 +208,24 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
-        public void Animate(InterpolationResult result) { 
+        //public void Animate(InterpolationResult result) { 
             
-            angles = result.Angles;
-            tertiarySpeed = result.IncrZ;
+        //    angles = result.Angles;
+        //    tertiarySpeed = result.IncrZ;
             
-            if (configuration.VisualizationEnabled)
-                {
-                    animationThread = new System.Threading.Thread(StartAnimation);
-                    animationThread.Start();
-                }
-                //if (configuration.VisualizationEnabled)
-                //{
-                //    animationThread = new System.Threading.Thread(StartAnimation);
-                //    animationThread.Start();
-                //}
+        //    if (configuration.VisualizationEnabled)
+        //        {
+        //            animationThread = new System.Threading.Thread(StartAnimation);
+        //            animationThread.Start();
+        //        }
+        //        //if (configuration.VisualizationEnabled)
+        //        //{
+        //        //    animationThread = new System.Threading.Thread(StartAnimation);
+        //        //    animationThread.Start();
+        //        //}
             
             
-        }
+        //}
 
 
 
@@ -282,40 +286,44 @@ namespace HTL.Grieskirchen.Edubot
             set
             {
                 //int dir = value < 0 ? -1 : 1;
+
+                double toolRange = MeshPen.Content.Bounds.Y + MeshPen.Content.Bounds.SizeY;
+                offsetZ += value;
                 Transform3DGroup transformGroup = new Transform3DGroup();
-                transformGroup.Children.Add(new TranslateTransform3D(new Vector3D(0,0,value)));
+                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
+                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));
+                transformGroup.Children.Add(new TranslateTransform3D(new Vector3D(offsetZ, 0, 0)));
                 
+                //MeshPen.Transform = transformGroup;
                 
-                MeshPen.Transform = transformGroup;
                 
 
-
-                angleSecondaryAxis = value;
+                
             }
         }
 
-        private void StartAnimation()
-        {
-            try
-            {
-                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                UpdateCallback updateTertiaryPosition = new UpdateCallback(UpdateTertiaryAxis);
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                foreach (InterpolationStep step in angles)
-                {
-                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                    System.Threading.Thread.Sleep((int)ticks);
-                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
-                    Dispatcher.Invoke(updateTertiaryPosition, tertiarySpeed);
-                }
-                visualisationAdapter.State = API.State.READY;
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
-            }
-        }
+        //private void StartAnimation()
+        //{
+        //    try
+        //    {
+        //        UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
+        //        UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+        //        UpdateCallback updateTertiaryPosition = new UpdateCallback(UpdateTertiaryAxis);
+        //        float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+        //        foreach (InterpolationStep step in angles)
+        //        {
+        //            ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+        //            System.Threading.Thread.Sleep((int)ticks);
+        //            Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+        //            Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+        //            Dispatcher.Invoke(updateTertiaryPosition, tertiarySpeed);
+        //        }
+        //        visualisationAdapter.State = API.State.READY;
+        //    }
+        //    catch (System.Threading.ThreadAbortException)
+        //    {
+        //    }
+        //}
 
         private void StopAnimation(object sender, EventArgs args)
         {
@@ -385,7 +393,7 @@ namespace HTL.Grieskirchen.Edubot
                     configuration.MaxSecondaryAngle = float.MaxValue.ToString();
                     configuration.MinSecondaryAngle = float.MinValue.ToString();
                     configuration.Transmission = "0";
-                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2));
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2),30,0);
                     visualisationAdapter.OnAbort += StopAnimation;
                     visualisationAdapter.OnMovementStarted += StartMoving;
                     visualisationAdapter.OnHoming += StartHoming;

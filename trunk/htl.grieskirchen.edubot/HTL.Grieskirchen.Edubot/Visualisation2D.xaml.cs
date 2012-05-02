@@ -181,6 +181,7 @@ namespace HTL.Grieskirchen.Edubot
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
+                UpdateCallback updateTertiaryAngle = new UpdateCallback(UpdateTertiaryAxis);
                 float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
                 foreach (InterpolationStep step in result.Angles)
                 {
@@ -188,6 +189,7 @@ namespace HTL.Grieskirchen.Edubot
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                    //Dispatcher.Invoke(updateTertiaryAngle, step.Alpha3);
                 }
                 visualisationAdapter.State = API.State.READY;
             }
@@ -227,7 +229,32 @@ namespace HTL.Grieskirchen.Edubot
             
         }
 
-        
+
+        public void ScaleAxes() {
+
+            float primaryScaleRatio = visualisationAdapter.Length / ((visualisationAdapter.Length + visualisationAdapter.Length2)/2);
+            float secondaryScaleRatio = 2 - primaryScaleRatio;
+
+            double primaryAxisWidth = MeshPrimaryAxis.Content.Bounds.SizeZ;
+            double secondaryAxisX = MeshSecondaryAxis.Content.Bounds.Z;
+
+            ScaleTransform3D primaryScale = new ScaleTransform3D(1, 1, primaryScaleRatio);
+            ScaleTransform3D secondaryScale = new ScaleTransform3D(1, 1, secondaryScaleRatio);
+            MeshPrimaryAxis.Transform = primaryScale;
+            double offset = primaryAxisWidth - primaryAxisWidth*primaryScaleRatio;
+            //if(relLength > 1){
+            //    offset *= -1;
+            //}
+
+            TranslateTransform3D primaryOffset = new TranslateTransform3D(0, 0, offset);
+            TranslateTransform3D secondaryOffset = new TranslateTransform3D(0,0,(secondaryAxisX*secondaryScaleRatio-secondaryAxisX)*-1);
+            Transform3DGroup transform = new Transform3DGroup();
+            transform.Children.Add(secondaryScale);
+            transform.Children.Add(secondaryOffset);
+            MeshSecondaryEngine.Transform = primaryOffset;
+
+            MeshSecondaryAxis.Transform = transform;
+        }
 
         #endregion
         #region Settings
@@ -239,10 +266,13 @@ namespace HTL.Grieskirchen.Edubot
                 if (property.PropertyName == "Length")
                 {
                     visualisationAdapter.Length = float.Parse(configuration.Length);
+                    ScaleAxes();
+                     
                 }
                 if (property.PropertyName == "Length2")
                 {
                     visualisationAdapter.Length2 = float.Parse(configuration.Length2);
+                    ScaleAxes();
                 }
                 if (property.PropertyName == "VerticalToolRange")
                 {
