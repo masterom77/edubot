@@ -9,6 +9,9 @@ Die Benutzeroberfläche für diesen Anwendungszweck besteht aus zwei Textfeldern
 Bei Klick auf den entsprechenden Button, analysiert die Klasse CommandParser den eingegebenen Text auf richtige Syntax. Fehlen Semikolons oder Klammern so wird eine InvalidSyntaxException, mit einer passenden Meldung ausgelöst. Diese Meldung wird in der Konsole angezeigt und informiert den Benutzer über Fehler im Code. Ist die Syntax des Befehls richtig, so wird dieser, gemeinsam mit den Parameterwerten, der CommandBuilder-Klasse übergeben.\\
 Diese Klasse ermittelt um welches Command es sich genau handelt und versucht ein entsprechend Objekt aus der Edubot-API zu erzeugen. Wird bei der Generierung eine fehlerhafte Parameteranzahl beziehungsweise ungültige Werte entdeckt, so wird eine InvalidParameterException mit Details über den Fehler ausgelöst und in der Konsole angezeigt. Das erzeugte Objekt wird einer Liste mit Befehlen hinzugefügt, welche nach erfolgreicher Kompilierung an die Edubot-Klasse übergeben wird.
 
+\subsubsection{Bedienung}
+Die Bedienung der Kommandozeile ist für den Anwender relativ simpel. Um zum Einggabefeld für den Code zu gelangen muss lediglich auf das Tab "'Kommandozeile"' geklickt werden. Anschließend erscheint auch schon der entsprechende Editor, in den nun beliebige Befehle eingegeben werden können. Durch einen Klick auf das "Play"-Symbol in der Werkzeugleiste werden die Eingabe kompiliert und anschließend ausgeführt. Je nach Anzahl und Art der registrierten Adapter kann die Dauer der Ausführung variieren.
+
 \subsubsection{Umsetzung}
 Durch die, von der API zur Verfügung gestellte, Kommando-Infrastruktur war die Umsetzung dieser Aufgabe relativ einfach. Die größte Herausforderung war das Entwickeln der CommandParser-Klasse, da diese eine gültige Syntax gewährleisten muss. Ist die Syntax gültig so werden die extrahierten Informationen der CommandBuilder-Klasse übergeben, welche daraus entsprechende ICommand-Objekte erzeugt.\\
 \\
@@ -41,5 +44,3 @@ Die Methode BuildUseToolCommand wird aufgerufen wenn es sich beim eingegebenen B
 Anschließend wird versucht den Wert mit Hilfe der bool.TryParse-Methode in einen boolschen Wert zu konvertieren. Schlägt die Konvertierung fehl oder entspricht die Länge des Arrays nicht der Vorgabe, so wird eine InvalidParameterException mit einer entsprechenden Nachricht ausgelöst.
 \end{itemize}
 
-\subsubsection{Bedienung}
-Die Bedienung der Kommandozeile ist für den Anwender relativ simpel. Um zum Einggabefeld für den Code zu gelangen muss lediglich auf das Tab "'Kommandozeile"' geklickt werden. Anschließend erscheint auch schon der entsprechende Editor, in den nun beliebige Befehle eingegeben werden können. Durch einen Klick auf das "Play"-Symbol in der Werkzeugleiste werden die Eingabe kompiliert und anschließend ausgeführt. Je nach Anzahl und Art der registrierten Adapter kann die Dauer der Ausführung variieren.
