@@ -21,13 +21,15 @@ Bei der Befestigung der zweiten Achse (sekundär Achse) wurde im Prinzip gleich 
 Der Motor der Primären Achse wurde direkt mit der Grundlatte des Motors verschraubt und läuft damit wenig Gefahr durch Verwindung oder Verrutschen die Positionierung des Arms zu verfälschen.
 Der Motor der Sekundären Achse Achse wurde an das zweite Gelenk geschraubt, welches seinerseits direkt mit der primären Achse verbunden ist. Durch die Positionierung des zweiten Motors ohne zusätzlichen Abstsand direkt über dem zweiten Gelenk war es möglich die Verbindung mit der Wellenverlängerung direkt im Gelenk herzustellen und damit auf eine Komplexere Konstruktion zu verzichten. Die folgende Grafik zeigt am Beispiel des ersten Motors, wie die Verbindung der Motorwelle mit der Wellenverlängerung gelöst wurde: [todo]
 \end{itemize}
-\subsubsection{Planung der Elektronik}
+\subsubsection{Planung und Bau der Elektronik}
 Die Planung der Elektronik war ein stetiger Prozess und ging einher mit dem Versuchsweisen Aufbau der jeweiligen Planungsergebnisse. Grob unterteilen lässt sich die Entwicklung jedoch in zwei Phasen:
 \begin{itemize}
 \item \textbf{Versuchsweiser Aufbau mit direkter Ansteuerung}\\
-In einem ersten Anlauf wurde der Versuch unternommen, die gesammte Ansteuerung der Microcontroller und damit auch deren Versorgung mit dem Entsprechenden Taktsignal welches zum Verfahren der Schritte 
-\item \textbf{Versuchsweiser Aufbau mit Microcontroller Steuerung}\\
+In einem ersten Anlauf wurde der Versuch unternommen, die gesammte Ansteuerung der Schrittmotorsteuerungen und damit auch deren Versorgung mit dem Entsprechenden Taktsignal welches zum Verfahren der Schritte benötigt wird, über USB Modul für den PC zu realisieren. Der Vorteil dieser Konstruktion wäre gewesen, dass eine solche Ansteuerung wesentlich leichter zu realisieren gewesen wäre. Nach einigen Versuchen mit diesem Aufbau stellte sich jedoch heraus, dass durch mangelnde Echtzeitqualitäten von Microsoft Windows die Ausgabe des sehr hochfrequenten Taktsignals nicht stabil möglich war.
+\item \textbf{Versuchsweiser Aufbau mit Mikrocontroller Steuerung}\\
+Auf Basis der gewonnenen Erfahrungen aus dem Aufbau ohne Mikrocontroller, wurde nun überlegt wie das Taktsignal stabilisiert werden könnte und wie eine Ausgabe mit höherer Frequenz möglich werden würde. Es wurde schließlich beschlossen, die Ausgabe des Taktsignals, sowie sämtliche direkt mit der Elektronik des Roboters zusammenhängende Aufgaben von einem Mikrocontroller übernehmen zu lassen. Der Mikrocontroller wird über die Netzwerkschnittstelle mit Daten über die Verfahrbewegung versorgt und kann schließlich die Elektronik des Roboters autonom steuern.
+\item \textbf{Endaufbau am Modell mit Endschaltern}\\
+Nach Fertigstellung des Holzmodells wurde der zuerst nur Versuchsweise Aufbau der oben Beschriebenen Variante mit Mikrocontroller in dieses Modell eingebaut. In diesem Schritt wurden nun auch die Schalter für den Homing Prozess, welche einfache Kontaktflächen darstellen, eigebaut und mit dem Mikrocontroller verbunden.
+Zum Schluss war es noch nötig, die endgültige Schaltung zu Verlöten und durch den Einsatz eines Spannungsteilers das Labornetzteil zu ersetzen.
 \end{itemize}
 Die folgende Grafik zeigt die Schematische Darstellung der Elektronik des Edubot Modells wie sie schlussendlich bei der Abgabe dieses Projektes verbaut war. Bei der Erstellung der Grafik wurde zu gunsten der Übersichtlichkeit nicht darauf geachtet dass sich die Anschlüsse an den der Realität entsprechendenden Seiten der Bauteile befinden, die Farbzuordnungen der Verbindungen entsprechen jedoch jenen der Tatsächlich verbauten Hardware.
-\subsubsection{Bau der Elektronik}
-Wie bereits im vorhergehenden Kapitel erwähnt waren Bau und Planung der Elektronik ein stetiger Prozess und miteinander eng verwoben. Aus diesem Grund wird hier nicht näher auf die einzelnen Schritte die beim Bau der Elektronik vorgenommen wurden eingegangen, sondern lediglich die Endausfertigung kurz erklärt.
