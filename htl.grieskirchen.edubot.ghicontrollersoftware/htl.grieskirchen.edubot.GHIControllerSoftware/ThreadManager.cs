@@ -48,6 +48,8 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
             int[] secondarySteps = Executer.secondarySteps;
             bool[] primaryDir = Executer.primaryDir;
             bool[] secondaryDir = Executer.secondaryDir;
+            int curPrimarySteps = 0;
+            int curSecondarySteps = 0;
 
             //Split the message into steps
             for (int i = 0; i < positions.Length; i++)
@@ -61,57 +63,98 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
                     break;
                 }
 
-
-
-                primStepBuffer[0] = Double.Parse(stepcontainer[0]) / 0.1125;
-                primStepBuffer[0] += primStepBuffer[1];
-                primStepBuffer[1] = primStepBuffer[0] % 1;
-                if (stepcontainer[0].Substring(0, 1) == "-" && primStepBuffer[0] > 0)
-                {
+                primarySteps[i] = int.Parse(stepcontainer[0]);
+                if (primarySteps[i] < 0) {
                     primaryDir[i] = true;
-                    primStepBuffer[1] *= -1;
-
+                    primarySteps[i] *= -1;
                 }
-                else
-                {
-                    if (primStepBuffer[0] < 0)
-                    {
-                        primStepBuffer[0] *= -1;
-                        primaryDir[i] = true;
-                    }
-                    else
-                    {
-                        primaryDir[i] = false;
-                    }
 
-                }
-                primarySteps[i] = (int)primStepBuffer[0];
-
-
-
-                secStepBuffer[0] = Double.Parse(stepcontainer[1]) / 0.1125;
-                secStepBuffer[0] += secStepBuffer[1];
-                secStepBuffer[1] = secStepBuffer[0] % 1;
-                if (stepcontainer[1].Substring(0, 1) == "-" && secStepBuffer[0] > 0)
+                secondarySteps[i] = int.Parse(stepcontainer[1]);
+                if (secondarySteps[i] < 0)
                 {
                     secondaryDir[i] = false;
-                    secStepBuffer[1] *= -1;
-
+                    secondarySteps[i] *= -1;
                 }
-                else
-                {
-                    if (secStepBuffer[0] < 0)
-                    {
-                        secStepBuffer[0] *= -1;
-                        secondaryDir[i] = false;
-                    }
-                    else
-                    {
-                        secondaryDir[i] = true;
-                    }
-
+                else {
+                    secondaryDir[i] = true;
                 }
-                secondarySteps[i] = (int)secStepBuffer[0];
+
+
+
+                //primStepBuffer[0] = Double.Parse(stepcontainer[0]) / 0.1125;
+                //if (stepcontainer[0].Substring(0, 1) == "-" && primStepBuffer[0] > 0)
+                //{
+                //    primaryDir[i] = true;
+                //    primStepBuffer[1] *= -1;
+
+                //}
+                //else
+                //{
+                //    if (primStepBuffer[0] < 0)
+                //    {
+                //        primStepBuffer[0] *= -1;
+                //        primaryDir[i] = true;
+                //    }
+                //    else
+                //    {
+                //        primaryDir[i] = false;
+                //    }
+                //}
+                //if (primStepBuffer[0] % 1 > 0.5) { 
+                //    primarySteps[i] = (int)primStepBuffer[]
+                //}
+
+
+
+            //    primStepBuffer[0] = Double.Parse(stepcontainer[0]) / 0.1125;
+            //    primStepBuffer[0] += primStepBuffer[1];
+            //    primStepBuffer[1] = primStepBuffer[0] % 1;
+            //    if (stepcontainer[0].Substring(0, 1) == "-" && primStepBuffer[0] > 0)
+            //    {
+            //        primaryDir[i] = true;
+            //        primStepBuffer[1] *= -1;
+
+            //    }
+            //    else
+            //    {
+            //        if (primStepBuffer[0] < 0)
+            //        {
+            //            primStepBuffer[0] *= -1;
+            //            primaryDir[i] = true;
+            //        }
+            //        else
+            //        {
+            //            primaryDir[i] = false;
+            //        }
+
+            //    }
+            //    primarySteps[i] = (int)primStepBuffer[0];
+
+
+
+            //    secStepBuffer[0] = Double.Parse(stepcontainer[1]) / 0.1125;
+            //    secStepBuffer[0] += secStepBuffer[1];
+            //    secStepBuffer[1] = secStepBuffer[0] % 1;
+            //    if (stepcontainer[1].Substring(0, 1) == "-" && secStepBuffer[0] > 0)
+            //    {
+            //        secondaryDir[i] = false;
+            //        secStepBuffer[1] *= -1;
+
+            //    }
+            //    else
+            //    {
+            //        if (secStepBuffer[0] < 0)
+            //        {
+            //            secStepBuffer[0] *= -1;
+            //            secondaryDir[i] = false;
+            //        }
+            //        else
+            //        {
+            //            secondaryDir[i] = true;
+            //        }
+
+            //    }
+            //    secondarySteps[i] = (int)secStepBuffer[0];
 
             }
             
@@ -186,7 +229,7 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
                           {
                               Debug.Print("HomingInitiated");
                               Executer.action = 1;
-                              m_clientSocket.Send(Encoding.UTF8.GetBytes("ready"));
+                              //m_clientSocket.Send(Encoding.UTF8.GetBytes("ready"));
                               message = "";
                           }
                           else
