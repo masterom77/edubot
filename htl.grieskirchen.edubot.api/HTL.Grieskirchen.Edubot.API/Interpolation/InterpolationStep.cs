@@ -90,5 +90,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             return alpha1.ToString(info) + ";" + alpha2.ToString(info) + ";" + alpha3.ToString(info);
         }
 
+
+
     }
 }

@@ -116,6 +116,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
         }
 
+        
+
         /// <summary>
         /// Closes the connection to the controller and stops the running network-listener.
         /// </summary>
@@ -140,7 +142,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //socket.SendBufferSize = Int32.MaxValue;
             try{
             Point3D target = (Point3D)param;
-            byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ToString());
+
+            string test = InterpolationResult.ConverToStepString();
+            byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ConverToStepString());
             socket.Send(content);
 
             toolCenterPoint = target;
