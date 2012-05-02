@@ -67,65 +67,84 @@
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Allgemeines und Aufbau}{subsection.3.1}% 67
 \BOOKMARK [3][-]{subsubsection.3.1.3}{Anfertigung und Vorbereitung der Modelle}{subsection.3.1}% 68
 \BOOKMARK [3][-]{subsubsection.3.1.4}{Programmierung der Animation}{subsection.3.1}% 69
-\BOOKMARK [1][-]{section.4}{Komponenten der API}{}% 70
-\BOOKMARK [2][-]{subsection.4.1}{Die Edubot-Klasse}{section.4}% 71
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Aufgaben}{subsection.4.1}% 72
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Aufbau}{subsection.4.1}% 73
-\BOOKMARK [3][-]{subsubsection.4.1.3}{Umsetzung}{subsection.4.1}% 74
-\BOOKMARK [2][-]{subsection.4.2}{Adapter-System}{section.4}% 75
-\BOOKMARK [3][-]{subsubsection.4.2.1}{Aufgaben}{subsection.4.2}% 76
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Aufbau}{subsection.4.2}% 77
-\BOOKMARK [3][-]{subsubsection.4.2.3}{Umsetzung}{subsection.4.2}% 78
-\BOOKMARK [2][-]{subsection.4.3}{Listener-System}{section.4}% 79
-\BOOKMARK [3][-]{subsubsection.4.3.1}{Aufgaben}{subsection.4.3}% 80
-\BOOKMARK [3][-]{subsubsection.4.3.2}{Aufbau}{subsection.4.3}% 81
-\BOOKMARK [3][-]{subsubsection.4.3.3}{Umsetzung}{subsection.4.3}% 82
-\BOOKMARK [2][-]{subsection.4.4}{Zustands-System}{section.4}% 83
-\BOOKMARK [3][-]{subsubsection.4.4.1}{Aufgaben}{subsection.4.4}% 84
-\BOOKMARK [3][-]{subsubsection.4.4.2}{Aufbau}{subsection.4.4}% 85
-\BOOKMARK [3][-]{subsubsection.4.4.3}{Umsetzung}{subsection.4.4}% 86
-\BOOKMARK [2][-]{subsection.4.5}{Kommando-System}{section.4}% 87
-\BOOKMARK [3][-]{subsubsection.4.5.1}{Aufgaben}{subsection.4.5}% 88
-\BOOKMARK [3][-]{subsubsection.4.5.2}{Aufbau}{subsection.4.5}% 89
-\BOOKMARK [3][-]{subsubsection.4.5.3}{Umsetzung}{subsection.4.5}% 90
-\BOOKMARK [2][-]{subsection.4.6}{Event-System}{section.4}% 91
-\BOOKMARK [3][-]{subsubsection.4.6.1}{Aufgaben}{subsection.4.6}% 92
-\BOOKMARK [3][-]{subsubsection.4.6.2}{Aufbau}{subsection.4.6}% 93
-\BOOKMARK [3][-]{subsubsection.4.6.3}{Umsetzung}{subsection.4.6}% 94
-\BOOKMARK [2][-]{subsection.4.7}{Kinematik}{section.4}% 95
-\BOOKMARK [3][-]{subsubsection.4.7.1}{Aufgaben}{subsection.4.7}% 96
-\BOOKMARK [3][-]{subsubsection.4.7.2}{Aufbau}{subsection.4.7}% 97
-\BOOKMARK [3][-]{subsubsection.4.7.3}{Umsetzung}{subsection.4.7}% 98
-\BOOKMARK [2][-]{subsection.4.8}{Interpolation}{section.4}% 99
-\BOOKMARK [3][-]{subsubsection.4.8.1}{Aufgaben}{subsection.4.8}% 100
-\BOOKMARK [3][-]{subsubsection.4.8.2}{Aufbau}{subsection.4.8}% 101
-\BOOKMARK [3][-]{subsubsection.4.8.3}{Umsetzung}{subsection.4.8}% 102
-\BOOKMARK [1][-]{section.5}{Komponenten des Edubot Modells}{}% 103
-\BOOKMARK [2][-]{subsection.5.1}{Allgemein}{section.5}% 104
-\BOOKMARK [3][-]{subsubsection.5.1.1}{Funktionen}{subsection.5.1}% 105
-\BOOKMARK [3][-]{subsubsection.5.1.2}{Bedienung}{subsection.5.1}% 106
-\BOOKMARK [2][-]{subsection.5.2}{Elektronik}{section.5}% 107
-\BOOKMARK [3][-]{subsubsection.5.2.1}{Motoren und Steuerungen}{subsection.5.2}% 108
-\BOOKMARK [2][-]{subsection.5.3}{Mikrocontroller}{section.5}% 109
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Allgemein}{subsection.5.3}% 110
-\BOOKMARK [3][-]{subsubsection.5.3.2}{Die Klasse Executer}{subsection.5.3}% 111
-\BOOKMARK [3][-]{subsubsection.5.3.3}{Der Taktgeber}{subsection.5.3}% 112
-\BOOKMARK [3][-]{subsubsection.5.3.4}{Die Engine Klasse}{subsection.5.3}% 113
-\BOOKMARK [3][-]{subsubsection.5.3.5}{Die ThreadManager Klasse}{subsection.5.3}% 114
-\BOOKMARK [3][-]{subsubsection.5.3.6}{Der Homing Algorithmus}{subsection.5.3}% 115
-\BOOKMARK [2][-]{subsection.5.4}{Konstruktion der Mechanik}{section.5}% 116
-\BOOKMARK [2][-]{subsection.5.5}{Bau der Mechanik}{section.5}% 117
-\BOOKMARK [3][-]{subsubsection.5.5.1}{Planung der Elektronik}{subsection.5.5}% 118
-\BOOKMARK [3][-]{subsubsection.5.5.2}{Bau der Elektronik}{subsection.5.5}% 119
-\BOOKMARK [2][-]{subsection.5.6}{Kostenaufstellung}{section.5}% 120
-\BOOKMARK [2][-]{subsection.5.7}{Verbesserungsm\366glichkeiten}{section.5}% 121
-\BOOKMARK [1][-]{section.6}{Komponenten des KEBA Modells}{}% 122
-\BOOKMARK [2][-]{subsection.6.1}{Allgemein}{section.6}% 123
-\BOOKMARK [3][-]{subsubsection.6.1.1}{Vorhandene Software}{subsection.6.1}% 124
-\BOOKMARK [3][-]{subsubsection.6.1.2}{Vorhandene Hardware}{subsection.6.1}% 125
-\BOOKMARK [2][-]{subsection.6.2}{Motoren}{section.6}% 126
-\BOOKMARK [2][-]{subsection.6.3}{Netzwerkschnittstell}{section.6}% 127
-\BOOKMARK [3][-]{subsubsection.6.3.1}{OSCAT Library}{subsection.6.3}% 128
-\BOOKMARK [3][-]{subsubsection.6.3.2}{Implementierung}{subsection.6.3}% 129
-\BOOKMARK [3][-]{subsubsection.6.3.3}{Ablauf der Netzwerkkommunikation}{subsection.6.3}% 130
-\BOOKMARK [1][-]{section*.10}{Literatur}{}% 131
+\BOOKMARK [2][-]{subsection.3.2}{Kommandozeile}{section.3}% 70
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Aufgaben}{subsection.3.2}% 71
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Aufbau}{subsection.3.2}% 72
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Bedienung}{subsection.3.2}% 73
+\BOOKMARK [3][-]{subsubsection.3.2.4}{Umsetzung}{subsection.3.2}% 74
+\BOOKMARK [2][-]{subsection.3.3}{Zeichenfl\344che}{section.3}% 75
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Aufgaben}{subsection.3.3}% 76
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Aufbau}{subsection.3.3}% 77
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Bedienung der Oberfl\344che}{subsection.3.3}% 78
+\BOOKMARK [3][-]{subsubsection.3.3.4}{Umsetzung der Zeichenfunktion}{subsection.3.3}% 79
+\BOOKMARK [3][-]{subsubsection.3.3.5}{Umsetzung der Undo/Redo-Funktion}{subsection.3.3}% 80
+\BOOKMARK [2][-]{subsection.3.4}{Einstellungen}{section.3}% 81
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Aufgaben}{subsection.3.4}% 82
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Aufbau}{subsection.3.4}% 83
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Bedienung der Oberfl\344che}{subsection.3.4}% 84
+\BOOKMARK [3][-]{subsubsection.3.4.4}{Umsetzung}{subsection.3.4}% 85
+\BOOKMARK [2][-]{subsection.3.5}{Handbuch}{section.3}% 86
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Aufgaben}{subsection.3.5}% 87
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Aufbau}{subsection.3.5}% 88
+\BOOKMARK [3][-]{subsubsection.3.5.3}{Umsetzung}{subsection.3.5}% 89
+\BOOKMARK [1][-]{section.4}{Komponenten der API}{}% 90
+\BOOKMARK [2][-]{subsection.4.1}{Die Edubot-Klasse}{section.4}% 91
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Aufgaben}{subsection.4.1}% 92
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Aufbau}{subsection.4.1}% 93
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Umsetzung}{subsection.4.1}% 94
+\BOOKMARK [2][-]{subsection.4.2}{Adapter-System}{section.4}% 95
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Aufgaben}{subsection.4.2}% 96
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Aufbau}{subsection.4.2}% 97
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Umsetzung}{subsection.4.2}% 98
+\BOOKMARK [2][-]{subsection.4.3}{Listener-System}{section.4}% 99
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Aufgaben}{subsection.4.3}% 100
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Aufbau}{subsection.4.3}% 101
+\BOOKMARK [3][-]{subsubsection.4.3.3}{Umsetzung}{subsection.4.3}% 102
+\BOOKMARK [2][-]{subsection.4.4}{Zustands-System}{section.4}% 103
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Aufgaben}{subsection.4.4}% 104
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Aufbau}{subsection.4.4}% 105
+\BOOKMARK [3][-]{subsubsection.4.4.3}{Umsetzung}{subsection.4.4}% 106
+\BOOKMARK [2][-]{subsection.4.5}{Kommando-System}{section.4}% 107
+\BOOKMARK [3][-]{subsubsection.4.5.1}{Aufgaben}{subsection.4.5}% 108
+\BOOKMARK [3][-]{subsubsection.4.5.2}{Aufbau}{subsection.4.5}% 109
+\BOOKMARK [3][-]{subsubsection.4.5.3}{Umsetzung}{subsection.4.5}% 110
+\BOOKMARK [2][-]{subsection.4.6}{Event-System}{section.4}% 111
+\BOOKMARK [3][-]{subsubsection.4.6.1}{Aufgaben}{subsection.4.6}% 112
+\BOOKMARK [3][-]{subsubsection.4.6.2}{Aufbau}{subsection.4.6}% 113
+\BOOKMARK [3][-]{subsubsection.4.6.3}{Umsetzung}{subsection.4.6}% 114
+\BOOKMARK [2][-]{subsection.4.7}{Kinematik}{section.4}% 115
+\BOOKMARK [3][-]{subsubsection.4.7.1}{Aufgaben}{subsection.4.7}% 116
+\BOOKMARK [3][-]{subsubsection.4.7.2}{Aufbau}{subsection.4.7}% 117
+\BOOKMARK [3][-]{subsubsection.4.7.3}{Umsetzung}{subsection.4.7}% 118
+\BOOKMARK [2][-]{subsection.4.8}{Interpolation}{section.4}% 119
+\BOOKMARK [3][-]{subsubsection.4.8.1}{Aufgaben}{subsection.4.8}% 120
+\BOOKMARK [3][-]{subsubsection.4.8.2}{Aufbau}{subsection.4.8}% 121
+\BOOKMARK [3][-]{subsubsection.4.8.3}{Umsetzung}{subsection.4.8}% 122
+\BOOKMARK [1][-]{section.5}{Komponenten des Edubot Modells}{}% 123
+\BOOKMARK [2][-]{subsection.5.1}{Allgemein}{section.5}% 124
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Funktionen}{subsection.5.1}% 125
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Bedienung}{subsection.5.1}% 126
+\BOOKMARK [2][-]{subsection.5.2}{Elektronik}{section.5}% 127
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Motoren und Steuerungen}{subsection.5.2}% 128
+\BOOKMARK [2][-]{subsection.5.3}{Mikrocontroller}{section.5}% 129
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Allgemein}{subsection.5.3}% 130
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Die Klasse Executer}{subsection.5.3}% 131
+\BOOKMARK [3][-]{subsubsection.5.3.3}{Der Taktgeber}{subsection.5.3}% 132
+\BOOKMARK [3][-]{subsubsection.5.3.4}{Die Engine Klasse}{subsection.5.3}% 133
+\BOOKMARK [3][-]{subsubsection.5.3.5}{Die ThreadManager Klasse}{subsection.5.3}% 134
+\BOOKMARK [3][-]{subsubsection.5.3.6}{Der Homing Algorithmus}{subsection.5.3}% 135
+\BOOKMARK [2][-]{subsection.5.4}{Konstruktion der Mechanik}{section.5}% 136
+\BOOKMARK [2][-]{subsection.5.5}{Bau der Mechanik}{section.5}% 137
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Planung und Bau der Elektronik}{subsection.5.5}% 138
+\BOOKMARK [2][-]{subsection.5.6}{Kostenaufstellung}{section.5}% 139
+\BOOKMARK [2][-]{subsection.5.7}{Verbesserungsm\366glichkeiten}{section.5}% 140
+\BOOKMARK [1][-]{section.6}{Komponenten des KEBA Modells}{}% 141
+\BOOKMARK [2][-]{subsection.6.1}{Allgemein}{section.6}% 142
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Vorhandene Software}{subsection.6.1}% 143
+\BOOKMARK [3][-]{subsubsection.6.1.2}{Vorhandene Hardware}{subsection.6.1}% 144
+\BOOKMARK [2][-]{subsection.6.2}{Motoren}{section.6}% 145
+\BOOKMARK [2][-]{subsection.6.3}{Netzwerkschnittstell}{section.6}% 146
+\BOOKMARK [3][-]{subsubsection.6.3.1}{OSCAT Library}{subsection.6.3}% 147
+\BOOKMARK [3][-]{subsubsection.6.3.2}{Implementierung}{subsection.6.3}% 148
+\BOOKMARK [3][-]{subsubsection.6.3.3}{Ablauf der Netzwerkkommunikation}{subsection.6.3}% 149
+\BOOKMARK [1][-]{section*.17}{Literatur}{}% 150

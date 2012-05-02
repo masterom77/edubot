@@ -12,38 +12,54 @@ Die Verfahren zur direkten beziehungsweise indirekten Kinematik sind in der Klas
 Die im Aufbau erwähnten Methoden der Kinematics-Klasse sind wie folgt implementiert:
 \begin{itemize}
 \item \textbf{CalculateDirect}\\
-Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr der Referenzwinkel $\varphi$, die Innenwinkel $\beta$ und $\gamma$, sowie die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, als float-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.\\
+Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr die Winkelstellungen der ersten Achse $\alpha_1$ und der zeiten Achse $\alpha_2$, sowie die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, als float-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/Direktkinematik} 
+    \caption{Skizze zur direkten Kinematik}
+  \end{minipage}
+\end{figure}
 Der Punkt wird nach folgendem Schema berechnet:
 \begin{enumerate}
-\item Berechnung der Distanz d\\
-Die relevateste Koordinate bei dieser Berechnung ist die Distanz zum Zielpunkt d, die mit Hilfe des Tangenssatzes und den gegebenen Winkeln berechnet wird. Dazu muss der Tangenssatz folgendermaßen umgeformt werden:\\
+\item Berechnung des Winkels $\beta$\\
+Der Winkel $\beta$ kann bei gegebenenen $\alpha_2$ relativ einfach berechnet werden (siehe Skizze) und ist nötig um anschließend die Distanz $d$ zu berechnen\\
 \begin{align*}
-\frac{b-c}{b+c} & = \frac{\tan \frac{\beta - \gamma}{2}}{\tan \frac{\beta + \gamma}{2}}\\
-(b - c) tan \frac{\beta + \gamma}{2} & = \tan \frac{\beta - \gamma}{2}(b + c)\\
-b \tan \frac{\beta + \gamma}{2} - c \tan \frac{\beta + \gamma}{2} & = b \tan \frac{\beta - \gamma}{2} + c \tan  \frac{\beta - \gamma}{2}\\
-b \tan \frac{\beta + \gamma}{2} - b \tan \frac{\beta-\gamma}{2} & =  c \tan  \frac{\beta - \gamma}{2} + c \tan \frac{\beta + \gamma}{2}\\
-b (\tan \frac{\beta + \gamma}{2} - \tan \frac{\beta-\gamma}{2}) & =  c (\tan  \frac{\beta - \gamma}{2} + \tan \frac{\beta + \gamma}{2})\\
-b & = \frac{c (\tan  \frac{\beta - \gamma}{2} + \tan \frac{\beta + \gamma}{2})}{\tan \frac{\beta + \gamma}{2} - \tan \frac{\beta-\gamma}{2}}
+\beta = 180^\circ - \alpha_2
 \end{align*}
-Auf unsere Variablen angepasst sieht die Formel für die Berechnung von $d$ folgendermaßen aus:
+\item Berechnung der Distanz $d$\\
+Um $d$ zu berechnen wird der Kosinussatz für $\beta$ verwendet:
 \begin{align*}
-d & = \frac{l_1 (\tan  \frac{\beta - \gamma}{2} + \tan \frac{\beta + \gamma}{2})}{\tan \frac{\beta + \gamma}{2} - \tan \frac{\beta-\gamma}{2}}
+b^2 = a^2+c^2-2ac\cos\beta \\
+b = \sqrt{a^2+c^2-2ac\cos\beta}
+\end{align*}
+Angepasst an unsere Variablen entsteht daraus die Formel:
+\begin{align*}
+d = \sqrt{l_1^2+l_2^2-2l_1l_2\cos\beta}
+\end{align*}
+\item Berechnung des Winkels $\alpha$\\
+Um zu den gesuchten Koordinaten zu gelangen benötigen wir den Referenzwinkel $\varphi$, welcher aus der Summe von $\alpha$ und $\alpha1$ definiert ist. Der Winkel $\alpha$ kann über die Umformung des Kosinussatzes berechnet werden:
+\begin{align*}
+a^2 & = b^2 + c^2 - 2bc \cos \alpha \\
+2bc \cos \alpha & = b^2 + c^2 - a^2 \\
+\cos \alpha & = \frac{b^2 + c^2 - a^2}{2bc} \\
+\alpha & = \arccos \frac{b^2 + c^2 - a^2}{2bc}
+\end{align*}
+Angepasst an unsere Variablen entsteht daraus die Formel:
+\begin{align*}
+\alpha = \arccos \frac{d^2 + l_1^2 - l_2^2}{2dl_1}
+\end{align*}
+\item Berechnung des Referenzwinkels $\varphi$\\:
+\begin{align*}
+\varphi = \alpha + \alpha_1
 \end{align*}
 \item Berechnung des gesuchten Punkts\\
-Mit dem nun vorhandenen Zahlenmaterial kann nun der gesuchte Punkte berechnet werden.
-\begin{itemize}
-\item Berechnung der $y$-Koordinate:\\
-Die $y$-Koordinate kann durch Verwendung der Sinusfunktion in dem, durch $d$, $x$ und $y$ gebildeten rechtwinkeligen Dreieck, berechnet werden.
+Mit dem nun vorhandenen Zahlenmaterial kann nun der gesuchte Punkte über die Sinus beziehungsweise Kosinus-Funktion im rechtwinkeligen Dreieck berechnet werden.
 \begin{align*}
-y & = d \sin \varphi
+x &= d * \cos \varphi \\
+y &= d * \sin \varphi
 \end{align*}
-\item Berechnung der $x$-Koordinate:\\
-Die $x$-Koordinate kann durch Anwenden des Satzes vom Pythagoras im, oben beschriebenen, rechtwinkeligen Dreieck berechnet werden.
-\begin{align*}
-x & = \sqrt{d^2 - y^2}
-\end{align*}
-
-\end{itemize}
 \end{enumerate}
 \item \textbf{CalcualteInverse}\\
 Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den angegebenen Parametern ein Winkelstellungen der Achsen am angegeben Zielpunkt berechnet. Als Parameter werden ihr der Zielpunkt als Point3D-Objekt, sowie die Länge der ersten zweiten Achse als float-Wert übergeben. Mit diesen Informationen kann nun berechnet werden welchen Winkel die Achsen einnehmen müssen, damit  sich der Werkzeugmittelpunkt am Zielpunkt befindet.\\
@@ -52,7 +68,7 @@ Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den 
   \begin{minipage}[t]{12 cm}
   	\centering
   	\includegraphics[width=12cm]{images/Inverskinematik} 
-    \caption{Skizze zur Inverskinematik}
+    \caption{Skizze zur inversen Kinematik}
   \end{minipage}
 \end{figure}
 Die Berechnung der Winkel läuft nach folgendem Schema ab:
@@ -68,13 +84,12 @@ d = \sqrt{x^2 + y^2}
 Als Spezialfall wird in diesem Kontext ein vollkommen ausgestreckter Roboterarm am Zielpunkt betrachtet. Da bei dieser Konstellation kein Dreieck entsteht, können die Winkel nicht auf herkömmlichen Weg berechnet werden. In diesem Fall können die Winkel jedoch durch logische Überlegung bestimmt werden, da der Winkel der zweiten Achse $\alpha_2$ dabei immer 0$^\circ$ beträgt.\\
 Die Winkelstellung der ersten Achs $\alpha_1$ e kann durch die x- und y-Koordinate folgendermaßen bestimmt werden.
 \begin{align*}
-x & = l_1+l_2 &\cap && y & = 0 & \alpha_1 & = 0^\circ \\
-x & = -(l_1+l_2) &\cap && y & = 0 & \alpha_1 & = 180^\circ \\ 
-x & = 0 &\cap && y & = l_1+l_2 & \alpha_1 & = 90^\circ \\
-x & = 0 &\cap && y & = -(l_1+l_2) & \alpha_1 & = 270^\circ
+x & = l_1+l_2 &\wedge && y & = 0 & \alpha_1 & = 0^\circ \\
+x & = -(l_1+l_2) &\wedge && y & = 0 & \alpha_1 & = 180^\circ \\ 
+x & = 0 &\wedge && y & = l_1+l_2 & \alpha_1 & = 90^\circ \\
+x & = 0 &\wedge && y & = -(l_1+l_2) & \alpha_1 & = 270^\circ
 \end{align*}
 Da nun beide Winkel bestimmt sind, wird ein InterpolationStep mit den soeben berechneten Werten erzeugt und zurückgegeben.
-\newpage
 \item Berechnung der Innenwinkel\\
 Da nun alle drei Seitenlängen bekannt sind, können die Innenwinkel $\alpha$, $\beta$, $\gamma$ über den Kosinussatz berechnet werden.\\
 \\
@@ -105,7 +120,6 @@ Auf unsere Variablen angepasst sehen die Formeln für die Berechnung der Winkel 
 \beta = \arccos \frac{l_2^2 + l_1^2 - d^2}{2l_1l_2} \\
 \gamma = \arccos \frac{d^2 + l_2^2 - l_1^2}{2dl_2}
 \end{align*}
-\newpage
 \item Berechnung des Referenzwinkels $\varphi$:\\
 Im nächsten Schritt wird noch der Referenzwinkel $\varphi$, welcher die Position des Dreiecks im Koordinatensystem festlegt, berechnet. Dieser Winkel befindet sich in einem rechtwinkeligen Dreieck, welches durch $d$, $x$ und $y$ definiert wird und kann durch Umformung der Sinusfunktion im rechtwinkeligen Dreieck berechnet werden:
 \begin{align*}
