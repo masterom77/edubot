@@ -233,7 +233,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             result.Points.Add(adapter.ToolCenterPoint);
             InterpolationStep prevStep = Kinematics.CalculateInverse(adapter.ToolCenterPoint, adapter.Length, adapter.Length2,adapter.Transmission);
             Point3D nextPoint;
-            for (int i = 1; i <= d; i++)
+            for (int i = 1; i <= Math.Ceiling(s)+1; i++)
             {
                 double x, y,z;
                 x = center.X + r * Math.Cos(MathHelper.ConvertToRadians(i * anglePerStep + startingAngle));
@@ -246,10 +246,11 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     return null;
                 }
 
-                InterpolationStep step = Kinematics.CalculateInverse(new Point3D((float)x, (float)y, 0), adapter.Length, adapter.Length2);
+                InterpolationStep step = Kinematics.CalculateInverse(new Point3D((float)x, (float)y, (float)z), adapter.Length, adapter.Length2);
 
                 if (!adapter.AreAnglesValid(step.Alpha1, step.Alpha2, step.Alpha3))
                 {
+                    Kinematics.CalculateInverse(new Point3D((float)x, (float)y, (float)z), adapter.Length, adapter.Length2);
                     adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
                     return null;
                 }
