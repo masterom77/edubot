@@ -30,11 +30,16 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { Kinematics.displayResults = value; }
         }
 
-        public static Point3D CalculateDirect(float temp, float beta, float gamma, float length, float length2) {
+        public static Point3D CalculateDirect(float alpha1, float alpha2, float length, float length2) {
+            double beta = 180 - alpha2;
+            double d = Math.Sqrt((length * length + length2 * length2) - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(beta)));
+            //double d = (length * (Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2)) + Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)))) / ((Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)) - Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2))));
+            double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
+            double temp = alpha + alpha1;
 
-            double d = (length * (Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2)) + Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)))) / ((Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)) - Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2))));
+            float x = (float)(d * Math.Cos(MathHelper.ConvertToRadians(temp))); 
             float y = (float) (d * Math.Sin(MathHelper.ConvertToRadians(temp)));
-            float x = (float) Math.Sqrt(d * d - y * y);
+            
             
             return new Point3D(x,y,0);
         }
@@ -51,7 +56,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float x = target.X;
             float y = target.Y;
             float z = target.Z;
-            float d = (float)Math.Sqrt(x * x + y * y);
+            float d = (float)Math.Round(Math.Sqrt(x * x + y * y),4);
 
             #region ------------------------Point Validation------------------------
             //if (Math.Round(d) > (length + length2) ||
@@ -99,6 +104,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 temp = -temp;
             }
 
+            Console.WriteLine("FICKEN: "+(temp-alpha) + " " + (180-beta));
             return new InterpolationStep(target,(float)(temp - alpha),(float)(180 - beta),float.NaN); 
         }
 
@@ -107,8 +113,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float x = target.X;
             float y = target.Y;
             float z = target.Z;
-            float d = (float)Math.Sqrt(x * x + y * y);
-
+            float d = (float)Math.Round(Math.Sqrt(x * x + y * y), 4);
             #region ------------------------Point Validation------------------------
             //if (Math.Round(d) > (length + length2) ||
             //    (d < Math.Abs(length - length2))
@@ -155,6 +160,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             {
                 temp = -temp;
             }
+
 
             return new InterpolationStep(target, (float)(temp - alpha), (float)(180 - beta), z * transmission);
         }

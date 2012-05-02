@@ -31,13 +31,13 @@ namespace TestClient
             InitializeComponent();
             
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 230);
+            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200);
             adapter.OnFailure += ShowError;
             EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
            
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
-            edubot.RegisterAdapter("demo2", adapter2);
+            //edubot.RegisterAdapter("demo2", adapter2);
             adapter.OnMovementStarted += NotifyVisualisation;
             edubot.Execute(new StartCommand());
             //edubot.Execute(new MVSCommand(new Point3D(150, 250, 0)));

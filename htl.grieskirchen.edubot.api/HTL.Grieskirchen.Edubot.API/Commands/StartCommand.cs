@@ -17,8 +17,6 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public void Execute(IAdapter adapter)
         {
-            if (adapter.State != State.SHUTDOWN)
-                throw new InvalidStateException("Start-Command kann nicht ausgeführt werden, da sich der Roboter bereits eingeschaltet wurde");
             adapter.RaiseHomingEvent(new HomingEventArgs(Configuration.AnglePerStep));
             new System.Threading.Thread(adapter.Start).Start();
         }
