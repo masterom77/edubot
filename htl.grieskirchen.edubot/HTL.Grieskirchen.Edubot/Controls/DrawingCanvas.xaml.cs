@@ -29,7 +29,9 @@ namespace HTL.Grieskirchen.Edubot.Controls
             : base()
         {
             InitializeComponent();
-            buffer = new List<Memento>();
+            undoBuffer = new Stack<Memento>();
+            redoBuffer = new Stack<Memento>();
+            addMemento = true;
             index = 0;
             EditingMode = InkCanvasEditingMode.Select;
             StrokeCollected += AddMemento;
@@ -68,7 +70,9 @@ namespace HTL.Grieskirchen.Edubot.Controls
         }
 
         #region Undo/Redo
-        List<Memento> buffer;
+        Stack<Memento> undoBuffer;
+        Stack<Memento> redoBuffer;
+        bool addMemento;
         int index;
 
         class Memento{
@@ -90,22 +94,22 @@ namespace HTL.Grieskirchen.Edubot.Controls
         }
 
         public bool CanUndo {
-            get { return buffer.Count > 0 && index > 0; }
+            get { return undoBuffer.Count > 0; }
         }
 
         public bool CanRedo {
-            get { return buffer.Count > 0 && index < buffer.Count; }
+            get { return redoBuffer.Count > 0; }
         }
 
         internal void CanUndoDelegate(object sender, CanExecuteRoutedEventArgs e)
         {
 
-            e.CanExecute = buffer.Count > 0 && index > 0;
+            e.CanExecute = CanUndo;
         }
 
         internal void CanRedoDelegate(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = buffer.Count > 0 && index < buffer.Count;
+            e.CanExecute = CanRedo;
         }
 
         internal void UndoExecuted(object sender, ExecutedRoutedEventArgs e) {
@@ -118,58 +122,41 @@ namespace HTL.Grieskirchen.Edubot.Controls
         }
 
         private void AddMemento(object src, EventArgs e) {
-            if (e is InkCanvasStrokeCollectedEventArgs)
+            if (addMemento)
             {
-                InkCanvasStrokeCollectedEventArgs icsce = (InkCanvasStrokeCollectedEventArgs)e;
-                buffer.Add(new Memento() { Operation = "add", Strokes = new StrokeCollection() { icsce.Stroke } });
-                index++;
-
-                if (buffer.Count > index)
+                if (e is InkCanvasStrokeCollectedEventArgs)
                 {
-                    buffer.RemoveRange(index, buffer.Count - index);
+                    InkCanvasStrokeCollectedEventArgs icsce = (InkCanvasStrokeCollectedEventArgs)e;
+                    undoBuffer.Push(new Memento() { Operation = "add", Strokes = new StrokeCollection() { icsce.Stroke } });
+                    redoBuffer.Clear();
+                }
+                if (e is InkCanvasStrokeErasingEventArgs)
+                {
+                    InkCanvasStrokeErasingEventArgs icsee = (InkCanvasStrokeErasingEventArgs)e;
+                    undoBuffer.Push(new Memento() { Operation = "del", Strokes = new StrokeCollection() { icsee.Stroke } });
+                    redoBuffer.Clear();
                 }
             }
-            if (e is InkCanvasStrokeErasingEventArgs) {
-                InkCanvasStrokeErasingEventArgs icsee = (InkCanvasStrokeErasingEventArgs)e;
-                buffer.Add(new Memento() { Operation = "del", Strokes = new StrokeCollection() { icsee.Stroke } });
-                index++;
-
-                if (buffer.Count > index)
-                {
-                    buffer.RemoveRange(index, buffer.Count - index);
-                }
-            }
-            //if (e is StrokeCollectionChangedEventArgs)
-            //{
-            //    //StrokeCollectionChangedEventArgs scce = (StrokeCollectionChangedEventArgs)e;
-            //    //if (scce.Added.Count > 0)
-            //    //{
-            //    //    buffer.Add(new Memento() { Operation = "add", Strokes = scce.Added });
-            //    //    index++;
-            //    //}
-            //    //if (scce.Removed.Count > 0)
-            //    //{
-            //    //    buffer.Add(new Memento() { Operation = "del", Strokes = scce.Removed });
-            //    //    index--;
-            //    //}
-            //}
 
         }
 
         public void Undo() {
             if (CanUndo)
             {
-                Memento lastAction = buffer.ElementAt(index - 1);
+                addMemento = false;
+                Memento lastAction = undoBuffer.Pop(); //undoBuffer.ElementAt(index - 1);
                 if (lastAction.Operation == "add")
                 {
+                 
                     Strokes.Remove(lastAction.Strokes);
                 }
                 else
                 {
                     Strokes.Add(lastAction.Strokes);
                 }
+                redoBuffer.Push(lastAction);
+                addMemento = true;
                 InvalidateVisual();
-                index--;
             }
         }
 
@@ -177,7 +164,8 @@ namespace HTL.Grieskirchen.Edubot.Controls
         {
             if (CanRedo)
             {
-                Memento nextAction = buffer.ElementAt(index);
+                addMemento = false;
+                Memento nextAction = redoBuffer.Pop();
                 if (nextAction.Operation == "add")
                 {
                     Strokes.Add(nextAction.Strokes);
@@ -186,6 +174,8 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 {
                     Strokes.Remove(nextAction.Strokes);
                 }
+                undoBuffer.Push(nextAction);
+                addMemento = true;
                 InvalidateVisual();
                 index++;
             }
@@ -366,32 +356,32 @@ namespace HTL.Grieskirchen.Edubot.Controls
         protected void RenderLine(DrawingContext drawingContext)
         {
             Point currentPosition = Mouse.GetPosition(this);
-            if (Keyboard.IsKeyDown(Key.LeftShift))
-            {
-                int x = (int)(currentPosition.X - origin.X);
-                int y = (int)(currentPosition.Y - origin.Y);
-                double angle;
-                if (y != 0)
-                {
-                    angle = Math.Acos(x / Math.Abs(y)) * 180 / Math.PI;
-                }
-                else
-                {
-                    if (x > 0)
-                        angle = 0;
-                    else
-                        angle = 180;
-                }
+            //if (Keyboard.IsKeyDown(Key.LeftShift))
+            //{
+            //    int x = (int)(currentPosition.X - origin.X);
+            //    int y = (int)(currentPosition.Y - origin.Y);
+            //    double angle;
+            //    if (y != 0)
+            //    {
+            //        angle = Math.Acos(x / Math.Abs(y)) * 180 / Math.PI;
+            //    }
+            //    else
+            //    {
+            //        if (x > 0)
+            //            angle = 0;
+            //        else
+            //            angle = 180;
+            //    }
 
-                if ((angle > 60 && angle < 120) || (angle > 240 && angle < 300))
-                {
-                    currentPosition.X = origin.X;
-                }
-                else
-                {
-                    currentPosition.Y = origin.Y;
-                }
-            }
+            //    if ((angle > 60 && angle < 120) || (angle > 240 && angle < 300))
+            //    {
+            //        currentPosition.X = origin.X;
+            //    }
+            //    else
+            //    {
+            //        currentPosition.Y = origin.Y;
+            //    }
+            //}
             drawingContext.DrawLine(new Pen(Brushes.Black, DefaultDrawingAttributes.Width), origin, currentPosition);
         }
 
@@ -430,8 +420,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 }
                 else
                 {
-                    Point startPoint;
-                    Point endPoint;
 
                     float xPrimMax = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
                     float yPrimMax = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
