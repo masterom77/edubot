@@ -42,6 +42,14 @@ Die Interpolations-Klasse übernimmt die Berechnung des Pfades vom Start- zum Zi
 \begin{itemize}
 \item \textbf{InterpolateLinear}\\
 Die InterpolateLinear-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine lineare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte.\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/Linearinterpolation} 
+    \caption{Skizze zur linearen Interpolation}
+  \end{minipage}
+\end{figure}
 Die Vorgehensweise sieht dabei wie folgt aus:
 \begin{enumerate}
 \item Berechnung der Koordinaten-Differenzen:\\
@@ -73,6 +81,14 @@ Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Obj
 \end{enumerate}
 \item \textbf{InterpolateCircular}\\
 Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start-, einen Mittel- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/Zirkularinterpolation} 
+    \caption{Skizze zur zirkularen Interpolation}
+  \end{minipage}
+\end{figure}
 Die Vorgehensweise sieht dabei wie folgt aus:
 \begin{enumerate}
 \item Prüfung des Start- und Zielpunkts\\
