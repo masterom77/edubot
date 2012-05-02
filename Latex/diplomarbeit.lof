@@ -2,22 +2,28 @@
 \defcounter {refsection}{0}\relax 
 \select@language {german}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1}{\ignorespaces Ausgangssituation\relax }}{69}{figure.caption.7}
+\contentsline {figure}{\numberline {1}{\ignorespaces Gesamtkonzept\relax }}{1}{figure.caption.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2}{\ignorespaces Eintreffen eines neuen Befehls\relax }}{70}{figure.caption.8}
+\contentsline {figure}{\numberline {2}{\ignorespaces Bedeutung der IAdapter-Properties\relax }}{57}{figure.caption.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3}{\ignorespaces Warteschlangen-System\relax }}{70}{figure.caption.9}
+\contentsline {figure}{\numberline {3}{\ignorespaces Listener Konzept\relax }}{66}{figure.caption.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4}{\ignorespaces Skizze zur direkten Kinematik\relax }}{77}{figure.caption.10}
+\contentsline {figure}{\numberline {4}{\ignorespaces Ausgangssituation\relax }}{73}{figure.caption.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5}{\ignorespaces Skizze zur Inverskinematik\relax }}{79}{figure.caption.11}
+\contentsline {figure}{\numberline {5}{\ignorespaces Eintreffen eines neuen Befehls\relax }}{74}{figure.caption.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {6}{\ignorespaces Skizze zur linearen Interpolation\relax }}{84}{figure.caption.12}
+\contentsline {figure}{\numberline {6}{\ignorespaces Warteschlangen-System\relax }}{74}{figure.caption.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {7}{\ignorespaces Skizze zur zirkularen Interpolation\relax }}{86}{figure.caption.13}
+\contentsline {figure}{\numberline {7}{\ignorespaces Skizze zur direkten Kinematik\relax }}{81}{figure.caption.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {8}{\ignorespaces Schematische Darstellung der Elektronik\relax }}{90}{figure.caption.14}
+\contentsline {figure}{\numberline {8}{\ignorespaces Skizze zur inversen Kinematik\relax }}{83}{figure.caption.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9}{\ignorespaces 3D Modell der Konstruktion\relax }}{98}{figure.caption.15}
+\contentsline {figure}{\numberline {9}{\ignorespaces Skizze zur linearen Interpolation\relax }}{88}{figure.caption.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10}{\ignorespaces Gelenk der prim\IeC {\"a}ren Achse\relax }}{99}{figure.caption.16}
+\contentsline {figure}{\numberline {10}{\ignorespaces Skizze zur zirkularen Interpolation\relax }}{90}{figure.caption.16}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {11}{\ignorespaces Schematische Darstellung der Elektronik\relax }}{94}{figure.caption.17}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {12}{\ignorespaces 3D Modell der Konstruktion\relax }}{102}{figure.caption.18}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {13}{\ignorespaces Gelenk der prim\IeC {\"a}ren Achse\relax }}{103}{figure.caption.19}

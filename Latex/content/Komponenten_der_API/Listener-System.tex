@@ -4,7 +4,16 @@
 Da die verschiedenen Adapter Informationen über den aktuellen Zustand des Roboters von außen (Anwendung, Steuerung,...) erhalten, wird eine Möglichkeit benötigt mit der man den Adaptern den Abschluss von Befehlen mitteilen kann.
 
 \subsubsection{Aufbau}
-Die Idee dazu ist die Verwendung sogenannter Listener (von “to listen”, horchen) welche die Änderung des Zustands von außen ermöglichen. Jeder Adapter besitzt abhängig von seinem Typ einen entsprechenden Listener. Der Grund dafür ist das die Art der Kommunikation je nach Adapter unterschiedlich ist. So kommuniziert der VirtualAdapter über Events Gegenseite, während der Edubot- und KEBA-Adapter über Netzwerk mit einer Steuerung kommunizieren. Um auch hier eine Erweiterung zu ermöglichen wird die abstrakte IStateListener verwendet, welche im anschließenden Kapitel näher beschrieben wird.
+Die Idee dazu ist die Verwendung sogenannter Listener (von “to listen”, horchen) welche die Änderung des Zustands von außen ermöglichen. Jeder Adapter besitzt abhängig von seinem Typ einen entsprechenden Listener. Der Grund dafür ist das die Art der Kommunikation je nach Adapter unterschiedlich ist. So kommuniziert der VirtualAdapter lediglich über Events mit der Gegenseite, während der Edubot- und KEBA-Adapter über Netzwerk mit einer Steuerung kommunizieren. Um auch hier eine Erweiterung zu ermöglichen wird die abstrakte IStateListener definiert und von den Klassen VirtualStateListener und NetworkStateListener implement.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/ListenerSystem} 
+    \caption{Listener Konzept}
+  \end{minipage}
+\end{figure}
 
 \subsubsection{Umsetzung}
 \textbf{IStateListener}
