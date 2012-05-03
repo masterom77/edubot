@@ -26,6 +26,15 @@ Da die Zeichenfläche zur schnelleren Verwendung auch die Undo/Redo-Funktion unt
 
 \subsubsection{Bedienung der Oberfläche}
 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/DrawingArea} 
+    \caption{Die Zeichenfläche}
+  \end{minipage}
+\end{figure}
+
 Um die Zeichenfläche zu nutzen, kann der Benutzer im linken Bereich des Tabs ein entsprechendes Werkzeug durch einen Klick auswählen. Anschließend kann er, wie aus anderen Zeichenanwendungen bekannt, die gewünschten Linien, Punkte und Formen einzeichnen. Die einzelnen Werkzeuge werdne im folgenden erläutert:
 \begin{itemize}
 \item \textbf{Auswahl}: Wenn dieses Werkzeug ausgewählt wird, können Strokes (siehe Umsetzung für nähere Erklärung) ausgewählt und verschoben beziehungsweise über die Entfernen-Taste gelöscht werden.
@@ -72,8 +81,8 @@ Hierbei wird ein Stroke-Objekt mit einer, von der Ellipsengröße abhängigen, M
 \item Radien der Ellipse berechnen\\
 Zuerst müssen die zwei Radien der Ellipse $r_x$ und $r_y$ mit Hilfe des Ursprungs- und des Endpunkts berechnet werden.
 \begin{align}
-r_x = x_{origin} - x_{currentPoint}
-r_y = y_{origin} - y_{currentPoint}
+r_x &= x_{origin} - x_{currentPoint}\\
+r_y &= y_{origin} - y_{currentPoint}
 \end{align}
 \item Anzahl der Ellipsensegmente ermitteln\\
 Anschließend wird die ungefähre Anzahl der zu berechnenden Außenpunkte mit folgender Formel berechnet.
@@ -89,19 +98,19 @@ k_{\theta} = \frac{360^\circ}{n}
 \item Mittelpunkt berechnen\\
 Nun wird der Mittelpunkt, erneut mit Hilfe des Ursprungs- und Endpunkts, berechnet.
 \begin{align}
-m_x = x_{origin} + r_x
-m_y = y_{origin} + r_y
+m_x &= x_{origin} + r_x\\
+m_y &= y_{origin} + r_y
 \end{align}
 \item Berechnung der Außenpunkte\\
 Zuerst wird ein Startpunkt für die weitere Berechnung festgelegt, welcher wie folgt definiert ist:
 \begin{align}
-s_x = m_x + r_x
-s_y = m_y
+s_x &= m_x + r_x\\
+s_y &= m_y
 \end{align}
 Anschließend werden in einer Schleife die Zwischenpunkte berechnet und als als StylusPoints zum Stroke hinzugefügt. Der $i$-te Zwischenpunkt, definiert durch $p_x$ und $p_y$, wird nach folgender Formel berechnet:
 \begin{align}
-p_x = m_x + r_x \cos(ik_\theta)
-p_y = m_y + r_y \sin(ik_\theta)
+p_x &= m_x + r_x \cos(ik_\theta)\\
+p_y &= m_y + r_y \sin(ik_\theta)
 \end{align}
 \end{enumerate}
 
