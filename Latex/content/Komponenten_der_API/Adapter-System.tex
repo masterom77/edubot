@@ -23,7 +23,7 @@ Gibt die Länge der zweiten Roboterachse an, gemessen an der Distanz zwischen de
 Gibt die Distanz zwischen dem Werkzeugmittelpunkt und der Arbeitsfläche an, wenn sich das Werkzeug an der höchstmöglichen Position befindet. Für die korrekte Pfadberechnung muss dieser Wert in derselben Einheit wie "'Length"' angegeben sein.
 \item \textbf{Transmission}
 \newline
-Gibt an um wie viel Grad sich der Motor der transversalen Achse drehen muss, um die diese eine Einheit (z.B.: Millimeter) nach unten zu verschieben.
+Gibt an um wie viel Grad sich der Motor der transversalen Achse drehen muss, um diese eine Einheit (z.B.: Millimeter) nach unten zu verschieben.
 \item \textbf{MaxPrimaryAngle}\\
 Gibt den Maximalwinkel an, den die erste Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Maximalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MaxValue festzulegen.
 \item \textbf{MinPrimaryAngle}\\
@@ -33,7 +33,7 @@ Gibt den Maximalwinkel an, den die zweite Achse einnehmen kann. Dieser ist bei R
 \item \textbf{MinSecondaryAngle}\\
 Gibt den Minimalwinkel an, den die zweite Achse einnehmen kann. Dieser ist bei Robotermodellen, wie zum Beispiel dem Edubot-Modell, abhängig von der Bauweise. Soll der Minimalwinkel nicht berücksichtigt werden, weil es sich zum Beispiel um einen virtuellen Adapter handelt, so wird empfohlen diesen Wert auf float.MinValue festzulegen.
 \item \textbf{RequiresPrecalculation}\\
-Diese Eigenschaft legt fest ob beim Durchführen von Bewegungskommandos(MVS, MVC,...) die Pfadberechnung von der API durchgeführt wird oder ein eigener Algorithmus verwendet wird. Wenn dieser Wert auf true gesetzt ist, wird vor der Durchführung des Bewegungskommandos die Pfadberechnung durchgeführt und mittels der Methode \textit{SetInterpolationResult} dem Adapter das Ergebnis mitgegeben.
+Diese Eigenschaft legt fest ob beim Durchführen von Bewegungskommandos(MVS, MVC,...) die Pfadberechnung von der API durchgeführt wird oder ein eigener Algorithmus verwendet wird. Wenn dieser Wert auf true gesetzt ist, wird vor der Durchführung des Bewegungskommandos die Pfadberechnung durchgeführt und das Ergebnis im Result-Property des Adapterts gespeichert.
 \item \textbf{CmdQueue}\\
 Bei der\textit{CmdQueue} handelt es sich um eine Warteschlange mit anstehenden Befehlen für die Steuerung, die in der Reihenfolge in der sie ankommen abgearbeitet werden. Die Liste besteht aus Elementen des Typs \textit{ICommand} (siehe Kommando-System), welche mit der \textit{Execute}-Methode ausgeführt werden.
 Der Grund für die separate Verwaltung der anstehenden Befehle in jedem Adapter liegt darin, dass jeder Roboter eine unterschiedliche lange Zeitdauer zum Ausführen eines Befehls benötigt.

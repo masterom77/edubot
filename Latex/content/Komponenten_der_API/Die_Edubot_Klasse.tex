@@ -5,12 +5,12 @@
 Eines der Hauptziele bei der Entwicklung der API war es, die Verwendung so einfach wie möglich zu gestalten. Die Bedienung sollte selbsterklärend und effizient sein und dennoch genug Möglichkeiten zur Weiterentwicklung bilden.
 
 \subsubsection{Aufbau}
-Aufgrund der gegebenen Aufgabe, wurde die Edubot-Klasse entwickelt, welche intern alle benötigten Informationen über die verwendeten Steuerungen und die dazugehörigen Roboter enthält. Durch die anfangs sehr unklare Situation in Bezug auf die Hardware, wurde diese Klasse möglichst flexibel gehalten und dient prinzipiell als Verwalter der verschiedenen Adapter (siehe Adapter-System), sowie als Verteiler für eingehende Befehle.\\
+Aufgrund der gegebenen Aufgabe, wurde die Edubot-Klasse entwickelt, welche intern alle benötigten Informationen über die verwendeten Steuerungen und die dazugehörigen Roboter enthält. Durch die anfangs sehr unklare Situation in Bezug auf die Hardware, wurde diese Klasse möglichst flexibel gehalten und dient prinzipiell als Verwalter der verschiedenen Adapter (siehe Adapter-System), sowie als Verteiler für eingehende Befehle.
 
 \subsubsection{Umsetzung}
 \textbf{Edubot}
 \newline
-Die Edubot-Klasse ist relativ simpel und dient prinzipell mehr zu einer erleichterten Bedienung der API. Das Adapter-System ist hier durch ein Dictionary mit registrierten IAdapter-Objekten verankert, durch welches bei Übergabe eine Befehls iteriert wird und der Befehl dabei an die individuellen Adapter übergeben wird. Es können beliebig viele Adapter bei der Edubot-Klasse registriert werden, jedoch kann es, abhängig von der Rechnerleistung und der verwendeten Adapter, ab einer bestimmten Anzahl zu Performance-Einbußen kommen.
+Die Edubot-Klasse ist relativ simpel aufgebaut und dient prinzipell mehr zu einer erleichterten Bedienung der API. Das Adapter-System ist hier durch ein Dictionary mit registrierten IAdapter-Objekten verankert, durch welches bei Übergabe eine Befehls iteriert wird und der Befehl dabei an die individuellen Adapter übergeben wird. Es können beliebig viele Adapter bei der Edubot-Klasse registriert werden, jedoch kann es, abhängig von der Rechnerleistung und der verwendeten Adapter, ab einer bestimmten Anzahl zu Performance-Einbußen kommen.
 Die Klasse definiert folgende Properties und Variablen:
 \begin{itemize}
 \item \textbf{RegisteredAdapters}
