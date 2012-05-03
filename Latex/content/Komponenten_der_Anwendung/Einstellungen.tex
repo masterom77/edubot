@@ -62,7 +62,7 @@ In der Validate-Methode dieser Regel wird geprüft ob der mitgegebene Wert folge
 \textbf{IConfiguration}\\
 Die abstrake Klasse IConfiguration dient dazu Code-Redundanz in den drei Config-Klassen zu vermeiden. Die Klasse enthält die Methode NotifyPropertyChanged, welche einen String mit dem Namen des geänderten Properties als Parameter übernimmt. In dieser Methode wird das PropertyChangedEvent mit entsprechenden PropertyChangedEventArgs ausgelöst. Die abgeleitenen Klassen EdubotAdapterConfig, KebaAdapterConfig und VisualizationConfig rufen diese Methode bei Änderung eines Properties mit dem Property-Name als Parameter auf.
 
-\textbf{EdubotAdapterConfig}
+\textbf{EdubotAdapterConfig}\\
 Die EdubotAdapterConfig-Klasse enthält Informationen über die Netzwerkkonfiguration der GHI-Steuerung, welche für den Verbindungsaufbau nötig sind.
 Eine Instanz dieser Klasse enthält folgende Properties:
 \begin{itemize}
@@ -73,7 +73,7 @@ Das Port-Property enthält den Port auf dem unsere Steuerungssoftware läuft und
 \end{itemize}
 Zusätzlich zu diesen Properties besitzt die Klasse noch die Methode Reset, welche alle Eigenschaften auf ihren Standard-Wert zurücksetzt.\\
 \\
-\textbf{KebaAdapterConfig}
+\textbf{KebaAdapterConfig}\\
 Die KebaAdapterConfig-Klasse enthält Informationen über die Netzwerkkonfiguration der SPS, welche für den Verbindungsaufbau nötig sind.
 Eine Instanz dieser Klasse enthält folgende Properties:
 \begin{itemize}
