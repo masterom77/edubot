@@ -138,6 +138,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { toolCenterPoint = value; }
         }
 
+        public Point3D HomePoint {
+            get { return new Point3D(Length + Length2, 0, 0); }
+        }
+
         protected float length;
 
         public float Length
@@ -209,9 +213,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             get { return requiresPrecalculation; }
             set { requiresPrecalculation = value; }
         }
+
         protected State state;
 
-        public State State
+        protected State State
         {
             get { return state; }
             set {
@@ -220,27 +225,36 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                     OnStateChanged(this, new EventArgs.StateChangedEventArgs(state, value));
                 }
                 state = value;
-                if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0) {
-                    ICommand nextCmd = cmdQueue.Dequeue();
-                    FailureEventArgs failureArgs = nextCmd.CanExecute(this);
-                    if (failureArgs == null)
-                    {
-                        nextCmd.Execute(this);
-                    }
-                    else
-                    {
-                        RaiseFailureEvent(failureArgs);
-                    }
-                }
+                CheckState();
+                //if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0) {
+                //    ICommand nextCmd = cmdQueue.Dequeue();
+                //    FailureEventArgs failureArgs = nextCmd.CanExecute(this);
+                //    if (failureArgs == null)
+                //    {
+                //        nextCmd.Execute(this);
+                //    }
+                //    else
+                //    {
+                //        RaiseFailureEvent(failureArgs);
+                //    }
+                //}
             }
         }
 
-        private IStateListener listener;
-
-        protected IStateListener Listener
-        {
-            get { return listener; }
-            set { listener = value; }
+        private void CheckState() {
+            if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
+            {
+                ICommand nextCmd = cmdQueue.Dequeue();
+                FailureEventArgs failureArgs = nextCmd.CanExecute(this);
+                if (failureArgs == null)
+                {
+                    nextCmd.Execute(this);
+                }
+                else
+                {
+                    RaiseFailureEvent(failureArgs);
+                }
+            }
         }
 
         Queue<ICommand> cmdQueue;
@@ -285,13 +299,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public event Event OnFailure;
         #endregion
 
-        public abstract void Start(object param);
+        public abstract void Initialize(object param);
         public abstract void Shutdown();
         public abstract void MoveStraightTo(object param);
         public abstract void MoveCircularTo(object param);
         public abstract void UseTool(object param);
         public abstract void Abort();
+        public abstract bool IsStateUpdateAllowed();
 
+        #region ----------Collision Avoidance and Point Validation----------
         public bool IsPointValid(Point3D point)
         {
             double distance = Math.Sqrt(point.X * point.X + point.Y * point.Y);
@@ -304,6 +320,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             return alpha1 <= maxPrimaryAngle && alpha1 >= minPrimaryAngle && alpha2 <= maxSecondaryAngle && alpha2 >= minSecondaryAngle;
         }
+        #endregion
 
         public void Execute(ICommand cmd) {
             if (cmd is AbortCommand)
@@ -313,30 +330,50 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             else
             {
                 cmdQueue.Enqueue(cmd);
-                if (state == State.READY || state == State.SHUTDOWN)
-                {
-                    ICommand nextCmd = cmdQueue.Dequeue();
-                    FailureEventArgs failureArgs = nextCmd.CanExecute(this);
-                    if (failureArgs == null)
-                    {
-                        nextCmd.Execute(this);
-                    }
-                    else {
-                        RaiseFailureEvent(failureArgs);
-                    }
-                }
+                CheckState();
+            }
+        }
+
+        public State GetState() {
+            return state;
+        }
+
+        private void UpdateState(State newState) {
+            if (OnStateChanged != null)
+            {
+                OnStateChanged(this, new EventArgs.StateChangedEventArgs(state, newState));
+            }
+            state = newState;
+            CheckState();
+        }
+
+        public void SetState(State newState) {
+            if (IsStateUpdateAllowed())
+            {
+                UpdateState(newState);
+            }
+            else {
+                RaiseFailureEvent(new FailureEventArgs(new Exception("Der Adapter erlaubt keine Updates von außen")));
+            }
+        }
+
+        public void SetState(State newState, bool ignoreConditions)
+        {
+            if (ignoreConditions)
+            {
+                UpdateState(newState);
+            }
+            else {
+                SetState(newState);
             }
         }
 
         internal void RaiseFailureEvent(FailureEventArgs args) {
             cmdQueue.Clear();
-            if (args.NewState != null)
-            {
-                State = (State)args.NewState;
-            }
+            SetState(API.State.SHUTDOWN,true);
             if (OnFailure != null)
             {
-                OnFailure(this, new FailureEventArgs(args.NewState, args.ThrownException));
+                OnFailure(this, new FailureEventArgs(args.ThrownException));
             }
             else {
                 throw args.ThrownException;
@@ -357,11 +394,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             if(OnMovementStarted!=null)
             OnMovementStarted(this, args);
         }
-
         
         internal void RaiseHomingEvent(HomingEventArgs args)
         {
-            State = State.HOMING;
             if(OnHoming != null)
             OnHoming(this, args);
         }
@@ -375,15 +410,12 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         internal void RaiseShutdownEvent(System.EventArgs args)
         {
-            State = State.SHUTDOWN;
             if(OnShutDown != null)
                 OnShutDown(this, args);
         }
 
         internal void RaiseAbortEvent(System.EventArgs args)
         {
-            cmdQueue.Clear();
-            State = State.SHUTDOWN;   
             if(OnAbort != null)
                 OnAbort(this, args);
         }

@@ -99,12 +99,14 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
 
             double temp = MathHelper.ConvertToDegrees(Math.Acos(x / d));
+            if (double.IsNaN(temp)) {
+                temp = MathHelper.ConvertToDegrees(Math.Acos(Math.Round(x / d,4)));
+            }
             int quadrant = MathHelper.GetQuadrant(x, y);
             if (quadrant == 3 || quadrant == 4) {
                 temp = -temp;
             }
 
-            Console.WriteLine("FICKEN: "+(temp-alpha) + " " + (180-beta));
             return new InterpolationStep(target,(float)(temp - alpha),(float)(180 - beta),float.NaN); 
         }
 
@@ -113,7 +115,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float x = target.X;
             float y = target.Y;
             float z = target.Z;
-            float d = (float)Math.Round(Math.Sqrt(x * x + y * y), 4);
+            float d = (float)Math.Round(Math.Sqrt(x * x + y * y),2);
             #region ------------------------Point Validation------------------------
             //if (Math.Round(d) > (length + length2) ||
             //    (d < Math.Abs(length - length2))
@@ -155,6 +157,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
 
             double temp = MathHelper.ConvertToDegrees(Math.Acos(x / d));
+            if (double.IsNaN(temp))
+            {
+                temp = MathHelper.ConvertToDegrees(Math.Acos(Math.Round(x / d, 4)));
+            }
             int quadrant = MathHelper.GetQuadrant(x, y);
             if (quadrant == 3 || quadrant == 4)
             {

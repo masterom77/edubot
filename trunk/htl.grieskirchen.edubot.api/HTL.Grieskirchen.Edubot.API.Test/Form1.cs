@@ -37,7 +37,7 @@ namespace EduBot
             edubot.RegisterAdapter("default",a);
             //bool conTest = a.TestConnectivity();
             List<ICommand> commands = new List<ICommand>();
-            commands.Add(new StartCommand());
+            commands.Add(new InitCommand());
             commands.Add(new MVSCommand(new Point3D(100, 0, 0)));
             commands.Add(new MVSCommand(new Point3D(200, 100, 0)));
             commands.Add(new MVSCommand(new Point3D(150, 150, 0)));
@@ -53,12 +53,12 @@ namespace EduBot
 
         public void OnUpdate1(object sender, EventArgs args) {
             Console.WriteLine("Update first adapter:"+((MovementStartedEventArgs)args).Result.Angles.Count);
-            adapter.State = State.READY;
+            adapter.SetState(State.READY);
         }
         public void OnUpdate2(object sender, EventArgs args)
         {
             Console.WriteLine("Update second adapter:" + ((MovementStartedEventArgs)args).Result.Angles.Count);
-            adapter2.State = State.READY;
+            adapter2.SetState(State.READY);
         }
 
         private void ControllerCircle() {

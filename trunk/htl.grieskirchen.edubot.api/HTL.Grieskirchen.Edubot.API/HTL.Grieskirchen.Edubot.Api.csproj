@@ -50,20 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\Listeners\KebaStateListener.cs" />
     <Compile Include="Adapters\Tool.cs" />
-    <Compile Include="Adapters\Listeners\IStateListener.cs" />
-    <Compile Include="Adapters\Listeners\NetworkStateListener.cs" />
+    <Compile Include="Adapters\Listeners\INetworkStateListener.cs" />
+    <Compile Include="Adapters\Listeners\EdubotStateListener.cs" />
     <Compile Include="Adapters\AdapterType.cs" />
     <Compile Include="Adapters\IAdapter.cs" />
     <Compile Include="Adapters\KebaAdapter.cs" />
     <Compile Include="Adapters\EdubotAdapter.cs" />
-    <Compile Include="Adapters\Listeners\VirtualStateListener.cs" />
     <Compile Include="Commands\AbortCommand.cs" />
     <Compile Include="Commands\MVCCommand.cs" />
     <Compile Include="Commands\MVSCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
     <Compile Include="Commands\UseToolCommand.cs" />
-    <Compile Include="Commands\StartCommand.cs" />
+    <Compile Include="Commands\InitCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Adapters\VirtualAdapter.cs" />
     <Compile Include="Configuration.cs" />

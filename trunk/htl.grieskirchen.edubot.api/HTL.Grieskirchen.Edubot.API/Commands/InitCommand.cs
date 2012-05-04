@@ -8,28 +8,23 @@ using HTL.Grieskirchen.Edubot.API.EventArgs;
 
 namespace HTL.Grieskirchen.Edubot.API.Commands
 {
-    public class StartCommand : ICommand
+    public class InitCommand : ICommand
     {
-        public StartCommand()
+        public InitCommand()
         {
         }
-
 
         public void Execute(IAdapter adapter)
         {
+            adapter.SetState(State.HOMING, true);
+            adapter.CmdQueue.Clear();
             adapter.RaiseHomingEvent(new HomingEventArgs(Configuration.AnglePerStep));
-            new System.Threading.Thread(adapter.Start).Start();
+            new System.Threading.Thread(adapter.Initialize).Start();
         }
-
 
         public FailureEventArgs CanExecute(IAdapter adapter)
         {
-            if (adapter.State != State.SHUTDOWN)
-            {
-                return new FailureEventArgs(adapter.State, new InvalidStateException("Start-Command kann nicht ausgeführt werden, da der Roboter sich im "+adapter.State+"-Zustand befindet"));
-            }
-            return null;
-            
+            return null;            
         }
     }
 }

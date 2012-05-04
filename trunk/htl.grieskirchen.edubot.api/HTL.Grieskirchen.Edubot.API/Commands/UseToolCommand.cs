@@ -38,7 +38,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         /// <param name="adapter">The adapter which should be used for execution</param>
         public void Execute(IAdapter adapter)
         {
-            adapter.State = State.MOVING;
+            adapter.SetState(State.MOVING);
             adapter.RaiseToolUsed(new ToolUsedEventArgs(activate));
             new System.Threading.Thread(adapter.UseTool).Start(activate);
         }
@@ -46,8 +46,8 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public FailureEventArgs CanExecute(IAdapter adapter)
         {
-            if (adapter.State == State.SHUTDOWN){
-                return new FailureEventArgs(State.SHUTDOWN,new InvalidStateException("UseTool-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
+            if (adapter.GetState() == State.SHUTDOWN){
+                return new FailureEventArgs(new InvalidStateException("UseTool-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
             }
         return null;
         }

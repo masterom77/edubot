@@ -6,14 +6,14 @@ using HTL.Grieskirchen.Edubot.API.Adapters.Listeners;
 
 namespace HTL.Grieskirchen.Edubot.API.Exceptions
 {
-    class IllegalStateUpdateException : Exception
-    {
-        IStateListener listener;
+    //class IllegalStateUpdateException : Exception
+    //{
+    //    IStateListener listener;
 
-        public IllegalStateUpdateException(IStateListener listener, string msg)
-            : base(msg)
-        {
-            this.listener = listener;
-        }
-    }
+    //    public IllegalStateUpdateException(IStateListener listener, string msg)
+    //        : base(msg)
+    //    {
+    //        this.listener = listener;
+    //    }
+    //}
 }

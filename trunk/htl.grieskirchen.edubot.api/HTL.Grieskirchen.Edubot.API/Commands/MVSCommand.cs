@@ -27,7 +27,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public void Execute(IAdapter adapter)
         {
-            adapter.State = State.MOVING;
+            adapter.SetState(State.MOVING,true);
             InterpolationResult result = null;
             if (adapter.RequiresPrecalculation) {
                 result = Interpolation.Interpolation.InterpolateLinear(adapter, target);
@@ -43,9 +43,9 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public FailureEventArgs CanExecute(IAdapter adapter)
         {
-            if (adapter.State == State.SHUTDOWN)
+            if (adapter.GetState() == State.SHUTDOWN)
             {
-                return new FailureEventArgs(State.READY, new InvalidStateException("MVS-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
+                return new FailureEventArgs(new InvalidStateException("MVS-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
             }
             
             return null;

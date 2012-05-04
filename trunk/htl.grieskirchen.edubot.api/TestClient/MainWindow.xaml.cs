@@ -31,19 +31,20 @@ namespace TestClient
             InitializeComponent();
             
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200);
+            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 1000, 1000);
             adapter.OnFailure += ShowError;
             EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            //KebaAdapter adapter3 = new KebaAdapter(Tool.VIRTUAL, 1000, 1000, 300, 360, float.MaxValue, float.MinValue, float.MaxValue, float.MinValue, System.Net.IPAddress.Parse("192.168.0.40"), 0,400);
            
             v2d.VisualisationAdapter = adapter;
             edubot.RegisterAdapter("demo", adapter);
             //edubot.RegisterAdapter("demo2", adapter2);
             adapter.OnMovementStarted += NotifyVisualisation;
-            edubot.Execute(new StartCommand());
-            //edubot.Execute(new MVSCommand(new Point3D(150, 250, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(250, 250, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(250, 150, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(150, 150, 0)));
+            edubot.Execute(new InitCommand());
+            edubot.Execute(new MVSCommand(new Point3D(150, 250, 0)));
+            edubot.Execute(new MVSCommand(new Point3D(250, 250, 0)));
+            edubot.Execute(new MVSCommand(new Point3D(250, 150, 0)));
+            edubot.Execute(new MVSCommand(new Point3D(150, 150, 0)));
             //edubot.Execute(new MVSCommand(new Point3D(150, 250, 0)));
             //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
             //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
@@ -118,7 +119,7 @@ namespace TestClient
         private void ExecuteStart(object sender, RoutedEventArgs e)
         {try
             {
-                edubot.Execute(new StartCommand());
+                edubot.Execute(new InitCommand());
             }
         catch (Exception ex)
         {
@@ -168,7 +169,7 @@ namespace TestClient
         {
             EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 225, 135,-135,160,-160,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
             adapter.InterpolationResult = new InterpolationResult() { Steps = new List<InterpolationStep> { new InterpolationStep(new Point3D(0, 0, 0), float.Parse(tbAlpha1.Text), float.Parse(tbAlpha2.Text), 0) } };
-            adapter.Start(0.1125f);
+            adapter.Initialize(0.1125f);
             System.Threading.Thread.Sleep(1000);
             adapter.MoveStraightTo(new Point3D(300,0,0));
         }

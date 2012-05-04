@@ -11,6 +11,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
     {
         public void Execute(Adapters.IAdapter adapter)
         {
+            adapter.CmdQueue.Clear();  
             adapter.RaiseAbortEvent(null);
             new System.Threading.Thread(adapter.Abort).Start();
         }

@@ -19,6 +19,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
     {
         Socket socket;
         IPEndPoint endpoint;
+        EdubotStateListener listener;
 
         //Constructor for original Edubot-Model
         public EdubotAdapter(Tool equippedTool, IPAddress ipAdress, int port)
@@ -75,13 +76,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             {
                 if (socket.Connected)
                 {
-                    Listener.Stop();
+                    listener.Stop();
                     socket.Disconnect(false);
                 }
             }
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             endpoint = new IPEndPoint(ipAddress, port);
-            Listener = new NetworkStateListener(this, socket);
+            listener = new EdubotStateListener(this, socket);
         }
 
         /// <summary>
@@ -92,8 +93,8 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 socket.Connect(endpoint);
-                Listener = new NetworkStateListener(this, socket);
-                Listener.Start();
+                listener = new EdubotStateListener(this, socket);
+                listener.Start();
         }
 
         /// <summary>
@@ -125,11 +126,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             try
             {
-                Listener.Stop();
+                listener.Stop();
                 socket.Disconnect(true);
             }
             catch (Exception e) {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
@@ -151,7 +152,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
             catch (Exception e)
             {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
@@ -173,7 +174,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
             catch (Exception e)
             {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
@@ -188,13 +189,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 socket.Send(Encoding.UTF8.GetBytes("ust:" + param.ToString()));
             }
             catch (Exception e) {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
             //socket.Disconnect(true);
 
         }
 
-        public override void Start(object param)
+        public override void Initialize(object param)
         {
             try
             {
@@ -202,7 +203,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 socket.Send(Encoding.UTF8.GetBytes("hom:" + socket.LocalEndPoint.ToString()));
             }
             catch (Exception e) {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
@@ -213,7 +214,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 socket.Send(Encoding.UTF8.GetBytes("sht"));
             }
             catch (Exception e) {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
@@ -224,10 +225,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
             catch (Exception e)
             {
-                RaiseFailureEvent(new FailureEventArgs(State.SHUTDOWN, e));
+                RaiseFailureEvent(new FailureEventArgs(e));
             }
         }
 
-        
+
+
+        public override bool IsStateUpdateAllowed()
+        {
+            return false;
+        }
     }
 }

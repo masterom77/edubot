@@ -17,13 +17,15 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         Socket receiverSocket;
         IPEndPoint senderEndpoint;
         IPEndPoint receiverEndpoint;
-        Thread stateListener;
+        KebaStateListener listener;
+        
 
         public KebaAdapter(Tool tool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int senderPort, int receiverPort)
             : base(tool, length, length2, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
             state = State.SHUTDOWN;
             requiresPrecalculation = false;
+            SetNetworkConfiguration(ipAdress,receiverPort,senderPort);
             //Connect();
         }
 
@@ -33,15 +35,17 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             
             state = State.SHUTDOWN;
             requiresPrecalculation = false;
+            SetNetworkConfiguration(ipAdress,receiverPort,senderPort);
+            
             //Connect();
         }
 
 
-        public void SetNetworkConfiguration(IPAddress ipAddress, int port)
+        public void SetNetworkConfiguration(IPAddress ipAddress, int receiverPort, int senderPort)
         {
             if (receiverSocket.Connected)
             {
-                Listener.Stop();
+                listener.Stop();
                 receiverSocket.Disconnect(false);
             }
             if (senderSocket.Connected)
@@ -50,10 +54,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
 
             senderSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            senderEndpoint = new IPEndPoint(ipAddress, port);
+            senderEndpoint = new IPEndPoint(ipAddress, senderPort);
             receiverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            receiverEndpoint = new IPEndPoint(ipAddress, port+1);
-            Listener = new NetworkStateListener(this, receiverSocket);
+            receiverEndpoint = new IPEndPoint(ipAddress, receiverPort);
+            listener = new KebaStateListener(this, receiverSocket);
         }
 
         public void Connect()
@@ -61,7 +65,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             senderSocket.Connect(senderEndpoint);
             receiverSocket.Connect(receiverEndpoint);
             state = State.SHUTDOWN;
-            Listener = new NetworkStateListener(this, receiverSocket);
+            listener = new KebaStateListener(this, receiverSocket);
         }
 
         public override void MoveStraightTo(object param)
@@ -92,12 +96,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             senderSocket.Disconnect(true);
         }
 
-        public override void Start(object param)
+        public override void Initialize(object param)
         {
             //socket.Connect(endpoint);
             senderSocket.Connect(senderEndpoint);
-            stateListener = new Thread(ListenOnState);
-            stateListener.Start();
+            listener.Start();
             senderSocket.Send(Encoding.UTF8.GetBytes("start"));
             //socket.Disconnect(true);
         }
@@ -138,6 +141,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override void Abort()
         {
             senderSocket.Send(Encoding.UTF8.GetBytes("abort"));
+        }
+
+        public override bool IsStateUpdateAllowed()
+        {
+            return false;
         }
 
     }
