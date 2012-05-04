@@ -16,8 +16,8 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public void Execute(IAdapter adapter)
         {
-            
-            adapter.State = State.SHUTTING_DOWN;
+
+            adapter.SetState(State.SHUTTING_DOWN, true);
             new System.Threading.Thread(adapter.Shutdown).Start();
            
         }
@@ -25,9 +25,9 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
 
         public FailureEventArgs CanExecute(IAdapter adapter)
         {
-            if (adapter.State == State.SHUTDOWN)
+            if (adapter.GetState() == State.SHUTDOWN)
             {
-                return new FailureEventArgs(State.SHUTDOWN, new InvalidStateException("Shutdown-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
+                return new FailureEventArgs(new InvalidStateException("Shutdown-Command kann nicht ausgeführt werden, da sich der Roboter im SHUTDOWN-Zustand befindet"));
             }
             return null;
         }

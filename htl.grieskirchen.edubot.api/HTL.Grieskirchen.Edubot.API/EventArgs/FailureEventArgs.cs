@@ -14,21 +14,13 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
             get { return thrownException; }
         }
 
-        volatile State newState;
-
-        public State NewState
-        {
-            get { return newState; }
-        }
-
         //public FailureEventArgs(System.Exception thrownException)
         //{
         //    this.newState = null;
         //    this.thrownException = thrownException;
         //}
 
-        public FailureEventArgs(State newState, System.Exception thrownException) {
-            this.newState = newState;
+        public FailureEventArgs(System.Exception thrownException) {
             this.thrownException = thrownException;
         }
     }

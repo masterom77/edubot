@@ -145,7 +145,7 @@ namespace TestClient
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
                 }
-                visualisationAdapter.State = State.READY;
+                visualisationAdapter.SetState(State.READY);
             }
             catch (System.Threading.ThreadAbortException) {
                 
@@ -202,7 +202,7 @@ namespace TestClient
                         secondaryCorrected = true;
                     }
                 }
-                visualisationAdapter.State = State.READY;
+                visualisationAdapter.SetState(State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {

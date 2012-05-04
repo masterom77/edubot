@@ -65,7 +65,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         public static InterpolationResult InterpolateLinear(IAdapter adapter, Point3D target)
         {
             if(!adapter.IsPointValid(target)){
-                adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(target, "Der Zielpunkt (" + target.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
+                adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(target, "Der Zielpunkt (" + target.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
             return null;
             }
 
@@ -97,7 +97,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 
                 if (!adapter.IsPointValid(nextPoint))
                 {
-                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(nextPoint, "Der Zwischenpunkt (" + nextPoint.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
+                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(nextPoint, "Der Zwischenpunkt (" + nextPoint.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
                     return null;
                 }
 
@@ -105,7 +105,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 
                 if (!adapter.AreAnglesValid(step.Alpha1, step.Alpha2, step.Alpha3))
                 {
-                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
+                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
                     return null;
                 }
 
@@ -175,9 +175,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 double x, y;
                 x = center.X + r * Math.Cos(MathHelper.ConvertToRadians(i * anglePerStep + startingAngle));
                 y = center.Y + r * Math.Sin(MathHelper.ConvertToRadians( i * anglePerStep + startingAngle));
-                if (Math.Sqrt(x * x + y * y) > length + length2) {
-                    Console.WriteLine(x + "/" + y);
-                }
                 InterpolationStep step = Kinematics.CalculateInverse(new Point3D((float)x, (float)y, 0), length, length2);
                 
                 result.Angles.Add(step);
@@ -203,7 +200,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
             if (difTargetCenter != difToolCenter)
             {
-                adapter.RaiseFailureEvent(new FailureEventArgs(State.READY, new InvalidCenterPointException(adapter.ToolCenterPoint, target, center, "Ungültiger Mittelpunkt: Der Punkt Ausgangspunkt (" + adapter.ToolCenterPoint.ToString() + ") und der Zielpunkt (" + target.ToString() + ") liegen nicht im angegeben Kreis mit Mittelpunkt(" + center.ToString() + ").")));
+                adapter.RaiseFailureEvent(new FailureEventArgs(new InvalidCenterPointException(adapter.ToolCenterPoint, target, center, "Ungültiger Mittelpunkt: Der Punkt Ausgangspunkt (" + adapter.ToolCenterPoint.ToString() + ") und der Zielpunkt (" + target.ToString() + ") liegen nicht im angegeben Kreis mit Mittelpunkt(" + center.ToString() + ").")));
                 return null;
             }
 
@@ -242,7 +239,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 nextPoint = new Point3D((float)x,(float) y,(float) z);
                 if (!adapter.IsPointValid(nextPoint))
                 {
-                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(nextPoint, "Der Zwischenpunkt (" + nextPoint.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
+                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(nextPoint, "Der Zwischenpunkt (" + nextPoint.ToString() + ") liegt nicht im Arbeitsbereich des Roboters")));
                     return null;
                 }
 
@@ -250,8 +247,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
                 if (!adapter.AreAnglesValid(step.Alpha1, step.Alpha2, step.Alpha3))
                 {
-                    Kinematics.CalculateInverse(new Point3D((float)x, (float)y, (float)z), adapter.Length, adapter.Length2);
-                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(State.READY, new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
+                    adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
                     return null;
                 }
                 result.Points.Add(nextPoint);

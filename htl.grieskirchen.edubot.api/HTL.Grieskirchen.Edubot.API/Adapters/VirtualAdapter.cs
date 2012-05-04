@@ -16,35 +16,30 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             : base(adapter.EquippedTool, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission, adapter.MaxPrimaryAngle, adapter.MinPrimaryAngle, adapter.MaxPrimaryAngle, adapter.MinSecondaryAngle)
         {
             requiresPrecalculation = true;
-            Listener = new VirtualStateListener();
         }
 
         public VirtualAdapter(Tool tool, float length, float length2)
             : base(tool, length, length2)
         {
             requiresPrecalculation = true;
-            Listener = new VirtualStateListener();
         }
 
         public VirtualAdapter(Tool tool, float length, float length2, float verticalToolRange, float transmission)
             : base(tool, length, length2, verticalToolRange, transmission)
         {
             requiresPrecalculation = true;
-            Listener = new VirtualStateListener();
         }
 
         public VirtualAdapter(Tool equippedTool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
             : base(equippedTool, length, length2, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
             requiresPrecalculation = true;
-            Listener = new VirtualStateListener();
         }
 
         public VirtualAdapter(Tool equippedTool, float length, float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
             : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
             requiresPrecalculation = true;
-            Listener = new VirtualStateListener();
         }
         //public VirtualAdapter(Tool tool, float length, float length2) : base(tool, length, length2)
         //{
@@ -73,7 +68,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
         }
 
-        public override void Start(object param)
+        public override void Initialize(object param)
         {
             toolCenterPoint = new Point3D(length + length2, 0, verticalToolRange);
             //State = State.READY;
@@ -89,5 +84,10 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             Shutdown();
         }
 
+
+        public override bool IsStateUpdateAllowed()
+        {
+            return true;
+        }
     }
 }
