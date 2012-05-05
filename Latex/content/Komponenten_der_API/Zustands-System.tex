@@ -5,7 +5,7 @@
 Das System muss in der Lage sein bestimmen zu können ob die Ausführung eines Befehls zu einem bestimmten Zeitpunkt möglich ist oder der Roboter derzeit mit einem anderen Befehl beschäftigt ist. Weiters muss überprüft werden ob sich der Roboter im ein- bzw. ausgeschalteten Zustand befindet.
 
 \subsubsection{Aufbau}
-Um diese Aufgabe umsetzen zu können, wurde jedem Adapter das Property \textit{State} hinzugefügt, welches einen Wert aus der \textit{State}-Enumeration enthält (siehe Umsetzung). Anhand dieses Wertes kann zu jedem Zeitpunkt bestimmt werden in welchem Zustand sich der spezifische Adapter und demnach auch der Roboter mit dessen Steuerung er kommuniziert befindet.
+Um diese Aufgabe umsetzen zu können, besitzt jeder Adapter eine Variable \textit{state}, welche einen Wert aus der \textit{State}-Enumeration enthält (siehe Umsetzung). Anhand dieses Wertes kann zu jedem Zeitpunkt bestimmt werden in welchem Zustand sich der spezifische Adapter und demnach auch der Roboter mit dessen Steuerung der jeweilige Adapter kommuniziert befindet.
 
 \subsubsection{Umsetzung}
 Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, welche eine vorgegeben Anzahl an Zuständen enthält. Die Bedeutung dieser Zustände kann der folgenden Tabelle entnommen werden.
@@ -20,18 +20,15 @@ Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, w
 \hline
 \textit{READY} & Der Roboter ist bereit den nächsten Befehl durchzuführen. Dieser Zustand besteht nach jedem erfolgreich durchgeführten Befehl mit Ausnahme des Shutdown-Befehls \\
 \hline
-\textit{MOVING} & Der Roboter hat einen Verfahrbefehl erhalten und befindet sich gerade in einer Bewegung. Er ist derzeit nicht in der Lage den nächsten Befehl auszuführen.\\
+\textit{MOVING} & Der Roboter hat einen Verfahrbefehl erhalten und befindet sich gerade in einer Bewegung. Er ist derzeit nicht in der Lage den nächsten Befehl auszuführen. Dieser Zustand tritt auch ein wenn beispielsweise das Werkzeug aktiviert wird.\\
 \hline
 \textit{SHUTTING\_DOWN} & Der Roboter hat den Befehl zum Herunterfahren erhalten und führt derzeit abschließende Aktionen durch.\\ 
 \hline
 \end{tabular}
 \newline
 \newline
-Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Das State-Property sollte grundsätzlich, mit Ausnahme des VirtualAdapters, nie manuell gesetzt werden, da Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der im Kapitel 4.g beschriebenen Listener verarbeitet werden. Weiters wird in den Execute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand eine InvalidStateException ausgelöst.
+Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Die \textit{state}-Variable sollte grundsätzlich nur mit der, im Kapitel "'Adapter-System"' vorgestellten, SetState-Methode gesetzt werden, da in den meisten Fällen Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der, im Kapitel "'Listener-System"'; beschriebenen Listener verarbeitet werden. Weiters wird in den CanExecute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand ein OnFailure-Event ausgelöst.
 \newline
-\newline
-Das State-Property ist im IAdapter definiert und besitzt zusätzliche Logik im Setter, welche im Anschluss beschrieben wird. Bei einer Änderung des State-Properties wird in einer if-Anweisung der aktuelle Zustand des Roboters geprüft, welcher bei initial auf \textit{SHUTDOWN} gesetzt ist. Befindet sich der Roboter Zustand \textit{READY} oder \textit{SHUTDOWN} wird der nächste Befehl ausgeführt. Durch diesen Mechanismus wird die Warteschlange des Adapters Schritt für Schritt abgearbeitet.
-\newpage
 Das folgende Beispiel demonstriert einen Standard-Ablauf und veranschaulicht die Funktionsweise des Zustand-Systems.
 \newline
 \newline

@@ -25,7 +25,7 @@ Wurde der Edubot-Roboter verbunden, so wird das 3D-Modell entsprechend umgestell
 Erst durch einen Klick auf "Trennen" werden die deaktivierten Felder wieder aktiviert und es kann eine andere Steuerung verbunden beziehungsweise die 3D-Ansicht geändert werden.\\
 \\
 Im unteren Bereich die Sektion "Visualisierung", in welcher letztere auf die Bedürfnisse des Benutzers angepasst werden kann. Über mehrere Checkboxen kann die Visualiserung, die Homing-Animation sowie entsprechende Beschriftungen und Raster aktiviert oder deaktiviert werden. \\
-Weiters kann über zwei Radio-Buttons ein 3D-Modell ausgewählt werden. Falls die das virtuelle 3D-Modell ausgewählt wird, so werden zwei Textfelder aktiviert in welcher die Länge der Achsen eingegeben werden kann.\\
+Weiters kann über zwei Radio-Buttons ein 3D-Modell ausgewählt werden. Falls das virtuelle 3D-Modell ausgewählt wird, so werden zwei Textfelder aktiviert in welcher die Relation der Achsen eingegeben werden kann. Die Gesamtlänge der Achsen beträgt dabei konstant 400, lediglich die Längen der beiden Achsen werden in der angegebenen Relation geändert. Wird das Edubot-3D-Modell ausgewählt, so werden die Achsenlängen beziehungsweise deren Relation getreu dem echten Modell festgelegt.\\
 Mit Hilfe von zwei Slidern kann die Genauigkeit des Rasters beziehungsweise der Beschriftung festgelegt und die Geschwindigkeit der Animation geregelt werden.\\
 Über einen Speichern-Button im rechten unteren Bereich kann, bei gültigen Einstellungen, die aktuelle Konfiguration gespeichert werden. Außerdem können die Einstellungen über den Button "Einstellungen zurücksetzen" auf ihre Standardwerte zurückgesetzt werden.
 
@@ -87,7 +87,7 @@ Das Port-Property enthält den Port auf dem die SPS Daten empfängt  und ist an 
 Zusätzlich zu diesen Properties besitzt die Klasse noch die Methode Reset, welche alle Eigenschaften auf ihren Standard-Wert zurücksetzt.ei Änderung eines Properties wird im entsprechenden Setter die Methode NotifyPropertyChanged mit dem Namen des geänderten Properties als Parameter aufgerufen. In dieser Methode wird das PropertyChangedEvent mit entsprechenden PropertyChangedEventArgs ausgelöst.\\
 \\
 \textbf{VisualizationConfig}\\
-Die VisualizationConfig-Klasse enthält Informationen über die Darstellung der Visualisierung. Sie enthält ähnliche Properties wie der VirtualAdapter: Length, Length2, VerticalToolRange sowie MaxPrimaryAngle, MinPrimaryAngle, MaxSecondaryAngle und MinSecondaryAngle. Der Datentyp dieser Properties ist, durch das Data-Binding bedingt, String. Diese Informationen werden zum Initialisieren der VirtualAdapter in den verschiedenen Visualisierungen benötigt. Die VisualizationConfig stellt somit eine gemeinsame Datenbasis für das Erstellen dieser Adapter dar.
+Die VisualizationConfig-Klasse enthält Informationen über die Darstellung der Visualisierung. Sie enthält ähnliche Properties wie der VirtualAdapter: Length, Length2, VerticalToolRange sowie MaxPrimaryAngle, MinPrimaryAngle, MaxSecondaryAngle und MinSecondaryAngle. Der Datentyp dieser Properties ist, durch das Data-Binding bedingt, String. Diese Informationen werden zum Initialisieren der VirtualAdapter in den verschiedenen Visualisierungen benötigt, wodurch die VisualizationConfig  eine gemeinsame Datenbasis für das Erstellen dieser Adapter darstellt.
 Zusätzlich zu diesen Informationen enthält die Klasse noch folgende, für die Animation und Darstellung relevante, Properties:
 \begin{itemize}
 \item \textbf{VisualizationEnabled}\\

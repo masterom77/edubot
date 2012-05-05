@@ -50,14 +50,15 @@ Bei Aufruf dieser Methode werden die Voraussetzungen für das Ausführen des Bef
 Bei Aufruf dieser Methode werden die von der Art des Befehls abhängigen Aktionen durchführt. Die Methode erhält als Parameter ein Objekt vom Typ \textit{IAdapter}, welches den ausführenden Adapter enthält, wodurch Zugriff auf die Methoden des entsprechenden Adapters gewährleistet ist. Es wird empfohlen die zum Command gehörige Adapter-Methode in einem eigenen Thread zu starten um den Adapter selbst nicht unnötig lange zu blockieren.
 \end{itemize}
 
-\textbf{StartCommand}
+\textbf{InitCommand}
 \newline
 Dieser Befehl dient zum Einschalten und Initialisieren des Roboters und stellt im Regelfall den ersten Befehl dar, der an den Roboter geschickt wird. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}\\
-In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{SHUTDOWN}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein FailureEventArgs-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben
+Um eine Initialisierung und das damit verbundene Homing jederzeit zu ermöglichen, gibt diese Methode immer \textbf{true} zurück.
+zurückgegeben
 \item \textbf{Execute}\\
-Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{HOMING} gesetzt und das \textit{OnHoming}-Event ausgelöst (mehr dazu im Kapitel Event-System). Zuletzt wird noch ein Thread gestartet, der die \textit{Start}-Methode des Adapter ausführt.
+Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{HOMING} gesetzt und das \textit{OnHoming}-Event ausgelöst (mehr dazu im Kapitel Event-System). Zuletzt wird noch ein Thread gestartet, der die \textit{Initialize}-Methode des Adapter ausführt.
 \end{itemize}
 
 \textbf{ShutdownCommand}
