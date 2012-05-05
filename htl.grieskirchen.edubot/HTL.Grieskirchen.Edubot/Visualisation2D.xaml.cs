@@ -17,6 +17,8 @@ using HTL.Grieskirchen.Edubot.API.Adapters;
 using HTL.Grieskirchen.Edubot.Settings;
 using System.ComponentModel;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using HTL.Grieskirchen.Edubot.API;
+using System.Threading;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -33,7 +35,7 @@ namespace HTL.Grieskirchen.Edubot
             InitializeComponent();
 
             posSecondaryEngine = MeshSecondaryEngine.Content.Bounds;
-            drawnPoints = new List<Point>();
+            drawnPaths = new List<Path>();
             AnglePrimaryAxis = 0;
             AnglePrimaryAxis = 0;
             configuration = new VisualizationConfig();
@@ -43,7 +45,8 @@ namespace HTL.Grieskirchen.Edubot
         private double anglePrimaryAxis;
         private double angleSecondaryAxis;
         private System.Threading.Thread animationThread;
-        private List<Point> drawnPoints;
+        private List<Path> drawnPaths;
+        private Path currentPath;
         private double tertiarySpeed;
 
         #region ---------------------Properties---------------------
@@ -65,37 +68,21 @@ namespace HTL.Grieskirchen.Edubot
             get { return visualisationAdapter; }
         }
 
-        //public void SetVisualisationAdapter(VirtualAdapter adapter)
-        //{
-        //    if (visualisationAdapter != null) {
-        //        RemoveVisualisationAdapter();
-        //    }
-        //    visualisationAdapter = adapter;
-        //    visualisationAdapter.OnAbort += StopAnimation;
-        //    visualisationAdapter.OnMovementStarted += StartMoving;
-        //    visualisationAdapter.OnHoming += StartHoming;
-        //    visualisationAdapter.OnToolUsed += UseTool;
-        //    InvalidateVisual();
-        //}
-
-        //public VirtualAdapter RemoveVisualisationAdapter()
-        //{
-        //    visualisationAdapter.OnAbort -= StopAnimation;
-        //    visualisationAdapter.OnMovementStarted -= StartMoving;
-        //    visualisationAdapter.OnHoming -= StartHoming;
-        //    visualisationAdapter.OnToolUsed -= UseTool;
-        //    InvalidateVisual();
-        //    return visualisationAdapter;
-        //}
-
         private void UseTool(object sender, EventArgs args)
         {
-            visualisationAdapter.State = API.State.READY;
+            usingTool = ((ToolUsedEventArgs)args).Activated;
+            visualisationAdapter.SetState(State.READY);
+        }
+
+        private void Shutdown(object sender, EventArgs args)
+        {
+            visualisationAdapter.SetState(State.SHUTDOWN);
         }
 
         private void StartHoming(object sender, EventArgs args)
         {
-            new System.Threading.Thread(Home).Start(args);
+            animationThread = new System.Threading.Thread(Home);
+            animationThread.Start(args);
         }
 
         private void StartMoving(object sender, EventArgs args)
@@ -103,7 +90,7 @@ namespace HTL.Grieskirchen.Edubot
             if (configuration.VisualizationEnabled)
             {
                 animationThread = new System.Threading.Thread(Move);
-                animationThread.Start(((MovementStartedEventArgs)args).Result);
+                animationThread.Start(args);
             }
            // new System.Threading.Thread(Move).Start(args);
         }
@@ -112,6 +99,8 @@ namespace HTL.Grieskirchen.Edubot
         {
             try
             {
+                drawnPaths.Clear();
+                Dispatcher.Invoke(new Action(delegate { InvalidateVisual(); }));
                 HomingEventArgs e = (HomingEventArgs)args;
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
@@ -164,71 +153,57 @@ namespace HTL.Grieskirchen.Edubot
                     Dispatcher.Invoke(updateSecondaryAngle, new object[]{0f});
                 
                 }
-                visualisationAdapter.State = API.State.READY;
+                visualisationAdapter.SetState(API.State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
 
             }
         }
-
-
+ 
         
-
         public void Move(object args) {
-            InterpolationResult result = (InterpolationResult)args;
+            MovementStartedEventArgs eArgs = (MovementStartedEventArgs) args;
+            InterpolationResult result = eArgs.Result;
             try
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
                 UpdateCallback updateTertiaryAngle = new UpdateCallback(UpdateTertiaryAxis);
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                float ticks = 5;
+                currentPath = new Path() { Start = result.Points.First() };
+                currentPath.Direction = SweepDirection.Counterclockwise;
+                if (result.InterpolationType == InterpolationType.Circular)
+                {
+                    if ((bool)result.MetaData["Clockwise"])
+                    {
+                        currentPath.Direction = SweepDirection.Clockwise;
+                    }
+                    currentPath.Radius = (float)(double)result.MetaData["Radius"];
+                }
+                currentPath.Dashed = !usingTool;
+                currentPath.Type = result.InterpolationType;
                 foreach (InterpolationStep step in result.Angles)
                 {
-                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);       
+                    currentPath.End = step.Target;
                     System.Threading.Thread.Sleep((int)ticks);
+                    Dispatcher.Invoke(new Action(delegate { InvalidateVisual(); }));
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
                     //Dispatcher.Invoke(updateTertiaryAngle, step.Alpha3);
                 }
-                visualisationAdapter.State = API.State.READY;
+                if (result.Angles.Count > 0)
+                {
+                    drawnPaths.Add(currentPath);
+                }
+                visualisationAdapter.SetState(State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
 
             }
         }
-
-        private List<InterpolationStep> angles;
-        public List<InterpolationStep> Angles
-        {
-            get { return angles; }
-            set
-            {
-                angles = value;
-                
-            }
-        }
-
-        public void Animate(InterpolationResult result) { 
-            
-            angles = result.Angles;
-            tertiarySpeed = result.IncrZ;
-            
-            if (configuration.VisualizationEnabled)
-                {
-                    animationThread = new System.Threading.Thread(StartAnimation);
-                    animationThread.Start();
-                }
-                //if (configuration.VisualizationEnabled)
-                //{
-                //    animationThread = new System.Threading.Thread(StartAnimation);
-                //    animationThread.Start();
-                //}
-            
-            
-        }
-
 
         public void ScaleAxes() {
 
@@ -239,7 +214,7 @@ namespace HTL.Grieskirchen.Edubot
             double secondaryAxisX = MeshSecondaryAxis.Content.Bounds.Z;
 
             ScaleTransform3D primaryScale = new ScaleTransform3D(1, 1, primaryScaleRatio);
-            ScaleTransform3D secondaryScale = new ScaleTransform3D(1, 1, secondaryScaleRatio);
+            ScaleTransform3D secondaryScale = new ScaleTransform3D(1, 1, secondaryScaleRatio, MeshSecondaryAxis.Content.Bounds.X + MeshSecondaryAxis.Content.Bounds.SizeX/2, MeshSecondaryAxis.Content.Bounds.Y + MeshSecondaryAxis.Content.Bounds.SizeY, MeshSecondaryAxis.Content.Bounds.Z + MeshSecondaryAxis.Content.Bounds.SizeZ);
             MeshPrimaryAxis.Transform = primaryScale;
             double offset = primaryAxisWidth - primaryAxisWidth*primaryScaleRatio;
             //if(relLength > 1){
@@ -247,7 +222,7 @@ namespace HTL.Grieskirchen.Edubot
             //}
 
             TranslateTransform3D primaryOffset = new TranslateTransform3D(0, 0, offset);
-            TranslateTransform3D secondaryOffset = new TranslateTransform3D(0,0,(secondaryAxisX*secondaryScaleRatio-secondaryAxisX)*-1);
+            TranslateTransform3D secondaryOffset = new TranslateTransform3D(0,0,offset);
             Transform3DGroup transform = new Transform3DGroup();
             transform.Children.Add(secondaryScale);
             transform.Children.Add(secondaryOffset);
@@ -265,13 +240,13 @@ namespace HTL.Grieskirchen.Edubot
             {
                 if (property.PropertyName == "Length")
                 {
-                    visualisationAdapter.Length = float.Parse(configuration.Length);
+                    visualisationAdapter.Length = configuration.Length;
                     ScaleAxes();
                      
                 }
                 if (property.PropertyName == "Length2")
                 {
-                    visualisationAdapter.Length2 = float.Parse(configuration.Length2);
+                    visualisationAdapter.Length2 = configuration.Length2;
                     ScaleAxes();
                 }
                 if (property.PropertyName == "VerticalToolRange")
@@ -284,19 +259,47 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 if (property.PropertyName == "MaxPrimaryAngle")
                 {
-                    visualisationAdapter.MaxPrimaryAngle = float.Parse(configuration.MaxPrimaryAngle);
+                    if (configuration.MaxPrimaryAngle == null)
+                    {
+                        visualisationAdapter.MaxPrimaryAngle = float.MaxValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MaxPrimaryAngle = float.Parse(configuration.MaxPrimaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MinPrimaryAngle")
                 {
-                    visualisationAdapter.MinPrimaryAngle = float.Parse(configuration.MinPrimaryAngle);
+                    if (configuration.MinPrimaryAngle == null)
+                    {
+                        visualisationAdapter.MinPrimaryAngle = float.MinValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MinPrimaryAngle = float.Parse(configuration.MinPrimaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MaxSecondaryAngle")
                 {
-                    visualisationAdapter.MaxSecondaryAngle = float.Parse(configuration.MaxSecondaryAngle);
+                    if (configuration.MaxSecondaryAngle == null)
+                    {
+                        visualisationAdapter.MaxSecondaryAngle = float.MaxValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MaxSecondaryAngle = float.Parse(configuration.MaxSecondaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MinSecondaryAngle")
                 {
-                    visualisationAdapter.MinSecondaryAngle = float.Parse(configuration.MinSecondaryAngle);
+                    if (configuration.MinSecondaryAngle == null)
+                    {
+                        visualisationAdapter.MinSecondaryAngle = float.MinValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MinSecondaryAngle = float.Parse(configuration.MinSecondaryAngle);
+                    }
                 }
             }
         
@@ -308,11 +311,12 @@ namespace HTL.Grieskirchen.Edubot
             {
                 if (configuration.VisualizationEnabled)
                 {
-                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2));
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, configuration.Length, configuration.Length2);
                     visualisationAdapter.OnAbort += StopAnimation;
                     visualisationAdapter.OnMovementStarted += StartMoving;
                     visualisationAdapter.OnHoming += StartHoming;
                     visualisationAdapter.OnToolUsed += UseTool;
+                    visualisationAdapter.OnShuttingDown += Shutdown;
                     API.Edubot.GetInstance().RegisterAdapter("2DVisualization", visualisationAdapter);
                 }
                 else
@@ -323,6 +327,7 @@ namespace HTL.Grieskirchen.Edubot
                         visualisationAdapter.OnMovementStarted -= StartMoving;
                         visualisationAdapter.OnHoming -= StartHoming;
                         visualisationAdapter.OnToolUsed -= UseTool;
+                        visualisationAdapter.OnShuttingDown -= Shutdown;
                         API.Edubot.GetInstance().DeregisterAdapter("2DVisualization");
                     }
                 }
@@ -396,32 +401,21 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
-        private void StartAnimation()
-        {
-            try
-            {
-                UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-                UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                UpdateCallback updateTertiaryPosition = new UpdateCallback(UpdateTertiaryAxis);
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                foreach (InterpolationStep step in angles)
-                {
-                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-                    System.Threading.Thread.Sleep((int)ticks);
-                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
-                    Dispatcher.Invoke(updateTertiaryPosition, tertiarySpeed);
-                }
-                visualisationAdapter.State = API.State.READY;
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
-            }
-        }
 
         private void StopAnimation(object sender, EventArgs args)
         {
-            animationThread.Abort();
+            try
+            {
+                if (animationThread != null)
+                {
+                    animationThread.Abort();
+                }
+            }
+            catch (ThreadAbortException) { 
+            }
+            if (visualisationAdapter != null) {
+                visualisationAdapter.SetState(State.SHUTDOWN);
+            }
         }
 
         private void UpdatePrimaryAxis(float val)
@@ -457,6 +451,7 @@ namespace HTL.Grieskirchen.Edubot
                 {
                     RenderLabels(drawingContext);
                 }
+                RenderPath(drawingContext);
             }
             else
             {
@@ -470,57 +465,147 @@ namespace HTL.Grieskirchen.Edubot
         protected void RenderGrid(DrawingContext drawingContext)
         {
             float stepSize = (float) ActualWidth / (configuration.Steps*2);
-            for (int col = 0; col < configuration.Steps * 2; col++)
+            for (int col = 0; col <= configuration.Steps * 2; col++)
             {
                 drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(0, stepSize * col), new Point(ActualWidth, stepSize * col));
             }
-            for (int row = 0; row < configuration.Steps * 2; row++)
+            for (int row = 0; row <= configuration.Steps * 2; row++)
             {
                 drawingContext.DrawLine(new Pen(Brushes.LightGray, 1), new Point(stepSize * row, 0), new Point(stepSize * row, ActualHeight));
             }
         }
 
+        bool usingTool = false;
+        //List<API.Interpolation.Point3D> drawnPoints;
+
+        protected void RenderPath(DrawingContext drawingContext)
+        {
+            double axisLength = visualisationAdapter.Length + visualisationAdapter.Length2;
+            double pixelPerPoint = ActualWidth / (axisLength * 2);
+            double center = axisLength * pixelPerPoint;
+            Pen pen = new Pen(Brushes.Black, 3);
+            Pen dashedPen = new Pen(Brushes.Black, 2);
+            dashedPen.DashStyle = new DashStyle(new double[] { 2, 3 }, 0);
+            Path path;
+            for(int i = drawnPaths.Count-1; i >= 0; i--){
+                path = drawnPaths.ElementAt(i);
+                if (path.Type == InterpolationType.Circular)
+                {
+                    DrawArc(drawingContext, null, path.Dashed ? dashedPen : pen, new Point(center + path.Start.X * pixelPerPoint, center - path.Start.Y * pixelPerPoint), new Point(center + path.End.X * pixelPerPoint, center - path.End.Y * pixelPerPoint),(float) (path.Radius * pixelPerPoint), path.Direction);
+                }
+                else
+                {
+                    drawingContext.DrawLine(path.Dashed ? dashedPen : pen, new Point(center + path.Start.X * pixelPerPoint, center - path.Start.Y * pixelPerPoint), new Point(center + path.End.X * pixelPerPoint, center - path.End.Y * pixelPerPoint));
+                }
+            }
+            if (currentPath != null)
+            {
+                if (currentPath.Type == InterpolationType.Circular)
+                {
+
+                    DrawArc(drawingContext, null, currentPath.Dashed ? dashedPen : pen, new Point(center + currentPath.Start.X * pixelPerPoint, center - currentPath.Start.Y * pixelPerPoint), new Point(center + currentPath.End.X * pixelPerPoint, center - currentPath.End.Y * pixelPerPoint), (float)(currentPath.Radius*pixelPerPoint), currentPath.Direction);
+                }
+                else
+                {
+                    drawingContext.DrawLine(currentPath.Dashed ? dashedPen : pen, new Point(center + currentPath.Start.X * pixelPerPoint, center - currentPath.Start.Y * pixelPerPoint), new Point(center + currentPath.End.X * pixelPerPoint, center - currentPath.End.Y * pixelPerPoint));
+                }
+            }
+        }
+
         protected void RenderLabels(DrawingContext drawingContext)
         {
-            double stepSize;
-            double pixelPerPoint;
-            double length;
-            if (visualisationAdapter != null)
-            {
-                length = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
-                stepSize = (int)(length / (configuration.Steps * 2));
-                pixelPerPoint = ActualWidth / length;
-            }
-            else
-            {
-                length = ActualWidth;
-                stepSize = (int)(ActualWidth / configuration.Steps);
-                pixelPerPoint = 1;
-            }
-            //double offset = ActualWidth / steps;
+            double axisLength = visualisationAdapter.Length + visualisationAdapter.Length2;
+            double stepSize = axisLength / configuration.Steps;
+            double pixelPerPoint = ActualWidth / (axisLength*2);
 
-            for (int col = 0; col < configuration.Steps * 2 + 1; col++)
-            {
-                float yPos = (float) (col * stepSize * pixelPerPoint);
-                int y = (int)(length/2-(col * stepSize));
-                if (y == 0) {
-                    continue;
-                }
-                FormattedText text = new FormattedText(y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
-                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5 , yPos-text.Height/2));
-            }
-            for (int row = 0; row < configuration.Steps * 2 + 1; row++)
-            {
-                float xPos = (float)(row * stepSize * pixelPerPoint);
-                int x = (int)(length / 2 - (row * stepSize));
-                if (x == 0)
+            for (int i = 0; i < configuration.Steps; i++) {
+                double coordinate = Math.Round(axisLength - (i * stepSize),0);
+                double posCoordinate = axisLength * pixelPerPoint - coordinate * pixelPerPoint;
+
+                if (coordinate == 0)
                 {
                     continue;
                 }
-                FormattedText text = new FormattedText(x.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
-                drawingContext.DrawText(text, new Point(xPos - text.Width / 2, ActualWidth / 2 + 5));
+
+
+                //Draw negative x/y labels
+                FormattedText text = new FormattedText((-coordinate).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
+                drawingContext.DrawText(text, new Point(posCoordinate - text.Width / 2, ActualWidth / 2 + 5)); 
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5, ActualHeight - (posCoordinate + text.Height / 2)));
+                //Draw positive x/y labels
+                text = new FormattedText(coordinate.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 11, Brushes.Black);
+                drawingContext.DrawText(text, new Point(ActualWidth-(posCoordinate + text.Width / 2), ActualWidth / 2 + 5));
+                //Draw y labels
+                drawingContext.DrawText(text, new Point(ActualWidth / 2 + 5, posCoordinate - text.Height / 2));
+                
+            
             }
+            
+        }
+        void DrawArc(DrawingContext drawingContext, Brush brush,
+    Pen pen, Point start, Point end, float radius, SweepDirection direction)
+        {
+            PathGeometry geometry = new PathGeometry();
+            PathFigure figure = new PathFigure();
+            geometry.Figures.Add(figure);
+            figure.StartPoint = start;
+            figure.Segments.Add(new ArcSegment(end, new Size(radius,radius),
+                0, false, direction, true));
+            drawingContext.DrawGeometry(brush, pen, geometry);
         }
         #endregion
+
+       
+    }
+
+    class Path
+    {
+
+        API.Interpolation.Point3D start;
+
+        public API.Interpolation.Point3D Start
+        {
+            get { return start; }
+            set { start = value; }
+        }
+
+        API.Interpolation.Point3D end;
+
+        public API.Interpolation.Point3D End
+        {
+            get { return end; }
+            set { end = value; }
+        }
+
+        InterpolationType type;
+
+        public InterpolationType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+        bool dashed;
+
+        public bool Dashed
+        {
+            get { return dashed; }
+            set { dashed = value; }
+        }
+
+        SweepDirection direction;
+        public SweepDirection Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
+
+        float radius;
+
+        public float Radius
+        {
+            get { return radius; }
+            set { radius = value; }
+        }
     }
 }

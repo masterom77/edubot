@@ -27,6 +27,7 @@ using HTL.Grieskirchen.Edubot.Controls;
 using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.Settings;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -166,17 +167,63 @@ namespace HTL.Grieskirchen.Edubot
 
         public void LoadSettings()
         {
-            //this.settings = Settings.Settings.Load();
-            //if (settings == null)
-            //    settings = new Settings.Settings();
-            //UpdateVisualisationAdapters();
-            //tiDASettings.DataContext = settings.EdubotConfig;
-            //tiKESettings.DataContext = settings.KebaConfig;
-            //tiVisualization.DataContext = settings.VisualizationConfig;
+           
+
             visualizationConfig = new VisualizationConfig();
             edubotConfig = new EdubotAdapterConfig();
             kebaConfig = new KebaAdapterConfig();
 
+            Cursor = Cursors.AppStarting;
+            System.IO.FileStream stream = null;
+            XmlSerializer serializer;
+            try
+            {
+                stream = new System.IO.FileStream("visualization.config.xml", System.IO.FileMode.Open);
+                serializer = new XmlSerializer(typeof(VisualizationConfig));
+                visualizationConfig = (VisualizationConfig)serializer.Deserialize(stream);
+            }
+            catch (Exception)
+            {
+                visualizationConfig.Reset();
+            }
+            finally
+            {
+                if(stream != null)
+                stream.Close();
+            }
+            try
+            {
+                stream = new System.IO.FileStream("edubot.config.xml", System.IO.FileMode.Open);
+                serializer = new XmlSerializer(typeof(EdubotAdapterConfig));
+                edubotConfig = (EdubotAdapterConfig)serializer.Deserialize(stream);
+            }
+            catch (Exception)
+            {
+                edubotConfig.Reset();
+            }
+            finally
+            {
+                if (stream != null)
+                stream.Close();
+            }
+            try
+            {
+                stream = new System.IO.FileStream("keba.config.xml", System.IO.FileMode.Open);
+                serializer = new XmlSerializer(typeof(KebaAdapterConfig));
+                kebaConfig = (KebaAdapterConfig)serializer.Deserialize(stream);
+            }
+            catch (Exception)
+            {
+                kebaConfig.Reset();
+            }
+            finally
+            {
+                if (stream != null)
+                stream.Close();
+            }
+
+            Cursor = Cursors.Arrow;
+            ApplyConfiguration(null, new PropertyChangedEventArgs("IsEdubotModelSelected"));
             visualizationConfig.PropertyChanged += ApplyConfiguration;
             gEdubotData.DataContext = edubotConfig;
             gKebaData.DataContext = kebaConfig;
@@ -190,10 +237,13 @@ namespace HTL.Grieskirchen.Edubot
             vVirtual.DataContext = visualizationConfig;
             vEdubot.DataContext = visualizationConfig;
 
-            edubotConfig.Reset();
-            kebaConfig.Reset();
-            visualizationConfig.Reset();
+            visualizationConfig.NotifiyAllPropertiesChanged();
+            //kebaConfig.Reset();
+            //visualizationConfig.Reset();
         }
+
+
+
 
         private void ApplyConfiguration(object sender, PropertyChangedEventArgs args) {
             if (args.PropertyName == "IsEdubotModelSelected") {
@@ -371,7 +421,7 @@ namespace HTL.Grieskirchen.Edubot
                     //executedCommands = 0;
                     //tbbExecute.IsEnabled = false;
                     //tbbAbort.IsEnabled = true;
-                    edubot.Execute(new StartCommand());
+                    edubot.Execute(new InitCommand());
                     foreach (API.Commands.ICommand command in icDrawing.GenerateMovementCommands())
                     {
                         edubot.Execute(command);
@@ -431,16 +481,20 @@ namespace HTL.Grieskirchen.Edubot
                     break;
                 case "draw":
                     icDrawing.EditingMode = InkCanvasEditingMode.Ink;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.None;
                     break;
                 case "erase":
                     icDrawing.EditingMode = InkCanvasEditingMode.EraseByPoint;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.None;
                     break;
                 case "eraseShape":
                     icDrawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.None;
                     break;
                 case "line":
                     icDrawing.EditingMode = InkCanvasEditingMode.None;
                     icDrawing.DrawingMode = InkCanvasDrawingMode.Line;
+                    
                     break;
                 case "rect":
                     icDrawing.EditingMode = InkCanvasEditingMode.None;
@@ -582,11 +636,11 @@ namespace HTL.Grieskirchen.Edubot
                 {
                     EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, IPAddress.Parse(edubotConfig.IpAddress), edubotConfig.Port);
                     ConnectingScreen screen = new ConnectingScreen(adapter);
-                    screen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                    screen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
                     screen.ShowDialog();
                     if (screen.DialogResult == false)
                     {
-                        MessageBox.Show("Verbindungstest fehlgeschlagen");
+                        MessageBox.Show("Es konnte keine Verbindung mit der ausgewählten Steuerung hergestellt werden.", "Verbindungstest fehlgeschlagen", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                         btConnect.Content = "Trennen";
@@ -597,9 +651,21 @@ namespace HTL.Grieskirchen.Edubot
                         rbVirtualModel.IsEnabled = false;
                 }
                 else {
-                    //settings.KebaConfig.Apply();
+                    KebaAdapter adapter = new KebaAdapter(Tool.VIRTUAL,200,200,float.MaxValue,float.MinValue,float.MaxValue,float.MinValue, IPAddress.Parse(kebaConfig.IpAddress), kebaConfig.ReceiverPort, kebaConfig.SenderPort);
+                    ConnectingScreen screen = new ConnectingScreen(adapter);
+                    screen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                    screen.ShowDialog();
+                    if (screen.DialogResult == false)
+                    {
+                        MessageBox.Show("Es konnte keine Verbindung mit der ausgewählten Steuerung hergestellt werden.","Verbindungstest fehlgeschlagen", MessageBoxButton.OK,MessageBoxImage.Error);
+                        return;
+                    }
+                    btConnect.Content = "Trennen";
+                    edubot.RegisterAdapter("Keba", adapter);
+                    //settings.EdubotConfig.Apply();
+                    if (visualizationConfig.VisualizationEnabled)
+                        visualizationConfig.VisualizationEnabled = false;
                     cbEnableVisualization.IsEnabled = false;
-                    visualizationConfig.VisualizationEnabled = false;
                 }
                 tbEdubotIPAddress.IsEnabled = false;
                 tbEdubotPort.IsEnabled = false;
@@ -616,9 +682,8 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 else
                 {
-                    edubot.DeregisterAdapter(KebaAdapterConfig.NAME);
+                    edubot.DeregisterAdapter("Keba");
                     cbEnableVisualization.IsEnabled = true;
-                    cbEnableVisualization.IsChecked = true;
                     visualizationConfig.VisualizationEnabled = true;
                 }
                 tbEdubotIPAddress.IsEnabled = true;
@@ -631,68 +696,36 @@ namespace HTL.Grieskirchen.Edubot
 
         }
 
-        private void rbEdubotModel_Checked(object sender, RoutedEventArgs e)
-        {
-            //if (vb3DVisualisation != null)
-            //{
-            //    VisualisationEdubot vEdubot = new VisualisationEdubot();
-            //    vEdubot.Width = 600;
-            //    vEdubot.Height = 600;
-            //    vEdubot.AnglePrimaryAxis = 0;
-            //    vEdubot.AngleSecondaryAxis = 0;
-            //    visualisation2D.AnglePrimaryAxis = 0;
-            //    visualisation2D.AngleSecondaryAxis = 0;
-            //    //vEdubot.Configuration = settings.VisualizationConfig;
-            //    //settings.VisualizationConfig.Length = "200";
-            //    //settings.VisualizationConfig.Length2 = "230";
-            //    ////settings.VisualizationConfig.Apply();
-
-            //    //IAdapter adapter2D;
-            //    //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter2D);
-            //    //visualisation2D.SetVisualisationAdapter((VirtualAdapter)adapter2D);
-            //    //icDrawing.VisualisationAdapter = (VirtualAdapter)adapter2D;
-            //    //IAdapter adapter3D;
-            //    //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter3D);
-            //    //vEdubot.SetVisualisationAdapter((VirtualAdapter)adapter3D);
-            //    //vEdubot.HorizontalAlignment = HorizontalAlignment.Stretch;
-               
-            //    //vb3DVisualisation.Child = vEdubot;
-            //}
-        }
-
-        private void rbVirtualModel_Checked(object sender, RoutedEventArgs e)
-        {
-            //if (vb3DVisualisation != null)
-            //{
-            //    Visualisation3D vVirtual = new Visualisation3D();
-            //    vVirtual.Width = 600;
-            //    vVirtual.Height = 600;
-            //    vVirtual.AnglePrimaryAxis = 0;
-            //    vVirtual.AngleSecondaryAxis = 0;
-            //    visualisation2D.AnglePrimaryAxis = 0;
-            //    visualisation2D.AngleSecondaryAxis = 0;
-            //    //vVirtual.Configuration = settings.VisualizationConfig;
-
-            //    //IAdapter adapter2D;
-            //    //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME2D, out adapter2D);
-            //    //visualisation2D.SetVisualisationAdapter((VirtualAdapter)adapter2D);
-            //    //icDrawing.VisualisationAdapter = (VirtualAdapter)adapter2D;
-            //    //IAdapter adapter3D;
-            //    //edubot.RegisteredAdapters.TryGetValue(VisualizationConfig.NAME3D, out adapter3D);
-            //    //vVirtual.SetVisualisationAdapter((VirtualAdapter)adapter3D);
-            //    vVirtual.HorizontalAlignment = HorizontalAlignment.Stretch;
-            //    //vb3DVisualisation.Child = vVirtual;
-            //}
-        }
-
         private void btSaveSettings_Click(object sender, RoutedEventArgs e)
         {
+            SaveSettings();  
             //settings.Save();
+        }
+
+        private void SaveSettings() {
+            Cursor = Cursors.AppStarting;
+            System.IO.FileStream stream = new System.IO.FileStream("visualization.config.xml", System.IO.FileMode.Create);
+            XmlSerializer serializer = new XmlSerializer(typeof(VisualizationConfig));
+            serializer.Serialize(stream, visualizationConfig);
+            stream.Close();
+            stream = new System.IO.FileStream("edubot.config.xml", System.IO.FileMode.Create);
+            serializer = new XmlSerializer(typeof(EdubotAdapterConfig));
+            serializer.Serialize(stream, edubotConfig);
+            stream.Close();
+            stream = new System.IO.FileStream("keba.config.xml", System.IO.FileMode.Create);
+            serializer = new XmlSerializer(typeof(KebaAdapterConfig));
+            serializer.Serialize(stream, kebaConfig);
+            stream.Close();
+
+            Cursor = Cursors.Arrow;
         }
 
         private void btResetSettings_Click(object sender, RoutedEventArgs e)
         {
-            //settings.Reset();
+            edubotConfig.Reset();
+            kebaConfig.Reset();
+            visualizationConfig.Reset();
+            SaveSettings();
         }
 
        

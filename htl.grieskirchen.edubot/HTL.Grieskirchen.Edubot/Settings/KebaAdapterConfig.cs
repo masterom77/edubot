@@ -81,18 +81,6 @@ namespace HTL.Grieskirchen.Edubot.Settings
             SelectedTool = "Virtuell";
         }
 
-        public override void Apply()
-        {
-            //API.Edubot edubot = API.Edubot.GetInstance();
-            //edubot.DeregisterAdapter(NAME);
-
-            //ITool realTool = null;
-            //switch (selectedTool)
-            //{
-            //    case "Virtuell": realTool = new VirtualTool();
-            //        break;
-            //}
-            //edubot.RegisterAdapter(NAME, new KebaAdapter(realTool, float.Parse(length), float.Parse(length2), System.Net.IPAddress.Parse(ipAddress), senderPort, receiverPort));
-        }
+        
     }
 }

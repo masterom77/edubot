@@ -9,6 +9,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
     {
         Line,
         Rectangle,
-        Ellipse
+        Ellipse,
+        None
     }
 }

@@ -10,7 +10,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
         MVS,
         MVC,
         USETOOL,
-        START,
+        INIT,
         SHUTDOWN
     }
 }

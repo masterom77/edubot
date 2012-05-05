@@ -33,6 +33,11 @@ namespace HTL.Grieskirchen.Edubot.Controls
         public ConnectingScreen(KebaAdapter adapter)
         {
             InitializeComponent();
+            if (adapter != null)
+            {
+                thread = new System.Threading.Thread(TestKebaConnectivity);
+                thread.Start(adapter);
+            }
         }
 
         public void TestEdubotConnectivity(object adapter) {
@@ -53,6 +58,28 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 }));
             }
         }
+
+        public void TestKebaConnectivity(object adapter)
+        {
+            KebaAdapter kebaAdapter = (KebaAdapter)adapter;
+            if (kebaAdapter.TestConnectivity())
+            {
+                this.Dispatcher.BeginInvoke(new Action(delegate()
+                {
+                    DialogResult = true;
+                    this.Close();
+                }));
+            }
+            else
+            {
+                this.Dispatcher.BeginInvoke(new Action(delegate()
+                {
+                    DialogResult = false;
+                    this.Close();
+                }));
+            }
+        }
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
