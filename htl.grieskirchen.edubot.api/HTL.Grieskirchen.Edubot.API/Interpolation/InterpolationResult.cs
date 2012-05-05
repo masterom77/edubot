@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using System.Collections;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
@@ -41,49 +42,35 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { points = value; }
         }
 
-        float incrZ;
+        InterpolationType interpolationType;
 
-        public float IncrZ
+        public InterpolationType InterpolationType
         {
-            get { return incrZ; }
-            set { incrZ = value; }
+            get { return interpolationType; }
+            set { interpolationType = value; }
         }
+
+        Hashtable metaData;
+
+        public Hashtable MetaData
+        {
+            get { return metaData; }
+            set { metaData = value; }
+        }
+
 
         /// <summary>
         /// A constructor with no parameters, which only initalizes the intern lists
         /// </summary>
-        public InterpolationResult()
+        public InterpolationResult(InterpolationType interpolationType)
         {
+            this.interpolationType = interpolationType;
             angles = new List<InterpolationStep>();
             steps = new List<InterpolationStep>();
             points = new List<Point3D>();
-            incrZ = 0;
+            metaData = new Hashtable();
         }
 
-        /// <summary>
-        /// A constructor with no parameters, which only initalizes the intern lists
-        /// </summary>
-        public InterpolationResult(float slopeZ)
-        {
-            angles = new List<InterpolationStep>();
-            steps = new List<InterpolationStep>();
-            points = new List<Point3D>();
-            this.incrZ = slopeZ;
-       } 
-
-        //private void GenerateAccelerationData() {
-        //    for (int pos = 0; pos < steps.Count - 1; pos++)
-        //    {
-        //        int ticksAlpha1 = 0;
-        //        AccelerationArea area = new AccelerationArea();
-        //        area.StartPos = pos;
-        //        if (((steps[pos].Alpha1 > 0 && steps[pos + 1].Alpha1 > 0) || (steps[pos].Alpha1 < 0 && steps[pos + 1].Alpha1 < 0)) && ((steps[pos].Alpha1 > 0 && steps[pos + 1].Alpha2 > 0) || (steps[pos].Alpha1 < 0 && steps[pos + 1].Alpha2 < 0)))
-        //        {
-                    
-        //        }
-        //        area.EndPos = 1;
-        //    }
-        //}
 
         /// <summary>
         /// Converts the content into a sendable format
@@ -93,8 +80,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         {
             string result = "";
             
-            foreach (InterpolationStep step in steps) {
-                result += step.ToString() + "&";
+            foreach (InterpolationStep angle in angles) {
+                result += angle.ToString() + "&";
             }
             if (result.Length > 0)
             {

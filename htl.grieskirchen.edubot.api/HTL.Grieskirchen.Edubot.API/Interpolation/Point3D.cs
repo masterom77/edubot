@@ -68,7 +68,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         public override string ToString()
         {
-            return x + ";" + y + ";" + z;
+            return x + "/" + y + "/" + z;
         }
     }
 }

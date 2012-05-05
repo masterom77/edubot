@@ -15,31 +15,26 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public VirtualAdapter(IAdapter adapter)
             : base(adapter.EquippedTool, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission, adapter.MaxPrimaryAngle, adapter.MinPrimaryAngle, adapter.MaxPrimaryAngle, adapter.MinSecondaryAngle)
         {
-            requiresPrecalculation = true;
         }
 
         public VirtualAdapter(Tool tool, float length, float length2)
             : base(tool, length, length2)
         {
-            requiresPrecalculation = true;
         }
 
         public VirtualAdapter(Tool tool, float length, float length2, float verticalToolRange, float transmission)
             : base(tool, length, length2, verticalToolRange, transmission)
         {
-            requiresPrecalculation = true;
         }
 
         public VirtualAdapter(Tool equippedTool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
             : base(equippedTool, length, length2, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            requiresPrecalculation = true;
         }
 
         public VirtualAdapter(Tool equippedTool, float length, float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle)
             : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            requiresPrecalculation = true;
         }
         //public VirtualAdapter(Tool tool, float length, float length2) : base(tool, length, length2)
         //{
@@ -76,7 +71,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void Shutdown()
         {
-            State = State.SHUTDOWN;
+            //SetState(State.SHUTDOWN);
         }
 
         public override void Abort()
@@ -86,6 +81,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
 
         public override bool IsStateUpdateAllowed()
+        {
+            return true;
+        }
+
+        public override bool UsesIntegratedPathCalculation()
         {
             return true;
         }

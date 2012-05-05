@@ -150,14 +150,14 @@ namespace HTL.Grieskirchen.Edubot.API
             if (registeredAdapters.ContainsKey(name) || registeredAdapters.ContainsValue(adapter))
                 return false;
 
-            adapter.OnHoming += OnHoming;
-            adapter.OnFailure += OnFailure;
-            adapter.OnAbort += OnAbort;
-            adapter.OnMovementStarted += OnMovementStarted;
-            adapter.OnShutDown += OnShutDown;
-            adapter.OnShuttingDown += OnShuttingDown;
-            adapter.OnToolUsed += OnToolUsed;
-            adapter.OnStateChanged += OnStateChanged;
+            adapter.OnHoming += RaiseHomingEvent;
+            adapter.OnFailure += RaiseFailureEvent;
+            adapter.OnAbort += RaiseAbortEvent;
+            adapter.OnMovementStarted += RaiseMovementStartedEvent;
+            adapter.OnShutDown += RaiseShutdownEvent;
+            adapter.OnShuttingDown += RaiseShuttingDownEvent;
+            adapter.OnToolUsed += RaiseToolUsedEvent;
+            adapter.OnStateChanged += RaiseStateChangedEvent;
             registeredAdapters.Add(name, adapter);
             return true;
         }
@@ -167,19 +167,69 @@ namespace HTL.Grieskirchen.Edubot.API
         {
             IAdapter adapter;
             if (registeredAdapters.TryGetValue(name, out adapter)) {
-                adapter.OnHoming -= OnHoming;
-                adapter.OnFailure -= OnFailure;
-                adapter.OnAbort -= OnAbort;
-                adapter.OnMovementStarted -= OnMovementStarted;
-                adapter.OnShutDown -= OnShutDown;
-                adapter.OnShuttingDown -= OnShuttingDown;
-                adapter.OnToolUsed -= OnToolUsed;
-                adapter.OnStateChanged -= OnStateChanged;
+                adapter.OnHoming -= RaiseHomingEvent;
+                adapter.OnFailure -= RaiseFailureEvent;
+                adapter.OnAbort -= RaiseAbortEvent;
+                adapter.OnMovementStarted -= RaiseMovementStartedEvent;
+                adapter.OnShutDown -= RaiseShutdownEvent;
+                adapter.OnShuttingDown -= RaiseShuttingDownEvent;
+                adapter.OnToolUsed -= RaiseToolUsedEvent;
+                adapter.OnStateChanged -= RaiseStateChangedEvent;
             }
             return registeredAdapters.Remove(name);
         }
 
-       
+        internal void RaiseStateChangedEvent(object sender, System.EventArgs args)
+        {
+            if (OnStateChanged != null)
+            {
+                OnStateChanged(sender, args);
+            }
+
+        }
+
+        internal void RaiseMovementStartedEvent(object sender, System.EventArgs args)
+        {
+            if (OnMovementStarted != null)
+                OnMovementStarted(sender, args);
+        }
+
+        internal void RaiseHomingEvent(object sender, System.EventArgs args)
+        {
+            if (OnHoming != null)
+                OnHoming(sender, args);
+        }
+
+        internal void RaiseShuttingDownEvent(object sender, System.EventArgs args)
+        {
+            if (OnShuttingDown != null)
+                OnShuttingDown(sender, args);
+        }
+
+        internal void RaiseShutdownEvent(object sender, System.EventArgs args)
+        {
+            if (OnShutDown != null)
+                OnShutDown(sender, args);
+        }
+
+        internal void RaiseAbortEvent(object sender, System.EventArgs args)
+        {
+            if (OnAbort != null)
+                OnAbort(sender, args);
+        }
+
+        internal void RaiseToolUsedEvent(object sender, System.EventArgs args)
+        {
+            if (OnToolUsed != null)
+                OnToolUsed(sender, args);
+        }
+
+        internal void RaiseFailureEvent(object sender, System.EventArgs args)
+        {
+            if (OnFailure != null)
+                OnFailure(sender, args);
+        }
+
 
         #endregion
     }

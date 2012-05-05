@@ -25,7 +25,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public EdubotAdapter(Tool equippedTool, IPAddress ipAdress, int port)
             : base(equippedTool, 200, 230, 80, 10, 145, -145, 135, -135)
         {
-            requiresPrecalculation = true;
             SetNetworkConfiguration(ipAdress, port);
         }
 
@@ -40,7 +39,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public EdubotAdapter(Tool equippedTool, float length,float length2, float verticalToolRange, int transmission, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int port)
             : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            requiresPrecalculation = true;
             SetNetworkConfiguration(ipAdress, port);
             //Connect();
         }
@@ -60,7 +58,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public EdubotAdapter(Tool equippedTool, float length, float length2, float maxPrimaryAngle, float minPrimaryAngle, float maxSecondaryAngle, float minSecondaryAngle, IPAddress ipAdress, int port)
             : base(equippedTool, length, length2,maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
-            requiresPrecalculation = true;
             SetNetworkConfiguration(ipAdress, port);
             //Connect();
         }
@@ -234,6 +231,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override bool IsStateUpdateAllowed()
         {
             return false;
+        }
+
+        public override bool UsesIntegratedPathCalculation()
+        {
+            return true;
         }
     }
 }

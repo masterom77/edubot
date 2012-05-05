@@ -40,7 +40,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float incrY = difY / steps;
             float incrZ = difZ / steps;
 
-            InterpolationResult result = new InterpolationResult(incrZ);
+            InterpolationResult result = new InterpolationResult(InterpolationType.Linear);
             result.Points.Add(toolCenterPoint);
             InterpolationStep prevStep = Kinematics.CalculateInverse(new Point3D(toolX, toolY, 0), length, length2);
             InterpolationStep step;
@@ -85,7 +85,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float incrY = difY / steps;
             float incrZ = difZ / steps;
 
-            InterpolationResult result = new InterpolationResult(incrZ);
+            InterpolationResult result = new InterpolationResult(InterpolationType.Linear);
             result.Points.Add(adapter.ToolCenterPoint);
             InterpolationStep prevStep = Kinematics.CalculateInverse(adapter.ToolCenterPoint, adapter.Length, adapter.Length2, adapter.Transmission);
             InterpolationStep step = null;
@@ -167,7 +167,15 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             double anglePerStep = angle/d;
 
 
-            InterpolationResult result = new InterpolationResult();
+            InterpolationResult result = new InterpolationResult(InterpolationType.Circular);
+            if (angle < 0)
+            {
+                result.MetaData["Clockwise"] = true;
+            }
+            else
+            {
+                result.MetaData["Clockwise"] = false;
+            }
             InterpolationStep prevStep = Kinematics.CalculateInverse(toolCenterPoint, length, length2);
             
             for (int i = 1; i <= d; i++)
@@ -213,20 +221,41 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             double angle;
 
             angle = MathHelper.ConvertToDegrees(Math.Acos(1 - (d * d / (2 * r * r))));
-            int quadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
-            if (angle != 180 && quadrant == 3 || quadrant == 4)
-                angle = -angle;
-
-            double s = 2 * r * Math.PI * Math.Abs(angle) / 360;
-            quadrant = MathHelper.GetQuadrant((float)difToolCenterX, (float)difToolCenterY);
+            
+            int tQuadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
+            double endAngle = MathHelper.ConvertToDegrees(Math.Acos(difTargetCenterX / r));
+            if (tQuadrant == 3 || tQuadrant == 4)
+                endAngle = -endAngle;  
+            
+            //Direction
+            
+            int quadrant = MathHelper.GetQuadrant((float)difToolCenterX, (float)difToolCenterY);
             double startingAngle = MathHelper.ConvertToDegrees(Math.Acos(difToolCenterX / r));
             if (quadrant == 3 || quadrant == 4)
-                startingAngle = 180 + startingAngle;
+                startingAngle = -startingAngle;
+
+            angle = endAngle - startingAngle;
+            if (Math.Abs(angle) == 180) {
+                angle = 180;
+            }
+            if (Math.Abs(angle) > 180) {
+                angle = 360 - Math.Abs(angle);
+            }
+            double s = 2 * r * Math.PI * Math.Abs(angle) / 360;
+            
             double anglePerStep = angle / Math.Ceiling(s);
             double incrZ = difZ / Math.Ceiling(s);
 
 
-            InterpolationResult result = new InterpolationResult();
+            InterpolationResult result = new InterpolationResult(InterpolationType.Circular);
+            if (angle < 0)
+            {
+                result.MetaData["Clockwise"] = true;
+            }
+            else {
+                result.MetaData["Clockwise"] = false;
+            }
+            result.MetaData["Radius"] = r;
             result.Points.Add(adapter.ToolCenterPoint);
             InterpolationStep prevStep = Kinematics.CalculateInverse(adapter.ToolCenterPoint, adapter.Length, adapter.Length2,adapter.Transmission);
             Point3D nextPoint;
@@ -250,6 +279,8 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                     adapter.RaiseFailureEvent(new EventArgs.FailureEventArgs(new PointOutOfRangeException(nextPoint, "Einer der berechneten Winkel (" + step.Alpha1 + "°/" + step.Alpha2 + "°/" + step.Alpha3 + "°) unterliegt nicht den angegebenen Winkeleinschränkungen (" + adapter.MinPrimaryAngle + "° >= Alpha1 <= " + adapter.MaxPrimaryAngle + "°/" + adapter.MinSecondaryAngle + "° >= Alpha2 <=" + adapter.MaxSecondaryAngle + "°/0° >= Alpha3 <= " + adapter.VerticalToolRange * adapter.Transmission + "°)")));
                     return null;
                 }
+
+                
                 result.Points.Add(nextPoint);
                 result.Angles.Add(step);
                 result.Steps.Add(step - prevStep);

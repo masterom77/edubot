@@ -206,14 +206,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { transmission = value; }
         }
 
-        protected bool requiresPrecalculation;
-
-        public bool RequiresPrecalculation
-        {
-            get { return requiresPrecalculation; }
-            set { requiresPrecalculation = value; }
-        }
-
         protected State state;
 
         protected State State
@@ -241,21 +233,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
         }
 
-        private void CheckState() {
-            if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
-            {
-                ICommand nextCmd = cmdQueue.Dequeue();
-                FailureEventArgs failureArgs = nextCmd.CanExecute(this);
-                if (failureArgs == null)
-                {
-                    nextCmd.Execute(this);
-                }
-                else
-                {
-                    RaiseFailureEvent(failureArgs);
-                }
-            }
-        }
 
         Queue<ICommand> cmdQueue;
 
@@ -306,12 +283,13 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public abstract void UseTool(object param);
         public abstract void Abort();
         public abstract bool IsStateUpdateAllowed();
+        public abstract bool UsesIntegratedPathCalculation();
 
         #region ----------Collision Avoidance and Point Validation----------
         public bool IsPointValid(Point3D point)
         {
             double distance = Math.Sqrt(point.X * point.X + point.Y * point.Y);
-            bool isXYValid = Math.Round(distance, 2) <= length + length2 && distance >= Math.Abs(length - length2);
+            bool isXYValid = distance > 0 && Math.Round(distance, 2) <= length + length2 && distance >= Math.Abs(length - length2);
             bool isZValid = Math.Round(point.Z, 4) >= 0 && Math.Round(point.Z,4) <= verticalToolRange;
             return isXYValid && isZValid;
         }
@@ -368,6 +346,23 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             }
         }
 
+        private void CheckState()
+        {
+            if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
+            {
+                ICommand nextCmd = cmdQueue.Dequeue();
+                FailureEventArgs failureArgs = nextCmd.CanExecute(this);
+                if (failureArgs == null)
+                {
+                    nextCmd.Execute(this);
+                }
+                else
+                {
+                    RaiseFailureEvent(failureArgs);
+                }
+            }
+        }
+
         internal void RaiseFailureEvent(FailureEventArgs args) {
             cmdQueue.Clear();
             SetState(API.State.SHUTDOWN,true);
@@ -379,6 +374,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 throw args.ThrownException;
             }
         }
+
 
         internal void RaiseStateChangedEvent(StateChangedEventArgs args)
         {
