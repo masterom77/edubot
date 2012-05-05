@@ -11,7 +11,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
     {
 
         Thread listener;
+
         Socket socket;
+
+        public Socket Socket
+        {
+            get { return socket; }
+            set { socket = value; }
+        }
 
         public INetworkStateListener(Socket socket) {
             this.socket = socket;

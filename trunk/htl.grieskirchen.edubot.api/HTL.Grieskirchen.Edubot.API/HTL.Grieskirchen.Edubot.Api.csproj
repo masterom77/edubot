@@ -75,7 +75,6 @@
     <Compile Include="EventArgs\AngleChangedEventArgs.cs" />
     <Compile Include="EventArgs\StateChangedEventArgs.cs" />
     <Compile Include="EventArgs\ToolUsedEventArgs.cs" />
-    <Compile Include="EventArgs\InterpolationChangedEventArgs.cs" />
     <Compile Include="Exceptions\InvalidCenterPointException.cs" />
     <Compile Include="Exceptions\NetworkException.cs" />
     <Compile Include="Exceptions\PointOutOfRangeException.cs" />
@@ -84,6 +83,7 @@
     <Compile Include="Interpolation\Interpolation.cs" />
     <Compile Include="Interpolation\InterpolationResult.cs" />
     <Compile Include="Interpolation\InterpolationStep.cs" />
+    <Compile Include="Interpolation\InterpolationType.cs" />
     <Compile Include="Interpolation\Kinematics.cs" />
     <Compile Include="Interpolation\MathHelper.cs" />
     <Compile Include="Interpolation\Point3D.cs" />

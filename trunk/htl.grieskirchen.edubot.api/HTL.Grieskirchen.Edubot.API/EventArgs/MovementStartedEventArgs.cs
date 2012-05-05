@@ -8,7 +8,7 @@ namespace HTL.Grieskirchen.Edubot.API.EventArgs
 {
     public class MovementStartedEventArgs : System.EventArgs
     {
-        
+
         InterpolationResult result;
 
         public InterpolationResult Result

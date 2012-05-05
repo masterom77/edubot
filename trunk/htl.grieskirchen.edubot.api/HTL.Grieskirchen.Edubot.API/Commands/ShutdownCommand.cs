@@ -18,6 +18,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         {
 
             adapter.SetState(State.SHUTTING_DOWN, true);
+            adapter.RaiseShuttingDownEvent(null);
             new System.Threading.Thread(adapter.Shutdown).Start();
            
         }

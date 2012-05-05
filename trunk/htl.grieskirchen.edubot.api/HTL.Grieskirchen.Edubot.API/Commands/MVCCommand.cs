@@ -38,7 +38,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
             adapter.SetState(State.MOVING,true);
             InterpolationResult result = null;
             
-            if (adapter.RequiresPrecalculation) {
+            if (adapter.UsesIntegratedPathCalculation()) {
                 result = Interpolation.Interpolation.InterpolateCircular(adapter, target,center);
                 if (result != null)
                     adapter.InterpolationResult = result;

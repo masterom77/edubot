@@ -86,7 +86,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         {
             NumberFormatInfo info = (NumberFormatInfo) NumberFormatInfo.CurrentInfo.Clone();
             info.NumberDecimalSeparator = ".";
-            //return Convert.ToInt32(Math.Round(alpha1 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha2 / 0.1125)) + ";" + Convert.ToInt32(Math.Round(alpha3 / 0.1125));
             return alpha1.ToString(info) + ";" + alpha2.ToString(info) + ";" + alpha3.ToString(info);
         }
 
