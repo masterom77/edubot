@@ -239,7 +239,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 angle = 180;
             }
             if (Math.Abs(angle) > 180) {
-                angle = 360 - Math.Abs(angle);
+                angle = -(360 - Math.Abs(angle));
             }
             double s = 2 * r * Math.PI * Math.Abs(angle) / 360;
             
