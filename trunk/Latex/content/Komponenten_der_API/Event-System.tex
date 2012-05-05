@@ -7,7 +7,7 @@ Es soll möglich sein über bestimmte Ereignisse während des Betriebs auch soft
 \subsubsection{Aufbau}
 Um diese Aufgabe erfüllen zu können, wird das Observer-Pattern verwendet, dessen Umsetzung in C\# durch sogenannte Delegates (siehe Listing) erleichtert wird. In der API wird dazu das Event-Delegate verwendet, welches die Struktur einer Methode, welche bei Eintreten eines Ereignisses ausgeführt werden sollen, definiert. 
 \newline
-Die abstrakte Klasse IAdapter besitzt für jedes wichtige Ereignis ein Property vom Typ Event, welchem benutzerdefinierten Methoden, die Eintreten des Events ausgeführt werden sollen, mitgegeben werden können. Somit kann ein Entwickler nach seinen Vorstellungen auf Zustandsänderungen eines Adapters reagieren.
+Die abstrakte Klasse IAdapter besitzt für jedes wichtige Ereignis ein, mit dem Schlüsselwort \textbf{event} gekennzeichnetes, Property vom Delegate Event, welchem benutzerdefinierten Methoden, die Eintreten des Events ausgeführt werden sollen, mitgegeben werden können. Somit kann ein Entwickler nach seinen Vorstellungen auf bestimmte Ereignisse eines Adapters reagieren.
 
 \subsubsection{Umsetzung}
 \textbf{Event}
@@ -22,7 +22,7 @@ Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind i
 \hline \rowcolor{lightgray}
 \textbf{Ereignis} & \textbf{Zeitpunkt des Eintretens}\\
 \hline
-\textit{OnHoming} & Bei Ausführung eines StartCommands, nach erfolgreicher Zustandsvalidierung.\\
+\textit{OnHoming} & Bei Ausführung eines InitCommands, nach erfolgreicher Zustandsvalidierung.\\
 \hline
 \textit{OnMovementStarted} & Bei Ausführung eines MVS- oder MVCCommands, nach erfolgreicher Zustandsvalidierung und Pfadberechnung.\\
 \hline
@@ -34,4 +34,21 @@ Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind i
 \hline
 \textit{OnStateChanged} & Bei jeder Änderung des Zustands-Properties des Adapters.\\
 \hline
+\textit{OnFailure} & Bei Auftreten eines Fehlers im jeweiligen Adapter\\
+\hline
 \end{tabular}
+
+\textbf{Event-Argumente}\\
+Bei Auslösen eines Events werden im args-Parameter Details zum Event übergeben. Dazu werden verschiedene, von der Systemklasse EventArgs, abgeleitete Klassen verwendet, die im folgenden vorgestellt werden.
+\begin{itemize}
+\item \textbf{HomingEventArgs}
+Eine Instanz dieser Klasse wird beim Auslösen des OnHoming-Events mitgegeben und enthält ein Property \textbf{CorrectionAngle} um den die Winkelstellungen bei jedem Schritt korrigiert werden soll. Im Falle des EdubotAdapters, wäre dieser beispielsweise 0,1125°, was der Winkeländerung bei Ausführen eines Microschritts durch den Schrittmotor entspricht.
+\item \textbf{FailureEventArgs}
+Eine Instanz dieser Klasse wird beim Auslösen des OnFailure-Events als Parameter mitgegeben und dient zur Behandlung von Laufzeitfehlern. Das Property \textbf{ThrownException} enthält ein Exception-Objekt mit detaillierten Informationen zum jeweiligen Fehler. \\
+\item \textbf{MovementStartedEventArgs}
+Eine Instanz dieser Klasse wird beim Auslösen des OnMovementStarted-Events als Parameter mitgegeben und enthält ein InterpolationResult-Objekt mit den, für die Bewegung benötigten, Winkelstellungen. Es kann vorkommen das dieses Objekt null ist, da nur für Adapter deren \textbf{UsesIntegratedPathCalculation}-Methode \textbf{true} zurückgibt ein entsprechendes Objekt erzeugt wird. \\
+\item \textbf{StateChangedEventArgs}
+Eine Instanz dieser Klasse wird beim Auslösen des OnStateChanged-Events als Parameter mitgegeben und enthält den alten sowie den neue Zustand des Adapters in Form eines State-Objekts. Somit kann die genaue Zustandveränderung leicht nachvollzogen werden.\\
+\item \textbf{ToolUsedEventArgs}
+Eine Instanz dieser Klasse wird beim Auslösen des OnToolUsed-Events als Parameter mitgegeben und enthält einen Wert vom Typ Boolean der angibt ob das Werkzeug aktiviert oder deaktivert wurde.\\
+\end{itemize}

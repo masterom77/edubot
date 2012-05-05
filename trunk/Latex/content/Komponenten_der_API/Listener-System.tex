@@ -34,7 +34,6 @@ Die einzige abstrakte Methode des  \textit{INetworkListeners} ist die \textit{Pr
 \item \textbf{ProcessData}\\
 Diese Methode wird nachdem vollständigen Empfangen eines Datenblocks durch den Listener-Thread aufgerufen. Die empfangenen Daten werden ihr dabei als Byte-Array übergeben.
 \end{itemize}
-\\[0.5em]
 \textbf{EdubotStateListener}\\
 Wie der Name vielleicht vermuten lässt, kümmert sich diese Klasse um die Vearbeitung der, von der GHI-Steuerung empfangenen, Daten. Um Zustandsveränderungen an den entsprechenden \textit{EdubotAdapter} weitergeben zu können, wird dieser im Konstruktor der \textit{EdubotStateListener}-Klasse übergeben.
 \begin{itemize}
@@ -43,7 +42,6 @@ Bei Aufruf dieser Methode wird das übergebene Byte-Array mit Hilfe der \textit{
 Handelt es sich bei der empfangenen Nachricht um den String "'ready"' so wird der State des Adapters auf \textit{READY} gesetzt und damit der nächste Befehle aus der Warteschlange, falls einer vorhanden ist, ausgeführt.
 Wird der String "'shutdown"' empfangen, indiziert dies das erfolgreiche Herunterfahren des Roboters und der \textit{State} des Adapters wird auf \textit{SHUTDOWN} gesetzt. Sollte die empfangene Nachricht mit "'err:"' beginnen, so bedeutet dies das ein Fehler auf der Steuerung aufgetreten ist und das \textit{OnFailure}-Event des entsprechenden Adapters wird ausgelöst. Dabei wird die empfangene Nachricht als Event-Argument mitgegeben, da sie detailliertere Informationen zum aufgetretenen Fehler enthält.
 \end{itemize}
-\\[0.5em]
 \textbf{KebaStateListener}\\
 Um in Bezug auf zukünftige Erweiterungen der Funktionen des KebaAdapters flexibel zu bleiben, wurde auch für diesen eine eigene, vom  \textit{INetworkStateListener} abgeleitete, Klasse entwickelt. Derzeit ist der einzige Unterschied zum  \textit{EdubotStateListener} der übergebene Adaptertyp, da es sich hierbei logischerweise um ein  \textit{KebaAdapter}-Objekt handelt.
 \begin{itemize}
