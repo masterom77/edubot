@@ -17,6 +17,8 @@ using HTL.Grieskirchen.Edubot.API.Adapters;
 using System.ComponentModel;
 using HTL.Grieskirchen.Edubot.Settings;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using HTL.Grieskirchen.Edubot.API;
+using System.Threading;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -57,6 +59,7 @@ namespace HTL.Grieskirchen.Edubot
             get { return configuration; }
             set { configuration = value;
             configuration.PropertyChanged += ApplyConfiguration;
+            InvalidateVisual();
             }
         }
 
@@ -91,12 +94,18 @@ namespace HTL.Grieskirchen.Edubot
 
         private void UseTool(object sender, EventArgs args)
         {
-            visualisationAdapter.State = API.State.READY;
+            visualisationAdapter.SetState(State.READY);
+        }
+
+        private void Shutdown(object sender, EventArgs args)
+        {
+            visualisationAdapter.SetState(State.SHUTDOWN);
         }
 
         private void StartHoming(object sender, EventArgs args)
         {
-            new System.Threading.Thread(Home).Start(args);
+            animationThread = new System.Threading.Thread(Home);
+            animationThread.Start(args);
         }
 
         private void StartMoving(object sender, EventArgs args)
@@ -165,7 +174,7 @@ namespace HTL.Grieskirchen.Edubot
                     Dispatcher.Invoke(updateSecondaryAngle, new object[]{0f});
                 
                 }
-                visualisationAdapter.State = API.State.READY;
+                visualisationAdapter.SetState(API.State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -189,7 +198,7 @@ namespace HTL.Grieskirchen.Edubot
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
                     Dispatcher.Invoke(updateTertiaryAngle, result.Angles.Count);
                 }
-                visualisationAdapter.State = API.State.READY;
+                visualisationAdapter.SetState(API.State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -327,7 +336,20 @@ namespace HTL.Grieskirchen.Edubot
 
         private void StopAnimation(object sender, EventArgs args)
         {
-            animationThread.Abort();
+            try
+            {
+                if (animationThread != null)
+                {
+                    animationThread.Abort();
+                }
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            if (visualisationAdapter != null)
+            {
+                visualisationAdapter.SetState(State.SHUTDOWN);
+            }
         }
 
         private void UpdatePrimaryAxis(float val)
@@ -353,11 +375,11 @@ namespace HTL.Grieskirchen.Edubot
             {
                 if (property.PropertyName == "Length")
                 {
-                    visualisationAdapter.Length = float.Parse(configuration.Length);
+                    visualisationAdapter.Length = configuration.Length;
                 }
                 if (property.PropertyName == "Length2")
                 {
-                    visualisationAdapter.Length2 = float.Parse(configuration.Length2);
+                    visualisationAdapter.Length2 = configuration.Length2;
                 }
                 if (property.PropertyName == "VerticalToolRange")
                 {
@@ -369,35 +391,66 @@ namespace HTL.Grieskirchen.Edubot
                 }
                 if (property.PropertyName == "MaxPrimaryAngle")
                 {
-                    visualisationAdapter.MaxPrimaryAngle = float.Parse(configuration.MaxPrimaryAngle);
+                    if (configuration.MaxPrimaryAngle == null)
+                    {
+                        visualisationAdapter.MaxPrimaryAngle = float.MaxValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MaxPrimaryAngle = float.Parse(configuration.MaxPrimaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MinPrimaryAngle")
                 {
-                    visualisationAdapter.MinPrimaryAngle = float.Parse(configuration.MinPrimaryAngle);
+                    if (configuration.MinPrimaryAngle == null)
+                    {
+                        visualisationAdapter.MinPrimaryAngle = float.MinValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MinPrimaryAngle = float.Parse(configuration.MinPrimaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MaxSecondaryAngle")
                 {
-                    visualisationAdapter.MaxSecondaryAngle = float.Parse(configuration.MaxSecondaryAngle);
+                    if (configuration.MaxSecondaryAngle == null)
+                    {
+                        visualisationAdapter.MaxSecondaryAngle = float.MaxValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MaxSecondaryAngle = float.Parse(configuration.MaxSecondaryAngle);
+                    }
                 }
                 if (property.PropertyName == "MinSecondaryAngle")
                 {
-                    visualisationAdapter.MinSecondaryAngle = float.Parse(configuration.MinSecondaryAngle);
+                    if (configuration.MinSecondaryAngle == null)
+                    {
+                        visualisationAdapter.MinSecondaryAngle = float.MinValue;
+                    }
+                    else
+                    {
+                        visualisationAdapter.MinSecondaryAngle = float.Parse(configuration.MinSecondaryAngle);
+                    }
                 }
             }
             if (property.PropertyName == "VisualizationEnabled" || property.PropertyName == "IsEdubotModelSelected")
             {
                 if (configuration.VisualizationEnabled && !configuration.IsEdubotModelSelected)
                 {
-                    configuration.MaxPrimaryAngle = float.MaxValue.ToString();
-                    configuration.MinPrimaryAngle = float.MinValue.ToString();
-                    configuration.MaxSecondaryAngle = float.MaxValue.ToString();
-                    configuration.MinSecondaryAngle = float.MinValue.ToString();
+                    configuration.Length = 200;
+                    configuration.Length2 = 200;
+                    configuration.MaxPrimaryAngle = null;
+                    configuration.MinPrimaryAngle = null;
+                    configuration.MaxSecondaryAngle = null;
+                    configuration.MinSecondaryAngle = null;
                     configuration.Transmission = "0";
-                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2),30,0);
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL,configuration.Length, configuration.Length2,30,0);
                     visualisationAdapter.OnAbort += StopAnimation;
                     visualisationAdapter.OnMovementStarted += StartMoving;
                     visualisationAdapter.OnHoming += StartHoming;
                     visualisationAdapter.OnToolUsed += UseTool;
+                    visualisationAdapter.OnShuttingDown += Shutdown;
                     AnglePrimaryAxis = 0;
                     AngleSecondaryAxis = 0;
                     API.Edubot.GetInstance().RegisterAdapter("3DVisualization", visualisationAdapter);
@@ -410,6 +463,7 @@ namespace HTL.Grieskirchen.Edubot
                         visualisationAdapter.OnMovementStarted -= StartMoving;
                         visualisationAdapter.OnHoming -= StartHoming;
                         visualisationAdapter.OnToolUsed -= UseTool;
+                        visualisationAdapter.OnShuttingDown -= Shutdown;
                         API.Edubot.GetInstance().DeregisterAdapter("3DVisualization");
                     }
                 }

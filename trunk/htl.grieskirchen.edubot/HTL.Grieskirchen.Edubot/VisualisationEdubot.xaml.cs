@@ -17,6 +17,8 @@ using HTL.Grieskirchen.Edubot.API.Adapters;
 using System.ComponentModel;
 using HTL.Grieskirchen.Edubot.Settings;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
+using HTL.Grieskirchen.Edubot.API;
+using System.Threading;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -169,6 +171,7 @@ namespace HTL.Grieskirchen.Edubot
             {
                 configuration = value;
                 configuration.PropertyChanged += ApplyConfiguration;
+                InvalidateVisual();
             }
         }
 
@@ -204,12 +207,18 @@ namespace HTL.Grieskirchen.Edubot
 
         private void UseTool(object sender, EventArgs args)
         {
-            visualisationAdapter.State = API.State.READY;
+            visualisationAdapter.SetState(State.READY);
+        }
+
+        private void Shutdown(object sender, EventArgs args)
+        {
+            visualisationAdapter.SetState(State.SHUTDOWN);
         }
 
         private void StartHoming(object sender, EventArgs args)
         {
-            new System.Threading.Thread(Home).Start(args);
+            animationThread = new System.Threading.Thread(Home);
+            animationThread.Start(args);
         }
 
         private void StartMoving(object sender, EventArgs args)
@@ -278,7 +287,7 @@ namespace HTL.Grieskirchen.Edubot
                     Dispatcher.Invoke(updateSecondaryAngle, new object[] { 0f });
 
                 }
-                visualisationAdapter.State = API.State.READY;
+                visualisationAdapter.SetState(API.State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -301,7 +310,7 @@ namespace HTL.Grieskirchen.Edubot
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
                 }
-                visualisationAdapter.State = API.State.READY;
+                visualisationAdapter.SetState(API.State.READY);
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -338,8 +347,8 @@ namespace HTL.Grieskirchen.Edubot
                 {
                     //Visualiserungsmodell Edubot wurde ausgewählt
                     //Edubot-Modell hat fixe Längen und Winkelbeschränkungen
-                    configuration.Length = "200";
-                    configuration.Length2 = "230";
+                    configuration.Length = 200;
+                    configuration.Length2 = 230;
                     configuration.VerticalToolRange = "80";
                     configuration.Transmission = "5";
                     configuration.MaxPrimaryAngle = "145";
@@ -352,6 +361,7 @@ namespace HTL.Grieskirchen.Edubot
                     visualisationAdapter.OnMovementStarted += StartMoving;
                     visualisationAdapter.OnHoming += StartHoming;
                     visualisationAdapter.OnToolUsed += UseTool;
+                    visualisationAdapter.OnShuttingDown += Shutdown;
                     //Werkzeug auf Startpunkt setzen
                     AnglePrimaryAxis = 0;
                     AngleSecondaryAxis = 0;
@@ -368,6 +378,7 @@ namespace HTL.Grieskirchen.Edubot
                         visualisationAdapter.OnMovementStarted -= StartMoving;
                         visualisationAdapter.OnHoming -= StartHoming;
                         visualisationAdapter.OnToolUsed -= UseTool;
+                        visualisationAdapter.OnShuttingDown -= Shutdown;
                         API.Edubot.GetInstance().DeregisterAdapter("EdubotVisualization");
                     }
                 }
@@ -462,7 +473,20 @@ namespace HTL.Grieskirchen.Edubot
 
         private void StopAnimation(object sender, EventArgs args)
         {
-            animationThread.Abort();
+            try
+            {
+                if (animationThread != null)
+                {
+                    animationThread.Abort();
+                }
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            if (visualisationAdapter != null)
+            {
+                visualisationAdapter.SetState(State.SHUTDOWN);
+            }
         }
 
         /// <summary>

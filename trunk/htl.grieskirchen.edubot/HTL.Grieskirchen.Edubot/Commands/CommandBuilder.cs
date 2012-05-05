@@ -16,7 +16,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
                 case "MVS": return BuildMVSCommand(parameters);
                 case "MVC": return BuildMVCCommand(parameters);
                 case "USETOOL": return BuildUseToolCommand(parameters);
-                case "START": return BuildStartCommand(parameters);
+                case "INIT": return BuildInitCommand(parameters);
                 case "SHUTDOWN": return BuildShutdownCommand(parameters);
                 default: throw new UnknownCommandException("Befehl \"" + cmd + "\" unbekannt");
             }
@@ -66,11 +66,11 @@ namespace HTL.Grieskirchen.Edubot.Commands
             return new UseToolCommand(activate);
         }
 
-        private static StartCommand BuildStartCommand(string[] parameters)
+        private static InitCommand BuildInitCommand(string[] parameters)
         {
             if (!String.IsNullOrWhiteSpace(parameters[0]))
-                throw new InvalidSyntaxException("Das Start-Command übernimmt keinen Parameter");
-            return new StartCommand();
+                throw new InvalidSyntaxException("Das Init-Command übernimmt keinen Parameter");
+            return new InitCommand();
         }
 
         private static ShutdownCommand BuildShutdownCommand(string[] parameters)

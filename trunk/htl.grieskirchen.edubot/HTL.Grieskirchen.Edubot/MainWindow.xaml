@@ -324,10 +324,10 @@
                                 <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
                                 <Label Grid.Row="1" Content="Modell:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
                                 <StackPanel Grid.Column="1" Grid.Row="1">
-                                <RadioButton Name="rbEdubotModel" Margin="5" Checked="rbEdubotModel_Checked" IsChecked="{Binding IsEdubotModelSelected}">
+                                    <RadioButton Name="rbEdubotModel" Margin="5" IsChecked="{Binding IsEdubotModelSelected}" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}">
                                         <Label Content="Edubot Modell"></Label>
                                     </RadioButton>
-                                <RadioButton Name="rbVirtualModel" Grid.Column="1" Grid.Row="2" Margin="5,0,0,5" Checked="rbVirtualModel_Checked">
+                                    <RadioButton Name="rbVirtualModel" Grid.Column="1" IsChecked="{Binding IsVirtualModelSelected}" Grid.Row="2" Margin="5,0,0,5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -337,20 +337,20 @@
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Virtuelles Modell"></Label>
-                                            <Label Grid.Column="1" Content="Achsenlänge 1:" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
-                                        <TextBox Name="tbLength" Grid.Column="2" Margin="5" Width="100" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
+                                            <Label Grid.Column="1" Margin="50,0,0,0" Content="Verhältnis:" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
+                                        <TextBox Name="tbLength" Grid.Column="2" Margin="5" Width="30" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
                                                 <TextBox.Text>
-                                                    <Binding Path="Length" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding Path="RelationLength" UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <validators:LengthValidationRule></validators:LengthValidationRule>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
                                             </TextBox>
-                                            <Label Grid.Column="3" Content="Achsenlänge 2:" Grid.Row="1" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
-                                            <TextBox Name="tbLength2" Grid.Column="4" Margin="5" Width="100" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
+                                            <Label Grid.Column="3" Content=":" Grid.Row="1" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}"></Label>
+                                            <TextBox Name="tbLength2" Grid.Column="4" Margin="5" Width="30" IsEnabled="{Binding ElementName=rbVirtualModel, Path=IsChecked}">
                                                 <TextBox.Text>
-                                                    <Binding Path="Length2" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding Path="RelationLength2" UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <validators:LengthValidationRule></validators:LengthValidationRule>
                                                         </Binding.ValidationRules>

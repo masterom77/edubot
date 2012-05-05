@@ -40,6 +40,12 @@ namespace HTL.Grieskirchen.Edubot.Controls
             MouseLeftButtonDown += SetOrigin;
             MouseLeftButtonUp += AddStrokes;
             MouseMove += UpdateShape;
+            MouseEnter += U;
+            VisualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, 0, 0);
+        }
+
+        private void U(object sender, RoutedEventArgs args) {
+            int i = 0;
         }
 
         VirtualAdapter visualisationAdapter;
@@ -63,10 +69,62 @@ namespace HTL.Grieskirchen.Edubot.Controls
         }
 
         private void ApplyConfiguration(object sender, PropertyChangedEventArgs args) {
-            if (args.PropertyName == "Length2") {
-                
-                VisualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, float.Parse(configuration.Length), float.Parse(configuration.Length2),90,-90,45,-45);
+            if (args.PropertyName == "Length")
+            {
+                visualisationAdapter.Length = configuration.Length;
             }
+            if (args.PropertyName == "Length2") {
+
+              
+                visualisationAdapter.Length2 = configuration.Length2;
+            }
+            if (args.PropertyName == "MaxPrimaryAngle")
+            {
+                if (configuration.MaxPrimaryAngle == null)
+                {
+                    visualisationAdapter.MaxPrimaryAngle = float.MaxValue;
+                }
+                else
+                {
+                    visualisationAdapter.MaxPrimaryAngle = float.Parse(configuration.MaxPrimaryAngle);
+                }
+            }
+            if (args.PropertyName == "MinPrimaryAngle")
+            {
+                if (configuration.MinPrimaryAngle == null)
+                {
+                    visualisationAdapter.MinPrimaryAngle = float.MinValue;
+                }
+                else
+                {
+                    visualisationAdapter.MinPrimaryAngle = float.Parse(configuration.MinPrimaryAngle);
+                }
+            }
+            if (args.PropertyName == "MaxSecondaryAngle")
+            {
+                if (configuration.MaxSecondaryAngle == null)
+                {
+                    visualisationAdapter.MaxSecondaryAngle = float.MaxValue;
+                }
+                else
+                {
+                    visualisationAdapter.MaxSecondaryAngle = float.Parse(configuration.MaxSecondaryAngle);
+                }
+            }
+            if (args.PropertyName == "MinSecondaryAngle")
+            {
+                if (configuration.MinSecondaryAngle == null)
+                {
+                    visualisationAdapter.MinSecondaryAngle = float.MinValue;
+                }
+                else
+                {
+                    visualisationAdapter.MinSecondaryAngle = float.Parse(configuration.MinSecondaryAngle);
+                }
+                
+            }
+            Remeasure();
+            InvalidateVisual();
         }
 
         #region Undo/Redo
@@ -191,7 +249,18 @@ namespace HTL.Grieskirchen.Edubot.Controls
         public InkCanvasDrawingMode DrawingMode
         {
             get { return drawingMode; }
-            set { drawingMode = value; }
+            set { drawingMode = value;
+            if (value == InkCanvasDrawingMode.None)
+            {
+                ForceCursor = false;
+                Cursor = null;
+            }
+            else
+            {
+                ForceCursor = true;
+                Cursor = Cursors.Cross;
+            }
+            }
         }
 
         public bool DisplayGrid
@@ -210,6 +279,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
         {
             if (IsDrawingShape)
             {
+                
                 origin = Mouse.GetPosition(this);
             }
         }
@@ -414,36 +484,32 @@ namespace HTL.Grieskirchen.Edubot.Controls
             {
                 float radius = visualisationAdapter.Length + visualisationAdapter.Length2;
 
-                if (visualisationAdapter.MaxPrimaryAngle == float.MaxValue && visualisationAdapter.MaxSecondaryAngle == float.MaxValue && visualisationAdapter.MinPrimaryAngle == float.MinValue && visualisationAdapter.MinSecondaryAngle == float.MinValue)
+                if (visualisationAdapter.MaxPrimaryAngle == float.MaxValue && visualisationAdapter.MaxSecondaryAngle == float.MaxValue && visualisationAdapter.MinPrimaryAngle == float.MinValue &&visualisationAdapter.MinSecondaryAngle == float.MinValue)
                 {
                     drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(radius, radius), radius, radius);
                 }
                 else
                 {
+                    float radius1 = visualisationAdapter.Length;
+                    float radius2 = visualisationAdapter.Length2;
+//                    
+                    Point startPoint = new Point(radius + radius1 * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle)), radius + radius1 * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle)));
+                    Point endPoint = new Point(radius + radius1 * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle)), radius + radius1 * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle)));
 
-                    float xPrimMax = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
-                    float yPrimMax = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxPrimaryAngle));
-float xPrimMin = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle));
-                    float yPrimMin = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle));
-                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), new Point(xPrimMax, yPrimMax), new Point(xPrimMin, yPrimMin),new Size(radius,radius), visualisationAdapter.MaxPrimaryAngle+Math.Abs(visualisationAdapter.MinPrimaryAngle) > 180);
-
-                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), new Point(xPrimMax);
-                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), endPoint);
-
-                    float xSecMax = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle));
-                    float ySecMax = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle));
-                    float xSecMin = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle));
-                    float ySecMin = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle));
-                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), new Point(xSecMax, ySecMax), new Point(xSecMin, ySecMin), new Size(visualisationAdapter.Length2, visualisationAdapter.Length2), visualisationAdapter.MaxSecondaryAngle > 180);
-                   
-                    //startPoint = new Point(x, y);
-                    //x = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle + visualisationAdapter.MinSecondaryAngle));
-                    //y = radius + radius * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinPrimaryAngle + visualisationAdapter.MinSecondaryAngle));
-                    //endPoint = new Point(x, y);
-                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), startPoint);
-                    //drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), endPoint);
+                    drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), startPoint);
+                    drawingContext.DrawLine(new Pen(Brushes.Gray, 1), new Point(radius, radius), endPoint);
                     
-                    //DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), startPoint, endPoint, new Size(radius, radius), visualisationAdapter.MaxPrimaryAngle+visualisationAdapter.MaxSecondaryAngle + Math.Abs(visualisationAdapter.MinPrimaryAngle) + Math.Abs(visualisationAdapter.MinSecondaryAngle) >180);
+                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), startPoint, endPoint, new Size(radius1, radius1), visualisationAdapter.MaxPrimaryAngle+Math.Abs(visualisationAdapter.MinPrimaryAngle) >180, SweepDirection.Counterclockwise);
+
+                    Point startPoint2 = new Point(startPoint.X + radius2 * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle)), startPoint.Y + radius2 * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MaxSecondaryAngle)));
+                    Point endPoint2 = new Point(endPoint.X + radius2 * (float)Math.Cos(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle)), endPoint.Y + radius2 * (float)Math.Sin(API.Interpolation.MathHelper.ConvertToRadians(visualisationAdapter.MinSecondaryAngle)));
+                    
+
+                    drawingContext.DrawLine(new Pen(Brushes.Gray, 1), startPoint, startPoint2);
+                    drawingContext.DrawLine(new Pen(Brushes.Gray, 1), endPoint, endPoint2);
+
+                    //DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), startPoint2, startPoint, new Size(radius2, radius2), false, SweepDirection.Counterclockwise);
+                    DrawArc(drawingContext, null, new Pen(Brushes.Gray, 1), startPoint2, endPoint2, new Size(radius, radius), visualisationAdapter.MaxSecondaryAngle + Math.Abs(visualisationAdapter.MinSecondaryAngle) > 180, SweepDirection.Counterclockwise);
                 }
             }
         }
@@ -451,20 +517,23 @@ float xPrimMin = radius + radius * (float)Math.Cos(API.Interpolation.MathHelper.
 
         //http://blogs.vertigo.com/personal/ralph/Blog/Lists/Posts/Post.aspx?ID=5
         void DrawArc(DrawingContext drawingContext, Brush brush,
-    Pen pen, Point start, Point end, Size radius, bool isLargeArc)
+    Pen pen, Point start, Point end, Size radius, bool isLargeArc, SweepDirection direction)
         {
             PathGeometry geometry = new PathGeometry();
             PathFigure figure = new PathFigure();
             geometry.Figures.Add(figure);
             figure.StartPoint = start;
             figure.Segments.Add(new ArcSegment(end, radius,
-                0, isLargeArc, SweepDirection.Counterclockwise, true));
+                0, isLargeArc, direction, true));
             drawingContext.DrawGeometry(brush, pen, geometry);
         }
 
         private void Remeasure() {
+            addMemento = false;
+            addMemento = true;
             this.Width = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
             this.Height = (visualisationAdapter.Length + visualisationAdapter.Length2) * 2;
+           
         }
         #endregion
     }

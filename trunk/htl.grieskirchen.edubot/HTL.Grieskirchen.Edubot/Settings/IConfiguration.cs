@@ -66,6 +66,5 @@ namespace HTL.Grieskirchen.Edubot.Settings
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public abstract void Apply();
     }
 }
