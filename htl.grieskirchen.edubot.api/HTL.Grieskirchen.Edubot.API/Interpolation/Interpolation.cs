@@ -222,16 +222,16 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
             angle = MathHelper.ConvertToDegrees(Math.Acos(1 - (d * d / (2 * r * r))));
             
-            int tQuadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
+            int targetQuadrant = MathHelper.GetQuadrant((float)difTargetCenterX, (float)difTargetCenterY);
             double endAngle = MathHelper.ConvertToDegrees(Math.Acos(difTargetCenterX / r));
-            if (tQuadrant == 3 || tQuadrant == 4)
+            if (targetQuadrant == 3 || targetQuadrant == 4)
                 endAngle = -endAngle;  
             
             //Direction
             
-            int quadrant = MathHelper.GetQuadrant((float)difToolCenterX, (float)difToolCenterY);
+            int startingQuadrant = MathHelper.GetQuadrant((float)difToolCenterX, (float)difToolCenterY);
             double startingAngle = MathHelper.ConvertToDegrees(Math.Acos(difToolCenterX / r));
-            if (quadrant == 3 || quadrant == 4)
+            if (startingQuadrant == 3 || startingQuadrant == 4)
                 startingAngle = -startingAngle;
 
             angle = endAngle - startingAngle;
