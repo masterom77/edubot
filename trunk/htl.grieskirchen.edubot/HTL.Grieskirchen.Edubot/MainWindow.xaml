@@ -86,9 +86,9 @@
                 <Button Width="30" Height="30" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteButton.png"></Image>
                 </Button>
-                <Button Width="30" Height="30" Name="tbbExecuteWindow" ToolTip="Skript in eigenem Fenster ausführen" Click="Execute">
-                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteWindowButton.png"></Image>
-                </Button>
+                <!--<Button Width="30" Height="30" Name="tbbExecuteWindow" ToolTip="Skript in eigenem Fenster ausführen" Click="Execute">
+                    <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteWindowButton.png"></Image>-->
+                <!--</Button>-->
                 <Button Width="30" Height="30" Name="tbbAbort" ToolTip="Skriptausführung abbrechen" Click="Abort">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/AbortButton.png"></Image>
                 </Button>

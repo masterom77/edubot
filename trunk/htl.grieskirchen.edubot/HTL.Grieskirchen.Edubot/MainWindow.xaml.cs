@@ -390,6 +390,7 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
+
         private void Execute(object sender, RoutedEventArgs e)
         {
             switch (tcNavigation.SelectedIndex)
@@ -402,9 +403,7 @@ namespace HTL.Grieskirchen.Edubot
                         List<API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
                         tbConsole.AppendText(">Build succeeded\n");
                         tbConsole.AppendText(">Executing...\n");
-                        //executedCommands = 0;
-                        //tbbExecute.IsEnabled = false;
-                        //tbbAbort.IsEnabled = true;
+                        visualisation2D.ClearDrawing();
                         foreach (API.Commands.ICommand command in commands)
                         {
                             edubot.Execute(command);
@@ -421,7 +420,11 @@ namespace HTL.Grieskirchen.Edubot
                     //executedCommands = 0;
                     //tbbExecute.IsEnabled = false;
                     //tbbAbort.IsEnabled = true;
+                    
+                        tbConsole.Clear();
+                        tbConsole.AppendText(">Translating Drawing...\n");
                     edubot.Execute(new InitCommand());
+                    visualisation2D.ClearDrawing();
                     foreach (API.Commands.ICommand command in icDrawing.GenerateMovementCommands())
                     {
                         edubot.Execute(command);
@@ -613,6 +616,7 @@ namespace HTL.Grieskirchen.Edubot
         AppendTextDelegate appendTextDelegate;
         public void AppendText(String text) {
             tbConsole.AppendText(text+Environment.NewLine);
+            tbConsole.ScrollToEnd();
         }
 
         public void ShowError(object sender, EventArgs args) {
@@ -703,20 +707,26 @@ namespace HTL.Grieskirchen.Edubot
         }
 
         private void SaveSettings() {
+            
             Cursor = Cursors.AppStarting;
-            System.IO.FileStream stream = new System.IO.FileStream("visualization.config.xml", System.IO.FileMode.Create);
-            XmlSerializer serializer = new XmlSerializer(typeof(VisualizationConfig));
-            serializer.Serialize(stream, visualizationConfig);
-            stream.Close();
-            stream = new System.IO.FileStream("edubot.config.xml", System.IO.FileMode.Create);
-            serializer = new XmlSerializer(typeof(EdubotAdapterConfig));
-            serializer.Serialize(stream, edubotConfig);
-            stream.Close();
-            stream = new System.IO.FileStream("keba.config.xml", System.IO.FileMode.Create);
-            serializer = new XmlSerializer(typeof(KebaAdapterConfig));
-            serializer.Serialize(stream, kebaConfig);
-            stream.Close();
-
+            try
+            {
+                System.IO.FileStream stream = new System.IO.FileStream("visualization.config.xml", System.IO.FileMode.Create);
+                XmlSerializer serializer = new XmlSerializer(typeof(VisualizationConfig));
+                serializer.Serialize(stream, visualizationConfig);
+                stream.Close();
+                stream = new System.IO.FileStream("edubot.config.xml", System.IO.FileMode.Create);
+                serializer = new XmlSerializer(typeof(EdubotAdapterConfig));
+                serializer.Serialize(stream, edubotConfig);
+                stream.Close();
+                stream = new System.IO.FileStream("keba.config.xml", System.IO.FileMode.Create);
+                serializer = new XmlSerializer(typeof(KebaAdapterConfig));
+                serializer.Serialize(stream, kebaConfig);
+                stream.Close();
+            }
+            catch (UnauthorizedAccessException) {
+                MessageBox.Show("Speichern nicht möglich, da der Zugriff auf den Anwendungsordner verweigert wurde.\nStarten Sie die Anwendung als Administrator und versuchen es erneut.", "Zugriff verweigert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             Cursor = Cursors.Arrow;
         }
 
@@ -727,6 +737,7 @@ namespace HTL.Grieskirchen.Edubot
             visualizationConfig.Reset();
             SaveSettings();
         }
+
 
        
 
