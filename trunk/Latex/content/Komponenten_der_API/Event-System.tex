@@ -42,7 +42,7 @@ Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind i
 Bei Auslösen eines Events werden im args-Parameter Details zum Event übergeben. Dazu werden verschiedene, von der Systemklasse EventArgs, abgeleitete Klassen verwendet, die im folgenden vorgestellt werden.
 \begin{itemize}
 \item \textbf{HomingEventArgs}
-Eine Instanz dieser Klasse wird beim Auslösen des OnHoming-Events mitgegeben und enthält ein Property \textbf{CorrectionAngle} um den die Winkelstellungen bei jedem Schritt korrigiert werden soll. Im Falle des EdubotAdapters, wäre dieser beispielsweise 0,1125°, was der Winkeländerung bei Ausführen eines Microschritts durch den Schrittmotor entspricht.
+Eine Instanz dieser Klasse wird beim Auslösen des OnHoming-Events mitgegeben und enthält ein Property \textbf{CorrectionAngle} um den die Winkelstellungen bei jedem Schritt korrigiert werden soll. Im Falle des EdubotAdapters, wäre dieser beispielsweise 0,1125$^\circ$, was der Winkeländerung bei Ausführen eines Microschritts durch den Schrittmotor entspricht.
 \item \textbf{FailureEventArgs}
 Eine Instanz dieser Klasse wird beim Auslösen des OnFailure-Events als Parameter mitgegeben und dient zur Behandlung von Laufzeitfehlern. Das Property \textbf{ThrownException} enthält ein Exception-Objekt mit detaillierten Informationen zum jeweiligen Fehler. \\
 \item \textbf{MovementStartedEventArgs}
