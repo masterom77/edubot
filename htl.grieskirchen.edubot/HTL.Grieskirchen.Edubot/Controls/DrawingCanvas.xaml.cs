@@ -40,13 +40,9 @@ namespace HTL.Grieskirchen.Edubot.Controls
             MouseLeftButtonDown += SetOrigin;
             MouseLeftButtonUp += AddStrokes;
             MouseMove += UpdateShape;
-            MouseEnter += U;
             VisualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, 0, 0);
         }
 
-        private void U(object sender, RoutedEventArgs args) {
-            int i = 0;
-        }
 
         VirtualAdapter visualisationAdapter;
 

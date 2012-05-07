@@ -218,6 +218,7 @@ namespace HTL.Grieskirchen.Edubot
         private void StartHoming(object sender, EventArgs args)
         {
             animationThread = new System.Threading.Thread(Home);
+            animationThread.Priority = ThreadPriority.AboveNormal;
             animationThread.Start(args);
         }
 
@@ -226,6 +227,7 @@ namespace HTL.Grieskirchen.Edubot
             if (configuration.VisualizationEnabled)
             {
                 animationThread = new System.Threading.Thread(Move);
+                animationThread.Priority = ThreadPriority.AboveNormal;
                 animationThread.Start(((MovementStartedEventArgs)args).Result);
             }
             // new System.Threading.Thread(Move).Start(args);
@@ -343,6 +345,7 @@ namespace HTL.Grieskirchen.Edubot
         {
             if (property.PropertyName == "VisualizationEnabled" || property.PropertyName == "IsEdubotModelSelected")
             {
+               
                 if (configuration.VisualizationEnabled && configuration.IsEdubotModelSelected)
                 {
                     //Visualiserungsmodell Edubot wurde ausgewählt

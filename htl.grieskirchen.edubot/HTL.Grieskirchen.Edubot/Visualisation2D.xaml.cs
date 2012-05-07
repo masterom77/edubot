@@ -82,6 +82,7 @@ namespace HTL.Grieskirchen.Edubot
         private void StartHoming(object sender, EventArgs args)
         {
             animationThread = new System.Threading.Thread(Home);
+            animationThread.Priority = ThreadPriority.AboveNormal;
             animationThread.Start(args);
         }
 
@@ -90,17 +91,23 @@ namespace HTL.Grieskirchen.Edubot
             if (configuration.VisualizationEnabled)
             {
                 animationThread = new System.Threading.Thread(Move);
+                animationThread.Priority = ThreadPriority.AboveNormal;
                 animationThread.Start(args);
             }
            // new System.Threading.Thread(Move).Start(args);
+        }
+
+        public void ClearDrawing() {
+
+            drawnPaths.Clear();
+            currentPath = null;
+            InvalidateVisual();
         }
 
         private void Home(object args)
         {
             try
             {
-                drawnPaths.Clear();
-                Dispatcher.Invoke(new Action(delegate { InvalidateVisual(); }));
                 HomingEventArgs e = (HomingEventArgs)args;
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
@@ -306,6 +313,7 @@ namespace HTL.Grieskirchen.Edubot
             if (property.PropertyName == "IsEdubotModelSelected") {
                 AnglePrimaryAxis = 0;
                 AngleSecondaryAxis = 0;
+                ClearDrawing();
             }
             if (property.PropertyName == "VisualizationEnabled")
             {
