@@ -14,12 +14,34 @@ Die Objekt der Klasse InterpolationResult stellt, wie der Name vermuten lässt, 
 \item \textbf{Angles}\\
 Beim Angles-Property handelt es sich um eine Liste von InterpolationStep-Objekten, welche die absoluten Winkelstellungen der Achsen an jedem berechneten Punkt enthält. 
 \item \textbf{Steps}\\
-Das Steps-Property stellt ebenfalls eine List von InterpolationStep-Objekten dar, beinhaltet jedoch die Differenz zwischen zwei Winkelstellungen. Theoretisch könnten diese auch durch Iteration durch das Angles-Property berechnet werden, jedoch würde dies zu Performance-Einbußen führen. 
+Das Steps-Property stellt ebenfalls eine Liste von InterpolationStep-Objekten dar, beinhaltet jedoch die Differenz zwischen zwei Winkelstellungen. Theoretisch könnten diese auch durch Iteration durch das Angles-Property berechnet werden, jedoch würde dies zu Performance-Einbußen führen. 
+\item \textbf{Points}\\
+Das Points-Property stellt eine List aus Point3D-Objekten dar, welche die von der Interpolation berechneten Zwischenpunkte beinhaltet.
+\item \textbf{MetaData}\\
+Das MetaData-Property beinhaltet zusätzliche Informationen über den Berechnungsvorgang, wie beispielsweise Radius und Richtung der Verfahrbewegung beim zirkularen Interpolationsverfahren.
 \end{itemize}
-Weiters wurde die ToString-Methode überschrieben und die Konvertierung in eine, über das Netzwerk übertragbare, Form zu erleichtern:
+Weiters wurde die ToString-Methode überschrieben sowie die ToStepString-Methode implementiert um die Konvertierung in eine, über das Netzwerk übertragbare, Form zu erleichtern:
 \begin{itemize}
 \item \textbf{ToString}
-Die ToString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der GHI-Steuerung beziehungsweise der SPS ausgelegt ist. Die Einträge werden folgendermaßen konvertiert:\\
+Die ToString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der SPS ausgelegt ist. Die Einträge werden folgendermaßen konvertiert:\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/InterpolationResult} 
+    \caption{Stringformat der InterpolationResult-Klasse in Winkel}
+  \end{minipage}
+\end{figure}
+\item \textbf{ToStepString}
+Die ToStepString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der GHI-Steuerung ausgelegt ist. Dazu müssen die individuellen Winkeländerungen in Motorschritte übersetzt werden. Die Einträge werden folgendermaßen konvertiert:\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=12cm]{images/InterpolationResult2} 
+    \caption{Stringformat der InterpolationResult-Klasse in Schritten}
+  \end{minipage}
+\end{figure}
 \end{itemize}
 \textbf{InterpolationStep}\\
 Eine Instanz der InterpolationStep-Klasse beinhaltet Informationen zu den Winkelstellungen der Achsen an einem bestimmten Punkt. Um diese Aufgabe erfüllen zu können, sind folgende Properties definiert:
@@ -37,6 +59,14 @@ Weiters wurde auch hier die ToString-Methode überschrieben um die Konvertierung
 \begin{itemize}
 \item \textbf{ToString}
 Die ToString-Methode der Klasse InterpolationStep liefert die gespeicherten Informationen in folgendem Format:\\
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{16.5 cm}
+  	\centering
+  	\includegraphics[width=3cm]{images/InterpolationStep} 
+    \caption{Stringformat der InterpolationStep-Klasse}
+  \end{minipage}
+\end{figure}
 \end{itemize}
 
 \textbf{Interpolation}\\
@@ -46,7 +76,7 @@ Die Interpolations-Klasse übernimmt die Berechnung des Pfades vom Start- zum Zi
 Die InterpolateLinear-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine lineare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte.\\
 \begin{figure}[H]
   \centering
-  \begin{minipage}[t]{12 cm}
+  \begin{minipage}[t]{14 cm}
   	\centering
   	\includegraphics[width=12cm]{images/Linearinterpolation} 
     \caption{Skizze zur linearen Interpolation}
@@ -85,7 +115,7 @@ Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Obj
 Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start-, einen Mittel- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
 \begin{figure}[H]
   \centering
-  \begin{minipage}[t]{12 cm}
+  \begin{minipage}[t]{14 cm}
   	\centering
   	\includegraphics[width=12cm]{images/Zirkularinterpolation} 
     \caption{Skizze zur zirkularen Interpolation}
@@ -105,31 +135,42 @@ Nun wird noch die Distanz zwischen Start- und Zielpunkt $d$, erneut mit Hilfe de
 \begin{align*}
 d_{\overrightarrow{SZ}} = \sqrt{d_{x\overrightarrow{SZ}}^2 + d_{y\overrightarrow{SZ}}^2}
 \end{align*}
-\item Berechnung des Differenzwinkels $\varphi$:\\
-Mit Hilfe des entstandenen, gleichschenkeliges Dreieck, welches durch $d_{\overrightarrow{SZ}}$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
+%\item Berechnung des Differenzwinkels $\varphi$:\\
+%Mit Hilfe des entstandenen, gleichschenkeliges Dreieck, welches durch $d_{\overrightarrow{SZ}}$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten %Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
+%\begin{align*}
+%d_{\overrightarrow{SZ}}^2 & = r^2 + r^2 - 2rr \cos \varphi \\
+%d_{\overrightarrow{SZ}}^2 & = 2r^2 - 2r^2 \cos \varphi \\
+%d_{\overrightarrow{SZ}}^2 & = 2r^2(1 - \cos \varphi) \\
+%\frac{d_{\overrightarrow{SZ}}^2}{2r^2} & = 1 - \cos \varphi \\
+%\cos \varphi & = 1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2} \\
+%\varphi & = \arccos (1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2})
+%\end{align*}
+\item Berechnung des Startwinkels $\alpha$:\\
+Da der Startpunkt in Bezug auf den Mittelpunkt nicht zwingend bei 0$^\circ$ liegen muss, wird der sogenannte Startwinkel $\alpha$ mit dem Kosinus im rechtwinkeligen Dreieck berechnet. Das verwendete Dreieck ist durch die $x$ und $y$-Differenz zwischen Start- und Mittelpunkt, sowie den Radius $r$ definiert.
+\item Berechnung des Endwinkels $\omega$:
+Zuerst wird jener Winkel berechnet, zwischen 0$^\circ$ und dem Zielpunkt liegt.
 \begin{align*}
-d_{\overrightarrow{SZ}}^2 & = r^2 + r^2 - 2rr \cos \varphi \\
-d_{\overrightarrow{SZ}}^2 & = 2r^2 - 2r^2 \cos \varphi \\
-d_{\overrightarrow{SZ}}^2 & = 2r^2(1 - \cos \varphi) \\
-\frac{d_{\overrightarrow{SZ}}^2}{2r^2} & = 1 - \cos \varphi \\
-\cos \varphi & = 1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2} \\
-\varphi & = \arccos (1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2})
+\cos \omega & = \frac{d_{x\overrightarrow{MZ}}}{r}\\
+\omega & = \arccos \frac{d_{x\overrightarrow{MZ}}}{r}
+\end{align*}
+\item Überprüfung der Quadranten\\
+Aufgrund der Tatsache, dass die Arkussinus-Funktion in beiden Fällen lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Start beziehungsweise der Zielpunkt befindet überprüft werden. Befindet einer dieser Punkte  im 3. oder 4. Quadranten so wird Vorzeichen des entsprechenden Winkels, $\alpha$ beim Startpunkt beziehungsweise $\omega$ beim Zielpunkt, umgedreht. 
+\item Berechnung des Differenzwinkels $\varphi$:\\
+Mit Hilfe des Start und des Endwinkels kann nun der zu verfahrende Winkel berechnet werden.
+\begin{align*}
+\varphi = \omega - \alpha
 \end{align*}
 \item Berechnung der Bogenlänge $s$:
 Mit dem Differenzwinkel $\varphi$ wird die tatsächliche Wegsstrecke, die Bogenlänge $s$, berechnet.
 \begin{align*}
 s = \frac{2r \pi \varphi}{360}
 \end{align*}
-\item Berechnung des Startwinkels $\alpha$:\\
-Da der Startpunkt in Bezug auf den Mittelpunkt nicht zwingend bei 0$^\circ$ liegen muss, wird der sogenannte Startwinkel $\alpha$ mit dem Kosinus im rechtwinkeligen Dreieck berechnet. Das verwendete Dreieck ist durch die $x$ und $y$-Differenz zwischen Start- und Mittelpunkt, sowie den Radius $r$ definiert.
 \begin{align*}
 \cos \alpha & = \frac{d_{x\overrightarrow{MS}}}{r}\\
 \alpha & = \arccos \frac{d_{x\overrightarrow{MS}}}{r}
 \end{align*}
 \item Festlegen der Schrittanzahl:\\
 Mit Hilfe der Bogenlänge $s$ wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von  $s$ entspricht.
-\item Überprüfung der Quadranten\\
-Aufgrund der Tatsache, dass die Arkussinus-Funktion lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Start beziehungsweise der Zielpunkt befindet überprüft werden. Befindet einer dieser Punkte  im 3. oder 4. Quadranten so wird Vorzeichen des entsprechenden Winkels, $\alpha$ beim Startpunkt beziehungsweise $\varphi$ beim Zielpunkt, umgedreht. Alternativ könnte man auch 180$^\circ$ zum betroffenen Winkel addieren.
 \item Berechnung der Winkelsteigung:\\
 Nun wird der Differenzwinkel $\varphi$ durch die Schrittanzahl $n$ dividiert um die Winkelsteigung zu erhalten, welche nach jedem berechneten Zwischenpunkt zum Startwinkel addiert wird.
 \begin{align*}
