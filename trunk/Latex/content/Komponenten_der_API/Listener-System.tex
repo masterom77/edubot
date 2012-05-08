@@ -25,9 +25,40 @@ Bei Aufruf der \textit{Start}-Methode wird der Listener-Thread neu instanziert u
 \item \textbf{Stop}\\
 Bei Aufruf der \textit{Stop}-Methode wird der aktuell laufende Thread mit Hilfe der  \textit{Abort}-Methode gestoppt und das zugehörige Thread-Objekt auf null gesetzt. Von der Gegenseite gesendete Nachrichten werden nun nicht mehr verarbeitet.
 \item \textbf{ListenOnState}\\
+\begin{lstlisting}[language = CSharp, captionpos=b, caption={Die ListenOnState-Methode}]
+private void ListenOnState()
+        {
+            try
+            {
+                string message;
+                List<byte> data = new List<byte>();
+                byte[] buffer = new byte[512];
+                while (socket.Connected)
+                {
+                    while (socket.Available > 0)
+                    {
+                        int bytesRead = socket.Receive(buffer);
+                        for (int i = 0; i < bytesRead; i++)
+                        {
+                            data.Add(buffer[i]);
+                        }
+                    }
+                    if (data.Count > 0)
+                    {
+                        ProcessData(data.ToArray());                        
+                        data.Clear();
+                    }
+                }
+            }
+            catch (ThreadAbortException tae) { }
+        }       
+\end{lstlisting}
 Die \textit{ListenOnState}-Methode kümmert sich um das Empfangen und Analysieren von Nachrichten, sowie um das Durchführen der daraus folgenden Status-Updates. 
 Die Methode läuft, solange das \textit{IsConnected}-Property der Socket-Klasse true zurückgibt, da dies eine bestehende Verbindung indiziert. Ist der Socket verbunden so wird im nächsten Schritt mit dem \textit{Available}-Property geprüft ob Daten empfangen wurden. Falls auch dieses Property auf \textit{true} gesetzt ist, so werden die bisher empfangenen Bytes mit Hilfe der \textit{Receive}-Methode des Socket gelesen und an einen dynamische Liste angehängt. 
 Dieser Vorgang wird solange durchgeführt bis das \textit{Available}-Property \textit{false} zurückliefert, da zu diesem Zeitpunkt die gesamte Nachricht empfangen wurde. Der Inhalt der Liste wird nun durch Aufruf der  \textit{ToArray}-Methode in ein byte[] konvertiert und der \textit{ProcessData}-Methode übergeben. Nachdem diese ausgeführt wurde, wird die Liste geleert und die empfangenen Daten damit verworfen.
+
+
+
 \end{itemize}
 Die einzige abstrakte Methode des  \textit{INetworkListeners} ist die \textit{ProcessData}-Methode, mit der die Daten individuell verarbeitet werden können.
 \begin{itemize}

@@ -5,7 +5,7 @@
 Da bei der API viel Wert auf Flexibilität gelegt wird, sollte die Bibliothek in der Lage sein mit den verschiedensten Steuerungen zu kommunizieren. Es soll ein System entwickelt werden mit dem die API zukünftig auch auf neue Steuerungen erweiterbar ist. Im Rahmen der Diplomarbeit soll die Kommunikation mit der KEBA- und der GHI-Steuerung ermöglicht werden. Weiters wird für die Visualisierung in der Endanwendung eine Art "'virtuelle Steuerung"' benötigt.
 
 \subsubsection{Aufbau}
-Die Grundidee besteht darin, den zukünftigen Anwendern eine einfache Erweiterung der API um neue Steuerungssysteme zu ermöglichen. Um diese Idee zu realisieren wird ein Adapter-System verwendet, bei der für jede Steuerung ein Adapter als Schnittstelle dient. Um einen neuen Adapter zu implementieren muss lediglich eine Klasse implementiert werden, die von der abstrakten \textit{IAdapter}-Klasse abgeleitet ist. Ein Objekt dieser abgeleiteten Klasse kann dann bei der \textit{Edubot}-Klasse mit Hilfe der \textit{RegisterAdapter-Methode} registriert werden. Der Adapter dient dann als Übersetzer der allgemeinen Befehle in die spezifischen Steuerungssprachen und kümmert sich um die Beschaffung bzw. Berechnung potentiell benötigter, zusätzlicher Informationen. Die in den darauffolgenden Kapiteln vorgestellten Adapter  \textit{EdubotAdapter}, \textit{KebaAdapter} und \textit{VirtualAdapter} sind ebenfalls von dieser \textit{IAdapter}-Klasse abgeleitet und dienen als Demonstration der Funktionalität dieses Systems. 
+Die Grundidee besteht darin, den zukünftigen Anwendern eine einfache Erweiterung der API um neue Steuerungssysteme zu ermöglichen. Um diese Idee zu realisieren wird ein Adapter-System verwendet, bei der für jede Steuerung ein Adapter als Schnittstelle dient. Um einen neuen Adapter zu implementieren muss lediglich eine Klasse implementiert werden, die von der abstrakten \textit{IAdapter}-Klasse abgeleitet ist. Ein Objekt dieser abgeleiteten Klasse kann dann bei der \textit{Edubot}-Klasse mit Hilfe der \textit{RegisterAdapter-Methode} registriert werden. Der Adapter dient dann als Übersetzer der allgemeinen Befehle in die spezifischen Steuerungssprachen und kümmert sich um die Beschaffung beziehungsweise Berechnung potentiell benötigter, zusätzlicher Informationen. Die in den darauffolgenden Kapiteln vorgestellten Adapter  \textit{EdubotAdapter}, \textit{KebaAdapter} und \textit{VirtualAdapter} sind ebenfalls von dieser \textit{IAdapter}-Klasse abgeleitet und dienen als Demonstration der Funktionalität dieses Systems. 
 
 \subsubsection{Umsetzung}
 
@@ -46,16 +46,16 @@ Der Grund für die separate Verwaltung der anstehenden Befehle in jedem Adapter 
   \end{minipage}
 \end{figure}
 
-\textbf{Konstruktoren}
+\textbf{Konstruktoren}\\
 Die IAdapter-Klasse besitzt vier vorgegebene Konstruktoren, von denen eine abgeleitete Klasse mindestens einen verwenden muss. Die jeweiligen Konstruktoren sind auf verschiedene Bauweisen eines Roboters mit RR beziehungsweise RRT zugeschnitten.
 \begin{itemize}
-\item RR-Kinematik ohne Winkelbeschränkungen\\
+\item \textbf{RR-Kinematik ohne Winkelbeschränkungen}\\
 Diesem Konstruktor werden lediglich die Längen der beiden Achsen mitgegeben. Durch die Bauweise des Roboters vorhandene Winkeleinschränkungen werden bei Pfadberechnung nicht berücksichtigt.
-\item RR-Kinematik mit Winkelbeschränkungen\\
+\item \textbf{RR-Kinematik mit Winkelbeschränkungen}\\
 Diesem Konstruktor werden die Längen der beiden Achsen sowie die jeweiligen Winkeleinschränkungenen mitgegeben. Durch die Bauweise des Roboters vorhandene Winkeleinschränkungen werden bei Pfadberechnung berücksichtigt.
-\item RRT-Kinematik ohne Winkelbeschränkungen\\
+\item \textbf{RRT-Kinematik ohne Winkelbeschränkungen}\\
 Diesem Konstruktor werden die Längen der beiden Achsen, die Distanz zwischen Toolcenter-Point und Arbeitsfläche sowie die Übersetzung der transversalen Achse mitgegeben. Durch die Bauweise des Roboters vorhandene Winkeleinschränkungen werden bei Pfadberechnung nicht berücksichtigt.
-\item RRT-Kinematik mit Winkelbeschränkungen\\
+\item \textbf{RRT-Kinematik mit Winkelbeschränkungen}\\
 Diesem Konstruktor werden die Längen der beiden Achsen, die Distanz zwischen Toolcenter-Point und Arbeitsfläche, die Übersetzung der transversalen Achse sowie die jeweiligen Winkeleinschränkungenen mitgegeben. Durch die Bauweise des Roboters vorhandene Winkeleinschränkungen werden bei Pfadberechnung berücksichtigt.
 \end{itemize}
 
@@ -74,6 +74,25 @@ Die UpdateState-Methode übernimmt die eigentliche Änderung der Variable indem 
 \item \textbf{CheckState}\\
 Nachdem die \textit{state}-Variable geändert wurde, muss diese überprüft werden, da gewisse Zustände zur Ausführung des nächsten Befehls aus der \textit{CmdQueue} führen können. Bei Aufruf dieser Methode wird geprüft ob sich der Adapter im Zustand \textit{READY} oder \textit{SHUTDOWN} befindet und sich Befehle in der Warteschlange befinden. Treffen diese Bedingungen zu, so wird das nächste ICommand-Objekt (siehe Kommando-System) herausgeholt und mit dessen \textit{CanExecute}-Methode geprüft ob der Befehl selbst ausgeführt werden kann. \\
 Sollte die Durchführung des Befehls nicht möglich sein, wird von der zuletzt erwähnten Methode ein \textit{FailureEventArgs}-Objekt zurückgegeben und das \textit{OnFailureEvent} durch Aufruf von \textit{RaiseFailureEvent} ausgelöst. Andernfalls wird der Befehl mit Hilfe seiner \textit{Execute}-Methode ausgeführt.
+
+\begin{lstlisting}[language = CSharp, captionpos=b, caption={Die CheckState-Methode des IAdapters}]
+private void CheckState()
+        {
+            if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
+            {
+                ICommand nextCmd = cmdQueue.Dequeue();
+                FailureEventArgs failureArgs = nextCmd.CanExecute(this);
+                if (failureArgs == null)
+                {
+                    nextCmd.Execute(this);
+                }
+                else
+                {
+                    RaiseFailureEvent(failureArgs);
+                }
+            }
+        }
+\end{lstlisting}
 \end{itemize}
 
 \textbf{Ausführen von Befehlen}\\
@@ -81,7 +100,23 @@ Die nachstehende Methode {Execute} wird ebenfalls vom IAdapter implementiert, da
 \begin{itemize}
 \item \textbf{Execute}\\
 Diese Methode übernimmt ein \textit{ICommand}-Objekt als Parameter. Zuerst wird überprüft ob es sich bei dem Objekt um ein Objekt vom Typ \textit{AbortCommand} handelt, da dieser Befehl der einzige ist, der aus sicherheitstechnischen Gründen unverzüglich nach Eintreffen ausgeführt werden muss. Befehle anderer Art, werden mit Hilfe der \textit{Enqueue}-Methode in die Warteschlange gegeben. Anschließend wird \textit{CheckState} aufgerufen, welche bereits weiter oben erklärt wurde.\\
+
 \end{itemize}
+
+\begin{lstlisting}[language = CSharp, captionpos=b, caption={Die Execute-Methode des IAdapters}]
+public void Execute(ICommand cmd) {
+            if (cmd is AbortCommand)
+            {
+                cmd.Execute(this);
+            }
+            else
+            {
+                cmdQueue.Enqueue(cmd);
+                CheckState();
+            }
+        }
+\end{lstlisting}
+
 
 \textbf{Kollisionsvermeidung und Punktvalidierung}\\
 Da ein realer Roboterarm nur über eine begrenzte Reichweite verfügt, wird mit Hilfe der hier angeführten Methoden während der Interpolation die Gültigkeit von Punkten und Winkeln geprüft.
@@ -96,7 +131,7 @@ Diese Methode dient der Kollisionsvermeidung und überprüft ob die, als Paramet
 Im Anschluss werden die abstrakten Methoden vorgestellt die von den abgeleiteten Klassen implementiert werden müssen. Hierbei handelt es sich um eine allgemeine Erklärung des Zwecks, da auf die genaue Implementierung in den Kapiteln zu den verschiedenen Adaptern eingegangen wird. Da die meisten der angegebenen Methoden aus Performance-Gründen in einem eigenen Thread ausgeführt werden, handelt es sich bei den Parametern immer um Objekte vom Typ \textit{object}. 
 \begin{itemize}
 \item \textbf{Initialize}\\
-Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{StartCommand}-Objekts ausgeführt. In dieser Methode sollen alle nötigen Vorbereitungen zum Betrieb der Steuerung bzw. des Roboters getroffen werden. Vor allem sollte hier die Steuerung mit dem Homing, einem Algorithmus der den Roboter in eine bestimmte Ausgangsposition bringt, beginnen.
+Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{StartCommand}-Objekts ausgeführt. In dieser Methode sollen alle nötigen Vorbereitungen zum Betrieb der Steuerung beziehungsweise des Roboters getroffen werden. Vor allem sollte hier die Steuerung mit dem Homing, einem Algorithmus der den Roboter in eine bestimmte Ausgangsposition bringt, beginnen.
 \item \textbf{Shutdown}\\
 Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{ShutdownCommand}-Objekts ausgeführt. Sie sollte zum geplanten Herunterfahren des Roboters dienen und sollte nach erfolgreichen Durchführung den Roboter in ausgeschaltetem Zustand hinterlassen.
 \item \textbf{MoveStraightTo}\\
@@ -112,10 +147,6 @@ Der Rückgabewert dieser Methode ist boolean und legt fest, ob der Zustand diese
 \item \textbf{UsesIntegratedPathCalculation}\\
 Der Rückgabewert dieser Methode ist boolean und legt fest, ob die Pfadberechnung mit Hilfe API durchgeführt werden soll. Besitzt die, mit dem Adapter angesprochene, Steuerung eigene Verfahren zur Pfadberechnung so empfiehlt sich hier \textit{false} zurückzugeben.
 \end{itemize}
-%\item \textbf{SetInterpolationResult}
-%\newline
-%Diese Methode wird während der Ausführung der \textit{Execute}-Methode von \textit{MVSCommand}- oder \textit{MVCCommand}-Objekten ausgeführt, falls das \textit{RequiresPrecalculation} Property auf true gesetzt ist. Als Parameter erhält %die Methode das berechnete Interpolationsergebnis als Objekt vom Typ \textit{InterpolationResult} (siehe Interpolation).
-%Zusätzlich zu diesen vordefinierten Methoden, besitzt die \textit{IAdapter}-Klasse die Methode \textit{Execute} welche eingehende Befehle verarbeitet.
 
 \textbf{VirtualAdapter}\\
 Dieser Adapter stellt die simpelste Implementierung der IAdapter-Klasse dar und dient prinzipiell zur Simulation einer Steuerung. Er wird ebenso bei der Edubot-Klasse registriert und wie alle anderen Adapter behandelt mit dem Unterschied, dass er keine tatsächlichen Aktionen durchführt sondern vielmehr die richtigen Events zur richtigen Zeit auslöst. Diese Eigenschaft macht den \textit{VirtualAdapter} sehr vielseitig, weshalb er beispielsweise auch bei der Umsetzung der Visualisierung in der Endanwendung verwendet wurde.\\
@@ -158,7 +189,7 @@ Weiters verfügt dieser Adapter aufgrund seiner Art der Kommunikation noch die M
 \begin{itemize}
 \item \textbf{TestConnectivity}
 \newline
- Bei Aufruf dieser Methode versucht der Adapter sich kurzzeitig mit der Steuerung zu verbinden. Dazu wird, wie beim Property \textit{Socket} beschrieben, ein Stream geöffnet, jedoch mit zusätzlichen Einstellungen: Die Socket-Feature "'Linger"' wird via \textit{SetSocketOption} deaktiviert. Der Hintergrund ist der, dass beim Schließen eines Sockets normalerweise die Verbindung so lange offen gehalten wird bis wartende Pakete gesendet wurden. Um dies zu gewährleisten, wartet ein Socket mit dem Linger-Feature in etwa 2 Minuten und schließt erst dann die Verbindung vollständig. Da der Sinn dieser Methode jedoch nur ein schneller Verbindungstest ist, muss dieses Feature deaktiviert werden. Weiters wird der Send- bzw. Receive-Timout auf 5 Sekunden gesetzt, damit das Auslösen einer \textit{SocketException} durch den abgelaufenen Timeout nicht zu lange dauert. Die Methode gibt bei erfolgreichem Aufbauen und Trennen der Verbindung wird \textit{true}, bei Auftreten einer Exception \textit{false} zurückgegeben.
+ Bei Aufruf dieser Methode versucht der Adapter sich kurzzeitig mit der Steuerung zu verbinden. Dazu wird, wie beim Property \textit{Socket} beschrieben, ein Stream geöffnet, jedoch mit zusätzlichen Einstellungen: Die Socket-Feature "'Linger"' wird via \textit{SetSocketOption} deaktiviert. Der Hintergrund ist der, dass beim Schließen eines Sockets normalerweise die Verbindung so lange offen gehalten wird bis wartende Pakete gesendet wurden. Um dies zu gewährleisten, wartet ein Socket mit dem Linger-Feature in etwa 2 Minuten und schließt erst dann die Verbindung vollständig. Da der Sinn dieser Methode jedoch nur ein schneller Verbindungstest ist, muss dieses Feature deaktiviert werden. Weiters wird der Send- beziehungsweise Receive-Timout auf 5 Sekunden gesetzt, damit das Auslösen einer \textit{SocketException} durch den abgelaufenen Timeout nicht zu lange dauert. Die Methode gibt bei erfolgreichem Aufbauen und Trennen der Verbindung wird \textit{true}, bei Auftreten einer Exception \textit{false} zurückgegeben.
 \item \textbf{SetNetworkConfiguration}
 \newline
 Diese Methode dient zum setzen der Netzwerkeinstellungen und übernimmt als Parameter eine IP-Addresse und eine Port-Nummer. Im nächsten Schritt prüft sie ob derzeit eine Verbindung zur Steuerung besteht. Ist dies der Fall so wird die Verbindung geschlossen. Im Anschluss werden das \textit{Socket}-Objekt, das \textit{Endpoint}-Objekt und der \textit{NetworkStateListener} neu instanziert.

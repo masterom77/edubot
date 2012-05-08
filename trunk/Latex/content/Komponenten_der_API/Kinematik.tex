@@ -5,14 +5,14 @@
 Die Kinematik dient als Grundstein für die Pfadberechnung erfüllt zwei elementare Aufgaben. Mit Hilfe der direkten Kinematik kann, bei gegebenen Winkelstellungen und Achsenlängen, die aktuelle Position des Werkzeugs im Koordinatensystem berechnet werden. Für die Interpolation von wesentlich größerer Bedeutung, ist jedoch die inverse Kinematik mit welcher die Winkelstellungen der Achsen, bei gegebenen Zielpunkt und Achsenlängen, berechnet werden können.
 
 \subsubsection{Aufbau}
-Die Verfahren zur direkten beziehungsweise indirekten Kinematik sind in der Klasse Kinematics als statische Methoden CalculateDirect und CalculateInverse implementiert. Da diese Methoden unabhängig von der API arbeiten, können sie universell angewendet werden. So könnten sie beispielsweise auch in der Spieleentwicklung zur Animation von Grafiken verwendet werden.
+Die Verfahren zur direkten beziehungsweise indirekten Kinematik sind in der Klasse Kinematics als statische Methoden \textit{CalculateDirect} und \textit{CalculateInverse} implementiert. Da diese Methoden unabhängig von der API arbeiten, können sie universell angewendet werden. So könnten sie beispielsweise auch in der Spieleentwicklung zur Animation von Grafiken verwendet werden.
 
 \subsubsection{Umsetzung}
 \textbf{Kinematics}\\
 Die im Aufbau erwähnten Methoden der Kinematics-Klasse sind wie folgt implementiert:
 \begin{itemize}
 \item \textbf{CalculateDirect}\\
-Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr die Winkelstellungen der ersten Achse $\alpha_1$ und der zeiten Achse $\alpha_2$, sowie die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, als float-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.\\
+Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr die Winkelstellungen der ersten Achse $\alpha_1$ und der zeiten Achse $\alpha_2$, sowie die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, als \textit{float}-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -61,8 +61,9 @@ x &= d * \cos \varphi \\
 y &= d * \sin \varphi
 \end{align*}
 \end{enumerate}
+
 \item \textbf{CalcualteInverse}\\
-Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den angegebenen Parametern ein Winkelstellungen der Achsen am angegeben Zielpunkt berechnet. Als Parameter werden ihr der Zielpunkt als Point3D-Objekt, sowie die Länge der ersten zweiten Achse als float-Wert übergeben. Mit diesen Informationen kann nun berechnet werden welchen Winkel die Achsen einnehmen müssen, damit  sich der Werkzeugmittelpunkt am Zielpunkt befindet.\\
+Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den angegebenen Parametern ein Winkelstellungen der Achsen am angegeben Zielpunkt berechnet. Als Parameter werden ihr der Zielpunkt als \textit{Point3D}-Objekt, sowie die Länge der ersten zweiten Achse als \textit{float}-Wert übergeben. Mit diesen Informationen kann nun berechnet werden welchen Winkel die Achsen einnehmen müssen, damit  sich der Werkzeugmittelpunkt am Zielpunkt befindet.\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -74,7 +75,7 @@ Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den 
 Die Berechnung der Winkel läuft nach folgendem Schema ab:
 \begin{enumerate}
 \item Deklarieren der Hilfsvariablen\\
-Zur Vereinfachung der Berechnung werden zuerst die Variablen $x$,$y$,$z$ vom Typ float definiert. Diesen Variablen werden entsprechend die X-,Y- und Z-Koordinaten des Zielpunkts zugewiesen.
+Zur Vereinfachung der Berechnung werden zuerst die Variablen $x$,$y$,$z$ vom Typ \textit{float} definiert. Diesen Variablen werden entsprechend die X-,Y- und Z-Koordinaten des Zielpunkts zugewiesen.
 \item Berechnung der Distanz $d$\\
 Zur Berechnung der Winkel werden die Seitenlängen des allgemeinen Dreiecks, welches durch die beiden Achsen $l_1$ und $l_2$ sowie die Distanz zum Zielpunkt $d$ gebildet wird, benötigt. Da die Längen der Achsen bereits bekannt sind, muss nur die Distanz d durch Verwendung des Satzes des Pythagoras zusammen mit den x- und y-Koordinaten berechnet werden.\\
 \begin{equation*}
