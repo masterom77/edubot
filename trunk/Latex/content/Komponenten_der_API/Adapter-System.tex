@@ -95,7 +95,7 @@ Diese Methode dient der Kollisionsvermeidung und überprüft ob die, als Paramet
 \textbf{Abstrakte Methoden}\\
 Im Anschluss werden die abstrakten Methoden vorgestellt die von den abgeleiteten Klassen implementiert werden müssen. Hierbei handelt es sich um eine allgemeine Erklärung des Zwecks, da auf die genaue Implementierung in den Kapiteln zu den verschiedenen Adaptern eingegangen wird. Da die meisten der angegebenen Methoden aus Performance-Gründen in einem eigenen Thread ausgeführt werden, handelt es sich bei den Parametern immer um Objekte vom Typ \textit{object}. 
 \begin{itemize}
-\item \textbf{Start}\\
+\item \textbf{Initialize}\\
 Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{StartCommand}-Objekts ausgeführt. In dieser Methode sollen alle nötigen Vorbereitungen zum Betrieb der Steuerung bzw. des Roboters getroffen werden. Vor allem sollte hier die Steuerung mit dem Homing, einem Algorithmus der den Roboter in eine bestimmte Ausgangsposition bringt, beginnen.
 \item \textbf{Shutdown}\\
 Diese Methode wird während der Ausführung der \textit{Execute}-Methode eines \textit{ShutdownCommand}-Objekts ausgeführt. Sie sollte zum geplanten Herunterfahren des Roboters dienen und sollte nach erfolgreichen Durchführung den Roboter in ausgeschaltetem Zustand hinterlassen.
@@ -124,7 +124,7 @@ Bezüglich der \textit{IAdapter}-Methoden ist der \textit{VirtualAdapter} beschr
 \begin{itemize}
 \item \textbf{Initialize}
 \newline
-Bei Aufruf der \textit{Start}-Methode wird der ToolCenterPoint auf den Ausgangspunkt gesetzt.
+Bei Aufruf der \textit{Initialize}-Methode wird der ToolCenterPoint auf den Ausgangspunkt gesetzt.
 \item \textbf{Shutdown}
 \newline
 Bei Aufruf der \textit{Shutdown}-Methode 
@@ -219,9 +219,9 @@ Auch diese Methode funktioniert gleich wie die des \textit{EdubotAdapters} und b
 
 Die abstrakten Methoden der \textit{IAdapter}-Klasse sind bei diesem Adapter folgendermaßen implementiert:
 \begin{itemize}
-\item \textbf{Start}
+\item \textbf{Initialize}
 \newline
-Bei Aufruf der \textit{Start}-Methode wird über den \textit{SenderSocket} eine Verbindung zur Steuerung hergestellt und ein String mit dem Inhalt "'homing"' gesendet. Da derzeit noch kein Modell mit den Keba-Bauteilen vorhanden ist, kann selbstverständlich kein Homing durchgeführt werden, weshalb sofort eine Nachricht mit Inhalt “ready” von \textit{SenderSocket} gesendet wird. Der \textit{SenderSocket} wurde dem \textit{KebaStateListener} bei der Instanzierung übergeben, welcher bei Ankunft dieser Nachricht das \textit{State}-Property des Adapters auf \textit{READY} und eine die Ausführung des nächsten Befehls auslöst.
+Bei Aufruf der \textit{Initialize}-Methode wird über den \textit{SenderSocket} eine Verbindung zur Steuerung hergestellt und ein String mit dem Inhalt "'homing"' gesendet. Da derzeit noch kein Modell mit den Keba-Bauteilen vorhanden ist, kann selbstverständlich kein Homing durchgeführt werden, weshalb sofort eine Nachricht mit Inhalt “ready” von \textit{SenderSocket} gesendet wird. Der \textit{SenderSocket} wurde dem \textit{KebaStateListener} bei der Instanzierung übergeben, welcher bei Ankunft dieser Nachricht das \textit{State}-Property des Adapters auf \textit{READY} und eine die Ausführung des nächsten Befehls auslöst.
 \item \textbf{Shutdown}
 \newline
 Bei Aufruf der \textit{Shutdown}-Methode wird der SPS ein String mit Inhalt "'sht"' gesendet, der diese dazu veranlasst die angeschlossenen Servomotoren auszuschalten. Nachdem die Motoren heruntergefahren wurden sendet die Steuerung eine Nachricht mit "'shutdown"' die den Abschluss des Shutdown-Prozess indiziert. Das \textit{State}-Attribut des Adapters wird nun auf \textit{SHUTDOWN} gesetzt und die Verbindung mit der SPS getrennt.
