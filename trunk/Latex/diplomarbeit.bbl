@@ -16,7 +16,7 @@
   {}
 \endgroup
 
-\entry{android}{misc}{}
+\entry{mvvm}{misc}{}
   \name{author}{1}{}{%
     {{}%
      {{Wikipedia}}{W.}%
@@ -27,9 +27,27 @@
   \strng{namehash}{W1}
   \strng{fullhash}{W1}
   \field{sortinit}{W}
-  \field{note}{Online im Internet: URL:
-  \\http://de.wikipedia.org/wiki/Android\_(Betriebssystem) [Stand 10.04.2012]}
-  \field{title}{Android (Betriebssystem)}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/Model\_View\_ViewModel [Stand 08.03.2012]}
+  \field{title}{Model View Viewmodel}
+  \field{year}{2012}
+\endentry
+
+\entry{wpf}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im
+  Internet:\\http://de.wikipedia.org/wiki/Windows\_Presentation\_Foundationl
+  [Stand 08.03.2012]}
+  \field{title}{Windows Presentation Foundationl}
   \field{year}{2012}
 \endentry
 

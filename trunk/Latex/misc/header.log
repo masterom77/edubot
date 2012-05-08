@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  8 MAY 2012 12:08
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  8 MAY 2012 18:43
 entering extended mode
 **C:/src/Latex/misc/header.tex
 (C:/src/Latex/misc/header.tex
@@ -678,7 +678,33 @@ Package: listing 1999/05/25
 
 Package `listing', V1.2, <1999/05/25>
 \c@listing=\count212
-) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\listingsutf8.sty"
+Package: listingsutf8 2007/11/11 v1.1 Adding support for UTF-8 to listings (HO)
+
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\stringenc.sty"
+Package: stringenc 2010/03/01 v1.8 Converts strings between encodings (HO)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdfescape.sty"
+Package: pdfescape 2011/04/04 v1.12 Provides string conversions (HO)
+)))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
@@ -700,9 +726,9 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \everycr=\toks20
 \minrowclearance=\skip77
 )
-Package color Info: Redefining color red on input line 22.
-Package color Info: Redefining color blue on input line 23.
-Package color Info: Redefining color cyan on input line 25.
+Package color Info: Redefining color red on input line 23.
+Package color Info: Redefining color blue on input line 24.
+Package color Info: Redefining color cyan on input line 26.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
@@ -769,7 +795,7 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count219
 \LT@p@ftn=\toks23
 )
-Class scrartcl Info: longtable captions redefined on input line 31.
+Class scrartcl Info: longtable captions redefined on input line 32.
 
 (C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\bera\beramono.sty
 Package: beramono 2004/01/31 (WaS)
@@ -781,10 +807,6 @@ Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
 Package: ifvtex 2010/03/01 v1.5 Switches for detecting VTeX and its modes (HO)
 Package ifvtex Info: VTeX not detected.
@@ -876,8 +898,7 @@ Package: hobsub-generic 2011/04/23 v1.4 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2011/04/23 v1.4 Subsetting bundle oberdiek (HO)
 Package hobsub Info: Skipping package `infwarerr' (already loaded).
 Package hobsub Info: Skipping package `ltxcmds' (already loaded).
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifluatex' (already loaded).
 Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
 Package hobsub Info: Skipping package `ifpdf' (already loaded).
@@ -888,12 +909,8 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
 Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
-Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-Package: pdfescape 2011/04/04 v1.12 Provides string conversions (HO)
+Package hobsub Info: Skipping package `pdftexcmds' (already loaded).
+Package hobsub Info: Skipping package `pdfescape' (already loaded).
 Package: bigintcalc 2011/01/30 v1.2 Expandable big integer calculations (HO)
 Package: bitset 2011/01/30 v1.1 Data type bit set (HO)
 Package: uniquecounter 2011/01/30 v1.2 Provides unlimited unique counter (HO)
@@ -967,7 +984,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 
 Package biblatex Warning: Macro 'cite' already defined.
-(biblatex)                Using \renewbibmacro on input line 140.
+(biblatex)                Using \renewbibmacro on input line 143.
 
 (C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
@@ -983,10 +1000,10 @@ End of file on the terminal!
 
  
 Here is how much of TeX's memory you used:
- 14709 strings out of 494045
- 231020 string characters out of 3145963
- 451722 words of memory out of 3000000
- 17829 multiletter control sequences out of 15000+200000
+ 14895 strings out of 494045
+ 234594 string characters out of 3145963
+ 455714 words of memory out of 3000000
+ 18000 multiletter control sequences out of 15000+200000
  4702 words of font info for 16 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  40i,1n,56p,839b,270s stack positions out of 5000i,500n,10000p,200000b,50000s
