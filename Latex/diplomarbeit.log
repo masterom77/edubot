@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  8 MAY 2012 14:54
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  8 MAY 2012 20:29
 entering extended mode
-**C:/src/Latex/diplomarbeit.tex
-(C:/src/Latex/diplomarbeit.tex
+**diplomarbeit.tex
+(C:\src\Latex\diplomarbeit.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -1267,14 +1267,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 15--16
 
 ) (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/DotNet.tex
 [13]) (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/WPF.tex
-[14])
+[14]) [15]
 (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/VisualStudio.tex
 Overfull \hbox (8.44745pt too wide) in paragraph at lines 3--7
 \T1/cmss/m/n/12 schie-de-ne Hoch-spra-chen. Es wer-den zur Zeit die Pro-gram-mi
 er-spra-chen C, C++, C++/CLI,
  []
 
-[15] [16] [17])
+[16] [17])
 (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/Latex.tex [18]
 [19] [20]) (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/SVN.tex
 [21])
@@ -1282,13 +1282,14 @@ er-spra-chen C, C++, C++/CLI,
 [22])
 (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/ExpressionBlend.tex
 [23])
-(C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/Microframework.tex)
-[24] (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/GoogleDocs.tex
-) [25]
+(C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/Microframework.tex
+[24])
+(C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/GoogleDocs.tex
+[25])
 (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/Pangoscrum.tex
 [26] [27])) [28] (C:\src\Latex\content/Komponenten_der_Anwendung/section.tex
 (C:\src\Latex\content/Komponenten_der_Anwendung/Grafische_Oberflaeche.tex
-<images/GUI.png, id=1035, 961.5925pt x 636.3775pt>
+<images/GUI.png, id=1041, 961.5925pt x 636.3775pt>
 File: images/GUI.png Graphic file (type png)
  <use images/GUI.png>
 Package pdftex.def Info: images/GUI.png used on input line 17.
@@ -1300,7 +1301,7 @@ Overfull \hbox (28.45273pt too wide) in paragraph at lines 15--20
 
 [29] [30 <C:/src/Latex/images/GUI.png>]) [31] [32]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Visualisierung.tex
-<images/3DModels.png, id=1054, 910.90312pt x 292.84406pt>
+<images/3DModels.png, id=1060, 910.90312pt x 292.84406pt>
 File: images/3DModels.png Graphic file (type png)
 
 <use images/3DModels.png>
@@ -1308,7 +1309,7 @@ Package pdftex.def Info: images/3DModels.png used on input line 16.
 (pdftex.def)             Requested size: 341.43306pt x 109.76709pt.
  [33 <C:/src/Latex/images/3DModels.png>] [34] [35])
 [36] (C:\src\Latex\content/Komponenten_der_Anwendung/Kommandozeile.tex
-<images/CLI.png, id=1071, 610.53094pt x 416.30531pt>
+<images/CLI.png, id=1077, 610.53094pt x 416.30531pt>
 File: images/CLI.png Graphic file (type png)
  <use images/CLI.png>
 Package pdftex.def Info: images/CLI.png used on input line 18.
@@ -1327,7 +1328,7 @@ a-ra-me-ter-wer-te an die CommandBuilder-
 
 [38 <C:/src/Latex/images/CLI.png>] [39] [40]) [41]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Zeichenflaeche.tex [42]
-<images/DrawingArea.png, id=1097, 611.28375pt x 417.05812pt>
+<images/DrawingArea.png, id=1103, 611.28375pt x 417.05812pt>
 File: images/DrawingArea.png Graphic file (type png)
 
 <use images/DrawingArea.png>
@@ -1359,7 +1360,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 168--170
 
 [48] [49]) [50]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Einstellungen.tex
-<images/Settings.png, id=1216, 609.77812pt x 417.05812pt>
+<images/Settings.png, id=1222, 609.77812pt x 417.05812pt>
 File: images/Settings.png Graphic file (type png)
 
 <use images/Settings.png>
@@ -1391,7 +1392,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 98--103
  []
 
 [55]) [56] (C:\src\Latex\content/Komponenten_der_Anwendung/Handbuch.tex
-<images/Manual.png, id=1251, 612.03656pt x 417.05812pt>
+<images/Manual.png, id=1257, 612.03656pt x 417.05812pt>
 File: images/Manual.png Graphic file (type png)
 
 <use images/Manual.png>
@@ -1405,7 +1406,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
  []
 
-[63] [64] <images/AdapterProperties.png, id=1323, 963.6pt x 722.7pt>
+[63] [64] <images/AdapterProperties.png, id=1329, 963.6pt x 722.7pt>
 File: images/AdapterProperties.png Graphic file (type png)
 
 <use images/AdapterProperties.png>
@@ -1441,7 +1442,7 @@ ls Schnitt-stel-le zum klei-ne-ren Mo-dell un-se-res SCARA-Roboters.
 
 [71] [72] [73] [74] [75] [76]) [77]
 (C:\src\Latex\content/Komponenten_der_API/Listener-System.tex
-<images/ListenerSystem.png, id=1406, 963.6pt x 722.7pt>
+<images/ListenerSystem.png, id=1412, 963.6pt x 722.7pt>
 File: images/ListenerSystem.png Graphic file (type png)
 
 <use images/ListenerSystem.png>
@@ -1463,21 +1464,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--13
  []
 
 [82] [83] [84] (C:\src\Latex\content/Komponenten_der_API/Kommando-System.tex
-<images/CommandSystem1.png, id=1463, 722.7pt x 274.77657pt>
+<images/CommandSystem1.png, id=1469, 722.7pt x 274.77657pt>
 File: images/CommandSystem1.png Graphic file (type png)
 
 <use images/CommandSystem1.png>
 Package pdftex.def Info: images/CommandSystem1.png used on input line 15.
 (pdftex.def)             Requested size: 341.43306pt x 129.81583pt.
 
-<images/CommandSystem2.png, id=1464, 722.7pt x 318.43968pt>
+<images/CommandSystem2.png, id=1470, 722.7pt x 318.43968pt>
 File: images/CommandSystem2.png Graphic file (type png)
 
 <use images/CommandSystem2.png>
 Package pdftex.def Info: images/CommandSystem2.png used on input line 24.
 (pdftex.def)             Requested size: 341.43306pt x 150.4441pt.
  [85 <C:/src/Latex/images/CommandSystem1.png>]
-<images/CommandSystem3.png, id=1470, 722.7pt x 462.97969pt>
+<images/CommandSystem3.png, id=1476, 722.7pt x 462.97969pt>
 File: images/CommandSystem3.png Graphic file (type png)
 
 <use images/CommandSystem3.png>
@@ -1529,7 +1530,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--58
  []
 
 ) [92] (C:\src\Latex\content/Komponenten_der_API/Kinematik.tex
-<images/Direktkinematik.png, id=1504, 859.21pt x 497.86pt>
+<images/Direktkinematik.png, id=1510, 859.21pt x 497.86pt>
 File: images/Direktkinematik.png Graphic file (type png)
 
 <use images/Direktkinematik.png>
@@ -1546,7 +1547,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 26--28
  []
 
 [94 <C:/src/Latex/images/Direktkinematik.png>]
-<images/Inverskinematik.png, id=1517, 861.2175pt x 497.86pt>
+<images/Inverskinematik.png, id=1523, 861.2175pt x 497.86pt>
 File: images/Inverskinematik.png Graphic file (type png)
 
 <use images/Inverskinematik.png>
@@ -1573,7 +1574,7 @@ Overfull \hbox (4.04356pt too wide) in paragraph at lines 14--16
 polationStep-Objekten,
  []
 
-[99] <images/InterpolationResult.png, id=1549, 557.08125pt x 81.30376pt>
+[99] <images/InterpolationResult.png, id=1555, 557.08125pt x 81.30376pt>
 File: images/InterpolationResult.png Graphic file (type png)
 
 <use images/InterpolationResult.png>
@@ -1584,7 +1585,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--34
 
  []
 
-<images/InterpolationResult2.png, id=1550, 557.08125pt x 81.30376pt>
+<images/InterpolationResult2.png, id=1556, 557.08125pt x 81.30376pt>
 File: images/InterpolationResult2.png Graphic file (type png)
 
 <use images/InterpolationResult2.png>
@@ -1598,7 +1599,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--44
 
 [100 <C:/src/Latex/images/InterpolationResult.png> <C:/src/Latex/images/Interpo
 lationResult2.png>]
-<images/InterpolationStep.png, id=1557, 132.495pt x 58.2175pt>
+<images/InterpolationStep.png, id=1563, 132.495pt x 58.2175pt>
 File: images/InterpolationStep.png Graphic file (type png)
 
 <use images/InterpolationStep.png>
@@ -1614,7 +1615,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 60--69
 
  []
 
-<images/Linearinterpolation.png, id=1558, 784.9325pt x 497.86pt>
+<images/Linearinterpolation.png, id=1564, 784.9325pt x 497.86pt>
 File: images/Linearinterpolation.png Graphic file (type png)
 
 <use images/Linearinterpolation.png>
@@ -1632,7 +1633,7 @@ Overfull \hbox (12.8875pt too wide) in paragraph at lines 109--111
 rpolationResult-
  []
 
-<images/Zirkularinterpolation.png, id=1573, 847.165pt x 523.9575pt>
+<images/Zirkularinterpolation.png, id=1579, 847.165pt x 523.9575pt>
 File: images/Zirkularinterpolation.png Graphic file (type png)
 
 <use images/Zirkularinterpolation.png>
@@ -1653,7 +1654,7 @@ rpolationResult-
 ) [106]) (C:\src\Latex\content/Komponenten_des_Edubot_Modells/section.tex
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/allgemein.tex)
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/elektronik.tex
-<images/edubot_electronic.png, id=1605, 740.7675pt x 550.055pt>
+<images/edubot_electronic.png, id=1611, 740.7675pt x 550.055pt>
 File: images/edubot_electronic.png Graphic file (type png)
 
 <use images/edubot_electronic.png>
@@ -1728,14 +1729,14 @@ Overfull \hbox (7.3208pt too wide) in paragraph at lines 67--80
 
 [113] [114])
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/konstruktionDerMechanik.te
-x [115] <images/edubot_complete.png, id=1644, 736.25063pt x 300.3722pt>
+x [115] <images/edubot_complete.png, id=1650, 736.25063pt x 300.3722pt>
 File: images/edubot_complete.png Graphic file (type png)
 
 <use images/edubot_complete.png>
 Package pdftex.def Info: images/edubot_complete.png used on input line 12.
 (pdftex.def)             Requested size: 341.43306pt x 139.30037pt.
 
-<images/primary_gelenk.png, id=1645, 363.60844pt x 360.59718pt>
+<images/primary_gelenk.png, id=1651, 363.60844pt x 360.59718pt>
 File: images/primary_gelenk.png Graphic file (type png)
 
 <use images/primary_gelenk.png>
@@ -1774,6 +1775,12 @@ less on input line 116.
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 117.
 
+
+Overfull \hbox (16.27304pt too wide) in paragraph at lines 123--123
+\T1/cmss/m/n/12 http://de.wikipedia.org/wiki/Windows_Presentation_Foundationl [
+Stand 08.03.2012]. 
+ []
+
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 123.
 pdfTeX warning (ext4): destination with the same identifier (name{page.VI}) has
  been already used, duplicate ignored
@@ -1794,41 +1801,43 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package logreq Info: Writing requests to 'diplomarbeit.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 18197 strings out of 494045
- 296303 string characters out of 3145963
+ 18210 strings out of 494045
+ 296462 string characters out of 3145963
  661520 words of memory out of 3000000
- 20484 multiletter control sequences out of 15000+200000
- 20215 words of font info for 47 fonts, out of 3000000 for 9000
+ 20492 multiletter control sequences out of 15000+200000
+ 21747 words of font info for 49 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
- 44i,22n,56p,1580b,3380s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 48i,22n,64p,1567b,3380s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc} <C:\Users
-\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx1440.p
+\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss0700.p
 k> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi60
-0\ecsx1728.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
-pen\ec\dpi600\ecsi1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\
-ljfour\jknappen\ec\dpi600\ecss1095.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2
-.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsi1095.pk> <C:\Users\Philipp\AppData\Lo
-cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1000.pk> <C:\Users\Philip
-p\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx2074.pk> <C:\
+0\ecss0800.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
+pen\ec\dpi600\ecsx1440.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\
+ljfour\jknappen\ec\dpi600\ecsx1728.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2
+.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsi1200.pk> <C:\Users\Philipp\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1095.pk> <C:\Users\Philip
+p\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsi1095.pk> <C:\
 Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1
-200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
-dpi600\ecsx1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
-jknappen\ec\dpi600\ecsx2488.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\font
-s\pk\ljfour\jknappen\ec\dpi600\ecss1728.pk> <C:\Users\Philipp\AppData\Local\MiK
-TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1440.pk> <C:\Users\Philipp\AppDa
-ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss2488.pk><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program File
-s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/public/eurosym/feymr10.pfb><C:/Users/Philipp/AppData/Roaming/Mi
-KTeX/2.9/fonts/type1/bera/fvmr8a.pfb>
-Output written on diplomarbeit.pdf (138 pages, 3633212 bytes).
+000.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
+dpi600\ecsx2074.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
+jknappen\ec\dpi600\ecss1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\font
+s\pk\ljfour\jknappen\ec\dpi600\ecsx1200.pk> <C:\Users\Philipp\AppData\Local\MiK
+TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx2488.pk> <C:\Users\Philipp\AppDa
+ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1728.pk> <C:\Users\P
+hilipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1440.pk>
+ <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
+ecss2488.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mex10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmm
+i12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8
+.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pf
+b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/eurosym/feymr10.pfb><C:/Users/Ph
+ilipp/AppData/Roaming/MiKTeX/2.9/fonts/type1/bera/fvmr8a.pfb>
+Output written on diplomarbeit.pdf (138 pages, 3641267 bytes).
 PDF statistics:
- 2449 PDF objects out of 2487 (max. 8388607)
- 535 named destinations out of 1000 (max. 500000)
+ 2483 PDF objects out of 2487 (max. 8388607)
+ 538 named destinations out of 1000 (max. 500000)
  1372 words of extra memory for PDF output out of 10000 (max. 10000000)
 
