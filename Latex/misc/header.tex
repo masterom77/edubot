@@ -14,10 +14,14 @@
 \usepackage{subfigure}
 \usepackage{setspace}
 \usepackage{listing}
+\usepackage{listingsutf8}
 \usepackage{color} 
 \usepackage{colortbl}
 \definecolor{gray}{rgb}{0.4,0.4,0.4} 
 \definecolor{lightgray}{rgb}{0.95,0.95,0.95}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0} 
+\definecolor{red}{rgb}{1.0,0.0,0.0} 
+\definecolor{blue}{rgb}{0.0,0.0,1.0} 
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6} 
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 \usepackage{color}
@@ -44,29 +48,48 @@
   basicstyle=\ttfamily,
   columns=fullflexible,
   showstringspaces=false,
-  commentstyle=\color{gray}\upshape
+  breaklines=true,
+  commentstyle=\color{0.133,0.545,0.133}\upshape
 }
 
-\lstdefinelanguage{XML}
+\lstdefinelanguage{XAML}
 {
   morestring=[b]",
-  morestring=[s]{>}{<},
+  morestring=[b]{>}{<},
   morecomment=[s]{<?}{?>},
-  stringstyle=\color{black},
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{cyan},
-  morekeywords={xmlns,version,type, android, layout_width, layout_height, paddingLeft, paddingBottom, paddingTop, orientation, layout_weight, singleLine, textColor, textSize, textStyle}% list your attributes here
+  stringstyle=\color{blue},
+  identifierstyle=\color{darkred},
+  keywordstyle=\color{red},
+  morekeywords={xmlns,version,type,Grid.Row, Grid.Column, Margin, Width, Height, HorizontalAlignment, VerticalAlignment, IsEnabled, Name, Path, UpdateSourceTrigger}% list your attributes here
 } 
 
-\lstdefinelanguage{androidXML}
+\lstdefinelanguage{CSharp}
 {
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{<?}{?>},
-  stringstyle=\color{black},
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{cyan},
-  morekeywords={xmlns,version,type, android:layout_width, android:layout_height, android:paddingLeft, android:paddingBottom, android:paddingTop, android:orientation, android:layout_weight, android:singleLine, android:textColor, android:textSize, android:textStyle, android:id, inlocs:labelText inlocs:defaultText}% list your attributes here
+  sensitive=true,
+morekeywords=[1]{ ,
+abstract, as, base, break, case,
+catch, checked, class, const, continue,
+default, delegate, do, else, enum,
+event, explicit, extern, false,
+finally, fixed, for, foreach, goto, if,
+implicit, in, interface, internal, is,
+lock, namespace, new, null, operator,
+out, override, params, private,
+protected, public, readonly, ref,
+return, sealed, sizeof, stackalloc,
+static, struct, switch, this, throw,
+true, try, typeof, unchecked, unsafe,
+using, virtual, volatile, while, bool,
+byte, char, decimal, double, float,
+int, lock, object, sbyte, short, string,
+uint, ulong, ushort, void},
+morekeywords=[2]{,ICommand, AbortCommand, StartCommand, ShutdownCommand, MVSCommand, MVCCommand, UseToolCommand, IAdapter, EdubotAdapter, VirtualAdapter, Cursors, FileStream, XmlSerializer, UnauthorizedAccessException, FileMode, MessageBox, MessageBoxButton, MessageBoxImage, Point3D, Math, MathHelper, Event, EventArgs, HomingEventArgs, MovementStartedEventArgs, ToolUsedEventArgs, FailureEventArgs, StateChangedEventArgs, List, ThreadAbortException, State, KeyValuePair, }
+keywordstyle=[1]\color{blue},
+keywordstyle=[2]\color{cyan},
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+morestring=[b]'
 }
 
 %Bibliography Style

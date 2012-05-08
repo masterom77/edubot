@@ -20,7 +20,7 @@ Während die ersten beiden lediglich Informationen über die Netzwerkschnittstel
 
 Die Bedienung der Oberfläche ist realtiv einfach und leicht verständlich. Im oberen Bereich des Tabs befindet sich der "Roboter"-Bereich in dem eine der beiden unterstützten Steuerungen ausgewählt werden kann.\\ 
 Unter den Namen dieser Steuerungen, befinden sich entsprechende Eingabefelder. Im selben Bereich befindet sich ein Button mit der Aufschrift "Verbinden", welcher nur angeklickt werden kann, wenn die eingegebenen Informationen gültig sind.\\
-Klickt der Benutzer nun auf diesen Button, versucht die Anwendung eine Verbindung mit der Steuerung herzustellen. Dieser Vorgang wird in einem Fesnter dargestellt. Ist er erfolgreich so werden alle Elemente des Bereichs "Roboter", bis auf Button dessen Aufschrift nun "Trennen" lautet, deaktiviert. \\
+Klickt der Benutzer nun auf diesen Button, versucht die Anwendung eine Verbindung mit der Steuerung herzustellen. Dieser Vorgang wird in einem Fenster dargestellt. Ist er erfolgreich so werden alle Elemente des Bereichs "Roboter", bis auf den Button dessen Aufschrift nun "Trennen" lautet, deaktiviert. \\
 Wurde der Edubot-Roboter verbunden, so wird das 3D-Modell entsprechend umgestellt und die Visualisierung auf die Längen des echten Modells angepasst. Solange der Edubot-Roboter verbunden ist, kann nicht auf ein anderes 3D-Modell umgestellt werden.\\
 Erst durch einen Klick auf "Trennen" werden die deaktivierten Felder wieder aktiviert und es kann eine andere Steuerung verbunden beziehungsweise die 3D-Ansicht geändert werden.\\
 \\
@@ -34,6 +34,17 @@ Um die Daten aus der Eingabemaske in die entsprechende Objekte zu übernehmen, m
 Jedes Control ist über sein Binding-Property mit dem entsprechenden Property des DataContext-Objekts verknüpft. Dazu muss im Layout der Oberfläche angegeben werden, welches Property an das Control gebunden und wann eine Eingabe durch den Benutzer in das entsprechende Property übernommen werden soll. Um das Control über Änderungen des ihm zugewiesenen Properties zu informieren, implementiert die IConfiguration-Klasse das INotifyPropertyChanged-Interface. Dadurch erhält die Klasse ein PropertyChanged-Event, welches die entsprechenden Controls informiert. \\
 
 \textbf{Validierung}\\
+\begin{lstlisting}[language = XAML, captionpos=b, caption={IP-Addresse - TextBox mit IPAddressValidationRule}]
+<TextBox Grid.Row="1" Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" Name="tbEdubotIPAddress" IsEnabled="{Binding ElementName=rbEdubot,Path=IsChecked}">
+	<TextBox.Text>
+		<Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged">
+			<Binding.ValidationRules>
+				<validators:IPAdressValidationRule/>
+			</Binding.ValidationRules>
+		</Binding>
+	</TextBox.Text>
+</TextBox>
+\end{lstlisting}
 Einer Bindung können zusätzlich noch Validierungsregeln mitgegeben werden, die bei Änderung in der Eingabemaske den neuen Wert prüfen und nur bei gültigem Wert den Setter des Properties aufrufen. Um als Validierungsregel verwendet zu werden, muss eine Klasse von ValidationRule abgeleitet sein und die Validate-Methode implementieren. Letztrere gibt ein sogenanntes ValidationResult zurück, welche angibt ob der Wert und gültig ist und falls nicht eine entsprechende Fehlermeldung enthält\\
 Von uns wurden folgende Validierungsregeln implementiert:
 \begin{itemize}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  7 MAY 2012 18:12
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.4.23)  8 MAY 2012 14:27
 entering extended mode
 **C:/src/Latex/diplomarbeit.tex
 (C:/src/Latex/diplomarbeit.tex
@@ -678,7 +678,33 @@ Package: listing 1999/05/25
 
 Package `listing', V1.2, <1999/05/25>
 \c@listing=\count212
-) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\listingsutf8.sty"
+Package: listingsutf8 2007/11/11 v1.1 Adding support for UTF-8 to listings (HO)
+
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\stringenc.sty"
+Package: stringenc 2010/03/01 v1.8 Converts strings between encodings (HO)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdfescape.sty"
+Package: pdfescape 2011/04/04 v1.12 Provides string conversions (HO)
+)))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty"
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
@@ -700,7 +726,9 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \everycr=\toks20
 \minrowclearance=\skip77
 )
-Package color Info: Redefining color cyan on input line 22.
+Package color Info: Redefining color red on input line 23.
+Package color Info: Redefining color blue on input line 24.
+Package color Info: Redefining color cyan on input line 26.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
@@ -767,7 +795,7 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count219
 \LT@p@ftn=\toks23
 )
-Class scrartcl Info: longtable captions redefined on input line 28.
+Class scrartcl Info: longtable captions redefined on input line 32.
 
 (C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\bera\beramono.sty
 Package: beramono 2004/01/31 (WaS)
@@ -779,10 +807,6 @@ Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
 Package: ifvtex 2010/03/01 v1.5 Switches for detecting VTeX and its modes (HO)
 Package ifvtex Info: VTeX not detected.
@@ -874,8 +898,7 @@ Package: hobsub-generic 2011/04/23 v1.4 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2011/04/23 v1.4 Subsetting bundle oberdiek (HO)
 Package hobsub Info: Skipping package `infwarerr' (already loaded).
 Package hobsub Info: Skipping package `ltxcmds' (already loaded).
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifluatex' (already loaded).
 Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
 Package hobsub Info: Skipping package `ifpdf' (already loaded).
@@ -886,12 +909,8 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
 Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
-Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-Package: pdfescape 2011/04/04 v1.12 Provides string conversions (HO)
+Package hobsub Info: Skipping package `pdftexcmds' (already loaded).
+Package hobsub Info: Skipping package `pdfescape' (already loaded).
 Package: bigintcalc 2011/01/30 v1.2 Expandable big integer calculations (HO)
 Package: bitset 2011/01/30 v1.1 Data type bit set (HO)
 Package: uniquecounter 2011/01/30 v1.2 Provides unlimited unique counter (HO)
@@ -965,13 +984,10 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 
 Package biblatex Warning: Macro 'cite' already defined.
-(biblatex)                Using \renewbibmacro on input line 120.
+(biblatex)                Using \renewbibmacro on input line 143.
 
 (C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-)
-(C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 )
 \@float@every@makeatomar=\toks30
 \c@makeatomar=\count288
@@ -1186,7 +1202,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
 
-<images/EdubotSystem.png, id=888, 1258.7025pt x 642.4pt>
+<images/EdubotSystem.png, id=904, 1258.7025pt x 642.4pt>
 File: images/EdubotSystem.png Graphic file (type png)
 
 <use images/EdubotSystem.png>
@@ -1272,7 +1288,7 @@ er-spra-chen C, C++, C++/CLI,
 (C:\src\Latex\content/Verwendete_Technologien_und_Werkzeuge/Pangoscrum.tex
 [26] [27])) [28] (C:\src\Latex\content/Komponenten_der_Anwendung/section.tex
 (C:\src\Latex\content/Komponenten_der_Anwendung/Grafische_Oberflaeche.tex
-<images/GUI.png, id=1011, 961.5925pt x 636.3775pt>
+<images/GUI.png, id=1027, 961.5925pt x 636.3775pt>
 File: images/GUI.png Graphic file (type png)
  <use images/GUI.png>
 Package pdftex.def Info: images/GUI.png used on input line 17.
@@ -1284,7 +1300,7 @@ Overfull \hbox (28.45273pt too wide) in paragraph at lines 15--20
 
 [29] [30 <C:/src/Latex/images/GUI.png>]) [31] [32]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Visualisierung.tex
-<images/3DModels.png, id=1030, 910.90312pt x 292.84406pt>
+<images/3DModels.png, id=1046, 910.90312pt x 292.84406pt>
 File: images/3DModels.png Graphic file (type png)
 
 <use images/3DModels.png>
@@ -1292,7 +1308,7 @@ Package pdftex.def Info: images/3DModels.png used on input line 16.
 (pdftex.def)             Requested size: 341.43306pt x 109.76709pt.
  [33 <C:/src/Latex/images/3DModels.png>] [34] [35])
 [36] (C:\src\Latex\content/Komponenten_der_Anwendung/Kommandozeile.tex
-<images/CLI.png, id=1047, 610.53094pt x 416.30531pt>
+<images/CLI.png, id=1063, 610.53094pt x 416.30531pt>
 File: images/CLI.png Graphic file (type png)
  <use images/CLI.png>
 Package pdftex.def Info: images/CLI.png used on input line 18.
@@ -1311,7 +1327,7 @@ a-ra-me-ter-wer-te an die CommandBuilder-
 
 [38 <C:/src/Latex/images/CLI.png>] [39] [40]) [41]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Zeichenflaeche.tex [42]
-<images/DrawingArea.png, id=1073, 611.28375pt x 417.05812pt>
+<images/DrawingArea.png, id=1089, 611.28375pt x 417.05812pt>
 File: images/DrawingArea.png Graphic file (type png)
 
 <use images/DrawingArea.png>
@@ -1325,7 +1341,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 122--126
 
 [47] [48]) [49]
 (C:\src\Latex\content/Komponenten_der_Anwendung/Einstellungen.tex
-<images/Settings.png, id=1129, 609.77812pt x 417.05812pt>
+<images/Settings.png, id=1145, 609.77812pt x 417.05812pt>
 File: images/Settings.png Graphic file (type png)
 
 <use images/Settings.png>
@@ -1341,18 +1357,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 33--35
 
  []
 
-[51] [52]
-Underfull \hbox (badness 10000) in paragraph at lines 74--79
+[51]
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+
+ []
+
+LaTeX Font Info:    Try loading font information for T1+fvm on input line 37.
+(C:\Users\Philipp\AppData\Roaming\MiKTeX\2.9\tex\latex\bera\t1fvm.fd
+File: t1fvm.fd 2004/09/07 scalable font definitions for T1/fvm.
+) [52]
+Underfull \hbox (badness 10000) in paragraph at lines 85--90
 
  []
 
 [53]
-Underfull \hbox (badness 10000) in paragraph at lines 87--92
+Underfull \hbox (badness 10000) in paragraph at lines 98--103
 
  []
 
 [54]) [55] (C:\src\Latex\content/Komponenten_der_Anwendung/Handbuch.tex
-<images/Manual.png, id=1155, 612.03656pt x 417.05812pt>
+<images/Manual.png, id=1181, 612.03656pt x 417.05812pt>
 File: images/Manual.png Graphic file (type png)
 
 <use images/Manual.png>
@@ -1360,56 +1384,60 @@ Package pdftex.def Info: images/Manual.png used on input line 14.
 (pdftex.def)             Requested size: 341.43306pt x 232.66002pt.
  [56 <C:/src/Latex/images/Manual.png>]) [57])
 (C:\src\Latex\content/Komponenten_der_API/section.tex
-(C:\src\Latex\content/Komponenten_der_API/Die_Edubot_Klasse.tex [58]) [59]
-[60] (C:\src\Latex\content/Komponenten_der_API/Adapter-System.tex
+(C:\src\Latex\content/Komponenten_der_API/Die_Edubot_Klasse.tex [58] [59]
+[60]) [61] (C:\src\Latex\content/Komponenten_der_API/Adapter-System.tex
 Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
  []
 
-[61] [62] <images/AdapterProperties.png, id=1186, 963.6pt x 722.7pt>
+[62] [63] <images/AdapterProperties.png, id=1254, 963.6pt x 722.7pt>
 File: images/AdapterProperties.png Graphic file (type png)
 
 <use images/AdapterProperties.png>
 Package pdftex.def Info: images/AdapterProperties.png used on input line 44.
 (pdftex.def)             Requested size: 341.43306pt x 256.06956pt.
- [63 <C:/src/Latex/images/AdapterProperties.png>] [64]
-Underfull \hbox (badness 10000) in paragraph at lines 82--84
+ [64 <C:/src/Latex/images/AdapterProperties.png>] [65] [66]
+Underfull \hbox (badness 10000) in paragraph at lines 101--103
 
  []
 
-[65] [66]
-Overfull \hbox (38.52711pt too wide) in paragraph at lines 102--104
+[67]
+Overfull \hbox (38.52711pt too wide) in paragraph at lines 137--139
 \T1/cmss/m/n/12 punkt in Form ei-nes \T1/cmss/m/it/12 Point3D\T1/cmss/m/n/12 -O
 bjekts. Ab-hän-gig da-von, wor-auf das \T1/cmss/m/it/12 RequiresPrecalculation-
 
  []
 
-[67]
-Underfull \hbox (badness 10000) in paragraph at lines 120--124
+[68]
+Underfull \hbox (badness 10000) in paragraph at lines 151--155
+
+ []
+
+[69]
+Underfull \hbox (badness 10000) in paragraph at lines 164--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 133--137
-
- []
-
-
-Overfull \hbox (6.59392pt too wide) in paragraph at lines 144--147
+Overfull \hbox (6.59392pt too wide) in paragraph at lines 175--178
 \T1/cmss/m/n/12 Der \T1/cmss/m/it/12 Edu-bo-tA-d-ap-ter \T1/cmss/m/n/12 dient a
 ls Schnitt-stel-le zum klei-ne-ren Mo-dell un-se-res SCARA-Roboters.
  []
 
-[68] [69] [70] [71] [72] [73]) [74]
+[70] [71] [72] [73] [74] [75]) [76]
 (C:\src\Latex\content/Komponenten_der_API/Listener-System.tex
-<images/ListenerSystem.png, id=1238, 963.6pt x 722.7pt>
+<images/ListenerSystem.png, id=1337, 963.6pt x 722.7pt>
 File: images/ListenerSystem.png Graphic file (type png)
 
 <use images/ListenerSystem.png>
 Package pdftex.def Info: images/ListenerSystem.png used on input line 13.
 (pdftex.def)             Requested size: 341.43306pt x 256.06956pt.
- [75 <C:/src/Latex/images/ListenerSystem.png>]
-[76] [77]) [78] (C:\src\Latex\content/Komponenten_der_API/Zustands-System.tex)
+ [77 <C:/src/Latex/images/ListenerSystem.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+[78] [79]) [80] (C:\src\Latex\content/Komponenten_der_API/Zustands-System.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 11--13
 
  []
@@ -1419,49 +1447,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--13
 
  []
 
-[79] [80] [81] (C:\src\Latex\content/Komponenten_der_API/Kommando-System.tex
-<images/CommandSystem1.png, id=1269, 722.7pt x 274.77657pt>
+[81] [82] [83] (C:\src\Latex\content/Komponenten_der_API/Kommando-System.tex
+<images/CommandSystem1.png, id=1394, 722.7pt x 274.77657pt>
 File: images/CommandSystem1.png Graphic file (type png)
 
 <use images/CommandSystem1.png>
 Package pdftex.def Info: images/CommandSystem1.png used on input line 15.
 (pdftex.def)             Requested size: 341.43306pt x 129.81583pt.
 
-<images/CommandSystem2.png, id=1270, 722.7pt x 318.43968pt>
+<images/CommandSystem2.png, id=1395, 722.7pt x 318.43968pt>
 File: images/CommandSystem2.png Graphic file (type png)
 
 <use images/CommandSystem2.png>
 Package pdftex.def Info: images/CommandSystem2.png used on input line 24.
 (pdftex.def)             Requested size: 341.43306pt x 150.4441pt.
- [82 <C:/src/Latex/images/CommandSystem1.png>]
-<images/CommandSystem3.png, id=1276, 722.7pt x 462.97969pt>
+ [84 <C:/src/Latex/images/CommandSystem1.png>]
+<images/CommandSystem3.png, id=1401, 722.7pt x 462.97969pt>
 File: images/CommandSystem3.png Graphic file (type png)
 
 <use images/CommandSystem3.png>
 Package pdftex.def Info: images/CommandSystem3.png used on input line 33.
 (pdftex.def)             Requested size: 341.43306pt x 218.73079pt.
- [83 <C:/src/Latex/images/CommandSystem2.png> <C:/src/Latex/images/CommandSyste
-m3.png>] [84] [85]) [86]
-(C:\src\Latex\content/Komponenten_der_API/Event-System.tex [87]
-Overfull \hbox (1.10687pt too wide) in paragraph at lines 44--46
+ [85 <C:/src/Latex/images/CommandSystem2.png> <C:/src/Latex/images/CommandSyste
+m3.png>] [86] [87]) [88]
+(C:\src\Latex\content/Komponenten_der_API/Event-System.tex
+Underfull \hbox (badness 10000) in paragraph at lines 21--24
+
+ []
+
+[89]
+Overfull \hbox (1.10687pt too wide) in paragraph at lines 48--50
 []\T1/cmss/bx/n/12 HomingEventArgs \T1/cmss/m/n/12 Ei-ne In-stanz die-ser Klas-
 se wird beim Aus-lö-sen des OnHoming-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 46--48
-
- []
-
-
-Overfull \hbox (40.468pt too wide) in paragraph at lines 48--50
-\T1/cmss/m/n/12 OnMovementStarted-Events als Pa-ra-me-ter mit-ge-ge-ben und ent
--hält ein InterpolationResult-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
-
  []
 
 
@@ -1469,10 +1486,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--52
 
  []
 
-[88]
-Overfull \hbox (17.48338pt too wide) in paragraph at lines 52--54
-[]\T1/cmss/bx/n/12 ToolUsedEventArgs \T1/cmss/m/n/12 Ei-ne In-stanz die-ser Kla
-s-se wird beim Aus-lö-sen des OnToolUsed-
+
+Overfull \hbox (40.468pt too wide) in paragraph at lines 52--54
+\T1/cmss/m/n/12 OnMovementStarted-Events als Pa-ra-me-ter mit-ge-ge-ben und ent
+-hält ein InterpolationResult-
  []
 
 
@@ -1480,8 +1497,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--54
 
  []
 
-) [89] (C:\src\Latex\content/Komponenten_der_API/Kinematik.tex
-<images/Direktkinematik.png, id=1308, 859.21pt x 497.86pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--56
+
+ []
+
+[90]
+Overfull \hbox (17.48338pt too wide) in paragraph at lines 56--58
+[]\T1/cmss/bx/n/12 ToolUsedEventArgs \T1/cmss/m/n/12 Ei-ne In-stanz die-ser Kla
+s-se wird beim Aus-lö-sen des OnToolUsed-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 56--58
+
+ []
+
+) [91] (C:\src\Latex\content/Komponenten_der_API/Kinematik.tex
+<images/Direktkinematik.png, id=1434, 859.21pt x 497.86pt>
 File: images/Direktkinematik.png Graphic file (type png)
 
 <use images/Direktkinematik.png>
@@ -1492,40 +1525,40 @@ Underfull \hbox (badness 10000) in paragraph at lines 14--23
 
  []
 
-[90]
+[92]
 Underfull \hbox (badness 10000) in paragraph at lines 26--28
 
  []
 
-[91 <C:/src/Latex/images/Direktkinematik.png>]
-<images/Inverskinematik.png, id=1321, 861.2175pt x 497.86pt>
+[93 <C:/src/Latex/images/Direktkinematik.png>]
+<images/Inverskinematik.png, id=1448, 861.2175pt x 497.86pt>
 File: images/Inverskinematik.png Graphic file (type png)
 
 <use images/Inverskinematik.png>
-Package pdftex.def Info: images/Inverskinematik.png used on input line 70.
+Package pdftex.def Info: images/Inverskinematik.png used on input line 71.
 (pdftex.def)             Requested size: 341.43306pt x 197.37802pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 64--73
+Underfull \hbox (badness 10000) in paragraph at lines 65--74
 
  []
 
-[92]
-Underfull \hbox (badness 10000) in paragraph at lines 78--80
+[94]
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
 
  []
 
-[93 <C:/src/Latex/images/Inverskinematik.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 93--97
+[95 <C:/src/Latex/images/Inverskinematik.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 94--98
 
  []
 
-[94]) [95] (C:\src\Latex\content/Komponenten_der_API/Interpolation.tex
+[96]) [97] (C:\src\Latex\content/Komponenten_der_API/Interpolation.tex
 Overfull \hbox (4.04356pt too wide) in paragraph at lines 14--16
 \T1/cmss/m/n/12 Beim Angles-Property han-delt es sich um ei-ne Li-ste von Inter
 polationStep-Objekten,
  []
 
-[96] <images/InterpolationResult.png, id=1353, 557.08125pt x 81.30376pt>
+[98] <images/InterpolationResult.png, id=1480, 557.08125pt x 81.30376pt>
 File: images/InterpolationResult.png Graphic file (type png)
 
 <use images/InterpolationResult.png>
@@ -1536,7 +1569,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--34
 
  []
 
-<images/InterpolationResult2.png, id=1354, 557.08125pt x 81.30376pt>
+<images/InterpolationResult2.png, id=1481, 557.08125pt x 81.30376pt>
 File: images/InterpolationResult2.png Graphic file (type png)
 
 <use images/InterpolationResult2.png>
@@ -1548,9 +1581,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--44
 
  []
 
-[97 <C:/src/Latex/images/InterpolationResult.png> <C:/src/Latex/images/Interpol
+[99 <C:/src/Latex/images/InterpolationResult.png> <C:/src/Latex/images/Interpol
 ationResult2.png>]
-<images/InterpolationStep.png, id=1361, 132.495pt x 58.2175pt>
+<images/InterpolationStep.png, id=1488, 132.495pt x 58.2175pt>
 File: images/InterpolationStep.png Graphic file (type png)
 
 <use images/InterpolationStep.png>
@@ -1566,7 +1599,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 60--69
 
  []
 
-<images/Linearinterpolation.png, id=1362, 784.9325pt x 497.86pt>
+<images/Linearinterpolation.png, id=1489, 784.9325pt x 497.86pt>
 File: images/Linearinterpolation.png Graphic file (type png)
 
 <use images/Linearinterpolation.png>
@@ -1577,14 +1610,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--84
 
  []
 
-[98 <C:/src/Latex/images/InterpolationStep.png>] [99 <C:/src/Latex/images/Linea
-rinterpolation.png>]
+[100 <C:/src/Latex/images/InterpolationStep.png>] [101 <C:/src/Latex/images/Lin
+earinterpolation.png>]
 Overfull \hbox (12.8875pt too wide) in paragraph at lines 109--111
 \T1/cmss/m/n/12 InterpolationStep-Objekt, wel-cher dem Angles-Property des Inte
 rpolationResult-
  []
 
-<images/Zirkularinterpolation.png, id=1378, 847.165pt x 523.9575pt>
+<images/Zirkularinterpolation.png, id=1504, 847.165pt x 523.9575pt>
 File: images/Zirkularinterpolation.png Graphic file (type png)
 
 <use images/Zirkularinterpolation.png>
@@ -1596,29 +1629,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 114--123
 
  []
 
-[100] [101 <C:/src/Latex/images/Zirkularinterpolation.png>] [102]
+[102] [103 <C:/src/Latex/images/Zirkularinterpolation.png>] [104]
 Overfull \hbox (12.8875pt too wide) in paragraph at lines 184--186
 \T1/cmss/m/n/12 InterpolationStep-Objekt, wel-cher dem Angles-Property des Inte
 rpolationResult-
  []
 
-) [103]) (C:\src\Latex\content/Komponenten_des_Edubot_Modells/section.tex
+) [105]) (C:\src\Latex\content/Komponenten_des_Edubot_Modells/section.tex
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/allgemein.tex)
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/elektronik.tex
-<images/edubot_electronic.png, id=1409, 740.7675pt x 550.055pt>
+<images/edubot_electronic.png, id=1536, 740.7675pt x 550.055pt>
 File: images/edubot_electronic.png Graphic file (type png)
 
 <use images/edubot_electronic.png>
 Package pdftex.def Info: images/edubot_electronic.png used on input line 8.
 (pdftex.def)             Requested size: 398.33858pt x 295.79147pt.
- [104] [105 <C:/src/Latex/images/edubot_electronic.png>])
+ [106] [107 <C:/src/Latex/images/edubot_electronic.png>])
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/mikrocontroller.tex
-[106] [107]
+[108] [109]
 Underfull \hbox (badness 10000) in paragraph at lines 37--38
 
  []
 
-[108] [109]
+[110] [111]
 Underfull \hbox (badness 10000) in paragraph at lines 71--71
 []|\T1/cmss/m/n/12 Ein-/Ausschalten
  []
@@ -1678,46 +1711,46 @@ Overfull \hbox (7.3208pt too wide) in paragraph at lines 67--80
 [][] 
  []
 
-[110] [111])
+[112] [113])
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/konstruktionDerMechanik.te
-x [112] <images/edubot_complete.png, id=1449, 736.25063pt x 300.3722pt>
+x [114] <images/edubot_complete.png, id=1575, 736.25063pt x 300.3722pt>
 File: images/edubot_complete.png Graphic file (type png)
 
 <use images/edubot_complete.png>
 Package pdftex.def Info: images/edubot_complete.png used on input line 12.
 (pdftex.def)             Requested size: 341.43306pt x 139.30037pt.
 
-<images/primary_gelenk.png, id=1450, 363.60844pt x 360.59718pt>
+<images/primary_gelenk.png, id=1576, 363.60844pt x 360.59718pt>
 File: images/primary_gelenk.png Graphic file (type png)
 
 <use images/primary_gelenk.png>
 Package pdftex.def Info: images/primary_gelenk.png used on input line 28.
 (pdftex.def)             Requested size: 227.62204pt x 225.74133pt.
- [113 <C:/src/Latex/images/edubot_complete.png>]) (C:\src\Latex\content/Kompone
+ [115 <C:/src/Latex/images/edubot_complete.png>]) (C:\src\Latex\content/Kompone
 nten_des_Edubot_Modells/bauDerMechanik.tex
-[114 <C:/src/Latex/images/primary_gelenk.png>] [115] [116])
+[116 <C:/src/Latex/images/primary_gelenk.png>] [117] [118])
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/kosten.tex)
 (C:\src\Latex\content/Komponenten_des_Edubot_Modells/verbesserungsmoeglichkeite
-n.tex [117])) [118]
+n.tex [119])) [120]
 (C:\src\Latex\content/Komponenten_des_KEBA_Modells/section.tex
 (C:\src\Latex\content/Komponenten_des_KEBA_Modells/allgemein.tex)
-(C:\src\Latex\content/Komponenten_des_KEBA_Modells/motoren.tex) [119]
+(C:\src\Latex\content/Komponenten_des_KEBA_Modells/motoren.tex) [121]
 (C:\src\Latex\content/Komponenten_des_KEBA_Modells/netzwerkschnittstelle.tex
-[120]
+[122]
 Overfull \hbox (8.64081pt too wide) in paragraph at lines 34--35
 []\T1/cmss/m/n/12 IP_CONTROL1(PORT:=400 ,TI-ME_OUT:=T#1s,IP_C:= IP_C1,S_BUF:=S_
 BUF1,
  []
 
-[121])
+[123])
 Overfull \hbox (25.83832pt too wide) in paragraph at lines 46--12
 []\T1/cmss/m/n/12 ausgeführt wer-den um den Socket Ma-nu-ell zu schlie-ÿen, ers
 t dann kann über das C_ENABLED
  []
 
 (C:\src\Latex\content/Komponenten_des_KEBA_Modells/kemotionFunktionen.tex)
-(C:\src\Latex\content/Komponenten_des_KEBA_Modells/cncProgramme.tex [122])
-(C:\src\Latex\content/Komponenten_des_KEBA_Modells/sonstiges.tex)) [123]
+(C:\src\Latex\content/Komponenten_des_KEBA_Modells/cncProgramme.tex [124])
+(C:\src\Latex\content/Komponenten_des_KEBA_Modells/sonstiges.tex)) [125]
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 116.
@@ -1746,39 +1779,41 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package logreq Info: Writing requests to 'diplomarbeit.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 17309 strings out of 494045
- 285040 string characters out of 3145963
- 502273 words of memory out of 3000000
- 19787 multiletter control sequences out of 15000+200000
- 19274 words of font info for 44 fonts, out of 3000000 for 9000
+ 18099 strings out of 494045
+ 294980 string characters out of 3145963
+ 573415 words of memory out of 3000000
+ 20448 multiletter control sequences out of 15000+200000
+ 20215 words of font info for 47 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
- 42i,22n,56p,1580b,1935s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi60
-0\ecsx1440.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
-pen\ec\dpi600\ecsx1728.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\
-ljfour\jknappen\ec\dpi600\ecsi1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2
-.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1095.pk> <C:\Users\Philipp\AppData\Lo
-cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsi1095.pk> <C:\Users\Philip
-p\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1000.pk> <C:\
-Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx2
-074.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
-dpi600\ecss1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
-jknappen\ec\dpi600\ecsx1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\font
-s\pk\ljfour\jknappen\ec\dpi600\ecsx2488.pk> <C:\Users\Philipp\AppData\Local\MiK
-TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1728.pk> <C:\Users\Philipp\AppDa
-ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1440.pk> <C:\Users\P
-hilipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss2488.pk>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/
-Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program File
-s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/eurosym/feymr10.pfb>
-Output written on diplomarbeit.pdf (135 pages, 3585264 bytes).
+ 44i,22n,56p,1580b,3378s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc} <C:\Users
+\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx1440.p
+k> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi60
+0\ecsx1728.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
+pen\ec\dpi600\ecsi1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\
+ljfour\jknappen\ec\dpi600\ecss1095.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2
+.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsi1095.pk> <C:\Users\Philipp\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1000.pk> <C:\Users\Philip
+p\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsx2074.pk> <C:\
+Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1
+200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
+dpi600\ecsx1200.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
+jknappen\ec\dpi600\ecsx2488.pk> <C:\Users\Philipp\AppData\Local\MiKTeX\2.9\font
+s\pk\ljfour\jknappen\ec\dpi600\ecss1728.pk> <C:\Users\Philipp\AppData\Local\MiK
+TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss1440.pk> <C:\Users\Philipp\AppDa
+ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecss2488.pk><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program File
+s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/eurosym/feymr10.pfb><C:/Users/Philipp/AppData/Roaming/Mi
+KTeX/2.9/fonts/type1/bera/fvmr8a.pfb>
+Output written on diplomarbeit.pdf (137 pages, 3620620 bytes).
 PDF statistics:
- 2213 PDF objects out of 2487 (max. 8388607)
- 362 named destinations out of 1000 (max. 500000)
+ 2368 PDF objects out of 2487 (max. 8388607)
+ 473 named destinations out of 1000 (max. 500000)
  1372 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -12,10 +12,14 @@ Die abstrakte Klasse IAdapter besitzt für jedes wichtige Ereignis ein, mit dem 
 \subsubsection{Umsetzung}
 \textbf{Event}
 \newline
-Das Event-Delegate definiert eine Methoden-Struktur, die folgende Bedingungen erfüllt:
-\newline
-Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parameter ein Object sender, welches den Auslöser des Events enthält. Als zweiten Parameter muss die Methode ein EventArgs-Object args, welches zusätzliche Informationen zum Ereignis enthält, übernehmen.
-\newline
+Das Event-Delegate definiert folgende Methoden-Struktur:
+
+\begin{lstlisting}[language = CSharp, captionpos=b, caption={Das Event-Delegate}]
+public delegate void Event(object src, System.EventArgs args);
+\end{lstlisting}
+
+Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parameter ein Object sender, welches den Auslöser des Events enthält. Als zweiten Parameter muss die Methode ein EventArgs-Object args, welches zusätzliche Informationen zum Ereignis enthält, übernehmen.\\
+\\
 Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind in den Kapiteln Adapter-System und Command-System bereits detailliert beschrieben, werden jedoch aus Gründen der Übersichtlichkeit jedoch in der nachstehenden Tabelle nochmals zusammengefasst.
 
 \begin{tabular}{|p{5cm}|p{9cm}|}
