@@ -1,15 +1,15 @@
 
 \subsection{Grafische Oberfläche}
 
-\subsection{Aufgaben}
+\subsubsection{Aufgaben}
 Die dritte Komponente dieser Diplomarbeit stellt eine Anwendung dar, die ein simples Verwenden der API Funktionen ermöglichen soll. Weiters soll sie Roboterbewegungen visuell darstellen können, da nicht jeder Arbeitsplatz über ein physikalisches Robotermodell verfügt. Die Bedienung der Anwendung soll so simpel wie möglich gestaltet werden und neben diversen Einstellungsmöglichkeiten auch ein Handbuch mit detaillierten Informationen über die, im Hintergrund ablaufenden, Prozesse des Systems bieten.
-\subsection{Aufbau}
+\subsubsection{Aufbau}
 Der Aktionsbereich der Anwendung basiert auf einem Tab-Control, wie es auch aus vielen Internet-Browsern bekannt ist. Die vier Tabs stellen zugleich die verschiedenen Anwendungsmöglichkeiten der Software dar. Im rechten Drittel der Oberfläche befindet sich die Visualisierung, welche zu jeder Zeit die Bewegsabläufe des Roboters darstellen. \\
 Im oberen Bereich der Anwendung befindet sich eine Menü- und eine Werkzeugleiste, welche grundsätzliche Befehle wie Neu, Öffen und Speichern enthält. Um die Ausgabe von Eingabefehlern zu ermöglichen befindet sich eine Konsole in der unteren Sektion der Oberfläche.
-\subsection{Umsetzung}
+\subsubsection{Umsetzung}
 Wie bereits erwähnt besteht der Aktionsbereich aus dem WPF TabControl mit vier Tabs. Die Visualisierungen sind jeweils als UserControls realisiert und in eine ViewBox eingebettet. Letztere skaliert ihren Inhalt gleichmäßig, je nachdem wie groß die gesamte Oberfläche ist. Bei der Konsole handelt es sich um eine nicht editierbare Textbox auf die nur aus der Anwendung heraus Text ausgegeben wird. \\
 Die Werkzeugleiste wurde mit einem sogenannten ToolBarTray realisiert und enthält eine Menge an Buttons, deren Funktionen im Kapitel "Bedienung" näher beschrieben werden. Auch die verschiedenen Menüs wurden mit Hilfe eines von WPF zur Verfügung gestellten Controls, dem Menu beziehungsweise MenuItem, in einer MenuBar realisiert.
-\subsection{Bedienung}
+\subsubsection{Bedienung}
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{16 cm}
