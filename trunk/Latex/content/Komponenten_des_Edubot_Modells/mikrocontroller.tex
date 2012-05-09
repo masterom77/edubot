@@ -17,7 +17,7 @@ Zum Überspielen der Software, die Vornahme von Updates oder zur Durchführung d
 Grundsätzlich ist die Programmierung des Mikrocontrollers mithilfe des .Net Micro Frameworks von Microsoft über die Entwicklungsumgebung Visual Studio vornehmbar. Der über das .Net Micro Framework ausgeführte Programmcode stellt jedoch keine optimale Performance zur Verfügung, da der Controller nicht über einen Just-In-Time Compiler zur Laufzeit vorbereite wird, sondern mithilfe eines Interpreters verarbeitet wird. Aus diesem Grund gibt es die Möglich einzelne Methoden in nativem Code und damit direkt in der Programmiersprache C zu schreiben, diese Methoden auf den Controller zu übertragen und später aus dem .Net Micro Framework aufgerufen werden. Sehr zeitkritische oder leistungsintensive Methoden sollten daher ausgegliedert werden. In unserem Projekt kam diese Möglichkeit jedoch nicht zur Anwendung
 
 Um ein Programm für das GHI Embedded Masters Breakout Board v1.0 schreiben zu können müssen auf dem benutzten PC eine lauffähige Version von Visual Studio, sowie das aktuelle .Net Micro Framework installiert werden (Achtung, Version von .Net Micro Framwork und der Firmware sollen müssen übereinstimmen). Zusätzlich muss für den Zugriff auf Spezialfunktionen wie etwa den Ethernet Port oder eine erweiterte Anzahl an Ein- und Ausgängen die entsprechende Entwicklungsbibliothek von GHI installiert werden. Als letzte Voraussetzung gilt, bei Verwendung des USB Ports für den Entwicklungsvorgang, die Installation der entsprechenden GHI USB Driver.  
-
+\newpage
 \subsubsection{Aufbau}
 Der Aufbau der Software des Mikrocontrollers fällt aufgrund der Verwendung zahlreicher Threads relative komplex aus und kann am besten der untenstehenden Grafik entnommen werden. Die folgenden Unterkapitel dienen dazu die wichtigsten Klassen und deren Methoden genauer zu beschreiben.
 
@@ -93,6 +93,8 @@ Wurden alle in den Arrays befindlichen Interpolatinspunkte abgefahren, so wird �
 
 \end{itemize}
 
+\newpage
+
 \subsubsection{Die Engine Klasse}
 
 Die Hauptaufgabe der Engine Klasse ist die Verwaltung einzelner Motoren. Dafür initialisiert sie im Konstruktor die benötigten \textit{OutputPin} Objekte mit den richtigen Pins für den über einen \textit{Integer} Parameter angegebenen Motor. In der derzeitigen Ausbauphase verfügt Edubot lediglich über zwei Motoren, aus diesem Grund können als Parameter für den Konstruktor entweder die Zahl 1 - für den Motor der primären Achse und die Zahl 2 - für den Motor der Sekundären Achse mitgegeben werden.
@@ -115,7 +117,6 @@ enginePowerDown & Ein-/Ausschalten der Automatischen Stromabsenkung bei Stillsta
 \end{tabular}
 \caption{Motorpins und Standardwerte}
 \end{table}
-
 Um nun auf eine der genannten Funktionen eines Motors Zugriff zu bekommen benötigt man lediglich eine Instanz der Engine Klasse die dem gewünschten Motor entspricht. Setzt man nun beispielsweise mit dem folgenden Aufruf auf den \textit{engineEnabled} Pin auf \textit{true}, so gibt der Motor am entsprechenden Pin eine Spannung von 5V aus und der Motor wird ausgeschaltet. (Die Schrittmotorsteuerung schaltet den Motor aus wenn Spannung anliegt und nicht umgekehrt)
 \begin{lstlisting}[language = CSharp, captionpos=b, caption={Das Setzen eines OutputPins}]
 engineEnabled.Write(true);
