@@ -10,6 +10,7 @@ Um diese Aufgabe umsetzen zu können, besitzt jeder Adapter eine Variable \texti
 \subsubsection{Umsetzung}
 Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, welche eine vorgegeben Anzahl an Zuständen enthält. Die Bedeutung dieser Zustände kann der folgenden Tabelle entnommen werden.
 \newline
+\begin{table}
 \begin{tabular}{|p{4cm}|p{10cm}|}
 \hline \rowcolor{lightgray}
 \textbf{Zustand} & \textbf{Bedeutung}\\
@@ -25,6 +26,8 @@ Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, w
 \textit{SHUTTING\_DOWN} & Der Roboter hat den Befehl zum Herunterfahren erhalten und führt derzeit abschließende Aktionen durch.\\ 
 \hline
 \end{tabular}
+\caption{Übersicht über die Zustände}
+\end{table}
 \newline
 \newline
 Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Die \textit{state}-Variable sollte grundsätzlich nur mit der, im Kapitel "'Adapter-System"' vorgestellten, SetState-Methode gesetzt werden, da in den meisten Fällen Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der, im Kapitel "'Listener-System"'; beschriebenen Listener verarbeitet werden. Weiters wird in den CanExecute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand ein OnFailure-Event ausgelöst.
@@ -32,6 +35,7 @@ Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits na
 Das folgende Beispiel demonstriert einen Standard-Ablauf und veranschaulicht die Funktionsweise des Zustand-Systems.
 \newline
 \newline
+\begin{table}
 \begin{tabular}{|p{10cm}|p{4cm}|}
 \hline \rowcolor{lightgray} \hline
 \textbf{Situation} & \textbf{Zustand}\\
@@ -57,3 +61,5 @@ Nachdem der Shutdown-Befehl von der Steuerung erhalten wurde, werden letzte Arbe
 Nach Erhalt dieser Information, werden vom Listener neben dem Aktualisieren des State-Properties noch weitere Aktionen durchgeführt (z.B. Netzwerkverbindung trennen). & \textit{SHUTDOWN}\\
 \hline
 \end{tabular}
+\caption{Beispielablauf im Zustandssystem}
+\end{table}
