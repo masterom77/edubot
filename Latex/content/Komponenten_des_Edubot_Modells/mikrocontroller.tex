@@ -1,6 +1,5 @@
 \subsection{Mikrocontroller}
 \subsubsection{Allgemein}
-
 Der Mikrocontroller ist die Basiskomponente des Edubot Modells. Er nimmt eingehende Verbindungen aus dem Netzwerk an, ermöglicht den Empfang von Positionsdaten, die entsprechende Umwandlung und Ausgabe in Form eines Taktsignals an den digitalen Ausgängen, sowie die Rückmeldung des aktuellen Status an den Computer.
 
 Die Verwendung eines Mikrocontrollers wurde notwendig, da unter Microsoft Windows sehr viele Prozesse gleichzeitig ausgeführt werden und der Thread zur Taktausgabe daher in unregelmäßigen Abständen ausgeführt wird. Damit wird auch die Ausgabe des Taktsignals instabil.
@@ -13,7 +12,14 @@ Grundsätzlich ist die Programmierung des Mikrocontrollers mithilfe des .Net Mic
 
 Um ein Programm für das GHI Embedded Masters Breakout Board v1.0 schreiben zu können müssen auf dem benutzten PC eine lauffähige Version von Visual Studio, sowie das aktuelle .Net Micro Framework installiert werden (Achtung, Version von .Net Micro Framwork und der Firmware sollen müssen übereinstimmen). Zusätzlich muss für den Zugriff auf Spezialfunktionen wie etwa den Ethernet Port oder eine erweiterte Anzahl an Ein- und Ausgängen die entsprechende Entwicklungsbibliothek von GHI installiert werden. Als letzte Voraussetzung gilt, bei Verwendung des USB Ports für den Entwicklungsvorgang, die Installation der entsprechenden GHI USB Driver.  
 
-Die folgenden Unterkapitel dienen dazu den Aufbau und die Programmierung der auf dem Mikrocontroller ausgeführten Software genauer zu erklären.
+\subsubsection{Aufbau}
+Der Aufbau der Software des Mikrocontrollers fällt aufgrund der Verwendung zahlreicher Threads relative komplex aus und kann am besten der untenstehenden Grafik entnommen werden. Die folgenden Unterkapitel dienen dazu die wichtigsten Klassen und deren Methoden genauer zu beschreiben.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{images/GHISteuerungssoftware}
+\caption{Der Aufbau der Steuerungssoftware}
+\end{figure}
 
 \subsubsection{Die Executer Klasse}
 Die Klasse \textit{Executer} ist die Basiskompente der Steuerungssoftware. Sie beinhaltet die Main Methode und wird bei Programmstart ausgeführt.
@@ -37,7 +43,6 @@ Bei der Initialisierung werden auch zwei statische Objekte der Klasse \textit{En
 Wurde in der \textit{Main()} Methode eine Instanz der \textit{NetworkManager} Klasse erzeugt und die dazugehörige Methode \textit{StartThreads()} aufgerufen, Gerät der Hauptthread in der \textit{Main()} Methode der \textit{Executer} Klasse in eine Dauerschleife welche durchwegs den aktuellen Wert der statischen Variable \textit{action} überwacht und bei Änderung mithilfe eines \textit{Switch}-Konstrukts die jeweilige gewählte Aufgabe erledigt.
 
 \item \textbf{Move() - Methode}\\
-
 Ebenfalls in der \textit{Executer} Klasse befindet sich die Methode \textit{Move()}. Sie befindet sich hier, da es sich hierbei um eine einen zeitkritischen Vorgang ausführende Methode handelt und diese damit im höher priorisierten Hauptthread des Programms laufen muss.
 
 Die \textit{Move()} Methode ist für die Ausgabe des Taktes und damit der Geschwindigkeit, sowie Einstellung der Richtung über das setzen des entsprechenden Ausgangsports verantwortlich.
@@ -52,13 +57,38 @@ Im nächsten und wichtigsten Schritt werden die einzelnen Takte an die Schrittmo
 Wie bereits erwähnt befinden sich die Informationen zu den anzufahrenden Punkten in einzelnen statischen Integer Arrays. Für jeden Motor existiert hierbei ein Array mit einer Liste der jeweils zu fahrenden Takte. In einer Schleife wird nun dieses Array durchlaufen und für jeden darin enthaltenen Takt ein Takt an die Motorsteuerung übergeben.
 
 Um eine geradlinige Bewegung zu erzeugen müssen jeweils die zwei Werte in den Array die den selben Index besitzen gleichzeitig abgearbeitet werden und es muss auf die Synchronisation der beiden Motoren geachtet werden. Dies geschieht mit Hilfe einer Variable \textit{rel} des Typs \textit{double} die das Verhältnis der Schritte eines Wertpärchens (Werte mit gleichem Index) darstellt. In der Schleife welche die Einzelnen Schritte an den Pins ausgiebt werden die Relation der einzuhaltenden Pausen zwischen den Schritten eines jeweiligen Motors mithilfe dieser \textit{rel} Variable berechnet.
+\begin{lstlisting}[language = csharp, captionpos=b, caption={Beispiel für die Motorsynchronisation}]
+			rel = (double)secondarySteps[i] / (double)primarySteps[i];
+
+			small_count += rel;
+
+                            if (rel > 0.5 && small_count > 1)
+                            {
+                                small_count = small_count % 1;
+                                secondaryEngine.engineFreq.Write(true);
+                                secondaryEngine.engineFreq.Write(false);
+                            }
+                            else
+                            {
+                                if (rel <= 0.5 && small_count > 0.5)
+                                {
+                                    small_count = 0;
+                                    secondaryEngine.engineFreq.Write(true);
+                                    secondaryEngine.engineFreq.Write(false);
+                                }
+                            }
+
+                            primaryEngine.engineFreq.Write(true);
+                            primaryEngine.engineFreq.Write(false);
+                            j++;
+\end{lstlisting}
 
 Wurden alle in den Arrays befindlichen Interpolatinspunkte abgefahren, so wird über das \textit{clientsocket} Objekt die Zeichenkette "'ready"' an den Computer zurückgegeben um das Senden weiterer Befehle freizugeben.
 
 \end{itemize}
 
 \subsubsection{Die Engine Klasse}
-\subsubsection{Aufgabe}
+
 Die Hauptaufgabe der Engine Klasse ist die Verwaltung einzelner Motoren. Dafür initialisiert sie im Konstruktor die benötigten \textit{OutputPin} Objekte mit den richtigen Pins für den über einen \textit{Integer} Parameter angegebenen Motor. In der derzeitigen Ausbauphase verfügt Edubot lediglich über zwei Motoren, aus diesem Grund können als Parameter für den Konstruktor entweder die Zahl 1 - für den Motor der primären Achse und die Zahl 2 - für den Motor der Sekundären Achse mitgegeben werden.
 
 Die einzelnen \textit{OutputPin} Objekte werden mit Standardwerten initialisiert. Es werden folgende Pins initialisiert und für die aufgelisteten Variablen werden die daneben aufgelisteten Standardwerte gesetzt:
@@ -122,7 +152,19 @@ Da nach dem Herstellen einer Verbindung mit dem Mikrocontroller nicht bekannt is
 
 In der Software lässt sich das Homing nun vergleichsweise einfach lösen. Dazu fährt zunächst der sekundäre Motor, also der Motor des zweiten Arms, mittels einer Schleife so lange immer einen Schritt, bis die Achse an die Grenze ihres Arbeitsbereichs stößt. Mithilfe eines Objekts vom Type \textit{InputPin}, welches einen bestimmten Pin des Mikrocontrollers repräsentiert kann hierzu durch die Methode \textit{Read()} des Objekts jederzeit abgefragt werden ob Spannung an diesem Pin anliegt. Stößt die Achse an die Grenze ihres Arbeitsbereichs, so wird der oben beschrieben Kontakt geschlossen und die \textit{Read()} Methode des entsprechenden Pins gibt \textit{true} zurück, wodurch die Schleife beendet wird. Da sich die Achse immer nur im Uhrzeigersinn bewegt ist lediglich eine Kontaktstelle an der im Uhrzeigersinn befindlichen Grenze des Arbeitsbereichs nötig. 
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{images/Homing}
+\caption{Das Finden der Grenze der sekundären Achse}
+\end{figure}
+
 Befindet sich die sekundäre Achse im Ende ihres Arbeitsbereichs, so beginnt der primäre Motor den selben Prozess durchzuführen. In diesem Fall befindet sich die Kontaktstelle jedoch an der gegen den Uhrzeigersinn befindlichen Grenze des Arbeitsbereichs. Aus diesem Grund fährt dieser Motor in einer Schleife jeweils einen Takt gegen den Uhrzeigersinn und überprüft dann ob er bereits die Grenze erreicht hat.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{images/Homing2}
+\caption{Das Finden der Grenze der primären Achse}
+\end{figure}
 
 Das eigentliche Fahren in die Ausgangsposition geschieht nun durch die Ausgabe einer für jeden Motor fix festgelegten Taktanzahl. Diese wurde bei der Entwicklung durch Versuche festgestellt und bringt die beiden Achsen in eine gerade Stellung. Die beiden Achsen fahren hierfür gleichzeitig, sind aber nicht synchronisiert und werden daher zu unterschiedlichen Zeitpunkten fertig. 
 

@@ -44,6 +44,8 @@
 \geometry{a4paper, left=3cm, right=3cm, top=2.5cm, bottom=2.5cm}
 \bibliography{misc/references}
 
+\definecolor{pink}{rgb}{1,.21,.86}
+
 \lstset{
   basicstyle=\ttfamily,
   columns=fullflexible,
@@ -62,6 +64,17 @@
   keywordstyle=\color{red},
   morekeywords={xmlns,version,type,Grid.Row, Grid.Column, Margin, Width, Height, HorizontalAlignment, VerticalAlignment, IsEnabled, Name, Path, UpdateSourceTrigger}% list your attributes here
 } 
+
+\lstdefinelanguage{codesysls}
+{
+	sensitive=true,
+morekeywords=[1]{ ,
+CASE, OF, IF, END_IF, ELSIF, THEN, END_CASE, AND, OR, VAR, VAR_IN, DINT, INT, LREAL, PROGRAMM, END_VAR, FUNCTION, FUNCTION_BLOCK},
+morekeywords=[2]{,TRUE,FALSE},
+keywordstyle=[1]\color{blue},
+keywordstyle=[2]\color{pink},
+morecomment=[s]{(*}{*)},
+}
 
 \lstdefinelanguage{CSharp}
 {
@@ -83,7 +96,7 @@ using, virtual, volatile, while, bool,
 byte, char, decimal, double, float,
 int, lock, object, sbyte, short, string,
 uint, ulong, ushort, void},
-morekeywords=[2]{,ICommand, AbortCommand, StartCommand, ShutdownCommand, MVSCommand, MVCCommand, UseToolCommand, IAdapter, EdubotAdapter, VirtualAdapter, Cursors, FileStream, XmlSerializer, UnauthorizedAccessException, FileMode, MessageBox, MessageBoxButton, MessageBoxImage, Point3D, Math, MathHelper, Event, EventArgs, HomingEventArgs, MovementStartedEventArgs, ToolUsedEventArgs, FailureEventArgs, StateChangedEventArgs, List, ThreadAbortException, State, KeyValuePair, StrokeCollection, Memento, InkCanvasStrokeCollectedEventArgs, StylusPoint, StylusPointCollection, Point, }
+morekeywords=[2]{,ICommand, AbortCommand, StartCommand, ShutdownCommand, MVSCommand, MVCCommand, UseToolCommand, IAdapter, EdubotAdapter, VirtualAdapter, Cursors, FileStream, XmlSerializer, UnauthorizedAccessException, FileMode, MessageBox, MessageBoxButton, MessageBoxImage, Point3D, Math, MathHelper, Event, EventArgs, HomingEventArgs, MovementStartedEventArgs, ToolUsedEventArgs, FailureEventArgs, StateChangedEventArgs, List, ThreadAbortException, State, KeyValuePair, StrokeCollection, Memento, InkCanvasStrokeCollectedEventArgs, StylusPoint, StylusPointCollection, Point, Utility,}
 keywordstyle=[1]\color{blue},
 keywordstyle=[2]\color{cyan},
 morecomment=[l]{//},
