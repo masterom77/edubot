@@ -6,6 +6,12 @@ Die Verwendung eines Mikrocontrollers wurde notwendig, da unter Microsoft Window
 
 Der von uns verwendete Mikrocontroller wurde von der Firma GHI vertrieben, trägt als genaue Bezeichnung GHI Embedded Masters Breakout Bord v1.0 und verfügt über einen Prozessor in ARM Architektur, sowie diverse Ein- und Ausgänge. Im Funktionsumfang des gewählten Mikrocontrollers ergäben sich auch verschiedene Möglichkeiten wie der direkte Anschluss eines LCD Pannels oder auch externer persistenter Speichermedien wie USB Sticks. Aus diesem Grund finden sich unter den Pins des Controllers zahlreiche speziell für diese Anwendungszwecke bestimmte Ausgänge, welche jedoch bei diesem Projekt nicht verwendet wurden.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{images/controler}
+\caption{Der verwendete Mikrocontroler}
+\end{figure}
+
 Zum Überspielen der Software, die Vornahme von Updates oder zur Durchführung der Fehlerbehebung verfügt der Mikrocontroller über einen USB Anschluss. Des weiteren verfügt der Controller über einen Netzwerkanschluss mit RJ-45 Stecker über den Socket Verbindungen aufgebaut und Daten übertragen werden können.
 
 Grundsätzlich ist die Programmierung des Mikrocontrollers mithilfe des .Net Micro Frameworks von Microsoft über die Entwicklungsumgebung Visual Studio vornehmbar. Der über das .Net Micro Framework ausgeführte Programmcode stellt jedoch keine optimale Performance zur Verfügung, da der Controller nicht über einen Just-In-Time Compiler zur Laufzeit vorbereite wird, sondern mithilfe eines Interpreters verarbeitet wird. Aus diesem Grund gibt es die Möglich einzelne Methoden in nativem Code und damit direkt in der Programmiersprache C zu schreiben, diese Methoden auf den Controller zu übertragen und später aus dem .Net Micro Framework aufgerufen werden. Sehr zeitkritische oder leistungsintensive Methoden sollten daher ausgegliedert werden. In unserem Projekt kam diese Möglichkeit jedoch nicht zur Anwendung
