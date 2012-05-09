@@ -1,13 +1,13 @@
 \subsection{Visualisierung}
 
 \subsubsection{Aufgaben}
-Die wichtigste Aufgabe sämtlicher in der Anwendung des Edubot Systems verbauten Visualisierungen ist es, den Betrieb der Software auch ohne angeschlossene Hardware zu ermöglichen. Ein wichtiger Nebenaspekt der Visualisierung ist jedoch auch die Möglichkeit zu geben, bei angeschlossener Hardware die vom Roboter getätigten Verfahrbewegungen kontrollieren zu könen.
+Die wichtigste Aufgabe sämtlicher in der Anwendung des Edubot Systems verbauten Visualisierungen ist es, den Betrieb der Software auch ohne angeschlossene Hardware zu ermöglichen. Ein wichtiger Nebenaspekt der Visualisierung ist jedoch auch die Möglichkeit zu geben, bei angeschlossener Hardware die vom Roboter getätigten Verfahrbewegungen kontrollieren zu können.
 Letztere Funktion der Visualisierung kam vor allem bei der Entwicklung der Software für die Ansteuerung des Edubot Modells, sowie bei der Entwicklung der verschiedenen Interpolationsarten sehr intensiv zum Einsatz. 
 
 \subsubsection{Allgemeines und Aufbau}
-Für die Edubot Anwendung stehen im Allgemeinen zwei Arten der Visualisierung bereit, einerseits eine Maßstabsgetreue Simmulation des Edubot Modells, andererseits eine universelle, schematische Darstellung Simulation eines Roboters mit RR Kinematik. 
+Für die Edubot Anwendung stehen im Allgemeinen zwei Arten der Visualisierung bereit, einerseits eine Maßstabsgetreue Simulation des Edubot Modells, andererseits eine universelle, schematische Darstellung Simulation eines Roboters mit RR Kinematik. 
 Die Simulation des Edubot Modells kann in den Einstellungen nach belieben ein oder ausgeschaltet werden und kann nur mit den Achsverhältnissen des Edubot Modells betrieben werden. Für diese Simulation kann nur eine 3D Ansicht gewählt werden.
-Die universelle Robotersimulation ist immer vorhanden und passt sich automatisch den eingegebenen Achslängen an. Für diese Simulation gibt es sowohl eine 3D Ansicht, als auch eine zweidimensionsale Darstellung in Form einer Ansicht von oben.
+Die universelle Robotersimulation ist immer vorhanden und passt sich automatisch den eingegebenen Achsrelationen an. Für diese Simulation gibt es sowohl eine 3D Ansicht, als auch eine zweidimensionsale Darstellung in Form einer Ansicht von oben.
 
 \begin{figure}[H]
   \centering
@@ -28,29 +28,29 @@ Das fertige Modell des Roboters wurde im nächsten Schritt als "'.obj"' Datei ge
 
 Der große Vorteil der Speicherung als "'.obj"' Datei ist die vielfältige Wiederverwendbarkeit des Modells. So ist es etwa möglich, das Modell mithilfe der Software Microsoft Expression Blend zu öffnen und für die Verwendung in WPF entsprechend zu konvertieren. Die entsprechende "'.obj"' muss hierzu lediglich auf die Arbeitsfläche des XAML Designers eines WPF Projektes gezogen werden. Microsoft Expression Blend übernimmt dann alle Vorgänge die zur Umrechnung nötig sind und bettet das 3D Modell in die XAML Datei ein. 
 Sämtliche Informationen zur Geometrie des Modells werden dabei in der XAML Datei gespeichert und die einzelnen Komponenten werden jeweils als \textit{GeometryModel3D} Elemente erzeugt.
-Jedes dieser Elemente enthält nun in Form der Koordinatennetze eine einzelnes Objekt des 3D Modells. Um die einzelnen Objekte, bei denen es sich um um minimale Einzelteile wie beispielsweise eine Einzelne Motrwelle handelt, später nicht alle Einzeln im Programmcode ansprechen zu müssen, wurden Objekte bei der Erstellung des Modells zu Komponenten zusammengefasst. Diese Komponenten können beispielsweise eine gesamte achse mit Gelenk oder ähnliches darstellen und sind im XAML Dokument als \textit{ModelVisual3D}, welches seinerseits mehrere \textit{GeometryModel3d} Elemente enthält, definiert.
+Jedes dieser Elemente enthält nun in Form der Koordinatennetze eine einzelnes Objekt des 3D Modells. Um die einzelnen Objekte, bei denen es sich um um minimale Einzelteile wie beispielsweise eine Einzelne Motrwelle handelt, später nicht alle Einzeln im Programmcode ansprechen zu müssen, wurden Objekte bei der Erstellung des Modells zu Komponenten zusammengefasst. Diese Komponenten können beispielsweise eine gesamte achse mit Gelenk oder ähnliches darstellen und sind im XAML Dokument als \textit{ModelVisual3D}, welches seinerseits mehrere \textit{GeometryModel3D} Elemente enthält, definiert.
 Als Übergeordnetes Element für das gesamte 3D Modell dient ein \textit{ViewPort3d} Modell dass die einzelnen Komponenten Enthält und zusätzlich über ein \textit{PerspectiveCamera} Element den Blickwinkel und verschiedene Beleuchtungsoptionen definiert.
 
-Das eben beschriebene \textit{ViewPort3d} Überelement kann nun aus der, durch Expression Blend erstellten, XAML Datei kopiert und in eine beliebige XAML Datei in einem Visual Studio WPF Projekt eingefügt werden. Im Fall der Edubot Anwendung wurde die Visualisierung als UserControll programmiert um das einfache Einfügen an beliebigen Punkten zu ermöglichen. Aus diesem Grund wurde das \textit{Viewport3d} Objekt in XAML Datei des UserControlls eingefügt.
+Das eben beschriebene \textit{ViewPort3D} Überelement kann nun aus der, durch Expression Blend erstellten, XAML Datei kopiert und in eine beliebige XAML Datei in einem Visual Studio WPF Projekt eingefügt werden. Im Fall der Edubot Anwendung wurde die Visualisierung als UserControll programmiert um das einfache Einfügen an beliebigen Punkten zu ermöglichen. Aus diesem Grund wurde das \textit{Viewport3d} Objekt in XAML Datei des UserControlls eingefügt.
 
-\subsubsection{Programmierung der Animation}
-Wie im vorherigen Unterkapitel bereits erwähnt wurden die einzelnen Simulationen jeweils als UserControlls ausgegliedert und später in die Hauptanwendung integriert. 
-In WPF besteht ein UserControl immer aus zwei verschidenen Dateien, einer XAML Datei als Markup des Designs und einer seperaten C\# Codedatei welche die Logik hinter dem UserControl bereitstelltl. Die XAML Datei wurde bereits im vorhergehenden Kapitel in ihren Grobzügen erklärt, wissenswert ist an dieser Stelle noch dass bei einem UserControll das Element auf der untersten Ebene ein Element vom Typ \textit{UserControll}, darüber liegt standarmäßig ein Element vom Typ \textit{Grid} welches die Anordnung der Unterlemente (in unserem Fall direkt das zuvor Erzeugte \textit{ViewlPort3D} Element) ähnlich wie bei einer Tabelle in HTML ermöglicht.
+\subsubsection{Allgemeine Programmierung der Animation}
+Wie im vorherigen Unterkapitel bereits erwähnt wurden die einzelnen Simulationen jeweils als UserControls ausgegliedert und später in die Hauptanwendung integriert. 
+In WPF besteht ein UserControl immer aus zwei verschiedenen Dateien, einer XAML Datei als Markup des Designs und einer seperaten C\# Codedatei welche die Logik hinter dem UserControl bereitstellt. Die XAML Datei wurde bereits im vorhergehenden Kapitel in ihren Grobzügen erklärt, wissenswert ist an dieser Stelle noch dass bei einem UserControl das Element auf der untersten Ebene ein Element vom Typ \textit{UserControl}, darüber liegt standardmäßig ein Element vom Typ \textit{Grid} welches die Anordnung der Unterlemente (in unserem Fall direkt das zuvor Erzeugte \textit{ViewPort3D} Element) ähnlich wie bei einer Tabelle in HTML ermöglicht.
 
-Auf die in der XAML Datei definierten Elemente kann, sofern ihnen über das \textit{name} Attribut zugewiesen wurde, aus dem Programmcode zugegriffen werden. Dieser befindet sich in der zweiten zum UserControll gehörenden Datei.
+Auf die in der XAML Datei definierten Elemente kann, sofern ihnen über das \textit{name} Attribut zugewiesen wurde, aus dem Programmcode zugegriffen werden. Dieser befindet sich in der zweiten zum UserControl gehörenden Datei.
 
 In der beschriebenen Code Datei befindet sich nun die eigentlich für die Animation benötigte Code Date. 
 
-Für die Animation werden die in der API berrechneten Interpolationsergebnisse benötigt. Dazu besitzt der für die Visualierung verwendete Adapter einen Event (\textit{onMovementStartet}) der eine ihm zugewewiesen Methode in der Anwendung benachrichtigt wenn neue Interpolationsergebnisse zur Verfügung stehen und diese auch gleich dieser Methode übergiebt. 
+Für die Animation werden die in der API berrechneten Interpolationsergebnisse benötigt. Dazu besitzt der für die Visualierung verwendete Adapter einen Event (\textit{OnMovementStarted}) der eine ihm zugewewiesen Methode in der Anwendung benachrichtigt wenn neue Interpolationsergebnisse zur Verfügung stehen und diese auch gleich dieser Methode übergibt. 
 
-In der von der API benachrichtigte Methode der Anwendung wird die Animation gestartet. Hierzu werden die \textit{Animate()} Methode des UserControlls aufgerufen und dieser die Interpolationsergebnisse übergeben.
+Um auch die Visualisierung des Homings zu ermöglichen und desweiteren einen Abbruch der Simulation zu ermöglichen, enthält jedes UserControl entsprechende Methoden mit den Namen \textit{Home} und \textit{Abort}. Diese werden bei den entsprechenden Events \textit{OnHoming} und \textit{OnAbort} aufgerufen. Die eigentliche Animation wird allerdings von der \textit{Move}-Methode ausgeführt. Jede der soeben angeführten Methoden wird bei Ankunft der Benachrichtigung in einem eigenen Thread gestartet um die Oberfläche während der Ausführung nicht zu blockieren.
 
-Die \textit{Animate()} Methode startet nun einen neuen Thread um zu verhindern dass für die Zeitspanne in der die Animation läuft die Anwendung still steht. Der neue Thread führt die Methode \textit{StartAnimation()} aus, welche in einer Schleife alle im Interpolationsergebnis enthaltenen Schritte (Teilstrecken) hintereinander ausführt und die Achsen um den jeweiligen Winkel verschiebt, bzw. um die jeweilige Strecke verschiebt. 
+Die \textit{Move}-Methode führt in einer Schleife alle im Interpolationsergebnis enthaltenen Schritte (Teilstrecken) hintereinander aus und verschiebt die Achsen um den jeweiligen Winkel beziehungsweise um die jeweilige Strecke. 
 
-Da es sich bei den Achsen um Objekte des ursprünglichen Threads handelt, muss für den Zugriff daruf ein Dispatcher verwendet werden. Der Zugriff mittels eines Dispatchers ermöglicht das Aufrufen einzelner Delegaten welche Methoden aufrufen die ihrerseits dann die Werte verändern, die Veränderung der Werte geschieht im urspünglichen Thread und das Dispatcher Objekt stellt eine Art Warteschlange dar. An dieser Stelle wird jedoch nicht genauer auf diesen Mechanismus eingegangen, da dies den Rahmen dieser Arbeit sprengen würde.
+Da es sich bei den Achsen um Objekte des ursprünglichen Threads handelt, muss für den Zugriff darauf ein Dispatcher verwendet werden. Der Zugriff mittels eines Dispatchers ermöglicht das Aufrufen einzelner Delegaten welche Methoden aufrufen die ihrerseits dann die Werte verändern, die Veränderung der Werte geschieht im urspünglichen Thread und das Dispatcher Objekt stellt eine Art Warteschlange dar. An dieser Stelle wird jedoch nicht genauer auf diesen Mechanismus eingegangen, da dies den Rahmen dieser Arbeit sprengen würde.
 
 Das Rotieren und Verschieben der Roboterachsen kann über das WPF eigene \textit{Tranform3DGroup} Objekt, sowie über das \textit{Transform} Property der im XAML definierten \textit{ModelVisual3D} Elemente.
-Hierzu wird im Code ein Objet vom Typ \textit{ Transform3DGroup} angelegt. Diesem Objekt enthält eine Liste der die durchzuführenden Transformationen angefügt werden können. Für die verschiedenen Transformationsarten stehellt WPF jeweils Klassen bereit die das Interface \textit{Transform3D} implentiert. Für unsere Animation wurden folgende Transformationsarten verwendet:
+Hierzu wird im Code ein Objekt vom Typ \textit{ Transform3DGroup} angelegt. Diesem Objekt enthält eine Liste der die durchzuführenden Transformationen angefügt werden können. Für die verschiedenen Transformationsarten stellt WPF jeweils Klassen bereit die das Interface \textit{Transform3D} implentiert. Für unsere Animation wurden folgende Transformationsarten verwendet:
 
 \begin{itemize}
 \item \textbf{RotateTransform3D}\\
@@ -63,7 +63,36 @@ Ein Objekt der Klasse \textbf{ScaleTransform3D} defiert die Skalierung die bei s
 Durch Hinzufügen eines Objektes dieser Klasse zu einer \\textit{TransformGroup3D} wird das Element auf dass diese angewendet wird verschoben. Zur Definition wie diese Verschiebung durchgeführt werden soll wird dem \textit{TranslateTransform3D} Objekt ein \textit{Vector3D} Objekt übergeben in dem für jede Achse die Distanz um die verschoben werden soll angegeben wird.
 \end{itemize}
 
-Wurden die benötigten Transformationen in Form der beschriebenen Objekte dem \textit{ Transform3DGroup} Objekt angehängt, so kann dieses nun dem zu Transormierenden Element aus der XAML Datei übergeben werden. Dies geschieht durch einfaches Zuweisen des \textit{ Transform3DGroup} Objektes an das \textit{ Transform} Property zu Transformierenden XAML Elements. Wie erwähnt handelt es sich dabei in unserem Fall um ein Objet des Typs \textit{ModelVisual3D} durch dass jeweils eine Komponente des Modells dargestellt wird.
+Wurden die benötigten Transformationen in Form der beschriebenen Objekte dem \textit{ Transform3DGroup} Objekt angehängt, so kann dieses nun dem zu transformierenden Element aus der XAML Datei übergeben werden. Dies geschieht durch einfaches Zuweisen des \textit{ Transform3DGroup} Objektes an das \textit{ Transform} Property zu Transformierenden XAML Elements. Wie erwähnt handelt es sich dabei in unserem Fall um ein Objet des Typs \textit{ModelVisual3D} durch dass jeweils eine Komponente des Modells dargestellt wird.
 
+Die \textit{Home}-Methode bedient sich derselben Arbeitsweise wie die \textit{Move}-Methode. Jedoch wird hier statt eines Interpolationsergebnisses, ein Korrekturwinkel mitgegeben. Innerhalb einer Schleife werden die Winkel der Achsen nun solange um den Korrekturwinkel geändert bis beide auf 0 $^\circ$ stehen. Die Abweichung von diesem Wert beträgt in jedem Fall weniger als der mitgegebene Korrekturwinkel.
 
+Die \textit{Abort}-Methode hat die simple Aufgabe, den aktuellen Animations-Thread zu beenden, falls ein solcher vorhanden ist. Dazu wird die \textit{Abort}-Methode der Thread-Klasse verwendet. Um in Sonderfällen keine \textit{ThreadAbortException} zu verursachen, ist über die gesamte \textit{Move}- beziehungsweise \textit{Home}-Methode ein \textit{try-catch}-Block gelegt, der diese Exception abfängt.
 
+Da der Großteil der Aktionen die in einer der Visualisierungen durchgeführt werden, von den Visualisierungs-Einstellungen abhängen, besitzt jede Visualisierung eine \textit{ApplyConfiguration}-Methode. Diese wird aufgerufen sobald sich ein Property bei den Einstellungen ändert, um entsprechend darauf zu reagieren. Wird beispielsweise die Visualisierung eingeschaltet, so wird ein entsprechender VirtualAdapter mit den Werten aus dem \textit{VisualizationConfig}-Objekt erzeugt und bei der \textit{Edubot}-Klasse registriert. Weiters werden die \textit{Home}-, \textit{Move}- und \textit{Abort}-Methoden bei den entsprechenden Events des erzeugten Adapters eingetragen.
+
+\subsubsection{Programmierung der 2D-Animation}
+
+Neben den oben angeführten Funktionen, sollte die 2D-Version erweiterte Darstellungs- und Animationsmöglichkeiten bieten. Dazu gehört das Anzeigen eines Koordinationsystems mit entsprechender Beschriftung, sowie das Einzeichnen des gefahrenen Pfades.
+
+Dazu wurde die \textit{OnRender}-Methode des UserControls überschrieben in der neben dem eigentlichen Rendern des UserContols noch zusätzliche eigene Zeichenvorgänge durchgeführt werden.
+Die Logik hinter den \textit{RenderGrid} und \textit{RenderLabels}-Methoden wird hier nicht detaillierter beschrieben, da sie mit Hilfe des Source-Codes relativ einfach nachvollzogen werden können.
+Etwas komplexer gestaltet sich jedoch die \textit{RenderPath}-Methode, welche den bisher gefahrenen Pfad des Roboters darstellt. Dazu wird in einer Schleife eine Collection aus \textit{Path}-Objekten und diese mit Hilfe der enthaltenen Informationen eingezeichnet. Die Collection enthält lediglich Pfade die bereits abgefahren wurden. Der aktuelle Pfad ist in der \textit{currentPath}-Variable gespeichert und wird beim Durchlaufen des Interpolationergebnisses regelmäßig aktualisiert. Erst wenn die aktuelle Bewegung abgeschlossen wurde, wird das \textit{currentPath}-Objekt der Collection hinzugefügt.
+
+Ein \textit{Path}-Objekt enthält detaillierte Information über Position und Typ des abgefahrenen Pfades. Dazu enthält es folgende Properties:
+\begin{itemize}
+\item \textbf{Start}
+Dabei handelt es sich um ein \textit{Point3D}-Objekt, welches den Startpunkt des Pfades enthält.
+\item \textbf{End}
+Dabei handelt es sich um ein \textit{Point3D}-Objekt, welches den Endpunkt des Pfades enthält.
+\item \textbf{Type}
+Das \textit{Type}-Property enthält Informationen darüber ob es sich bei dem Pfad um einen zirkularen oder einen linearen Pfad handelt. Durch diese Information kann der Render-Prozess wesentlich beschleunigt werden, da dadurch nicht einzelne Pfadpunkte sondern gleich der ganze Pfad gezeichnet werden kann.
+Je nach wird in der \textit{RenderPath}-Methode die \textit{DrawLine} oder die \textit{DrawArc}-Methode zum Zeichnen aufgerufen.
+\item \textbf{Dashed}
+Dieser Wert vom Typ Boolean definiert ob der Pfad strichliert oder durchgehend eingezeichnet werden soll. Ist das Werkzeug des Roboters gerade eingeschaltet so wird der Pfad durchgehend gezeichnet, andernfalls strichliert.
+\item \textbf{Direction}
+Diese Information ist nur bei zirkularen Bewegungen nötig und gibt an in welche Richtung der entsprechende Kreisbogen gezeichnet wird. Der Wert dieses Properties wird im \textit{MetaData}-Objekt des Interpolationergebnisses mitgegebenen.
+\item \textbf{Radius}
+Auch diese Information ist im \textit{MetaData}-Objekt des Interpolationergebnisses enthalten und dient zur Verbesserung der Performance des Systems, da dadurch der Radius der Kreisbewegung nicht erneut berechnet werden muss.
+
+\end{itemize}
