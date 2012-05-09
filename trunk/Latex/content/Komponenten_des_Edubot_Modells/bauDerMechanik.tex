@@ -9,8 +9,20 @@ Direkt auf diese Grundplatte wurde dann die Basis des Roboters geschraubt. Bei d
 \item \textbf{Bau des ersten Gelenks}\\
 Das erste Gelenk des  Edubot Modells wurde direkt mit der Basis verschraubt und bietet damit einen sehr hohen Grad an Stabilität. Grundsätzlich basiert das Gelenk auf der Form eines liegenden U welches über zwei Kugellager eine etwa 1 cm dicke Verlängerung der Motorwelle aus Aluminium hält. An diese Verlängerung ist in weiterer Folge die primäre Achse des Motors so festgeklemmt, so dass sie im 90$^\circ$ Winkel zur senkrecht stehenden Wellenverlängerung steht.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{images/gelenk_photo}
+\caption{Das erste Gelenke (ohne Achse)}
+\end{figure}
+
 \item \textbf{Befestigung des ersten Arms}\\
 Für das Anklemmen der Achse an die Wellenverlängerung wurde der erste Arm mit einer 1 cm dicken Bohrung versehen durch welche die Wellenverlängerung exakt passt. Zusätzlich wurde die Achse der Länge nach durch die Mitte des Lochs etwa 4 cm eingeschnitten. Durch das spätere anbringen von Schrauben (entsprechende Bohrungen waren zuvor nötig), die den entstandenen Spalt zusammenziehen können, wurde es möglich das gebohrte Loch nach durchstecken der Wellenverlängerung zusätzlich zu verkleinern und somit die Achse fest einzuklemmen.
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{images/axis_fix}
+\caption{Der Klemmmechanismus der Achse}
+\end{figure}
+
 Der erste Arm (primäre Achse) hat eine Länge von 20 cm.
 \item \textbf{Bau des zweiten Gelenks}\\
 Das zweite Gelenk wurde an direkt mit der primären Achse verschraubt und basiert wieder auf dem selben Prinzip wie das erste Gelenk. Beim Bau des zweiten Gelenks ergaben sich zwei kleine Unterschiede gegenüber dem großen Gelenk. Der erste Unterschied ist, dass das zweite Gelenk kleiner ist und aus Gewichtsgründen der Fokus nicht nur auf der Stabilität der Konstruktion lag. 
@@ -30,6 +42,12 @@ In einem ersten Anlauf wurde der Versuch unternommen, die gesamte Ansteuerung de
 Auf Basis der gewonnenen Erfahrungen aus dem Aufbau mit dem USB Modul, wurde nun überlegt wie das Taktsignal stabilisiert werden könnte und wie eine Ausgabe mit höherer Frequenz möglich werden würde. Es wurde schließlich beschlossen, die Ausgabe des Taktsignals, sowie sämtliche direkt mit der Elektronik des Roboters zusammenhängende Aufgaben von einem Mikrocontroller übernehmen zu lassen. Der Mikrocontroller wird über die Netzwerkschnittstelle mit Daten über die Verfahrbewegung versorgt und kann schließlich die Elektronik des Roboters autonom steuern.
 \item \textbf{Endaufbau am Modell mit Endschaltern}\\
 Nach Fertigstellung des Holzmodells wurde der zuerst nur versuchsweise Aufbau der oben Beschriebenen Variante mit Mikrocontroller in das Modell eingebaut. In diesem Schritt wurden nun auch die Schalter für den "'Homing Prozess"', in Form einfacher Kontaktflächen, eingebaut und mit dem Mikrocontroller verbunden.
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm]{images/contact}
+\caption{Die Kontaktstelle für die primäre Achse}
+\end{figure}
+
 Zum Schluss war es noch nötig, die endgültige Schaltung zu Verlöten und durch den Einsatz eines Spannungsteilers das Labornetzteil zu ersetzen.
 \end{itemize}
 
