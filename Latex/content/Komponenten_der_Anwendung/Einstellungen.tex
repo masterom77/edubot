@@ -18,20 +18,20 @@ Während die ersten beiden lediglich Informationen über die Netzwerkschnittstel
   \end{minipage}
 \end{figure}
 
-Die Bedienung der Oberfläche ist realtiv einfach und leicht verständlich. Im oberen Bereich des Tabs befindet sich der "Roboter"-Bereich in dem eine der beiden unterstützten Steuerungen ausgewählt werden kann.\\ 
-Unter den Namen dieser Steuerungen, befinden sich entsprechende Eingabefelder. Im selben Bereich befindet sich ein Button mit der Aufschrift "Verbinden", welcher nur angeklickt werden kann, wenn die eingegebenen Informationen gültig sind.\\
-Klickt der Benutzer nun auf diesen Button, versucht die Anwendung eine Verbindung mit der Steuerung herzustellen. Dieser Vorgang wird in einem Fenster dargestellt. Ist er erfolgreich so werden alle Elemente des Bereichs "Roboter", bis auf den Button dessen Aufschrift nun "Trennen" lautet, deaktiviert. \\
+Die Bedienung der Oberfläche ist relativ einfach und leicht verständlich. Im oberen Bereich des Tabs befindet sich der "'Roboter"'-Bereich in dem eine der beiden unterstützten Steuerungen ausgewählt werden kann.\\ 
+Unter den Namen dieser Steuerungen, befinden sich entsprechende Eingabefelder. Im selben Bereich befindet sich ein Button mit der Aufschrift "'Verbinden"', welcher nur angeklickt werden kann, wenn die eingegebenen Informationen gültig sind.\\
+Klickt der Benutzer nun auf diesen Button, versucht die Anwendung eine Verbindung mit der Steuerung herzustellen. Dieser Vorgang wird in einem Fenster dargestellt. Ist er erfolgreich so werden alle Elemente des Bereichs "'Roboter"', bis auf den Button dessen Aufschrift nun "'Trennen"' lautet, deaktiviert. \\
 Wurde der Edubot-Roboter verbunden, so wird das 3D-Modell entsprechend umgestellt und die Visualisierung auf die Längen des echten Modells angepasst. Solange der Edubot-Roboter verbunden ist, kann nicht auf ein anderes 3D-Modell umgestellt werden.\\
-Erst durch einen Klick auf "Trennen" werden die deaktivierten Felder wieder aktiviert und es kann eine andere Steuerung verbunden beziehungsweise die 3D-Ansicht geändert werden.\\
+Erst durch einen Klick auf "'Trennen"' werden die deaktivierten Felder wieder aktiviert und es kann eine andere Steuerung verbunden beziehungsweise die 3D-Ansicht geändert werden.\\
 \\
-Im unteren Bereich die Sektion "Visualisierung", in welcher letztere auf die Bedürfnisse des Benutzers angepasst werden kann. Über mehrere Checkboxen kann die Visualiserung, die Homing-Animation sowie entsprechende Beschriftungen und Raster aktiviert oder deaktiviert werden. \\
+Im unteren Bereich die Sektion "'Visualisierung"', in welcher letztere auf die Bedürfnisse des Benutzers angepasst werden kann. Über mehrere Checkboxen kann die Visualiserung, die Homing-Animation sowie entsprechende Beschriftungen und Raster aktiviert oder deaktiviert werden. \\
 Weiters kann über zwei Radio-Buttons ein 3D-Modell ausgewählt werden. Falls das virtuelle 3D-Modell ausgewählt wird, so werden zwei Textfelder aktiviert in welcher die Relation der Achsen eingegeben werden kann. Die Gesamtlänge der Achsen beträgt dabei konstant 400, lediglich die Längen der beiden Achsen werden in der angegebenen Relation geändert. Wird das Edubot-3D-Modell ausgewählt, so werden die Achsenlängen beziehungsweise deren Relation getreu dem echten Modell festgelegt.\\
 Mit Hilfe von zwei Slidern kann die Genauigkeit des Rasters beziehungsweise der Beschriftung festgelegt und die Geschwindigkeit der Animation geregelt werden.\\
 Über einen Speichern-Button im rechten unteren Bereich kann, bei gültigen Einstellungen, die aktuelle Konfiguration gespeichert werden. Außerdem können die Einstellungen über den Button "Einstellungen zurücksetzen" auf ihre Standardwerte zurückgesetzt werden.
 
 \subsubsection{Umsetzung}
 Um die Daten aus der Eingabemaske in die entsprechende Objekte zu übernehmen, müssen diese als DataContext des entsprechenden Controls gesetzt werden. Dies geschieht im Konstuktor der Anwendung, nachdem die Einstellungen geladen wurden.\\
-Jedes Control ist über sein Binding-Property mit dem entsprechenden Property des DataContext-Objekts verknüpft. Dazu muss im Layout der Oberfläche angegeben werden, welches Property an das Control gebunden und wann eine Eingabe durch den Benutzer in das entsprechende Property übernommen werden soll. Um das Control über Änderungen des ihm zugewiesenen Properties zu informieren, implementiert die IConfiguration-Klasse das INotifyPropertyChanged-Interface. Dadurch erhält die Klasse ein PropertyChanged-Event, welches die entsprechenden Controls informiert. \\
+Jedes Control ist über sein \textit{Binding}-Property mit dem entsprechenden Property des \textit{DataContext}-Objekts verknüpft. Dazu muss im Layout der Oberfläche angegeben werden, welches Property an das Control gebunden und wann eine Eingabe durch den Benutzer in das entsprechende Property übernommen werden soll. Um das Control über Änderungen des ihm zugewiesenen Properties zu informieren, implementiert die \textit{IConfiguration}-Klasse das \textit{INotifyPropertyChanged}-Interface. Dadurch erhält die Klasse ein \textit{PropertyChanged}-Event, welches die entsprechenden Controls informiert. \\
 
 \textbf{Validierung}\\
 \begin{lstlisting}[language = XAML, captionpos=b, caption={IP-Addresse - TextBox mit IPAddressValidationRule}]
@@ -55,12 +55,12 @@ In der Validate-Methode dieser Regel wird geprüft ob der mitgegebene Wert folge
 \item Der Wert muss aus 4 Zahlen zwischen 0 und 255 bestehen
 \item Die Zahlen müssen durch Punkte getrennt sein
 \end{itemize}
-\item \textbf{LengthValidationRule}\\
+\item \textbf{RelationValidationRule}\\
 In der Validate-Methode dieser Regel wird geprüft ob der mitgegebene Wert folgende Bedingungen erfüllt:
 \begin{itemize}
 \item Der Wert darf nicht nicht leer sein
 \item Der Wert muss eine Zahl sein
-\item Die Zahl muss größer als 0 sein
+\item Die Zahl muss größer als 0 und kleiner als 10 sein
 \end{itemize}
 \item \textbf{PortValidationRule}\\
 In der Validate-Methode dieser Regel wird geprüft ob der mitgegebene Wert folgende Bedingungen erfüllt:
@@ -101,12 +101,18 @@ Zusätzlich zu diesen Properties besitzt die Klasse noch die Methode Reset, welc
 Die VisualizationConfig-Klasse enthält Informationen über die Darstellung der Visualisierung. Sie enthält ähnliche Properties wie der VirtualAdapter: Length, Length2, VerticalToolRange sowie MaxPrimaryAngle, MinPrimaryAngle, MaxSecondaryAngle und MinSecondaryAngle. Der Datentyp dieser Properties ist, durch das Data-Binding bedingt, String. Diese Informationen werden zum Initialisieren der VirtualAdapter in den verschiedenen Visualisierungen benötigt, wodurch die VisualizationConfig  eine gemeinsame Datenbasis für das Erstellen dieser Adapter darstellt.
 Zusätzlich zu diesen Informationen enthält die Klasse noch folgende, für die Animation und Darstellung relevante, Properties:
 \begin{itemize}
+\item \textbf{RelationLength1}\\
+Gibt die Relation der ersten Achse an. Das Ändern dieses Properties aktualisiert automatisch das \textit{Length}-Property.
+\item \textbf{RelationLength2}\\
+Gibt die Relation der zweiten Achse an. Das Ändern dieses Properties aktualisiert automatisch das \textit{Length2}-Property.
 \item \textbf{VisualizationEnabled}\\
 Dabei handelt es sich um einen boolschen Wert, der angibt ob die Visualisierung aktiviert oder deaktiviert ist. Von diesem Property hängt ab, ob die Visualisierung einen VirtualAdapter bei der API registriert. Dieses Property ist an eine Checkbox im Einstellungen-Tab gebunden.
 \item \textbf{ShowGrid}\\
 Ein boolscher Wert der angibt ob das Gitter in der 2D-Animation angezeigt werden soll. In wie viele Schritte das Gitter unterteilt ist, wird durch das Steps-Property definiert. Dieses Property ist an eine Checkbox im Einstellungen-Tab gebunden.
 \item \textbf{ShowLabels}\\
 Ein boolscher Wert der angibt ob das Koordinaten-System der 2D-Animation beschriftet sein soll. Die Anzahl der angezeigten Koordinaten pro Achse, ist erneut vom Steps-Property abhängig. Dieses Property ist an eine Checkbox im Einstellungen-Tab gebunden.
+\item \textbf{ShowLabels}\\
+Ein boolscher Wert der angibt ob der gefahrene Pfad in der 2D-Animation angezeigt werden soll. Diese Option benötigt relativ viel Rechenleistung, insbesondere bei Ellipsoiden und Freihandzeichnungen. Bei Performance-Problemen sollte diese Option deaktiviert werden. Dieses Property ist an eine Checkbox im Einstellungen-Tab gebunden.
 \item \textbf{Speed}\\
 Das Property Speed enthält einen Wert zwischen 1 und 100 und definiert die Geschwindigkeit in Prozent der Maximalgeschwindigkeit, mit der die Animation abläuft. Dieses Property ist an einen Slider im Einstellungen-Tab gebunden.
 \item \textbf{Steps}\\

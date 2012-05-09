@@ -45,6 +45,18 @@ Für die Animation werden die in der API berrechneten Interpolationsergebnisse b
 
 Um auch die Visualisierung des Homings zu ermöglichen und desweiteren einen Abbruch der Simulation zu ermöglichen, enthält jedes UserControl entsprechende Methoden mit den Namen \textit{Home} und \textit{Abort}. Diese werden bei den entsprechenden Events \textit{OnHoming} und \textit{OnAbort} aufgerufen. Die eigentliche Animation wird allerdings von der \textit{Move}-Methode ausgeführt. Jede der soeben angeführten Methoden wird bei Ankunft der Benachrichtigung in einem eigenen Thread gestartet um die Oberfläche während der Ausführung nicht zu blockieren.
 
+\begin{lstlisting}[language=CSharp, caption={Ausschnitt aus der Move-Methode der 2D-Visualisierung}, captionpos=b]
+foreach (InterpolationStep step in result.Angles)
+                {
+                    ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);       
+                    currentPath.End = step.Target;
+                    System.Threading.Thread.Sleep((int)ticks);
+                    Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
+                    Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
+                    Dispatcher.Invoke(new Action(delegate { InvalidateVisual(); }));
+                }
+\end{lstlisting}
+
 Die \textit{Move}-Methode führt in einer Schleife alle im Interpolationsergebnis enthaltenen Schritte (Teilstrecken) hintereinander aus und verschiebt die Achsen um den jeweiligen Winkel beziehungsweise um die jeweilige Strecke. 
 
 Da es sich bei den Achsen um Objekte des ursprünglichen Threads handelt, muss für den Zugriff darauf ein Dispatcher verwendet werden. Der Zugriff mittels eines Dispatchers ermöglicht das Aufrufen einzelner Delegaten welche Methoden aufrufen die ihrerseits dann die Werte verändern, die Veränderung der Werte geschieht im urspünglichen Thread und das Dispatcher Objekt stellt eine Art Warteschlange dar. An dieser Stelle wird jedoch nicht genauer auf diesen Mechanismus eingegangen, da dies den Rahmen dieser Arbeit sprengen würde.
@@ -69,6 +81,36 @@ Die \textit{Home}-Methode bedient sich derselben Arbeitsweise wie die \textit{Mo
 
 Die \textit{Abort}-Methode hat die simple Aufgabe, den aktuellen Animations-Thread zu beenden, falls ein solcher vorhanden ist. Dazu wird die \textit{Abort}-Methode der Thread-Klasse verwendet. Um in Sonderfällen keine \textit{ThreadAbortException} zu verursachen, ist über die gesamte \textit{Move}- beziehungsweise \textit{Home}-Methode ein \textit{try-catch}-Block gelegt, der diese Exception abfängt.
 
+Es existieren ebenfalls Methoden für die Events \textit{OnShuttingDown} und \textit{OnToolUsed}, welche jedoch keine essentiellen Funktionen die Animation betreffend ausführen und deshalb auch nicht näher im schriftlichen Teil dieser Diplomarbeit erläutert werden.
+
+\begin{lstlisting}[language=CSharp, caption={Ausschnitt aus der ApplyConfiguration-Methode der 2D-Visualisierung}, captionpos=b]
+if (property.PropertyName == "VisualizationEnabled")
+            {
+                if (configuration.VisualizationEnabled)
+                {
+                    visualisationAdapter = new VirtualAdapter(Tool.VIRTUAL, configuration.Length, configuration.Length2);
+                    visualisationAdapter.OnAbort += StopAnimation;
+                    visualisationAdapter.OnMovementStarted += StartMoving;
+                    visualisationAdapter.OnHoming += StartHoming;
+                    visualisationAdapter.OnToolUsed += UseTool;
+                    visualisationAdapter.OnShuttingDown += Shutdown;
+                    API.Edubot.GetInstance().RegisterAdapter("2DVisualization", visualisationAdapter);
+                }
+                else
+                {
+                    if (visualisationAdapter != null)
+                    {
+                        visualisationAdapter.OnAbort -= StopAnimation;
+                        visualisationAdapter.OnMovementStarted -= StartMoving;
+                        visualisationAdapter.OnHoming -= StartHoming;
+                        visualisationAdapter.OnToolUsed -= UseTool;
+                        visualisationAdapter.OnShuttingDown -= Shutdown;
+                        API.Edubot.GetInstance().DeregisterAdapter("2DVisualization");
+                    }
+                }
+            }
+\end{lstlisting}
+
 Da der Großteil der Aktionen die in einer der Visualisierungen durchgeführt werden, von den Visualisierungs-Einstellungen abhängen, besitzt jede Visualisierung eine \textit{ApplyConfiguration}-Methode. Diese wird aufgerufen sobald sich ein Property bei den Einstellungen ändert, um entsprechend darauf zu reagieren. Wird beispielsweise die Visualisierung eingeschaltet, so wird ein entsprechender VirtualAdapter mit den Werten aus dem \textit{VisualizationConfig}-Objekt erzeugt und bei der \textit{Edubot}-Klasse registriert. Weiters werden die \textit{Home}-, \textit{Move}- und \textit{Abort}-Methoden bei den entsprechenden Events des erzeugten Adapters eingetragen.
 
 \subsubsection{Programmierung der 2D-Animation}
@@ -77,22 +119,40 @@ Neben den oben angeführten Funktionen, sollte die 2D-Version erweiterte Darstel
 
 Dazu wurde die \textit{OnRender}-Methode des UserControls überschrieben in der neben dem eigentlichen Rendern des UserContols noch zusätzliche eigene Zeichenvorgänge durchgeführt werden.
 Die Logik hinter den \textit{RenderGrid} und \textit{RenderLabels}-Methoden wird hier nicht detaillierter beschrieben, da sie mit Hilfe des Source-Codes relativ einfach nachvollzogen werden können.
+
+\begin{lstlisting}[language=CSharp, caption={Ausschnitt aus der RenderPath-Methode der 2D-Visualisierung}, captionpos=b]
+for(int i = drawnPaths.Count-1; i >= 0; i--){
+                path = drawnPaths.ElementAt(i);
+                if (path.Type == InterpolationType.Circular)
+                {
+                    DrawArc(drawingContext, null, path.Dashed ? dashedPen : pen, new Point(center + path.Start.X * pixelPerPoint, center - path.Start.Y * pixelPerPoint), new Point(center + path.End.X * pixelPerPoint, center - path.End.Y * pixelPerPoint),(float) (path.Radius * pixelPerPoint), path.Direction);
+                }
+                else
+                {
+                    if (path.Type == InterpolationType.Linear)
+                    {
+                        drawingContext.DrawLine(path.Dashed ? dashedPen : pen, new Point(center + path.Start.X * pixelPerPoint, center - path.Start.Y * pixelPerPoint), new Point(center + path.End.X * pixelPerPoint, center - path.End.Y * pixelPerPoint));
+                    }
+                }
+            }
+\end{lstlisting}
+
 Etwas komplexer gestaltet sich jedoch die \textit{RenderPath}-Methode, welche den bisher gefahrenen Pfad des Roboters darstellt. Dazu wird in einer Schleife eine Collection aus \textit{Path}-Objekten und diese mit Hilfe der enthaltenen Informationen eingezeichnet. Die Collection enthält lediglich Pfade die bereits abgefahren wurden. Der aktuelle Pfad ist in der \textit{currentPath}-Variable gespeichert und wird beim Durchlaufen des Interpolationergebnisses regelmäßig aktualisiert. Erst wenn die aktuelle Bewegung abgeschlossen wurde, wird das \textit{currentPath}-Objekt der Collection hinzugefügt.
 
 Ein \textit{Path}-Objekt enthält detaillierte Information über Position und Typ des abgefahrenen Pfades. Dazu enthält es folgende Properties:
 \begin{itemize}
-\item \textbf{Start}
+\item \textbf{Start}\\
 Dabei handelt es sich um ein \textit{Point3D}-Objekt, welches den Startpunkt des Pfades enthält.
-\item \textbf{End}
+\item \textbf{End}\\
 Dabei handelt es sich um ein \textit{Point3D}-Objekt, welches den Endpunkt des Pfades enthält.
-\item \textbf{Type}
+\item \textbf{Type}\\
 Das \textit{Type}-Property enthält Informationen darüber ob es sich bei dem Pfad um einen zirkularen oder einen linearen Pfad handelt. Durch diese Information kann der Render-Prozess wesentlich beschleunigt werden, da dadurch nicht einzelne Pfadpunkte sondern gleich der ganze Pfad gezeichnet werden kann.
 Je nach wird in der \textit{RenderPath}-Methode die \textit{DrawLine} oder die \textit{DrawArc}-Methode zum Zeichnen aufgerufen.
-\item \textbf{Dashed}
+\item \textbf{Dashed}\\
 Dieser Wert vom Typ Boolean definiert ob der Pfad strichliert oder durchgehend eingezeichnet werden soll. Ist das Werkzeug des Roboters gerade eingeschaltet so wird der Pfad durchgehend gezeichnet, andernfalls strichliert.
-\item \textbf{Direction}
+\item \textbf{Direction}\\
 Diese Information ist nur bei zirkularen Bewegungen nötig und gibt an in welche Richtung der entsprechende Kreisbogen gezeichnet wird. Der Wert dieses Properties wird im \textit{MetaData}-Objekt des Interpolationergebnisses mitgegebenen.
-\item \textbf{Radius}
+\item \textbf{Radius}\\
 Auch diese Information ist im \textit{MetaData}-Objekt des Interpolationergebnisses enthalten und dient zur Verbesserung der Performance des Systems, da dadurch der Radius der Kreisbewegung nicht erneut berechnet werden muss.
 
 \end{itemize}
