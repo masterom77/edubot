@@ -6,6 +6,25 @@ Die Netzwerkschnittstelle ist sowohl für den Empang von Befehlen und Pfaden, al
 
 \subsubsection{Aufbau}
 Die Netzwerkschnittstelle ist im Programm \textit{NetworkManager} implementiert und wird durch einen Entsprechenden "'Task"' in zyklischen Abständen von 200ms aufgerufen. Da nicht bei jedem Programmaufruf sämtliche Operationen wie beispielsweise die Initialisierung der für den Empfang benötigten Variablen vorgenommen werden sollen, sondern vielmehr abhängig vom aktuellen Status der Kommunikation unterschiedliche Programmteile benötigt werden, basieren zyklisch aufgerufenen Programmen meist auf einer \textit{Switch} Kontrollstruktur. Die \textit{Switch} Kontrollstruktor entscheidet mittels einer \textit{status} Variable, welche Operationen derzeit benötigt werden. In den einzelnen Fällen der \textit{Switch} Struktur befindet sich die Programmlogik die Ausgeführt werden soll wenn die \textit{status} Variable den Wert dieses Falles annimmt. Üblicherweise ist der ist der Anfangswert der \textit{status} Variable 0, wodurch beim ersten zyklischen Aufruf des Programms die dem Fall 0 zugeordnete Programmlogik ausgeführt wird. Diese Programmlogik kann beispielsweise zur Initialisierung von Variablen dienen. Wurde die Inititialisiierung, um kurz an diesem Beispiel festzuhalten, erfolgreich beendet, so wird im Fall 0 noch die \textit{status} Variable so gesetzt, dass beim nächsten Programmaufruf die nach der initialisierung auszuführende Programmlogik ausgeführt wird. Dieses Prinzip kann nun innerhalb des Programms beliebig fortgeführt werden.
+\begin{lstlisting}[language = codesysls, captionpos=b, caption={Kontrollstruktur anhand eines Beispiels}]
+CASE state OF
+
+0:
+
+(*Do initialisation*)
+state := 10;
+
+10:
+
+(*Wait for Connection*)
+state := 30;
+
+30:
+
+(*Listen for Data*)
+;
+END_CASE;
+\end{lstlisting}
 
 \subsubsection{Umsetzung}
 Auf die genau Implementierung der Netzwerkkommunikation auf der SPS wird hier nur oberflächlich eingegangen, genauere Informationen hierzu sind der Dokumentation der OSCAT Network Library und dem Source Code der SPS zu entnehmen, welcher im Rahmen der Diplomarbeit gemeinsam mit der restlichen Software des Edubot Systems abgegeben wurde. Im Folgenden erfolgt lediglich eine Kurze Aufzählung der wichtigsten Objekte und ihrer Verwendung:
@@ -29,9 +48,9 @@ Wie bereits im Kapitel "'Aufbau"' beschrieben, basiert die Netzwerkkomunikation 
 
 Als nächster Schritt (\textit{state} = 10) muss nun ein  IP\_CONTROL aufgerufen werden. Die vorher instanzierten Objekte hierbei werden direkt übergeben. Durch diesen Schritt beginnt die SPS auf eingehende Verbindungen zu horchen.
 Ein Beispiel für den Aufruf des IP\_CONTROL's sieht folgendermaßen aus:
-
-IP\_CONTROL1(PORT:=400 ,TIME\_OUT:=T\#1s,IP\_C:= IP\_C1,S\_BUF:=S\_BUF1, R\_BUF:=R\_BUF1 );
-
+\begin{lstlisting}[language = codesysls, captionpos=b, caption={Resetten einer Motors}]
+IP_CONTROL1(PORT:=400 ,TIME_OUT:=T#1s,IP_C:= IP_C1,S_BUF:=S_BUF1, R_BUF:=R_BUF1 );
+\end{lstlisting}
 Durch regelmäßiges überprüfen des \textit{state} Attributs des IP\_CONTROL Objektes kann nun festgestellt werden wenn eine neue Verbindung hergestellt wurde. Bekommt das \textit{state} Attribut des IP\_CONTROLs den Wert 254, so wurde die Verbindung erfolgreich aufgebaut und es kann zum Datenempfang übergegangen werden. Hierzu wird die \textit{state} Variable des Programms auf 30 gesetzt.
 
 Während des Wartens auf Dateiempfang (\textit{state} = 30) wird in regelmäßigen Abständen das \textit{size} Attribut des dem IP\_CONTROLL mitgegebenen NETWORK\_BUFFER Objekts - im obigen Beispielfall R\_BUF1 - überprüft. Nimmt das \textit{size} Attribut einen Wert an der höher als 0 ist, so wurden Daten empfangen und können aus dem NETWORK\_BUFFER ausgelesen werden. Der NETWORK\_BUFFER enthält hierzu ein array aus \textit{byte} Werten welches werden kann. Die einzelnen Byte Werte werden mithilfe einer einfachen selbst geschriebenen Funktion (siehe BYTE\_TO\_CHAR Funktion im Kapitel "'Hilfsfunktionen"') in eine Zeichenkette umgewandelt. Die \textit{state} Variable wird dannach auf den Wert 40 gesetzt um im nächsten Programmdurchlauf die empfangene Zeichenkette zu analysieren.
@@ -48,6 +67,31 @@ Enthält die empfangene Zeichenkette als Präfix die Zeichen "hom", so wird der 
 \item \textbf{Befehl "sht"}\\
 Der Befehl "sht" dient dazu den Roboter auszuschalten, also alle Motoren zu deaktivieren und sonstige zum herunterfahren nötige Abläufe durchzuführen. 
 \end{itemize}
+\begin{lstlisting}[language = codesysls, captionpos=b, caption={Ermittlung der durchzuführenden Operation}]
+IF(LEFT(newStr,3)='mvc')THEN
+		newStr := MID(newStr, LEN(newStr), 4);
+		string_converter(source := newStr);
+
+		robot_ready := FALSE;
+
+		state := 110;
+
+
+	ELSIF(LEFT(newStr,3)='sht')THEN
+		(*newStr := MID(newStr, LEN(newStr), 4);*)
+		robot_enabled := FALSE;
+
+		state := 110;
+	ELSIF(LEFT(newStr,3)='hom')THEN
+		robot_enabled := TRUE;
+		robot_homing := TRUE;
+
+		robot_ready := TRUE; (* Testsetting *)
+
+		state := 110;
+
+	END_IF
+\end{lstlisting}
 
 \subsubsection{Hilfsfunktionen}
 Um diverse Umrechnungen zu vereinfachen und redundaten Programmcode zu vermeiden wurden diverse Hilfsunktionen erzeugt die an enprechnder Stelle im\textit{ NetworkManager} Programm verwendet werden, die folgende Auflistung soll einen Überblick über diese Funktionen bieten, Informationen über ihre Funktionalität bereitstellen und ihre Verwendung im Programm kurz beschreiben:
