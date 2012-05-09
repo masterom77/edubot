@@ -1,0 +1,12 @@
+\subsection{OSCAT Library}
+
+\subsubsection{Allgemein}
+OSCAT Library ist eine freie Funktionsbibliothek zur Vereinfachung der Programmierung von CoDeSys basierten Steuerungssystemen. Sie stellt verschiedenste Funktionen zu Themengebieten wie Regelungstechnik, Datum, Zeit, sowie Netzwerk und Kommunikation zur Verfügung. Die Funktionsbibliothek ist grundsätzlich unabhängig von der verwendeten Hardware, es kann allerdings bei verschiedenen Hardwarekonfigurationen zu Einschränkungen kommen.
+
+\subsubsection{Einsatz im Projekt}
+Um auf einer SPS der Firma KEBA eine Netzwerkschnittstelle für den Zugriff über Ethernet zu programmieren, ist die Verwendung der freien Funktionsbibliothek OSCAT notwendig. 
+
+Zuerst muss hierbei die Standard OSCAT Bibliothek ins Projekt eingebunden werden. In unserem Fall handelte es sich um die Version 3.3.0 der Standardbibliothek.
+
+Um nun Zugriff auf die benötigten Netzwerkfunktionen von OSCAT zu bekommen muss zusätzlich die OSCAT Network Library eingebunden werden. Diese befand sich zum Zeitpunkt der Entwicklung dieses Projektes in der Version 1.1.1. 
+

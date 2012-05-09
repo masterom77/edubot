@@ -22,6 +22,7 @@ Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parame
 \\
 Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind in den Kapiteln Adapter-System und Command-System bereits detailliert beschrieben, werden jedoch aus Gründen der Übersichtlichkeit jedoch in der nachstehenden Tabelle nochmals zusammengefasst.
 
+\begin{table}
 \begin{tabular}{|p{5cm}|p{9cm}|}
 \hline \rowcolor{lightgray}
 \textbf{Ereignis} & \textbf{Zeitpunkt des Eintretens}\\
@@ -41,6 +42,8 @@ Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind i
 \textit{OnFailure} & Bei Auftreten eines Fehlers im jeweiligen Adapter\\
 \hline
 \end{tabular}
+\caption{Überblick über mögliche Events}
+\end{table}
 
 \textbf{Event-Argumente}\\
 Bei Auslösen eines Events werden im args-Parameter Details zum Event übergeben. Dazu werden verschiedene, von der Systemklasse EventArgs, abgeleitete Klassen verwendet, die im folgenden vorgestellt werden.

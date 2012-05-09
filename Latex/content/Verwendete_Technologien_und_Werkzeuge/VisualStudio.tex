@@ -1,25 +1,25 @@
 \subsection{Visual Studio 2010}
 \subsubsection{Allgemein}
-Microsoft Visual Studio 2010 ist eine Integrierte Entwicklungsumgebung (IDE) für verschiedene Hochsprachen. Es werden zur Zeit die Programmiersprachen C, C++, C++/CLI, F\#,Visual Basic .Net und C\#Unterstützt.
+Microsoft Visual Studio 2010 ist eine Integrierte Entwicklungsumgebung (IDE) für verschiedene Hochsprachen. Es werden zur Zeit die Programmiersprachen C, C++, C++/CLI, F\#, Visual Basic .Net und C\# unterstützt.
 Wie der Name bereits sagt wurde Microsoft Visual Studio von der Microsoft Corporation Entwickelt und zur Verfügung gesellt. Erstmals als Gesamtpaket ausgeliefert wurde Visual Studio 1995, zuvor waren einzelne Komponenten als Einzelprodukte verfügbar.
-Haupteinsatzgebiet dieser IDE ist die Entwicklung von Anwendung für das .Net Framework, hierbei wird sowohl die Erstellung von Desktop Anwendungen, als auch von Webanwendungen und Webservices unterstützt.
-Zusätzlich zur .Net Entwicklung ist es bei der Entwicklung von C++ Programmen möglich, native Win32/Win64 Programme zu schreiben. 
+Haupteinsatzgebiet dieser IDE ist die Entwicklung von Anwendung für das .Net Framework. Hierbei wird sowohl die Erstellung von Desktop Anwendungen, als auch die Programmierung von Webanwendungen und Webservices unterstützt.
+Zusätzlich zur .Net Entwicklung ist es bei der Entwicklung von C++ Programmen möglich, native Win32/Win64 Programme zu schreiben. \footcite[vgl.][]{vs}
 \subsubsection{Alternativen}
 \begin{itemize}
 \item \textbf{Sharp Develop}\\
 Sharp Develop ist eine quelloffene Alternative zur C\# Komponente von Visual Studio. Die Software wird von IC\#Code Entwickelt und befindet sich derzeit in Version 4.2.
-In der aktuellen Version kann diese IDE unter Anderem zur Entwicklung von C\# und VB .Net Programmen unter Microsoft .Net Framework 4.0 verwendet werden, durch die zusätzliche Unterstützung von Phyton, IronRuby und anderen Programmiersprachen unterscheidet sich Sharp Develop von Visual Studio.
-An Grundfunktionalität für die Anwendungsentwicklung bietet Sharp Develop einen Ähnlichen Umfang wie Visual Studio, so verfügt es etwa auch über einen integrierten Form Designer, Integrierte Compiler und verschiedenste Funktionen zur Codevervollständigung. Ebenfalls im Funktionsumfang enthalten ist ein Editor für XAML Datein und eine Vorschau für WPF Aplikationen.
+In der aktuellen Version kann diese IDE unter Anderem zur Entwicklung von C\# und VB .Net Programmen unter Microsoft .Net Framework 4.0 verwendet werden. Durch die zusätzliche Unterstützung von Phyton, IronRuby und anderen Programmiersprachen unterscheidet sich Sharp Develop von Visual Studio.
+An Grundfunktionalität für die Anwendungsentwicklung bietet Sharp Develop einen ähnlichen Umfang wie Visual Studio und verfügt so etwa auch über einen integrierten Form Designer, integrierte Compiler und verschiedenste Funktionen zur Codevervollständigung. Ebenfalls im Funktionsumfang enthalten ist ein Editor für XAML Dateien und eine Vorschau für WPF Applikationen.
 
 Aus unserer Sicht schied diese Software vor allem aus, da sie eine weitere zusätzliche Entwicklungsumgebung bedeutet hätte und auch keine merklichen Funktionalen Vorteile gegenüber Visual Studio aufzeigt.
-Da die Entwicklung von .Net Micro Framework Anwendungen mit dieser Sharp Develop nicht möglich gewesen wäre hätte trotzdem Visual Studio für diesen Teil des Projektes zum Einsatz kommen müssen, dies hätte dazu geführt dass das Endprodukt unübersichtlicher und schwerer zu erweitern gewesen wäre.
-Ein weiterer Grund unsere Entscheidung gegen diese Software war der gegenüber Visual Studio geringere Funktionsumfang bei der Entwicklung von WPF Anwendungen.
+Da die Entwicklung von .Net Micro Framework Anwendungen mit Sharp Develop nicht möglich gewesen wäre hätte trotzdem Visual Studio für diesen Teil des Projektes zum Einsatz kommen müssen, dies hätte dazu geführt dass das Endprodukt unübersichtlicher und komplizierter zu erweitern gewesen wäre.
+Ein weiterer Grund für unsere Entscheidung gegen diese Software war der gegenüber Visual Studio geringere Funktionsumfang bei der Entwicklung von WPF Anwendungen.
 Als dritter Punkt in dieser Aufzählung ist noch anzuführen, dass wir uns bei der Entwicklung von Software in Visual Studio auf jahrelange Erfahrung stützen konnten, ein Umstieg auf eine andere Entwicklungsumgebung hätte unnötigen Aufwand bedeutet und die Einarbeitungsphase deutlich verlängert.
 \item \textbf{Microsoft Expression Blend}\\
-Da Microsoft Expression Blend zwar nicht als Entwicklungsumgebung in diiesem Projekt zum Einsatz kam, jedoch an anderer Stelle sehr wohl die zur Verfügung gestellten Konvertierungsfunktionen genutzt wurden, ist diesem Werkzeug ein Eigenes Kapitel gewidmet. Allgemeine Information zu dieser Software sind unter "'Microsoft Expression Blend" [todo] zu finden.
+Da Microsoft Expression Blend zwar nicht als Entwicklungsumgebung in diesem Projekt zum Einsatz kam, jedoch an anderer Stelle sehr wohl die zur Verfügung gestellten Konvertierungsfunktionen genutzt wurden, ist diesem Werkzeug ein Eigenes Kapitel gewidmet. Allgemeine Information zu dieser Software sind im Kapitel "'Microsoft Expression Blend"' zu finden.
 
 Da die Grundfunktionalität zur Erstellung von WPF Desktopanwendungen welche Expression Blend bietet keine überragenden Vorteile gegenüber jener von Visual Studio bietet und die Software nur zur Erstellung der Anwendung - GUI aber nicht des Hardwareinterfaces oder des Mikrocontroller Programms geeignet ist, hätte ihr Einsatz lediglich mehr Aufwand in der Projektorganisation bedeutet.
-Weiters hätte es auch bei der Beschaffung einer funktionstüchtigen Lizenz Probleme gegeben, da die Software nicht frei zugänglich ist und wir keinen Zugang zu einer Schullizenz hatten.
+Des Weiteren hätte es auch bei der Beschaffung einer funktionstüchtigen Lizenz Probleme gegeben, da die Software nicht frei zugänglich ist und wir keinen Zugang zu einer Schullizenz hatten.
 Ebenfalls gegen diese Software sprach bei der Entscheidungsfindung die Tatsache, dass wir bereits auf große Erfahrungswerte bei der Entwicklung mit Visual Studio zurückgreifen können und durch die Verwendung von Microsoft Expression Blend ein Mehraufwand durch die erforderliche Einarbeitung entstanden wäre.
 \end{itemize}
 \subsubsection{Einsatz im Projekt}
@@ -27,11 +27,11 @@ Aufgrund seines hohen Funktionsumfangs und der Abdeckung aller für unser Projek
 Die Software kam bei der Entwicklung des Edubot Projektes für drei verschiedene Teilbereiche zur Anwendung. Im folgenden soll ein kurzer Überblick über die in den jeweiligen Teilbereichen benötigten Funktionen und Eigenheiten gegeben werden:
 \begin{itemize}
 \item \textbf{Anwenderprogramm}\\
-Bei der Entwicklung des Anwenderprogramms kamen vor allem die Funktionen zur Entwicklung von WPF Anwendungen zum Einsatzt. Visual Studio 2010 verfügt hierfür über eine Direkte Unterstützung von WPF Projekten, sowie über einen Graphischen Designer für XAML Dateien und einen Editor mit Autovervollständigung für XAML Datein. Das Anwenderprogramm wurde in .Net 4.0 geschrieben, welches von Visual Studio Standardmäßig unterstützt wird.
+Bei der Entwicklung des Anwenderprogramms kamen vor allem die Funktionen zur Entwicklung von WPF Anwendungen zum Einsatzt. Visual Studio 2010 verfügt hierfür über eine direkte Unterstützung von WPF Projekten, sowie über einen Graphischen Designer für XAML Dateien und einen Editor mit Autovervollständigung für XAML Datein. Das Anwenderprogramm wurde in .Net 4.0 geschrieben, welches von Visual Studio Standardmäßig unterstützt wird.
 \item \textbf{Hardwareschnittstelle - API}\\
-Für die Erstellung der Hardwareschnittstelle, welche als einfache Programmbibliothek realisiert wurde, kamen nur die Standardfunktionen, wie etwa die Funktion Programmbibliotheken zu Erstellen und die Funktionen zum Komfortablen schreiben von Programmcode in Visual Studio zum Einsatz. Auch die Hardwareschnittstelle wurde aufbauend auf dem .Net Framework 4.0 programmiert, welches Standardmäßig von Visual Studio 2010 unterstützt wird.
-\item \textbf{Mikrocontrollerprogramm}\\
-Der von uns verwendete Mikrocontroller GHI Embedded Master Breakout Board wird ebenfalls über Visual Studio Programmiert. Dies ist in der Standardinstallation der Entwirklungsumgebung jedoch nicht möglich und es ist zuvor die Installation der zusätzlichen Komponenten des .Net Micro Frameworks erforderlich, mehr dazu im Kapitel “.Net Micro Framework” [todo].
+Für die Erstellung der Hardwareschnittstelle, welche als einfache Programmbibliothek realisiert wurde, kamen nur die Standardfunktionen, wie etwa die Funktion Programmbibliotheken zu Erstellen und die Funktionen zum komfortablen schreiben von Programmcode in Visual Studio zum Einsatz. Auch die Hardwareschnittstelle wurde aufbauend auf dem .Net Framework 4.0 programmiert, welches Standardmäßig von Visual Studio 2010 unterstützt wird.
+\item \textbf{Mikrocontroller}\\
+Der von uns verwendete Mikrocontroller GHI Embedded Master Breakout Board wurde ebenfalls über Visual Studio programmiert. Dies ist mit der Standardinstallation der Entwicklungsumgebung jedoch nicht möglich und es ist zuvor die Installation der zusätzlichen Komponenten des .Net Micro Frameworks erforderlich. Mehr dazu im Kapitel “.Net Micro Framework”.
 Grundsätzlich kommen bei der Entwicklung des Mikrocontroller Programms wieder die Standardfunktionen von Visual Studio zum Einsatz, durch die Einbindung der .Net Micro Framework Komponenten wird es auch ermöglicht das Programm direkt über eine USB Verbindung auf den Mikrocontroller zu spielen und über entsprechende Mechanismen komfortabel die benötigte Fehlerbehebung durchzuführen.
-Des weiteren stellt Visual Studio für die Mikrocontroller Entwicklung auch einen Emulator bereit, dieser kam in unserem Projekt jedoch nicht zum Einsatz, da dieser die benötigte Programmbibliothek des Mikrocontroller Herstellers (GHI) nicht unterstützt.
+Zusätzlich stellt Visual Studio für die Mikrocontroller Entwicklung auch einen Emulator bereit, dieser kam in unserem Projekt jedoch nicht zum Einsatz, da von diesem die benötigte Programmbibliothek des Mikrocontroller Herstellers (GHI) nicht unterstützt werden.
 \end{itemize}
