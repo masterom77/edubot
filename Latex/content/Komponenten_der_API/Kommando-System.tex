@@ -16,7 +16,7 @@ Bei der Edubot-Klasse sind ein virtueller, ein Edubot- und ein Keba-Adapter regi
     \caption{Ausgangssituation}
   \end{minipage}
 \end{figure}
-Anschließend wird die \textit{Execute}-Methode der Edubot-Klasse mit einem neuen Befehl aufgerufen, welcher an die registrierten Adapter weitergeleitet wird.
+Anschließend wird die \textit{Execute}-Methode der \textit{Edubot}-Klasse mit einem neuen Befehl aufgerufen, welcher an die registrierten Adapter weitergeleitet wird.
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -36,15 +36,15 @@ Das erhaltene Command wird in die Befehlswarteschlangen der Adapter eingereiht. 
 \end{figure}
 
 \subsubsection{Umsetzung}
-Das Interface ICommand und die von der API implementierten Befehle werden in den folgenden Abschnitten detailiert beschrieben.
+Das Interface \textit{ICommand} und die von der API implementierten Befehle werden in den folgenden Abschnitten detailliert beschrieben.
 
 \textbf{ICommand}
 \newline
-Wie bereits im Aufbau angemerkt, beruht das gesamte System auf dem Interface \textit{IAdapter}, welches den Grundaufbau eines Befehls festlegt. Dieser Aufbau besteht lediglich aus den beiden Methoden "CanExecute" und "Execute".
+Wie bereits im Aufbau angemerkt, beruht das gesamte System auf dem Interface \textit{IAdapter}, welches den Grundaufbau eines Befehls festlegt. Dieser Aufbau besteht lediglich aus den beiden Methoden \textit{CanExecute} und \textit{Execute}.
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
-Bei Aufruf dieser Methode werden die Voraussetzungen für das Ausführen des Befehls mit Hilfe des als Parameter mitgegebenen Adapters geprüft. Sollten die Voraussetzungen nicht erfüllt werden, so wird ein FailureEventArgs-Objekt erzeugt und zurückgegeben. Ist die Überprüfung der Voraussetzungen erfolgreich, so wird \textit{null} zurückgegeben.
+Bei Aufruf dieser Methode werden die Voraussetzungen für das Ausführen des Befehls mit Hilfe des als Parameter mitgegebenen Adapters geprüft. Sollten die Voraussetzungen nicht erfüllt werden, so wird ein \textit{FailureEventArgs}-Objekt erzeugt und zurückgegeben. Ist die Überprüfung der Voraussetzungen erfolgreich, so wird \textit{null} zurückgegeben.
 \item \textbf{Execute}
 \newline
 Bei Aufruf dieser Methode werden die von der Art des Befehls abhängigen Aktionen durchführt. Die Methode erhält als Parameter ein Objekt vom Typ \textit{IAdapter}, welches den ausführenden Adapter enthält, wodurch Zugriff auf die Methoden des entsprechenden Adapters gewährleistet ist. Es wird empfohlen die zum Command gehörige Adapter-Methode in einem eigenen Thread zu starten um den Adapter selbst nicht unnötig lange zu blockieren.
@@ -52,22 +52,22 @@ Bei Aufruf dieser Methode werden die von der Art des Befehls abhängigen Aktione
 
 \textbf{InitCommand}
 \newline
-Dieser Befehl dient zum Einschalten und Initialisieren des Roboters und stellt im Regelfall den ersten Befehl dar, der an den Roboter geschickt wird. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum Einschalten und Initialisieren des Roboters und stellt im Regelfall den ersten Befehl dar, der an den Roboter geschickt wird. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}\\
 Um eine Initialisierung und das damit verbundene Homing jederzeit zu ermöglichen, gibt diese Methode immer \textbf{true} zurück.
 zurückgegeben
 \item \textbf{Execute}\\
-Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{HOMING} gesetzt und das \textit{OnHoming}-Event ausgelöst (mehr dazu im Kapitel Event-System). Zuletzt wird noch ein Thread gestartet, der die \textit{Initialize}-Methode des Adapter ausführt.
+Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{HOMING} gesetzt und das \textit{OnHoming}-Event ausgelöst (mehr dazu im Kapitel Event-System). Weiters wird die Achskonfiguration auf \textit{AxisConfiguration.Lefty} gesetzt. Zuletzt wird noch ein Thread gestartet, der die \textit{Initialize}-Methode des Adapter ausführt.
 \end{itemize}
 
 \textbf{ShutdownCommand}
 \newline
-Dieser Befehl dient zum Herunterfahren des Roboters und stellt im Regelfall den letzten Befehl dar, der an den Roboter geschickt wird. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum Herunterfahren des Roboters und stellt im Regelfall den letzten Befehl dar, der an den Roboter geschickt wird. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
-In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein FailureEventArgs-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
+In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein \textit{FailureEventArgs}-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
 \item \textbf{Execute}
 \newline
 Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{SHUTTING\_DOWN} gesetzt und das \textit{OnShuttingDown}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{Shutdown}-Methode des Adapter ausführt.
@@ -75,31 +75,43 @@ Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{SHUTTING\
 
 \textbf{MVSCommand}
 \newline
-Dieser Befehl dient zum Verfahren einer linearen Bewegung durch den Roboter. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum Verfahren einer linearen Bewegung durch den Roboter. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
-In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein FailureEventArgs-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
+In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein \textit{FailureEventArgs}-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
 \item \textbf{Execute}
 \newline
-Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt und das \textit{RequiresPrecalculation}-Property des Adapters geprüft. Ist dieser Wert auf \textit{true} gesetzt, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der InterpolateLinear-Methode der \textit{Interpolation}-Klasse berechnet. Ist die Berechnung erfolgreich, so wird das erzeugte InterpolationResult im Result-Property des Adapters gespeichert. Sollte die Berechnung fehlgeschlagen sein, da zum Beispiel einer der Punkte nicht im gültigen Bereich lag, so wird die Ausführung der Methode mit dem \textit{return}-Schlüsselwort vorzeitig beendet. Im nächsten Schritt wird das  gesetzt und das \textit{OnMovementStarted}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{MoveStraight}-Methode des Adapter ausführt.
+Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt und die \textit{UsesIntegratedPathCalculation}-Methode aufgerufen. Liefert letztere \textit{true}, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der InterpolateLinear-Methode der \textit{Interpolation}-Klasse berechnet. Ist die Berechnung erfolgreich, so wird das erzeugte InterpolationResult im Result-Property des Adapters gespeichert. Sollte die Berechnung fehlgeschlagen sein, da zum Beispiel einer der Punkte nicht im gültigen Bereich lag, so wird die Ausführung der Methode mit dem \textit{return}-Schlüsselwort vorzeitig beendet. Im nächsten Schritt wird das  gesetzt und das \textit{OnMovementStarted}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{MoveStraight}-Methode des Adapter ausführt.
 \end{itemize}
 
 \textbf{MVCCommand}
 \newline
-Dieser Befehl dient zum Verfahren einer zirkularen Bewegung durch den Roboter. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum Verfahren einer zirkularen Bewegung durch den Roboter. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
+\begin{itemize}
+\item \textbf{CanExecute}
+\newline
+In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein \textit{FailureEventArgs}-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
+\item \textbf{Execute}
+\newline
+Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt und die \textit{UsesIntegratedPathCalculation}-Methode aufgerufen. Liefert letztere \textit{true}, gesetzt, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der InterpolateCircular-Methode der \textit{Interpolation}-Klasse berechnet. Ist die Berechnung erfolgreich, so wird das erzeugte InterpolationResult im Result-Property des Adapters gespeichert. Sollte die Berechnung fehlgeschlagen sein, da zum Beispiel einer der Punkte nicht im gültigen Bereich lag, so wird die Ausführung der Methode mit dem \textit{return}-Schlüsselwort vorzeitig beendet. Im nächsten Schritt wird das  gesetzt und das \textit{OnMovementStarted}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{MoveCircular}-Methode des Adapter ausführt.
+\end{itemize}
+
+\textbf{ChangeConfigurationCommand}
+\newline
+Dieser Befehl dient zum Ändern der Achskonfiguration während der Laufzeit. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
 In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zustand befindet. Sollte sich der Adapter in einem anderen Zustand befinden wird ein FailureEventArgs-Objekt mit einer entsprechenden Nachricht erzeugt und zurückgegeben.
 \item \textbf{Execute}
 \newline
-Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt und das \textit{RequiresPrecalculation}-Property des Adapters geprüft. Ist dieser Wert auf \textit{true} gesetzt, so wird der Pfad zum Zielpunkt und die daraus resultierenden Winkelschritte mit Hilfe der InterpolateCircular-Methode der \textit{Interpolation}-Klasse berechnet. Ist die Berechnung erfolgreich, so wird das erzeugte InterpolationResult im Result-Property des Adapters gespeichert. Sollte die Berechnung fehlgeschlagen sein, da zum Beispiel einer der Punkte nicht im gültigen Bereich lag, so wird die Ausführung der Methode mit dem \textit{return}-Schlüsselwort vorzeitig beendet. Im nächsten Schritt wird das  gesetzt und das \textit{OnMovementStarted}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{MoveCircular}-Methode des Adapter ausführt.
+Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt  und die \textit{UsesIntegratedPathCalculation}-Methode aufgerufen. Liefert letztere \textit{true}, so werden die nötigen Winkelschritte zur Neupositionierung der Achsen mit Hilfe der \textit{InterpolateConfigurationChange}-Methode der \textit{Interpolation}-Klasse berechnet. Ist die Berechnung erfolgreich, so wird das erzeugte InterpolationResult im Result-Property des Adapters gespeichert. Sollte die Berechnung fehlgeschlagen sein, da zum Beispiel einer der Punkte nicht im gültigen Bereich lag, so wird die Ausführung der Methode mit dem \textit{return}-Schlüsselwort vorzeitig beendet. Im nächsten Schritt wird das  gesetzt und das \textit{OnMovementStarted}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{ChangeConfiguration}-Methode des Adapter ausführt.
 \end{itemize}
 
 \textbf{UseToolCommand}
 \newline
-Dieser Befehl dient zum Aktivieren oder Deaktiveren des verwendeten Werkzeugs. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum Aktivieren oder Deaktivieren des verwendeten Werkzeugs. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
@@ -108,14 +120,14 @@ In der CanExecute-Methode wird geprüft ob sich der Adapter im \textit{READY}-Zu
 \newline
 Bei Aufruf dieser Methode wird das \textit{State}-Property auf \textit{MOVING} gesetzt und das \textit{OnToolUsed}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{UseTool}-Methode des Adapter ausführt. 
 \end{itemize}
-
+\newpage
 \textbf{AbortCommand}
 \newline
-Dieser Befehl dient zum sofortigen Abbruch jeglicher Aktionen die der Roboter im Moment durchführt. Die \textit{Execute}-Methode ist dabei folgendermaßen implementiert:
+Dieser Befehl dient zum sofortigen Abbruch jeglicher Aktionen die der Roboter im Moment durchführt. Die \textit{ICommand}-Methoden sind dabei folgendermaßen implementiert:
 \begin{itemize}
 \item \textbf{CanExecute}
 \newline
-Da dieser Befehl immer ausgeführt werdne muss, gibt dieser Methode lediglich \textit{true} zurück.
+Da dieser Befehl immer ausgeführt werden muss, gibt dieser Methode lediglich \textit{true} zurück.
 \item \textbf{Execute}
 \newline
 Bei Aufruf dieser Methode wird die Warteschlange des Roboters geleert um die Gefahr durch nachfolgende Befehle zu eliminieren und das \textit{OnAbort}-Event ausgelöst. Zuletzt wird noch ein Thread gestartet, der die \textit{Abort}-Methode des Adapter ausführt. 

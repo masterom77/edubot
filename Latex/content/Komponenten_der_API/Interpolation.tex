@@ -5,9 +5,21 @@
 Der Roboter soll in der Lage sein lineare beziehungsweise zirkulare Bewegungen durchzuführen, weshalb das Verfahren der linearen beziehungsweise zirkularen Interpolation benötigt wird. Je nach Verfahren wird eine Reihe an Zwischenpunkten berechnet, die den Start- und den Zielpunkt verbinden.
 
 \subsubsection{Aufbau}
-Um diese Aufgaben technisch umzusetzen, wurde die Klasse Interpolation entwickelt. Diese verfügt über die statischen Methoden InterpolateLinear und InterpolateCircular, welche als Ergebnis ein Objekt vom Typ InterpolationResult liefern. Da jedes Verfahren eine unterschiedliche Anzahl an Eingangsparametern übernimmt, werden diese erst in der Umsetzung näher beschrieben. Genauso wie die Kinematics-Klasse könnte diese Klasse ebenfalls in anderen, nicht roboter-bezogenen, Anwendungen verwendet werden.
+Um diese Aufgaben technisch umzusetzen, wurde die Klasse Interpolation entwickelt. Diese verfügt über die statischen Methoden \textit{InterpolateLinear} und \textit{InterpolateCircular}, welche als Ergebnis ein Objekt vom Typ \textit{InterpolationResult} liefern. Da jedes Verfahren eine unterschiedliche Anzahl an Eingangsparametern übernimmt, werden diese erst in der Umsetzung näher beschrieben.
 
 \subsubsection{Umsetzung}
+
+\textbf{InterpolationType}\\
+Diese Klasse ist eine Enumeration der bisher vorhandenen Interpolationverfahren. Ein Objekt dieser Klasse wird dem \textit{InterpolationResult} mitgegeben um auf das durchgeführte Verfahren rückschließen zu können. Das Enum enthält folgende werte:
+\begin{itemize}
+\item \textbf{Linear}\\
+Die \textit{InterpolateLinear}-Methode wurde zur Berechnung des Ergebnisses verwendet.
+\item \textbf{Circular} \\
+Die \textit{InterpolateCircular}-Methode wurde zur Berechnung des Ergebnisses verwendet.
+\item \textbf{None}\\
+Die \textit{InterpolateConfigurationChange}-Methode wurde zur Berechnung des Ergebnisses verwendet.
+\end{itemize}
+\newpage
 \textbf{InterpolationResult}\\
 Die Objekt der Klasse InterpolationResult stellt, wie der Name vermuten lässt, das Ergebnis einer Interpolation dar. Da dabei viele Daten generiert werden, verfügt die Klasse über die folgenden Properties
 \begin{itemize}
@@ -20,10 +32,10 @@ Das Points-Property stellt eine List aus Point3D-Objekten dar, welche die von de
 \item \textbf{MetaData}\\
 Das MetaData-Property beinhaltet zusätzliche Informationen über den Berechnungsvorgang, wie beispielsweise Radius und Richtung der Verfahrbewegung beim zirkularen Interpolationsverfahren.
 \end{itemize}
-Weiters wurde die ToString-Methode überschrieben sowie die ToStepString-Methode implementiert um die Konvertierung in eine, über das Netzwerk übertragbare, Form zu erleichtern:
+Weiters wurde die \textit{ToString}-Methode überschrieben sowie die \textit{ToStepString}-Methode implementiert um die Konvertierung in eine, über das Netzwerk übertragbare, Form zu erleichtern:
 \begin{itemize}
 \item \textbf{ToString}
-Die ToString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der SPS ausgelegt ist. Die Einträge werden folgendermaßen konvertiert:\\
+Die ToString-Methode der Klasse \textit{InterpolationResult} erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der SPS ausgelegt ist. Die Einträge werden folgendermaßen konvertiert:\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -32,8 +44,9 @@ Die ToString-Methode der Klasse InterpolationResult erstellt aus den Einträgen 
     \caption{Stringformat der InterpolationResult-Klasse in Winkel}
   \end{minipage}
 \end{figure}
+\newpage
 \item \textbf{ToStepString}
-Die ToStepString-Methode der Klasse InterpolationResult erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der GHI-Steuerung ausgelegt ist. Dazu müssen die individuellen Winkeländerungen in Motorschritte übersetzt werden. Die Einträge werden folgendermaßen konvertiert:\\
+Die \textit{ToStepString}-Methode der Klasse \textit{InterpolationResult} erstellt aus den Einträgen des Steps-Properties eine Zeichenfolge, deren Format auf eine einfache Interpretation durch die Steuerungssoftware der GHI-Steuerung ausgelegt ist. Dazu müssen die individuellen Winkeländerungen in Motorschritte übersetzt werden. Die Einträge werden folgendermaßen konvertiert:\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -44,7 +57,7 @@ Die ToStepString-Methode der Klasse InterpolationResult erstellt aus den Einträ
 \end{figure}
 \end{itemize}
 \textbf{InterpolationStep}\\
-Eine Instanz der InterpolationStep-Klasse beinhaltet Informationen zu den Winkelstellungen der Achsen an einem bestimmten Punkt. Um diese Aufgabe erfüllen zu können, sind folgende Properties definiert:
+Eine Instanz der \textit{InterpolationStep}-Klasse beinhaltet Informationen zu den Winkelstellungen der Achsen an einem bestimmten Punkt. Um diese Aufgabe erfüllen zu können, sind folgende Properties definiert:
 \begin{itemize}
 \item \textbf{Target}\\
 Das Property Target enthält jenen Punkt als \textbf{Point3D}-Objekt der mit den angegebenen Winkelstellungen erreicht wird.
@@ -68,12 +81,14 @@ Die ToString-Methode der Klasse InterpolationStep liefert die gespeicherten Info
   \end{minipage}
 \end{figure}
 \end{itemize}
-
+\newpage
 \textbf{Interpolation}\\
-Die Interpolations-Klasse übernimmt die Berechnung des Pfades vom Start- zum Zielpunkt. Dieser Pfad sieht je nach Verfahren unterschiedlich aus. Im Fall der linearen Interpolation handelt es sich dabei um eine Gerade, im Fall der zirkularen Interpolation um ein Kreissegment. Die Klasse definiert die Methoden InterpolateLinear und InterpolateCircular in welchen die jeweiligen Berechnungen durchgeführen und als Ergebnis ein Objekt vom Typ InterpolationResult liefern.
+Die Interpolations-Klasse übernimmt die Berechnung des Pfades vom Start- zum Zielpunkt. Dieser Pfad sieht je nach Verfahren unterschiedlich aus. Im Fall der linearen Interpolation handelt es sich dabei um eine Gerade, im Fall der zirkularen Interpolation um ein Kreissegment. Weiters werden die nötigen Winkelschritte zur Neupositionierung der Achsen im Falle einer Änderung der Achskonfiguration mit Hilfe dieser Klasse berechnet.\\
+Die Klasse definiert die Methoden \textit{InterpolateLinear}, \textit{InterpolateCircular} und \textit{InterpolateConfigurationChange} welche die jeweiligen Berechnungen durchführen und als Ergebnis ein Objekt vom Typ \textit{InterpolationResult} liefern.\\
+Um zu gewährleisten das ein Zielpunkt beziehungsweise Zwischenpunkt auch erreicht werden kann, wird dies regelmäßig mit Hilfe der \textit{IsPointValid} und \textit{AreAnglesValid}-Methoden des mitgegebenen \textit{IAdapter}-Objekt geprüft.
 \begin{itemize}
 \item \textbf{InterpolateLinear}\\
-Die InterpolateLinear-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine lineare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte.\\
+Die \textit{InterpolateLinear}-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine lineare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt ein \textit{IAdapter}-Objekt, welches Informationen wie Achsenlängen und Winkelbeschränkungen enthält, sowie einen Zielpunkt in Form eines \textit{Point3D}-Objekts.\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{14 cm}
@@ -82,6 +97,7 @@ Die InterpolateLinear-Methode berechnet bei Aufruf eine Reihe an Winkelstellunge
     \caption{Skizze zur linearen Interpolation}
   \end{minipage}
 \end{figure}
+\newpage
 Die Vorgehensweise sieht dabei wie folgt aus:
 \begin{enumerate}
 \item Berechnung der Koordinaten-Differenzen:\\
@@ -112,7 +128,7 @@ Die Winkelstellungen an einem spezifischen Zwischenpunkt werden mit Hilfe der in
 Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Objekt alle wichtigen Informationen aus den Berechnungen enthält, wird dieses an die aufrufende Methode zurückgegeben.
 \end{enumerate}
 \item \textbf{InterpolateCircular}\\
-Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt einen Start-, einen Mittel- und einen Zielpunkt in Form eines Point3D-Objekts, sowie die Längen der beiden Achsen als float-Werte. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
+Die InterpolateCircular-Methode berechnet bei Aufruf eine Reihe an Winkelstellungen die nötig sind um eine zirkulare Bewegung vom Start zum Zielpunkt durchzuführen. Die Methode übernimmt ein \textit{IAdapter}-Objekt, welches Informationen wie Achsenlängen und Winkelbeschränkungen enthält, sowie den Ziel- und den Mittelpunkt in Form eines \textit{Point3D}-Objekts. Der Mittelpunkt legt fest wie scharf die Kurve vom Start- zum Zielpunkt ist.\\
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{14 cm}
@@ -129,22 +145,12 @@ Bevor mit der Berechnung der Bahn begonnen werden kann, muss geprüft werden ob 
 d_{\overrightarrow{MS}} & = \sqrt{d_{x\overrightarrow{MS}}^2 + d_{y\overrightarrow{MS}}^2}\\
 d_{\overrightarrow{MZ}} & = \sqrt{d_{x\overrightarrow{MZ}}^2 + d_{y\overrightarrow{MZ}}^2}
 \end{align*}
-Sind diese Werte gleich, so stellen sie den Kreisradius $r$ dar und beweisen, dass beide Punkte sich am Kreisrand befinden, andernfalls wird eine MVCException ausgelöst und die Berechnung abgebrochen. 
+Sind diese Werte gleich, so stellen sie den Kreisradius $r$ dar und beweisen, dass beide Punkte sich am Kreisrand befinden, andernfalls wird das \textit{OnFailure}-Event des mitgegebenen Adapters ausgelöst und die Berechnung abgebrochen. 
 \item Berechnung der Distanz $d_{\overrightarrow{SZ}}$\\
 Nun wird noch die Distanz zwischen Start- und Zielpunkt $d$, erneut mit Hilfe der $x$- beziehungsweise $y$-Differenz und dem Satz des Pythagoras, berechnet.
 \begin{align*}
 d_{\overrightarrow{SZ}} = \sqrt{d_{x\overrightarrow{SZ}}^2 + d_{y\overrightarrow{SZ}}^2}
 \end{align*}
-%\item Berechnung des Differenzwinkels $\varphi$:\\
-%Mit Hilfe des entstandenen, gleichschenkeliges Dreieck, welches durch $d_{\overrightarrow{SZ}}$ und $r$ definiert wird, können wir den Differenzwinkel $\varphi$ zwischen Start- und Zielpunkt berechnen. Dieser wird mit Hilfe des umgeformten %Kosinussatzes berechnet. Auf unsere Variablen angepasst sieht die Formel für die Berechnung des Winkels $\varphi$ folgendermaßen aus:
-%\begin{align*}
-%d_{\overrightarrow{SZ}}^2 & = r^2 + r^2 - 2rr \cos \varphi \\
-%d_{\overrightarrow{SZ}}^2 & = 2r^2 - 2r^2 \cos \varphi \\
-%d_{\overrightarrow{SZ}}^2 & = 2r^2(1 - \cos \varphi) \\
-%\frac{d_{\overrightarrow{SZ}}^2}{2r^2} & = 1 - \cos \varphi \\
-%\cos \varphi & = 1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2} \\
-%\varphi & = \arccos (1 - \frac{d_{\overrightarrow{SZ}}^2}{2r^2})
-%\end{align*}
 \item Berechnung des Startwinkels $\alpha$:\\
 Da der Startpunkt in Bezug auf den Mittelpunkt nicht zwingend bei 0$^\circ$ liegen muss, wird der sogenannte Startwinkel $\alpha$ mit dem Kosinus im rechtwinkeligen Dreieck berechnet. Das verwendete Dreieck ist durch die $x$ und $y$-Differenz zwischen Start- und Mittelpunkt, sowie den Radius $r$ definiert.
 \item Berechnung des Endwinkels $\omega$:
@@ -155,8 +161,18 @@ Zuerst wird jener Winkel berechnet, zwischen 0$^\circ$ und dem Zielpunkt liegt.
 \end{align*}
 \item Überprüfung der Quadranten\\
 Aufgrund der Tatsache, dass die Arkussinus-Funktion in beiden Fällen lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Start beziehungsweise der Zielpunkt befindet überprüft werden. Befindet einer dieser Punkte  im 3. oder 4. Quadranten so wird Vorzeichen des entsprechenden Winkels, $\alpha$ beim Startpunkt beziehungsweise $\omega$ beim Zielpunkt, umgedreht. 
+\newpage
 \item Berechnung des Differenzwinkels $\varphi$:\\
 Mit Hilfe des Start und des Endwinkels kann nun der zu verfahrende Winkel berechnet werden.
+\begin{align*}
+\varphi = \omega - \alpha
+\end{align*}
+\item Überprüfung des Differenzwinkels $\varphi$:\\
+Der berechnete Differenzwinkel muss nun überprüft werden um die Richtung der Kreisbewegung festzulegen.
+\begin{itemize}
+\item $|\varphi| = 180$: Ist der Differenzwinkel exakt $180^\circ$ so wird die Bewegung gegen den Uhrzeigersinn durchgeführt.
+\item $\varphi > 180$: In diesem Fall ist der richtige Differenzwinkel $\varphi = |\varphi| - 360$
+\end{itemize}
 \begin{align*}
 \varphi = \omega - \alpha
 \end{align*}
@@ -169,13 +185,14 @@ s = \frac{2r \pi \varphi}{360}
 \cos \alpha & = \frac{d_{x\overrightarrow{MS}}}{r}\\
 \alpha & = \arccos \frac{d_{x\overrightarrow{MS}}}{r}
 \end{align*}
-\item Festlegen der Schrittanzahl:\\
+\item Festlegen der Schrittanzahl $n$:\\
 Mit Hilfe der Bogenlänge $s$ wird nun die Menge an berechneten Zwischenpunkten $n$ festgelegt, welche bei unserem Verfahren dem aufgerundeten Wert von  $s$ entspricht.
-\item Berechnung der Winkelsteigung:\\
+\item Berechnung der Winkelsteigung $k$:\\
 Nun wird der Differenzwinkel $\varphi$ durch die Schrittanzahl $n$ dividiert um die Winkelsteigung zu erhalten, welche nach jedem berechneten Zwischenpunkt zum Startwinkel addiert wird.
 \begin{align*}
 k & = \frac{\varphi}{n}
 \end{align*}
+\newpage
 \item Berechnung der Zwischenpunkte:\\
 In einer Schleife wird bei jeder Iteration die Winkelsteigung zum Startwinkel addiert und anschließend mit Hilfe desselben, in Punkt 5 beschriebenen, rechtwinkeligen Dreiecks berechnet. Die gesuchte $x$ beziehungsweise $y$-Koordinate des nächsten Zwischenpunkts wird über die Sinus- beziehungsweise Kosinusfunktion berechnet und zu der entsprechenden Koordinate des Mittelpunkts addiert.
 \begin{align*}
@@ -183,7 +200,39 @@ In einer Schleife wird bei jeder Iteration die Winkelsteigung zum Startwinkel ad
 x & = r \cos \alpha & y & = r \cos \alpha
 \end{align*}
 Die Winkelstellungen an einem spezifischen Zwischenpunkt werden mit Hilfe der inversen Kinematik berechnet. Das Ergebnis dieser Berechnung ist ein InterpolationStep-Objekt, welcher dem Angles-Property des InterpolationResult-Objekts hinzufügt wird. Da das Ergebnis des zuvor berechneten Punkts ebenfalls gespeichert wird, kann die Winkeldifferenz zwischen neuem und altem Punkt durch Subtraktion der InterpolationSteps berechnet werden. Dieser Wert wird dem Steps-Property des InterpolationResult-Objekt hinzufügt.
-\item Rückgabe des Ergebnisses
+\item Rückgabe des Ergebnisses\\
 Nachdem durch alle Zwischenpunkte iteriert wurde und das InterpolationResult-Objekt alle wichtigen Informationen aus den Berechnungen enthält, wird dieses an die aufrufende Methode zurückgegeben.
 \end{enumerate}
+
+\item \textbf{InterpolateConfigurationChange}\\
+Bei Aufruf der \textit{InterpolateConfiguration}-Methode wird eine Folge an Winkelschritten berechnet, die zur Neupositionierung der Achsen benötigt werden. Dazu erhält die Methode ein \textit{IAdapter}-Objekt sowie die neue Achskonfiguration in Form eines \textit{AxisConfiguration}-Objekts. 
+Die Berechnung sieht dabei wie folgt aus:
+\begin{enumerate}
+\item Prüfung der Zielwinkelstellung\\
+Bevor überhaupt mit der Berechnung von Zwischenschritten begonnen wird, wird überprüft ob am aktuellen Standort ein Neupositionierung stattfinden kann. 
+Dazu wird mit Hilfe der \textit{CalculateInverse}-Methode der \textit{Kinematics}-Klasse die möglichen Gelenkstellungen am derzeitigen \textit{ToolCenterPoint} ermittelt. Nun wird mit der \textit{AreAnglesValid}-Methode überprüft ob die Winkelstellungen der neuen Konfiguration zulässig sind.
+Ist dies nicht der Fall wird das \textit{OnFailure}-Event des mitgegebenen Adapter mit einer entsprechenden Meldung ausgelöst.
+\newpage
+\item Berechnung der Winkeldifferenzen $d_{\alpha_1}$ und $d_{\alpha_2}$:\\
+Da nun vorläufig feststeht, das eine Neupositionierung an diesem Punkt möglich ist, wird die Differenz zwischen derzeitig verwendeter Gelenkstellung und der Gelenkstellung der neuen Achskonfiguration ermittelt.
+\begin{align*}
+d_{\alpha_1} = \alpha_{1_{neu}} - \alpha_{1_{alt}}\\
+d_{\alpha_2} = \alpha_{2_{neu}} - \alpha_{2_{alt}}
+\end{align*}
+\item Berechnung der Schrittanzahl $n$:\\
+Nun wird von beiden Differenzen die größere gewählt und mit dem Faktor 10 multipliziert, um eine angemessene Anzahl an Winkelschritten zu erhalten.
+\item Berechnung der Winkelsteigungen $k_{\alpha_1}$ und $k_{\alpha_2}$:\\
+Mit Hilfe der jeweiligen Winkeldifferenz und der Schrittanzahl können nun die Winkelsteigungen und im Anschluss die Zwischenwinkel berechnet werden.
+\begin{align*}
+k_{\alpha_1} = \frac{d_{\alpha_1}}{n}\\
+k_{\alpha_2} = \frac{d_{\alpha_2}}{n}
+\end{align*}
+\item Berechnung der Zwischenpunkte:\\
+Da nun das benötigte Zahlenmaterial zur Berechnung der Zwischenpunkte vorhanden ist, werden diese in einer Schleife wie folgt berechnet:
+\begin{align*}
+\alpha_{1_n} = \alpha_{1_{alt}} + ik_{\alpha_1}\\
+\alpha_{2_n} = \alpha_{2_{alt}} + ik_{\alpha_2}
+\end{align*}
+\end{enumerate}
+Aus diesen Zwischenpunkten wird jeweils ein \textit{InterpolationStep}-Objekt erzeugt und einem \textit{InterpolationResult}-Objekt hinzugefügt, welches als Ergebnis zurückgegeben wird.
 \end{itemize}

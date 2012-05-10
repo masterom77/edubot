@@ -22,7 +22,7 @@ Die Methode besitzt keinen Rückgabewert (void) und übernimmt als ersten Parame
 \\
 Die vorhandenen Events sowie der Zeitpunkt an dem diese ausgelöst werden sind in den Kapiteln Adapter-System und Command-System bereits detailliert beschrieben, werden jedoch aus Gründen der Übersichtlichkeit jedoch in der nachstehenden Tabelle nochmals zusammengefasst.
 
-\begin{table}
+\begin{table}[H]
 \begin{tabular}{|p{5cm}|p{9cm}|}
 \hline \rowcolor{lightgray}
 \textbf{Ereignis} & \textbf{Zeitpunkt des Eintretens}\\
@@ -51,11 +51,11 @@ Bei Auslösen eines Events werden im args-Parameter Details zum Event übergeben
 \item \textbf{HomingEventArgs}
 Eine Instanz dieser Klasse wird beim Auslösen des OnHoming-Events mitgegeben und enthält ein Property \textbf{CorrectionAngle} um den die Winkelstellungen bei jedem Schritt korrigiert werden soll. Im Falle des EdubotAdapters, wäre dieser beispielsweise 0,1125$^\circ$, was der Winkeländerung bei Ausführen eines Microschritts durch den Schrittmotor entspricht.
 \item \textbf{FailureEventArgs}
-Eine Instanz dieser Klasse wird beim Auslösen des OnFailure-Events als Parameter mitgegeben und dient zur Behandlung von Laufzeitfehlern. Das Property \textbf{ThrownException} enthält ein Exception-Objekt mit detaillierten Informationen zum jeweiligen Fehler. \\
+Eine Instanz dieser Klasse wird beim Auslösen des OnFailure-Events als Parameter mitgegeben und dient zur Behandlung von Laufzeitfehlern. Das Property \textbf{ThrownException} enthält ein Exception-Objekt mit detaillierten Informationen zum jeweiligen Fehler. 
 \item \textbf{MovementStartedEventArgs}
-Eine Instanz dieser Klasse wird beim Auslösen des OnMovementStarted-Events als Parameter mitgegeben und enthält ein InterpolationResult-Objekt mit den, für die Bewegung benötigten, Winkelstellungen. Es kann vorkommen das dieses Objekt null ist, da nur für Adapter deren \textbf{UsesIntegratedPathCalculation}-Methode \textbf{true} zurückgibt ein entsprechendes Objekt erzeugt wird. \\
+Eine Instanz dieser Klasse wird beim Auslösen des OnMovementStarted-Events als Parameter mitgegeben und enthält ein InterpolationResult-Objekt mit den, für die Bewegung benötigten, Winkelstellungen. Es kann vorkommen das dieses Objekt null ist, da nur für Adapter deren \textbf{UsesIntegratedPathCalculation}-Methode \textbf{true} zurückgibt ein entsprechendes Objekt erzeugt wird. 
 \item \textbf{StateChangedEventArgs}
-Eine Instanz dieser Klasse wird beim Auslösen des OnStateChanged-Events als Parameter mitgegeben und enthält den alten sowie den neue Zustand des Adapters in Form eines State-Objekts. Somit kann die genaue Zustandveränderung leicht nachvollzogen werden.\\
+Eine Instanz dieser Klasse wird beim Auslösen des OnStateChanged-Events als Parameter mitgegeben und enthält den alten sowie den neue Zustand des Adapters in Form eines State-Objekts. Somit kann die genaue Zustandveränderung leicht nachvollzogen werden.
 \item \textbf{ToolUsedEventArgs}
-Eine Instanz dieser Klasse wird beim Auslösen des OnToolUsed-Events als Parameter mitgegeben und enthält einen Wert vom Typ Boolean der angibt ob das Werkzeug aktiviert oder deaktivert wurde.\\
+Eine Instanz dieser Klasse wird beim Auslösen des OnToolUsed-Events als Parameter mitgegeben und enthält einen Wert vom Typ Boolean der angibt ob das Werkzeug aktiviert oder deaktivert wurde.
 \end{itemize}

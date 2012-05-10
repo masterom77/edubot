@@ -10,308 +10,374 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{Abbildungsverzeichnis}{III}{section*.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{Verzeichnis der Listings}{IV}{section*.6}
+\contentsline {section}{Tabellenverzeichnis}{IV}{section*.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{Verzeichnis der Listings}{V}{section*.7}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1}Einleitung}{1}{section.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.1}Aufgabenstellung}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.1}Aufgabenstellung und Anforderungen}{1}{subsection.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.1.1}Anwendung}{1}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}Anwendung}{2}{subsubsection.1.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.1.2}Hardwareinterface - API}{2}{subsubsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.2}Hardwareinterface - API}{3}{subsubsection.1.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.1.3}Hardware}{3}{subsubsection.1.1.3}
+\contentsline {subsubsection}{\numberline {1.1.3}Hardware}{4}{subsubsection.1.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2}Projektumgebung}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.2}Projektumgebung}{5}{subsection.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.2.1}Projektteam}{4}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.1}Projektteam}{5}{subsubsection.1.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.2.2}Auftraggeber}{7}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.2}Auftraggeber}{9}{subsubsection.1.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.2.3}Betreuer}{7}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.3}Betreuer}{9}{subsubsection.1.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.3}Lizenz}{8}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.3}Lizenz}{9}{subsection.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4}Projektziele}{8}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.4}Projektablauf}{9}{subsection.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5}Projektablauf}{8}{subsection.1.5}
+\contentsline {subsection}{\numberline {1.5}Innovation}{11}{subsection.1.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.6}Innovation}{10}{subsection.1.6}
+\contentsline {subsection}{\numberline {1.6}Pers\IeC {\"o}nliche Erfahrung}{12}{subsection.1.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.7}Pers\IeC {\"o}nliche Erfahrung}{11}{subsection.1.7}
+\contentsline {section}{\numberline {2}Verwendete Technologien \& Werkzeuge}{14}{section.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Verwendete Technologien \& Werkzeuge}{13}{section.2}
+\contentsline {subsection}{\numberline {2.1}C\#}{14}{subsection.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}C\#}{13}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}.Net Framework}{15}{subsection.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}.Net Framework}{13}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Allgemein}{15}{subsubsection.2.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.2.1}Allgemein}{13}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Alternativen}{15}{subsubsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.2.2}Alternativen}{14}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}Einsatz im Projekt}{16}{subsubsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.2.3}Einsatz im Projekt}{14}{subsubsection.2.2.3}
+\contentsline {subsection}{\numberline {2.3}Windows Presentation Foundation}{16}{subsection.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Windows Presentation Foundation}{15}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Allgemein}{16}{subsubsection.2.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.3.1}Allgemein}{15}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}MVVM}{16}{subsubsection.2.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.3.2}MVVM}{15}{subsubsection.2.3.2}
+\contentsline {subsection}{\numberline {2.4}Visual Studio 2010}{17}{subsection.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.4}Visual Studio 2010}{16}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Allgemein}{17}{subsubsection.2.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.4.1}Allgemein}{16}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.2}Alternativen}{17}{subsubsection.2.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.4.2}Alternativen}{16}{subsubsection.2.4.2}
+\contentsline {subsubsection}{\numberline {2.4.3}Einsatz im Projekt}{19}{subsubsection.2.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.4.3}Einsatz im Projekt}{17}{subsubsection.2.4.3}
+\contentsline {subsection}{\numberline {2.5}Microsoft Expression Blend}{20}{subsection.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.5}LaTeX}{18}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}Allgemein}{20}{subsubsection.2.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.5.1}Allgemeines}{18}{subsubsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.2}Alternativen}{20}{subsubsection.2.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.5.2}Funktionsweise und Verwendete Software}{19}{subsubsection.2.5.2}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.5.3}Merkmale und Entscheidungskriterien}{19}{subsubsection.2.5.3}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.5.4}Alternativen}{20}{subsubsection.2.5.4}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.6}Subversion}{21}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.6}.Net Micro Framework}{21}{subsection.2.6}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {2.6.1}Allgemein}{21}{subsubsection.2.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.6.2}Tortoise SVN}{22}{subsubsection.2.6.2}
+\contentsline {subsubsection}{\numberline {2.6.2}Alternativen und Auswahlkriterien}{21}{subsubsection.2.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.6.3}Alternativen}{22}{subsubsection.2.6.3}
+\contentsline {subsubsection}{\numberline {2.6.3}Einsatz im Projekt}{21}{subsubsection.2.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7}Google SketchUp}{23}{subsection.2.7}
+\contentsline {subsection}{\numberline {2.7}GHI Softwarekomponenten}{22}{subsection.2.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.7.1}Allgemein}{23}{subsubsection.2.7.1}
+\contentsline {subsubsection}{\numberline {2.7.1}GHI NETMF SDK}{22}{subsubsection.2.7.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.7.2}Einsatz im Projekt}{23}{subsubsection.2.7.2}
+\contentsline {subsubsection}{\numberline {2.7.2}GHI USB Treiber}{22}{subsubsection.2.7.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.7.3}Auswahlkriterien und Alternativen}{23}{subsubsection.2.7.3}
+\contentsline {subsection}{\numberline {2.8}KeStudio}{22}{subsection.2.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.8}Microsoft Expression Blend}{24}{subsection.2.8}
+\contentsline {subsubsection}{\numberline {2.8.1}Allgemein}{22}{subsubsection.2.8.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.8.1}Allgemein}{24}{subsubsection.2.8.1}
+\contentsline {subsubsection}{\numberline {2.8.2}CoDeSys}{22}{subsubsection.2.8.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.8.2}Alternativen}{24}{subsubsection.2.8.2}
+\contentsline {subsubsection}{\numberline {2.8.3}Alternativen}{23}{subsubsection.2.8.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.9}.Net Micro Framework}{24}{subsection.2.9}
+\contentsline {subsubsection}{\numberline {2.8.4}Einsatz im Projekt}{23}{subsubsection.2.8.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.9.1}Allgemein}{24}{subsubsection.2.9.1}
+\contentsline {subsection}{\numberline {2.9}OSCAT Library}{23}{subsection.2.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.9.2}Einsatz im Projekt}{25}{subsubsection.2.9.2}
+\contentsline {subsubsection}{\numberline {2.9.1}Allgemein}{23}{subsubsection.2.9.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.9.3}Alternativen und Auswahlkriterien}{25}{subsubsection.2.9.3}
+\contentsline {subsubsection}{\numberline {2.9.2}Einsatz im Projekt}{24}{subsubsection.2.9.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.10}GoogleDocs}{25}{subsection.2.10}
+\contentsline {subsection}{\numberline {2.10}WinNC}{24}{subsection.2.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.10.1}Allgemein}{25}{subsubsection.2.10.1}
+\contentsline {subsubsection}{\numberline {2.10.1}Allgemein}{24}{subsubsection.2.10.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.10.2}Einsatz im Projekt}{26}{subsubsection.2.10.2}
+\contentsline {subsubsection}{\numberline {2.10.2}Einsatz im Projekt}{24}{subsubsection.2.10.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.10.3}Alternativen}{26}{subsubsection.2.10.3}
+\contentsline {subsection}{\numberline {2.11}Subversion}{25}{subsection.2.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.11}Scrum}{26}{subsection.2.11}
+\contentsline {subsubsection}{\numberline {2.11.1}Allgemein}{25}{subsubsection.2.11.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.11.1}Allgemein}{26}{subsubsection.2.11.1}
+\contentsline {subsubsection}{\numberline {2.11.2}Tortoise SVN}{25}{subsubsection.2.11.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.11.2}Scrum mit Pangoscrum}{28}{subsubsection.2.11.2}
+\contentsline {subsubsection}{\numberline {2.11.3}Alternativen}{26}{subsubsection.2.11.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.11.3}Einsatz im Projekt}{28}{subsubsection.2.11.3}
+\contentsline {subsection}{\numberline {2.12}Google Docs}{26}{subsection.2.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Komponenten der Anwendung}{29}{section.3}
+\contentsline {subsubsection}{\numberline {2.12.1}Allgemein}{26}{subsubsection.2.12.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}Grafische Oberfl\IeC {\"a}che}{29}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {2.12.2}Einsatz im Projekt}{27}{subsubsection.2.12.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}Aufgaben}{29}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {2.12.3}Alternativen}{27}{subsubsection.2.12.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Aufbau}{29}{subsection.3.3}
+\contentsline {subsection}{\numberline {2.13}Google SketchUp}{28}{subsection.2.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Umsetzung}{29}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {2.13.1}Allgemein}{28}{subsubsection.2.13.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Bedienung}{30}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {2.13.2}Einsatz im Projekt}{28}{subsubsection.2.13.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.6}Visualisierung}{33}{subsection.3.6}
+\contentsline {subsubsection}{\numberline {2.13.3}Auswahlkriterien und Alternativen}{28}{subsubsection.2.13.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.6.1}Aufgaben}{33}{subsubsection.3.6.1}
+\contentsline {subsection}{\numberline {2.14}Google Code}{29}{subsection.2.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.6.2}Allgemeines und Aufbau}{33}{subsubsection.3.6.2}
+\contentsline {subsubsection}{\numberline {2.14.1}Allgemein}{29}{subsubsection.2.14.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.6.3}Anfertigung und Vorbereitung der Modelle}{34}{subsubsection.3.6.3}
+\contentsline {subsubsection}{\numberline {2.14.2}Verwendung im Projekt}{29}{subsubsection.2.14.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.6.4}Programmierung der Animation}{35}{subsubsection.3.6.4}
+\contentsline {subsection}{\numberline {2.15}Scrum}{29}{subsection.2.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.7}Kommandozeile}{37}{subsection.3.7}
+\contentsline {subsubsection}{\numberline {2.15.1}Allgemein}{29}{subsubsection.2.15.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.7.1}Aufgaben}{37}{subsubsection.3.7.1}
+\contentsline {subsubsection}{\numberline {2.15.2}Scrum mit Pangoscrum}{31}{subsubsection.2.15.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.7.2}Aufbau}{37}{subsubsection.3.7.2}
+\contentsline {subsubsection}{\numberline {2.15.3}Einsatz im Projekt}{31}{subsubsection.2.15.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.7.3}Bedienung der Oberfl\IeC {\"a}che}{38}{subsubsection.3.7.3}
+\contentsline {subsection}{\numberline {2.16}LaTeX}{32}{subsection.2.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.7.4}Umsetzung}{38}{subsubsection.3.7.4}
+\contentsline {subsubsection}{\numberline {2.16.1}Allgemeines}{32}{subsubsection.2.16.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.8}Zeichenfl\IeC {\"a}che}{42}{subsection.3.8}
+\contentsline {subsubsection}{\numberline {2.16.2}Funktionsweise und Verwendete Software}{32}{subsubsection.2.16.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.8.1}Aufgaben}{42}{subsubsection.3.8.1}
+\contentsline {subsubsection}{\numberline {2.16.3}Merkmale und Entscheidungskriterien}{33}{subsubsection.2.16.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.8.2}Aufbau}{42}{subsubsection.3.8.2}
+\contentsline {subsubsection}{\numberline {2.16.4}Alternativen}{34}{subsubsection.2.16.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.8.3}Bedienung der Oberfl\IeC {\"a}che}{43}{subsubsection.3.8.3}
+\contentsline {subsection}{\numberline {2.17}HelpNDoc}{35}{subsection.2.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.8.4}Umsetzung der Zeichenfunktion}{44}{subsubsection.3.8.4}
+\contentsline {subsubsection}{\numberline {2.17.1}Allgemein}{35}{subsubsection.2.17.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.8.5}Umsetzung der Undo/Redo-Funktion}{48}{subsubsection.3.8.5}
+\contentsline {subsubsection}{\numberline {2.17.2}Alternativen}{35}{subsubsection.2.17.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.9}Einstellungen}{51}{subsection.3.9}
+\contentsline {subsubsection}{\numberline {2.17.3}Einsatz im Projekt}{35}{subsubsection.2.17.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.9.1}Aufgaben}{51}{subsubsection.3.9.1}
+\contentsline {section}{\numberline {3}Komponenten der Anwendung}{36}{section.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.9.2}Aufbau}{51}{subsubsection.3.9.2}
+\contentsline {subsection}{\numberline {3.1}Grafische Oberfl\IeC {\"a}che}{36}{subsection.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.9.3}Bedienung der Oberfl\IeC {\"a}che}{51}{subsubsection.3.9.3}
+\contentsline {subsubsection}{\numberline {3.1.1}Aufgaben}{36}{subsubsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.9.4}Umsetzung}{52}{subsubsection.3.9.4}
+\contentsline {subsubsection}{\numberline {3.1.2}Aufbau}{36}{subsubsection.3.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.10}Handbuch}{57}{subsection.3.10}
+\contentsline {subsubsection}{\numberline {3.1.3}Umsetzung}{36}{subsubsection.3.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.10.1}Aufgaben}{57}{subsubsection.3.10.1}
+\contentsline {subsubsection}{\numberline {3.1.4}Bedienung}{37}{subsubsection.3.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.10.2}Aufbau}{57}{subsubsection.3.10.2}
+\contentsline {subsection}{\numberline {3.2}Visualisierung}{39}{subsection.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.10.3}Bedienung der Oberfl\IeC {\"a}che}{57}{subsubsection.3.10.3}
+\contentsline {subsubsection}{\numberline {3.2.1}Aufgaben}{39}{subsubsection.3.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {3.10.4}Umsetzung}{58}{subsubsection.3.10.4}
+\contentsline {subsubsection}{\numberline {3.2.2}Allgemeines und Aufbau}{39}{subsubsection.3.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Komponenten der API}{59}{section.4}
+\contentsline {subsubsection}{\numberline {3.2.3}Anfertigung und Vorbereitung der Modelle}{40}{subsubsection.3.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Die Edubot-Klasse}{59}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {3.2.4}Allgemeine Programmierung der Animation}{41}{subsubsection.3.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.1.1}Aufgaben}{59}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {3.2.5}Programmierung der 2D-Animation}{45}{subsubsection.3.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.1.2}Aufbau}{59}{subsubsection.4.1.2}
+\contentsline {subsection}{\numberline {3.3}Kommandozeile}{47}{subsection.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.1.3}Umsetzung}{59}{subsubsection.4.1.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Aufgaben}{47}{subsubsection.3.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Adapter-System}{63}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {3.3.2}Aufbau}{47}{subsubsection.3.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.1}Aufgaben}{63}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {3.3.3}Bedienung der Oberfl\IeC {\"a}che}{48}{subsubsection.3.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.2}Aufbau}{63}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {3.3.4}Umsetzung}{48}{subsubsection.3.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.2.3}Umsetzung}{63}{subsubsection.4.2.3}
+\contentsline {subsection}{\numberline {3.4}Zeichenfl\IeC {\"a}che}{51}{subsection.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Listener-System}{78}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {3.4.1}Aufgaben}{51}{subsubsection.3.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.1}Aufgaben}{78}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Aufbau}{51}{subsubsection.3.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.2}Aufbau}{78}{subsubsection.4.3.2}
+\contentsline {subsubsection}{\numberline {3.4.3}Bedienung der Oberfl\IeC {\"a}che}{53}{subsubsection.3.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.3}Umsetzung}{79}{subsubsection.4.3.3}
+\contentsline {subsubsection}{\numberline {3.4.4}Umsetzung der Zeichenfunktion}{54}{subsubsection.3.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4}Zustands-System}{82}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {3.4.5}Umsetzung der Befehlsgenerierung}{58}{subsubsection.3.4.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.4.1}Aufgaben}{82}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {3.4.6}Umsetzung der Undo/Redo-Funktion}{58}{subsubsection.3.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.4.2}Aufbau}{82}{subsubsection.4.4.2}
+\contentsline {subsection}{\numberline {3.5}Einstellungen}{61}{subsection.3.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.4.3}Umsetzung}{82}{subsubsection.4.4.3}
+\contentsline {subsubsection}{\numberline {3.5.1}Aufgaben}{61}{subsubsection.3.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5}Kommando-System}{85}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {3.5.2}Aufbau}{61}{subsubsection.3.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.5.1}Aufgaben}{85}{subsubsection.4.5.1}
+\contentsline {subsubsection}{\numberline {3.5.3}Bedienung der Oberfl\IeC {\"a}che}{62}{subsubsection.3.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.5.2}Aufbau}{85}{subsubsection.4.5.2}
+\contentsline {subsubsection}{\numberline {3.5.4}Umsetzung}{63}{subsubsection.3.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.5.3}Umsetzung}{86}{subsubsection.4.5.3}
+\contentsline {subsection}{\numberline {3.6}Handbuch}{67}{subsection.3.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6}Event-System}{90}{subsection.4.6}
+\contentsline {subsubsection}{\numberline {3.6.1}Aufgaben}{67}{subsubsection.3.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.6.1}Aufgaben}{90}{subsubsection.4.6.1}
+\contentsline {subsubsection}{\numberline {3.6.2}Aufbau}{68}{subsubsection.3.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.6.2}Aufbau}{90}{subsubsection.4.6.2}
+\contentsline {subsubsection}{\numberline {3.6.3}Bedienung der Oberfl\IeC {\"a}che}{68}{subsubsection.3.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.6.3}Umsetzung}{90}{subsubsection.4.6.3}
+\contentsline {subsubsection}{\numberline {3.6.4}Umsetzung}{68}{subsubsection.3.6.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.7}Kinematik}{93}{subsection.4.7}
+\contentsline {section}{\numberline {4}Komponenten der API}{70}{section.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.7.1}Aufgaben}{93}{subsubsection.4.7.1}
+\contentsline {subsection}{\numberline {4.1}Die Edubot-Klasse}{70}{subsection.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.7.2}Aufbau}{93}{subsubsection.4.7.2}
+\contentsline {subsubsection}{\numberline {4.1.1}Aufgaben}{70}{subsubsection.4.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.7.3}Umsetzung}{93}{subsubsection.4.7.3}
+\contentsline {subsubsection}{\numberline {4.1.2}Aufbau}{70}{subsubsection.4.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.8}Interpolation}{99}{subsection.4.8}
+\contentsline {subsubsection}{\numberline {4.1.3}Umsetzung}{70}{subsubsection.4.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.8.1}Aufgaben}{99}{subsubsection.4.8.1}
+\contentsline {subsection}{\numberline {4.2}Adapter-System}{73}{subsection.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.8.2}Aufbau}{99}{subsubsection.4.8.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Aufgaben}{73}{subsubsection.4.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.8.3}Umsetzung}{99}{subsubsection.4.8.3}
+\contentsline {subsubsection}{\numberline {4.2.2}Aufbau}{73}{subsubsection.4.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Komponenten des Edubot Modells}{107}{section.5}
+\contentsline {subsubsection}{\numberline {4.2.3}Umsetzung}{73}{subsubsection.4.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.1}Allgemein}{107}{subsection.5.1}
+\contentsline {subsection}{\numberline {4.3}Listener-System}{88}{subsection.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.1.1}Funktionen}{107}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {4.3.1}Aufgaben}{88}{subsubsection.4.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.1.2}Bedienung}{107}{subsubsection.5.1.2}
+\contentsline {subsubsection}{\numberline {4.3.2}Aufbau}{88}{subsubsection.4.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2}Elektronik}{107}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {4.3.3}Umsetzung}{89}{subsubsection.4.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.2.1}Motoren und Steuerungen}{108}{subsubsection.5.2.1}
+\contentsline {subsection}{\numberline {4.4}Zustands-System}{92}{subsection.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3}Mikrocontroller}{109}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {4.4.1}Aufgaben}{92}{subsubsection.4.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.1}Allgemein}{109}{subsubsection.5.3.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Aufbau}{92}{subsubsection.4.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.2}Die Klasse Executer}{111}{subsubsection.5.3.2}
+\contentsline {subsubsection}{\numberline {4.4.3}Umsetzung}{92}{subsubsection.4.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.3}Der Taktgeber}{113}{subsubsection.5.3.3}
+\contentsline {subsection}{\numberline {4.5}Kommando-System}{95}{subsection.4.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.4}Die Engine Klasse}{113}{subsubsection.5.3.4}
+\contentsline {subsubsection}{\numberline {4.5.1}Aufgaben}{95}{subsubsection.4.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.5}Die ThreadManager Klasse}{114}{subsubsection.5.3.5}
+\contentsline {subsubsection}{\numberline {4.5.2}Aufbau}{95}{subsubsection.4.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.6}Der Homing Algorithmus}{115}{subsubsection.5.3.6}
+\contentsline {subsubsection}{\numberline {4.5.3}Umsetzung}{96}{subsubsection.4.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Konstruktion der Mechanik}{116}{subsection.5.4}
+\contentsline {subsection}{\numberline {4.6}Event-System}{100}{subsection.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.5}Bau der Mechanik}{118}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {4.6.1}Aufgaben}{100}{subsubsection.4.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.5.1}Planung und Bau der Elektronik}{119}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {4.6.2}Aufbau}{100}{subsubsection.4.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.6}Kostenaufstellung}{120}{subsection.5.6}
+\contentsline {subsubsection}{\numberline {4.6.3}Umsetzung}{101}{subsubsection.4.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7}Verbesserungsm\IeC {\"o}glichkeiten}{121}{subsection.5.7}
+\contentsline {subsection}{\numberline {4.7}Kinematik}{102}{subsection.4.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Komponenten des KEBA Modells}{122}{section.6}
+\contentsline {subsubsection}{\numberline {4.7.1}Aufgaben}{102}{subsubsection.4.7.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.1}Allgemein}{122}{subsection.6.1}
+\contentsline {subsubsection}{\numberline {4.7.2}Aufbau}{103}{subsubsection.4.7.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.1.1}Vorhandene Software}{122}{subsubsection.6.1.1}
+\contentsline {subsubsection}{\numberline {4.7.3}Umsetzung}{103}{subsubsection.4.7.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.1.2}Vorhandene Hardware}{122}{subsubsection.6.1.2}
+\contentsline {subsection}{\numberline {4.8}Interpolation}{110}{subsection.4.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2}Motoren}{122}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {4.8.1}Aufgaben}{110}{subsubsection.4.8.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.3}Netzwerkschnittstell}{123}{subsection.6.3}
+\contentsline {subsubsection}{\numberline {4.8.2}Aufbau}{110}{subsubsection.4.8.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.3.1}OSCAT Library}{123}{subsubsection.6.3.1}
+\contentsline {subsubsection}{\numberline {4.8.3}Umsetzung}{110}{subsubsection.4.8.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.3.2}Implementierung}{123}{subsubsection.6.3.2}
+\contentsline {section}{\numberline {5}Komponenten des Edubot Modells}{120}{section.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.3.3}Ablauf der Netzwerkkommunikation}{124}{subsubsection.6.3.3}
+\contentsline {subsection}{\numberline {5.1}Allgemein}{120}{subsection.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4}Konstruktion des Modells}{125}{subsection.6.4}
+\contentsline {subsubsection}{\numberline {5.1.1}Aufgaben}{120}{subsubsection.5.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.4.1}Allgemein}{125}{subsubsection.6.4.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Funktionen}{120}{subsubsection.5.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {6.4.2}Gelenke}{126}{subsubsection.6.4.2}
+\contentsline {subsubsection}{\numberline {5.1.3}Bedienung}{121}{subsubsection.5.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5}CNC Programmierung}{126}{subsection.6.5}
+\contentsline {subsection}{\numberline {5.2}Elektronik}{122}{subsection.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{Literatur}{VI}{section*.29}
+\contentsline {subsubsection}{\numberline {5.2.1}Motoren und Steuerungen}{122}{subsubsection.5.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.3}Mikrocontroller}{124}{subsection.5.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.1}Allgemein}{124}{subsubsection.5.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.2}Aufbau}{126}{subsubsection.5.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.3}Die Executer Klasse}{126}{subsubsection.5.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.4}Die Engine Klasse}{130}{subsubsection.5.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.5}Die ThreadManager Klasse}{131}{subsubsection.5.3.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.3.6}Der Homing Algorithmus}{132}{subsubsection.5.3.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.4}Konstruktion der Mechanik}{134}{subsection.5.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.5}Bau der Mechanik}{137}{subsection.5.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.5.1}Planung und Bau der Elektronik}{139}{subsubsection.5.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.6}Kostenaufstellung}{141}{subsection.5.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.7}Verbesserungsm\IeC {\"o}glichkeiten}{141}{subsection.5.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6}Komponenten des KEBA Modells}{142}{section.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.1}Allgemein}{142}{subsection.6.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.1.1}Erstellte Software}{142}{subsubsection.6.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.1.2}Vorhandene Hardware}{142}{subsubsection.6.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.2}Motoren}{142}{subsection.6.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.3}Netzwerkschnittstelle}{143}{subsection.6.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.1}Allgemein}{143}{subsubsection.6.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.2}Aufbau}{143}{subsubsection.6.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.3}Umsetzung}{144}{subsubsection.6.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.4}Ablauf des Datenempfangs}{145}{subsubsection.6.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.5}Hilfsfunktionen}{147}{subsubsection.6.3.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.3.6}Der R\IeC {\"u}ckmelde-Prozess}{149}{subsubsection.6.3.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4}Motoransteuerung}{150}{subsection.6.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.4.1}Vorgehensweise}{150}{subsubsection.6.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.4.2}Basiseinstellungen}{150}{subsubsection.6.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.4.3}Der Motion Task}{151}{subsubsection.6.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.4.4}Das UserUpdate Programm}{151}{subsubsection.6.4.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.5}Konstruktion des Modells}{153}{subsection.6.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.5.1}Allgemein}{153}{subsubsection.6.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.5.2}Gelenke}{154}{subsubsection.6.5.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {6.5.3}CNC Programmierung}{155}{subsubsection.6.5.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.6}Sonstige \IeC {\"U}berlegungen}{155}{subsection.6.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{Literatur}{VI}{section*.47}

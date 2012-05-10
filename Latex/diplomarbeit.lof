@@ -2,46 +2,70 @@
 \defcounter {refsection}{0}\relax 
 \select@language {german}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1}{\ignorespaces Gesamtkonzept\relax }}{1}{figure.caption.7}
+\contentsline {figure}{\numberline {1}{\ignorespaces Gesamtkonzept\relax }}{1}{figure.caption.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2}{\ignorespaces Benutzeroberfl\IeC {\"a}che\relax }}{30}{figure.caption.8}
+\contentsline {figure}{\numberline {2}{\ignorespaces Benutzeroberfl\IeC {\"a}che\relax }}{37}{figure.caption.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3}{\ignorespaces Visualisierungs-Modelle\relax }}{33}{figure.caption.9}
+\contentsline {figure}{\numberline {3}{\ignorespaces Visualisierungs-Modelle\relax }}{40}{figure.caption.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4}{\ignorespaces Die Kommandozeile\relax }}{38}{figure.caption.10}
+\contentsline {figure}{\numberline {4}{\ignorespaces Die Kommandozeile\relax }}{48}{figure.caption.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5}{\ignorespaces Die Zeichenfl\IeC {\"a}che\relax }}{43}{figure.caption.11}
+\contentsline {figure}{\numberline {5}{\ignorespaces Die Zeichenfl\IeC {\"a}che\relax }}{53}{figure.caption.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {6}{\ignorespaces Der Einstellungen-Tab\relax }}{51}{figure.caption.12}
+\contentsline {figure}{\numberline {6}{\ignorespaces Der Einstellungen-Tab\relax }}{62}{figure.caption.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {7}{\ignorespaces Das Handbuch\relax }}{57}{figure.caption.13}
+\contentsline {figure}{\numberline {7}{\ignorespaces Das Handbuch\relax }}{68}{figure.caption.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {8}{\ignorespaces Bedeutung der IAdapter-Properties\relax }}{65}{figure.caption.14}
+\contentsline {figure}{\numberline {8}{\ignorespaces Bedeutung der IAdapter-Properties\relax }}{76}{figure.caption.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9}{\ignorespaces Listener Konzept\relax }}{78}{figure.caption.15}
+\contentsline {figure}{\numberline {9}{\ignorespaces Listener Konzept\relax }}{89}{figure.caption.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10}{\ignorespaces Ausgangssituation\relax }}{85}{figure.caption.16}
+\contentsline {figure}{\numberline {10}{\ignorespaces Ausgangssituation\relax }}{95}{figure.caption.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {11}{\ignorespaces Eintreffen eines neuen Befehls\relax }}{86}{figure.caption.17}
+\contentsline {figure}{\numberline {11}{\ignorespaces Eintreffen eines neuen Befehls\relax }}{96}{figure.caption.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {12}{\ignorespaces Warteschlangen-System\relax }}{86}{figure.caption.18}
+\contentsline {figure}{\numberline {12}{\ignorespaces Warteschlangen-System\relax }}{96}{figure.caption.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {13}{\ignorespaces Skizze zur direkten Kinematik\relax }}{94}{figure.caption.19}
+\contentsline {figure}{\numberline {13}{\ignorespaces Skizze zur direkten Kinematik\relax }}{103}{figure.caption.23}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {14}{\ignorespaces Skizze zur inversen Kinematik\relax }}{96}{figure.caption.20}
+\contentsline {figure}{\numberline {14}{\ignorespaces Skizze zur inversen Kinematik\relax }}{106}{figure.caption.24}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {15}{\ignorespaces Stringformat der InterpolationResult-Klasse in Winkel\relax }}{100}{figure.caption.21}
+\contentsline {figure}{\numberline {15}{\ignorespaces Darstellung der Achskonfigurationen\relax }}{109}{figure.caption.25}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {16}{\ignorespaces Stringformat der InterpolationResult-Klasse in Schritten\relax }}{100}{figure.caption.22}
+\contentsline {figure}{\numberline {16}{\ignorespaces Stringformat der InterpolationResult-Klasse in Winkel\relax }}{111}{figure.caption.26}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {17}{\ignorespaces Stringformat der InterpolationStep-Klasse\relax }}{101}{figure.caption.23}
+\contentsline {figure}{\numberline {17}{\ignorespaces Stringformat der InterpolationResult-Klasse in Schritten\relax }}{112}{figure.caption.27}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {18}{\ignorespaces Skizze zur linearen Interpolation\relax }}{102}{figure.caption.24}
+\contentsline {figure}{\numberline {18}{\ignorespaces Stringformat der InterpolationStep-Klasse\relax }}{112}{figure.caption.28}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {19}{\ignorespaces Skizze zur zirkularen Interpolation\relax }}{104}{figure.caption.25}
+\contentsline {figure}{\numberline {19}{\ignorespaces Skizze zur linearen Interpolation\relax }}{113}{figure.caption.29}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {20}{\ignorespaces Schematische Darstellung der Elektronik\relax }}{108}{figure.caption.26}
+\contentsline {figure}{\numberline {20}{\ignorespaces Skizze zur zirkularen Interpolation\relax }}{115}{figure.caption.30}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {21}{\ignorespaces 3D Modell der Konstruktion\relax }}{116}{figure.caption.27}
+\contentsline {figure}{\numberline {21}{\ignorespaces Das Edubot Modell\relax }}{120}{figure.caption.31}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {22}{\ignorespaces Gelenk der prim\IeC {\"a}ren Achse\relax }}{117}{figure.caption.28}
+\contentsline {figure}{\numberline {22}{\ignorespaces Schematische Darstellung der Elektronik\relax }}{122}{figure.caption.32}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {23}{\ignorespaces Der verwendete Mikrocontroler\relax }}{124}{figure.caption.33}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {24}{\ignorespaces Der Aufbau der Steuerungssoftware\relax }}{126}{figure.caption.34}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {25}{\ignorespaces Das Finden der Grenze der sekund\IeC {\"a}ren Achse\relax }}{133}{figure.caption.36}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {26}{\ignorespaces Das Finden der Grenze der prim\IeC {\"a}ren Achse\relax }}{134}{figure.caption.37}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {27}{\ignorespaces 3D Modell der Konstruktion\relax }}{135}{figure.caption.38}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {28}{\ignorespaces Gelenk der prim\IeC {\"a}ren Achse\relax }}{136}{figure.caption.39}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {29}{\ignorespaces Die Verbindung zum prim\IeC {\"a}ren Motor\relax }}{137}{figure.caption.40}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {30}{\ignorespaces Das erste Gelenke (ohne Achse)\relax }}{138}{figure.caption.41}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {31}{\ignorespaces Der Klemmmechanismus der Achse\relax }}{138}{figure.caption.42}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {32}{\ignorespaces Die Kontaktstelle f\IeC {\"u}r die prim\IeC {\"a}re Achse\relax }}{140}{figure.caption.43}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {33}{\ignorespaces Basiskonfiguration des sekund\IeC {\"a}ren Motors\relax }}{151}{figure.caption.45}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {34}{\ignorespaces Screenshot eines CNC Programms in WinNC\relax }}{155}{figure.caption.46}
