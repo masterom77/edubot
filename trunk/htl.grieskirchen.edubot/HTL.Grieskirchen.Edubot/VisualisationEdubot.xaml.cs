@@ -218,7 +218,7 @@ namespace HTL.Grieskirchen.Edubot
         private void StartHoming(object sender, EventArgs args)
         {
             animationThread = new System.Threading.Thread(Home);
-            animationThread.Priority = ThreadPriority.AboveNormal;
+            animationThread.Priority = ThreadPriority.Normal;
             animationThread.Start(args);
         }
 

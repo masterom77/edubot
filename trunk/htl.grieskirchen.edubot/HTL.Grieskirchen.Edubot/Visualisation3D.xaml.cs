@@ -49,6 +49,10 @@ namespace HTL.Grieskirchen.Edubot
         private System.Threading.Thread animationThread;
         private List<Point> drawnPoints;
         private double tertiarySpeed;
+        private ScaleTransform3D primaryScale;
+        private TranslateTransform3D primaryOffset;
+        private ScaleTransform3D secondaryScale;
+        private TranslateTransform3D secondaryOffset;
 
         #region ---------------------Properties---------------------
 
@@ -69,29 +73,7 @@ namespace HTL.Grieskirchen.Edubot
             get { return visualisationAdapter; }
         }
 
-        //public void SetVisualisationAdapter(VirtualAdapter adapter)
-        //{
-        //    if (visualisationAdapter != null) {
-        //        RemoveVisualisationAdapter();
-        //    }
-        //    visualisationAdapter = adapter;
-        //    visualisationAdapter.OnAbort += StopAnimation;
-        //    visualisationAdapter.OnMovementStarted += StartMoving;
-        //    visualisationAdapter.OnHoming += StartHoming;
-        //    visualisationAdapter.OnToolUsed += UseTool;
-        //    InvalidateVisual();
-        //}
-
-        //public VirtualAdapter RemoveVisualisationAdapter()
-        //{
-        //    visualisationAdapter.OnAbort -= StopAnimation;
-        //    visualisationAdapter.OnMovementStarted -= StartMoving;
-        //    visualisationAdapter.OnHoming -= StartHoming;
-        //    visualisationAdapter.OnToolUsed -= UseTool;
-        //    InvalidateVisual();
-        //    return visualisationAdapter;
-        //}
-
+        
         private void UseTool(object sender, EventArgs args)
         {
             visualisationAdapter.SetState(State.READY);
@@ -190,15 +172,16 @@ namespace HTL.Grieskirchen.Edubot
             {
                 UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
                 UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-                UpdateCallback updateTertiaryAngle = new UpdateCallback(UpdateTertiaryAxis);
-                float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
+                //UpdateCallback updateTertiaryAngle = new UpdateCallback(UpdateTertiaryAxis);
+                float ticks = 5;
+
                 foreach (InterpolationStep step in result.Angles)
                 {
                     ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
                     System.Threading.Thread.Sleep((int)ticks);
                     Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
                     Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
-                    Dispatcher.Invoke(updateTertiaryAngle, result.Angles.Count);
+                    //Dispatcher.Invoke(updateTertiaryAngle, result.Angles.Count);
                 }
                 visualisationAdapter.SetState(API.State.READY);
             }
@@ -254,16 +237,22 @@ namespace HTL.Grieskirchen.Edubot
             get { return anglePrimaryAxis; }
             set
             {
-                Transform3DGroup transformGroup = new Transform3DGroup();
-                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(0, 0, 0)));
+                RotateTransform3D rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(0, 0, 0));
+                Transform3DGroup transformPrimary = new Transform3DGroup();
+                if (primaryScale != null)
+                    transformPrimary.Children.Add(primaryScale); //First Scaling
+                transformPrimary.Children.Add(rotateTransform); //Then Rotating
+                MeshPrimaryAxis.Transform = transformPrimary;
 
-
-                MeshPrimaryAxis.Transform = transformGroup;
-                MeshSecondaryEngine.Transform = transformGroup;
-                MeshPen.Transform = transformGroup;
+                Transform3DGroup transformSecondary = new Transform3DGroup();
+                if (primaryOffset != null)
+                    transformSecondary.Children.Add(primaryOffset);
+                transformSecondary.Children.Add(rotateTransform);
+                MeshSecondaryEngine.Transform = transformSecondary;
+                MeshPen.Transform = transformSecondary;
                 //MeshPen2.Transform = transformGroup;
-                MeshSecondaryAxis.Transform = transformGroup;
-                posSecondaryEngine = transformGroup.TransformBounds(MeshSecondaryEngine.Content.Bounds);
+                MeshSecondaryAxis.Transform = transformSecondary;
+                posSecondaryEngine = transformSecondary.TransformBounds(MeshSecondaryEngine.Content.Bounds);
 
 
                 anglePrimaryAxis = value;
@@ -276,15 +265,24 @@ namespace HTL.Grieskirchen.Edubot
             get { return angleSecondaryAxis; }
             set
             {
-                //int dir = value < 0 ? -1 : 1;
-                Transform3DGroup transformGroup = new Transform3DGroup();
-                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis)));
-                transformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2)));
+                RotateTransform3D rotateTransform1 = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), AnglePrimaryAxis), new System.Windows.Media.Media3D.Point3D(0, 0, 0));
+                RotateTransform3D rotateTransform2 = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), value), new System.Windows.Media.Media3D.Point3D(posSecondaryEngine.Location.X + posSecondaryEngine.SizeX / 2, posSecondaryEngine.Location.Y - posSecondaryEngine.SizeY, posSecondaryEngine.Location.Z + posSecondaryEngine.SizeZ / 2));
 
-                
-                MeshPen.Transform = transformGroup;
+                Transform3DGroup transformRotate = new Transform3DGroup();
+                transformRotate.Children.Add(rotateTransform1);
+                transformRotate.Children.Add(rotateTransform2);
+
+                Transform3DGroup transformSecondary = new Transform3DGroup();
+                if (secondaryScale != null)
+                    transformSecondary.Children.Add(secondaryScale);
+                if (primaryOffset != null)
+                    transformSecondary.Children.Add(primaryOffset);
+                transformSecondary.Children.Add(transformRotate);
+
+
+                MeshPen.Transform = transformRotate;
                 //MeshPen2.Transform = transformGroup;
-                MeshSecondaryAxis.Transform = transformGroup;
+                MeshSecondaryAxis.Transform = transformSecondary;
 
 
                 angleSecondaryAxis = value;
@@ -313,29 +311,6 @@ namespace HTL.Grieskirchen.Edubot
             }
         }
 
-        //private void StartAnimation()
-        //{
-        //    try
-        //    {
-        //        UpdateCallback updatePrimaryAngle = new UpdateCallback(UpdatePrimaryAxis);
-        //        UpdateCallback updateSecondaryAngle = new UpdateCallback(UpdateSecondaryAxis);
-        //        UpdateCallback updateTertiaryPosition = new UpdateCallback(UpdateTertiaryAxis);
-        //        float ticks = 5;// = MAX_SPEED + 10 - (((float)MAX_SPEED / 100) * configuration.Speed);
-        //        foreach (InterpolationStep step in angles)
-        //        {
-        //            ticks = MAX_SPEED + 1 - (((float)MAX_SPEED / 100) * configuration.Speed);
-        //            System.Threading.Thread.Sleep((int)ticks);
-        //            Dispatcher.Invoke(updatePrimaryAngle, step.Alpha1);
-        //            Dispatcher.Invoke(updateSecondaryAngle, step.Alpha2);
-        //            Dispatcher.Invoke(updateTertiaryPosition, tertiarySpeed);
-        //        }
-        //        visualisationAdapter.State = API.State.READY;
-        //    }
-        //    catch (System.Threading.ThreadAbortException)
-        //    {
-        //    }
-        //}
-
         private void StopAnimation(object sender, EventArgs args)
         {
             try
@@ -363,12 +338,41 @@ namespace HTL.Grieskirchen.Edubot
             AngleSecondaryAxis = val;
         }
 
-        private void UpdateTertiaryAxis(float val)
-        {
-            PositionTertiaryAxis = val;
-        }
+        //private void UpdateTertiaryAxis(float val)
+        //{
+        //    PositionTertiaryAxis = val;
+        //}
 
         #endregion
+
+        public void ScaleAxes()
+        {
+
+
+            double primaryMeshRelation = MeshPrimaryAxis.Content.Bounds.SizeZ / (MeshPrimaryAxis.Content.Bounds.SizeZ + MeshSecondaryAxis.Content.Bounds.SizeZ);
+            double secondaryMeshRelation = MeshSecondaryAxis.Content.Bounds.SizeZ / (MeshPrimaryAxis.Content.Bounds.SizeZ + MeshSecondaryAxis.Content.Bounds.SizeZ);
+
+            double primaryScaleRatio = visualisationAdapter.Length / ((visualisationAdapter.Length + visualisationAdapter.Length2) * primaryMeshRelation);
+            double secondaryScaleRatio = visualisationAdapter.Length2 / ((visualisationAdapter.Length + visualisationAdapter.Length2) * secondaryMeshRelation);
+
+            double primaryAxisWidth = MeshPrimaryAxis.Content.Bounds.SizeZ;
+            double secondaryAxisX = MeshSecondaryAxis.Content.Bounds.Z;
+
+            primaryScale = new ScaleTransform3D(1, 1, primaryScaleRatio, MeshPrimaryAxis.Content.Bounds.X + MeshPrimaryAxis.Content.Bounds.SizeX / 2, MeshPrimaryAxis.Content.Bounds.Y + MeshPrimaryAxis.Content.Bounds.SizeY, MeshPrimaryAxis.Content.Bounds.Z + MeshPrimaryAxis.Content.Bounds.SizeZ);
+            secondaryScale = new ScaleTransform3D(1, 1, secondaryScaleRatio, MeshSecondaryAxis.Content.Bounds.X + MeshSecondaryAxis.Content.Bounds.SizeX / 2, MeshSecondaryAxis.Content.Bounds.Y + MeshSecondaryAxis.Content.Bounds.SizeY, MeshSecondaryAxis.Content.Bounds.Z + MeshSecondaryAxis.Content.Bounds.SizeZ);
+            MeshPrimaryAxis.Transform = primaryScale;
+            double offset = primaryAxisWidth - primaryAxisWidth * primaryScaleRatio;
+            primaryOffset = new TranslateTransform3D(0, 0, offset);
+            secondaryOffset = new TranslateTransform3D(0, 0, offset);
+            Transform3DGroup transform = new Transform3DGroup();
+            transform.Children.Add(secondaryScale);
+            transform.Children.Add(secondaryOffset);
+            MeshSecondaryEngine.Transform = primaryOffset;
+            MeshSecondaryAxis.Transform = transform;
+            AnglePrimaryAxis = 0;
+            AngleSecondaryAxis = 0;
+        }
+
 
         private void ApplyConfiguration(object sender, PropertyChangedEventArgs property)
         {
@@ -378,10 +382,13 @@ namespace HTL.Grieskirchen.Edubot
                 if (property.PropertyName == "Length")
                 {
                     visualisationAdapter.Length = configuration.Length;
+                    ScaleAxes();
+
                 }
                 if (property.PropertyName == "Length2")
                 {
                     visualisationAdapter.Length2 = configuration.Length2;
+                    ScaleAxes();
                 }
                 if (property.PropertyName == "VerticalToolRange")
                 {

@@ -99,10 +99,9 @@
     <Compile Include="Util\Animator.cs" />
     <Compile Include="Validation\Converter\ErrorToMessageConverter.cs" />
     <Compile Include="Validation\Converter\MultiStringConverter.cs" />
-    <Compile Include="Validation\LengthValidationRule.cs" />
+    <Compile Include="Validation\RelationValidationRule.cs" />
     <Compile Include="Validation\PortValidationRule.cs" />
     <Compile Include="Validation\IPAdressValidationRule.cs" />
-    <Compile Include="Validation\StringEmptyValidationRule.cs" />
     <Compile Include="Validation\IntegerValidationRule.cs" />
     <Compile Include="Visualisation3D.xaml.cs">
       <DependentUpon>Visualisation3D.xaml</DependentUpon>

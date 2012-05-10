@@ -57,8 +57,8 @@ namespace HTL.Grieskirchen.Edubot.Settings
             float relation1 = float.Parse(relationLength);
             float relation2 = float.Parse(relationLength2);
             float incr = (length + length2) / (relation1 + relation2);
-            length = incr * relation1;
-            length2 = incr * relation2;
+            length = (float) Math.Round(incr * relation1,0);
+            length2 = (float) Math.Round(incr * relation2,0);
             NotifyPropertyChanged("Length");
             NotifyPropertyChanged("Length2");
         }
@@ -211,6 +211,18 @@ namespace HTL.Grieskirchen.Edubot.Settings
             }
         }
 
+        bool showPath;
+
+        public bool ShowPath
+        {
+            get { return showPath; }
+            set
+            {
+                showPath = value;
+                NotifyPropertyChanged("ShowPath");
+            }
+        }
+
         bool animateHoming;
 
         public bool AnimateHoming
@@ -266,11 +278,13 @@ namespace HTL.Grieskirchen.Edubot.Settings
             AnimateHoming = false;
             ShowGrid = false;
             ShowLabels = false;
+            showPath = false;
             Speed = 50;
             Steps = 10;
             SelectedTool = "Virtuell";
             IsEdubotModelSelected = true;
             IsVirtualModelSelected = false;
+
         }
 
         public void NotifiyAllPropertiesChanged()
@@ -279,6 +293,7 @@ namespace HTL.Grieskirchen.Edubot.Settings
             NotifyPropertyChanged("HomingAnimated");
             NotifyPropertyChanged("ShowGrid");
             NotifyPropertyChanged("ShowLabels");
+            NotifyPropertyChanged("ShowPath");
             //NotifyPropertyChanged("IsEdubotModelSelected");
             NotifyPropertyChanged("Length");
             NotifyPropertyChanged("Length2");
