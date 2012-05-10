@@ -114,9 +114,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             try
             {
-                object[] parameters = (object[])param;
-                Point3D target = (Point3D)parameters[0];
-                Point3D center = (Point3D)parameters[1];
+                Point3D[] parameters = (Point3D[])param;
+                Point3D target = parameters[0];
+                Point3D center = parameters[1];
                 senderSocket.Send(Encoding.UTF8.GetBytes("mvc:" + target.ToString() + "&" + center.ToString()));
                 toolCenterPoint = target;
             }
@@ -186,6 +186,19 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override bool UsesIntegratedPathCalculation()
         {
             return true;
+        }
+
+        public override void ChangeConfiguration(object param)
+        {
+            try
+            {
+                byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ConverToStepString());
+                senderSocket.Send(content);
+            }
+            catch (Exception e)
+            {
+                RaiseFailureEvent(new FailureEventArgs(e));
+            }
         }
     }
 }

@@ -5,5 +5,5 @@ using System.Text;
 
 namespace HTL.Grieskirchen.Edubot.API
 {
-   public delegate void Event(object src, System.EventArgs args);
+    public delegate void Event(object src, System.EventArgs args);
 }

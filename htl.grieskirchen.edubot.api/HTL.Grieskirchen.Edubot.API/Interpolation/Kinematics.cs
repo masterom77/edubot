@@ -40,16 +40,20 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { Kinematics.displayResults = value; }
         }
 
-        public static Point3D CalculateDirect(float alpha1, float alpha2, float length, float length2) {
-            double beta = 180 - alpha2;
+        public static Point3D CalculateDirect(float alpha1, float alpha2, float alpha3, float length, float length2, float verticalToolRange, float transmission) {
+            double beta = 180 - Math.Abs(alpha2);
             double d = Math.Sqrt((length * length + length2 * length2) - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(beta)));
-            //double d = (length * (Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2)) + Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)))) / ((Math.Tan(MathHelper.ConvertToRadians((beta + gamma) / 2)) - Math.Tan(MathHelper.ConvertToRadians((beta - gamma) / 2))));
+            
             double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
-            double temp = alpha + alpha1;
-
+            double temp;
+            if(alpha2 <= 0)
+                temp = alpha1 - alpha;
+            else
+                temp = alpha1 + alpha;
             float x = (float)(d * Math.Cos(MathHelper.ConvertToRadians(temp))); 
             float y = (float) (d * Math.Sin(MathHelper.ConvertToRadians(temp)));
-            
+            float z = (float)(verticalToolRange - (alpha3 / transmission));
+          
             
             return new Point3D(x,y,0);
         }
@@ -61,97 +65,110 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         /// <param name="length">The length of the first axis</param>
         /// <param name="length2">The length of the second axis</param>
         /// <returns></returns>
-        public static InterpolationStep CalculateInverse(Point3D target, float length, float length2)
-        {
-            float x = target.X;
-            float y = target.Y;
-            float z = target.Z;
-            float d = (float)Math.Round(Math.Sqrt(x * x + y * y),4);
-
-            #region ------------------------Special Cases------------------------
-            //if (Math.Round(x) == 0 && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, 90, 180, float.NaN);
-            //}
-            //if (Math.Round(x) == length + length2 && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, 0, 0, float.NaN);
-            //}
-            //if (Math.Round(x) == -(length + length2) && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, 180, 0, float.NaN);
-            //}
-            //if (Math.Round(x) == 0 && Math.Round(y) == length + length2)
-            //{
-            //    return new InterpolationStep(target, 90, 0, float.NaN);
-            //}
-            //if (Math.Round(x) == 0 && Math.Round(y) == -(length + length2))
-            //{
-            //    return new InterpolationStep(target, 270, 0, float.NaN);
-            //}
-            #endregion
-
-            double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
-            double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
-            double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
+        //public static InterpolationStep CalculateInverse(Point3D target, float length, float length2)
+        //{
+        //    float x = target.X;
+        //    float y = target.Y;
+        //    float z = target.Z;
+        //    float d = (float)Math.Round(Math.Sqrt(x * x + y * y),4);
 
             
-            double cosine = x / d;
-            if (Math.Abs(cosine) > 1 && Math.Abs(cosine) - 1 <= 0.005) {
-                cosine = Math.Round(cosine,0);
-            }
-            double temp = MathHelper.ConvertToDegrees(Math.Acos(cosine));
+        //    double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
+        //    double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
+        //    double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
+
+            
+        //    double cosine = x / d;
+        //    if (Math.Abs(cosine) > 1 && Math.Abs(cosine) - 1 <= 0.005) {
+        //        cosine = Math.Round(cosine,0);
+        //    }
+        //    double temp = MathHelper.ConvertToDegrees(Math.Acos(cosine));
            
-            int quadrant = MathHelper.GetQuadrant(x, y);
-            if (quadrant == 3 || quadrant == 4) {
-                temp = -temp;
-            }
+        //    int quadrant = MathHelper.GetQuadrant(x, y);
+        //    if (quadrant == 3 || quadrant == 4) {
+        //        temp = -temp;
+        //    }
             
 
-            return new InterpolationStep(target,(float)(temp - alpha),(float)(180 - beta),0); 
-        }
+        //    return new InterpolationStep(target,(float)(temp - alpha),(float)(180 - beta),0); 
+        //}
 
-        public static InterpolationStep CalculateInverse(Point3D target, float length, float length2, float transmission)
+        //public static InterpolationStep CalculateInverse(Point3D target, float length, float length2, float transmission)
+        //{
+        //    float x = target.X;
+        //    float y = target.Y;
+        //    float z = target.Z;
+        //    float d = (float)Math.Round(Math.Sqrt(x * x + y * y),2);
+        //    #region ------------------------Point Validation------------------------
+        //    //if (Math.Round(d) > (length + length2) ||
+        //    //    (d < Math.Abs(length - length2))
+        //    //    )
+        //    //    throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "/" + Math.Round(y) + "/0) befindet sich nicht im Arbeitsbereichs des Roboters");
+        //    //if (length != length2) {
+        //    //    float difLength = Math.Abs(length - length2);
+        //    //    if (r <= difLength)
+        //    //        throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
+        //    //}
+        //    #endregion
+
+        //    #region ------------------------Special Cases------------------------
+        //    //if (Math.Round(x) == 0 && Math.Round(y) == 0)
+        //    //{
+        //    //    return new InterpolationStep(target, -90, 180, z * transmission);
+        //    //}
+        //    //if (Math.Round(x) == length + length2 && Math.Round(y) == 0)
+        //    //{
+        //    //    return new InterpolationStep(target, 0, 0, z*transmission);
+        //    //}
+        //    //if (Math.Round(x) == -(length + length2) && Math.Round(y) == 0)
+        //    //{
+        //    //    return new InterpolationStep(target, 180, 0, z * transmission);
+        //    //}
+        //    //if (Math.Round(x) == 0 && Math.Round(y) == length + length2)
+        //    //{
+        //    //    return new InterpolationStep(target, 90, 0, z * transmission);
+        //    //}
+        //    //if (Math.Round(x) == 0 && Math.Round(y) == -(length + length2))
+        //    //{
+        //    //    return new InterpolationStep(target, -90, 0, z * transmission);
+        //    //}
+        //    #endregion
+
+
+
+        //    double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
+        //    double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
+        //    double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
+
+        //    double cosine = x / d;
+        //    if (Math.Abs(cosine) > 1 && Math.Abs(cosine) - 1 <= 0.005)
+        //    {
+        //        cosine = Math.Round(cosine, 0);
+        //    }
+        //    double temp = MathHelper.ConvertToDegrees(Math.Acos(cosine));
+
+        //    int quadrant = MathHelper.GetQuadrant(x, y);
+        //    if (quadrant == 3 || quadrant == 4)
+        //    {
+        //        temp = -temp;
+
+        //    }
+
+
+        //    return new InterpolationStep(target, (float)(temp - alpha), (float)(180 - beta), z * transmission);
+        //}
+
+        
+
+        public static InterpolationStep[] CalculateInverse(Point3D target, float length, float length2, float verticalToolRange, float transmission)
         {
+            InterpolationStep[] result = new InterpolationStep[2];
             float x = target.X;
             float y = target.Y;
             float z = target.Z;
-            float d = (float)Math.Round(Math.Sqrt(x * x + y * y),2);
-            #region ------------------------Point Validation------------------------
-            //if (Math.Round(d) > (length + length2) ||
-            //    (d < Math.Abs(length - length2))
-            //    )
-            //    throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "/" + Math.Round(y) + "/0) befindet sich nicht im Arbeitsbereichs des Roboters");
-            //if (length != length2) {
-            //    float difLength = Math.Abs(length - length2);
-            //    if (r <= difLength)
-            //        throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
-            //}
-            #endregion
-
-            #region ------------------------Special Cases------------------------
-            //if (Math.Round(x) == 0 && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, -90, 180, z * transmission);
-            //}
-            //if (Math.Round(x) == length + length2 && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, 0, 0, z*transmission);
-            //}
-            //if (Math.Round(x) == -(length + length2) && Math.Round(y) == 0)
-            //{
-            //    return new InterpolationStep(target, 180, 0, z * transmission);
-            //}
-            //if (Math.Round(x) == 0 && Math.Round(y) == length + length2)
-            //{
-            //    return new InterpolationStep(target, 90, 0, z * transmission);
-            //}
-            //if (Math.Round(x) == 0 && Math.Round(y) == -(length + length2))
-            //{
-            //    return new InterpolationStep(target, -90, 0, z * transmission);
-            //}
-            #endregion
-
+            float d = (float)Math.Round(Math.Sqrt(x * x + y * y), 2);
+            
+            
 
 
             double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
@@ -171,9 +188,10 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 temp = -temp;
 
             }
+            result[0] = new InterpolationStep(target, (float)(temp - alpha), (float)(180 - beta), (verticalToolRange - z) * transmission);
+            result[1] = new InterpolationStep(target, (float)(temp + alpha), (float)-(180 - beta), (verticalToolRange - z) * transmission);
 
-
-            return new InterpolationStep(target, (float)(temp - alpha), (float)(180 - beta), z * transmission);
+            return result;
         }
     }
 }

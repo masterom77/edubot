@@ -36,14 +36,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             : base(equippedTool, length, length2, verticalToolRange, transmission, maxPrimaryAngle, minPrimaryAngle, maxSecondaryAngle, minSecondaryAngle)
         {
         }
-        //public VirtualAdapter(Tool tool, float length, float length2) : base(tool, length, length2)
-        //{
-        //    this.tool = tool;
-        //    this.length = length;
-        //    this.requiresPrecalculation = true;
-        //    type = AdapterType.VIRTUAL;
-        //    Listener = new VirtualStateListener();
-        //}
+        
 
         public override void MoveStraightTo(object param)
         {
@@ -53,9 +46,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
 
         public override void MoveCircularTo(object param)
         {
-            object[] parameters = (object[])param;
-            Point3D target = (Point3D)parameters[0];
-            Point3D center = (Point3D)parameters[1];
+            Point3D[] parameters = (Point3D[])param;
+            Point3D target = parameters[0];
+            Point3D center = parameters[1];
             toolCenterPoint = target;
         }
 
@@ -88,6 +81,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override bool UsesIntegratedPathCalculation()
         {
             return true;
+        }
+
+        public override void ChangeConfiguration(object param)
+        {
+            
         }
     }
 }

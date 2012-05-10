@@ -46,7 +46,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
                     return;
             }
             adapter.RaiseMovementStartedEvent(new MovementStartedEventArgs(result));
-            new System.Threading.Thread(adapter.MoveCircularTo).Start(new object[]{target,center});
+            new System.Threading.Thread(adapter.MoveCircularTo).Start(new Point3D[]{target,center});
         }
 
         public FailureEventArgs CanExecute(IAdapter adapter)

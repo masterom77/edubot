@@ -61,12 +61,7 @@ namespace HTL.Grieskirchen.Edubot.API
 
         }
 
-        Dictionary<string, IAdapter> registeredAdapters;
-
-        public Dictionary<string, IAdapter> RegisteredAdapters
-        {
-            get { return registeredAdapters; }
-        }
+        
 
         #region ------------------Events----------------------
         public event Event OnStateChanged;
@@ -87,64 +82,27 @@ namespace HTL.Grieskirchen.Edubot.API
         #endregion
 
         #region ------------------Public Properties-----------------------
-        State state;
-        /// <summary>
-        /// Gets the current state of the robot.
-        /// </summary>
-        //public State State
-        //{
-        //    get { return state; }
-        //    private set {
-        //        State old = state;
-        //        state = value;
-        //        if (OnStateChanged != null)
-        //        {
-        //            OnStateChanged(null, new StateChangedEventArgs(old, value));
-        //        }
-        //    }
-        //}
+       
+        Dictionary<string, IAdapter> registeredAdapters;
 
-        //bool isConnected;
-        ///// <summary>
-        ///// Gets the state of the physical connection. True means that the robot is physically connected.
-        ///// </summary>
-        //public bool IsConnected
-        //{
-        //    get { return isConnected; }
-        //}
-
-        //IInterpolationType interpolation;
-        /// <summary>
-        /// Gets or sets the interpolation type, which is used for calculating the path of
-        /// the robot's movements.
-        /// </summary>
-        //public IInterpolationType Interpolation
-        //{
-        //    get { return interpolation; }
-        //    set
-        //    {
-        //        IInterpolationType old = interpolation;
-        //        interpolation = value;
-        //        if (onInterpolationChanged != null)
-        //        {
-        //            OnInterpolationChanged(null, new InterpolationChangedEventArgs(old, value));
-        //        }
-        //    }
-        //}
-
+        public Dictionary<string, IAdapter> RegisteredAdapters
+        {
+            get { return registeredAdapters; }
+        }
 
         #endregion
 
         #region ------------------Public Methods-------------------
 
-        public void Execute(ICommand cmd) {
+        public void Execute(ICommand cmd)
+        {
             foreach (KeyValuePair<string, IAdapter> entry in registeredAdapters)
             {
                 IAdapter currentAdapter = entry.Value;
                 currentAdapter.Execute(cmd);
             }
         }
-        
+
         public bool RegisterAdapter(string name, IAdapter adapter)
         {
             if (registeredAdapters.ContainsKey(name) || registeredAdapters.ContainsValue(adapter))
@@ -166,7 +124,8 @@ namespace HTL.Grieskirchen.Edubot.API
         public bool DeregisterAdapter(string name)
         {
             IAdapter adapter;
-            if (registeredAdapters.TryGetValue(name, out adapter)) {
+            if (registeredAdapters.TryGetValue(name, out adapter))
+            {
                 adapter.OnHoming -= RaiseHomingEvent;
                 adapter.OnFailure -= RaiseFailureEvent;
                 adapter.OnAbort -= RaiseAbortEvent;

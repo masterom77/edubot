@@ -43,7 +43,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters.Listeners
                     }
                     if (data.Count > 0)
                     {
-                        ProcessData(data.ToArray());                        
+                        ProcessData(data.ToArray());
                         data.Clear();
                     }
                 }
