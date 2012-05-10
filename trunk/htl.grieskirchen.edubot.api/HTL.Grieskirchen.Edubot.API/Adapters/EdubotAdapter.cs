@@ -140,8 +140,6 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             //socket.SendBufferSize = Int32.MaxValue;
             try{
             Point3D target = (Point3D)param;
-
-            string test = InterpolationResult.ConverToStepString();
             byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ConverToStepString());
             socket.Send(content);
 
@@ -161,9 +159,9 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             try
             {
-                object[] parameters = (object[])param;
-                Point3D target = (Point3D)parameters[0];
-                Point3D center = (Point3D)parameters[1];
+                Point3D[] parameters = (Point3D[])param;
+                Point3D target = parameters[0];
+                Point3D center = parameters[1];
                 byte[] content = Encoding.UTF8.GetBytes("mvc:" + InterpolationResult.ToString());
                 socket.Send(content);
                 //socket.Disconnect(true);
@@ -236,6 +234,19 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public override bool UsesIntegratedPathCalculation()
         {
             return true;
+        }
+
+        public override void ChangeConfiguration(object param)
+        {
+            try
+            {
+                byte[] content = Encoding.UTF8.GetBytes("mvs:" + InterpolationResult.ConverToStepString());
+                socket.Send(content);
+            }
+            catch (Exception e)
+            {
+                RaiseFailureEvent(new FailureEventArgs(e));
+            }
         }
     }
 }

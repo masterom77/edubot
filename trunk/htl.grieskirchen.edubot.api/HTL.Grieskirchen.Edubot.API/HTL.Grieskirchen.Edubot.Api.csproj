@@ -58,7 +58,9 @@
     <Compile Include="Adapters\IAdapter.cs" />
     <Compile Include="Adapters\KebaAdapter.cs" />
     <Compile Include="Adapters\EdubotAdapter.cs" />
+    <Compile Include="AxisConfiguration.cs" />
     <Compile Include="Commands\AbortCommand.cs" />
+    <Compile Include="Commands\ChangeConfigurationCommand.cs" />
     <Compile Include="Commands\MVCCommand.cs" />
     <Compile Include="Commands\MVSCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
@@ -72,7 +74,6 @@
     <Compile Include="EventArgs\MovementStartedEventArgs.cs" />
     <Compile Include="Exceptions\ControllerException.cs" />
     <Compile Include="Edubot.cs" />
-    <Compile Include="EventArgs\AngleChangedEventArgs.cs" />
     <Compile Include="EventArgs\StateChangedEventArgs.cs" />
     <Compile Include="EventArgs\ToolUsedEventArgs.cs" />
     <Compile Include="Exceptions\InvalidCenterPointException.cs" />
@@ -90,8 +91,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="Tools\ITool.cs" />
-    <Compile Include="Tools\VirtualTool.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

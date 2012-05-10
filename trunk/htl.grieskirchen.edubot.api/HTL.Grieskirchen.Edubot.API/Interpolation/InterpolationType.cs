@@ -8,6 +8,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     public enum InterpolationType
     {
         Linear,
-        Circular
+        Circular,
+        None
     }
 }

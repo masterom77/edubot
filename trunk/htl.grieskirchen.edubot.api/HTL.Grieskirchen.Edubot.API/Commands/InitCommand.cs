@@ -17,6 +17,7 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         public void Execute(IAdapter adapter)
         {
             adapter.SetState(State.HOMING, true);
+            adapter.AxisConfiguration = AxisConfiguration.Lefty;
             adapter.CmdQueue.Clear();
             adapter.RaiseHomingEvent(new HomingEventArgs(Configuration.AnglePerStep));
             new System.Threading.Thread(adapter.Initialize).Start();

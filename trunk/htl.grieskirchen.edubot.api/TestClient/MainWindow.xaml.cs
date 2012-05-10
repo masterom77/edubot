@@ -31,9 +31,9 @@ namespace TestClient
             InitializeComponent();
             
             edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200);
+            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200, 70, 3, 145, -145, 135, -135);
             adapter.OnFailure += ShowError;
-            EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            //EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
             //KebaAdapter adapter3 = new KebaAdapter(Tool.VIRTUAL, 1000, 1000, 300, 360, float.MaxValue, float.MinValue, float.MaxValue, float.MinValue, System.Net.IPAddress.Parse("192.168.0.40"), 0,400);
            
             v2d.VisualisationAdapter = adapter;
@@ -41,88 +41,10 @@ namespace TestClient
             //edubot.RegisterAdapter("demo2", adapter2);
             adapter.OnMovementStarted += NotifyVisualisation;
             edubot.Execute(new InitCommand());
-
-
-            //edubot.Execute(new MVSCommand(new Point3D(0, 0, 0)));
-            //edubot.Execute(new InitCommand());
-            edubot.Execute(new MVSCommand(new Point3D(100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, 300, 0)));
-            edubot.Execute(new MVCCommand(new Point3D(300, 100, 0),new Point3D( 100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, 300, 0)));
-            edubot.Execute(new MVCCommand(new Point3D(-300, 100, 0),new Point3D( -100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, 100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, -300, 0)));
-            edubot.Execute(new MVCCommand(new Point3D(-300, -100, 0),new Point3D( -100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(-100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, -300, 0)));
-            edubot.Execute(new MVCCommand(new Point3D(300, -100, 0), new Point3D(100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, -100, 0)));
-            edubot.Execute(new MVSCommand(new Point3D(100, 100, 0)));
-            //shutdown();
-
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, 50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(50, -50, 0)));
-            //edubot.Execute(new MVSCommand(new Point3D(-50, -50, 0)));
+            InterpolationStep[] kinRes = Kinematics.CalculateInverse(new Point3D(100, -300, 0), adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
+            Point3D point = Kinematics.CalculateDirect(kinRes[0].Alpha1, kinRes[0].Alpha2, kinRes[0].Alpha3, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
+            Point3D point2 = Kinematics.CalculateDirect(kinRes[1].Alpha1, kinRes[1].Alpha2, kinRes[1].Alpha3, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
+           
         }
 
         public void ShowError(object sender, EventArgs e)

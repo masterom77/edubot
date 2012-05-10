@@ -26,6 +26,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
+            axisConfiguration = AxisConfiguration.Lefty;
             this.equippedTool = equippedTool;
             toolCenterPoint = new Point3D((int)length + length2, 0, 0);
             this.length = length;
@@ -53,10 +54,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
             this.equippedTool = equippedTool;
+            axisConfiguration = AxisConfiguration.Lefty;
             toolCenterPoint = new Point3D((int)length + length2, 0, 0);
             this.length = length;
             this.length2 = length2;
-            this.verticalToolRange = float.NaN;
+            this.verticalToolRange = 0;
             this.transmission = 0;
             this.maxPrimaryAngle = maxPrimaryAngle;
             this.minPrimaryAngle = minPrimaryAngle;
@@ -81,6 +83,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
             this.equippedTool = equippedTool;
+            axisConfiguration = AxisConfiguration.Lefty;
             toolCenterPoint = new Point3D((int)length + length2, 0, verticalToolRange);
             this.length = length;
             this.length2 = length2;
@@ -108,6 +111,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         {
             cmdQueue = new Queue<ICommand>();
             state = State.SHUTDOWN;
+            axisConfiguration = AxisConfiguration.Lefty;
             this.equippedTool = equippedTool;
             toolCenterPoint = new Point3D((int)length + length2, 0, verticalToolRange);
             this.length = length;
@@ -206,6 +210,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             set { transmission = value; }
         }
 
+        protected AxisConfiguration axisConfiguration;
+
+        public AxisConfiguration AxisConfiguration
+        {
+            get { return axisConfiguration; }
+            set { axisConfiguration = value; }
+        }
+
         protected State state;
 
         protected State State
@@ -281,6 +293,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         public abstract void MoveStraightTo(object param);
         public abstract void MoveCircularTo(object param);
         public abstract void UseTool(object param);
+        public abstract void ChangeConfiguration(object param);
         public abstract void Abort();
         public abstract bool IsStateUpdateAllowed();
         public abstract bool UsesIntegratedPathCalculation();
