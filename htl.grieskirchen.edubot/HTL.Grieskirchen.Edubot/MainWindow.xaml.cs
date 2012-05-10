@@ -66,38 +66,10 @@ namespace HTL.Grieskirchen.Edubot
             InitializeComponent();
             InitializeVisualization();
             InitializeVariables();
-            InitializeLists();
-            LoadSettings();
-            
-            InitializeLists();
-            string path = Environment.CurrentDirectory.Replace('\\', '/').Replace("C:", "file://127.0.0.1/c$");
-            wbManual.Source = new Uri(path+"/doc/Edubot.html");
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(icDrawing.UndoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanUndoDelegate)));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(icDrawing.RedoExecuted), new CanExecuteRoutedEventHandler(icDrawing.CanRedoDelegate)));
-            puAutocomplete.KeyDown += AppendText;
-
-            puAutocomplete.Visibility = Visibility.Visible;
-            puAutocomplete.KeyDown += AppendText;
-            //edubot.RegisterAdapter(API.Adapters.AdapterType.DEFAULT);
-        }
-
-        private void InitializeVisualization() {
-            vVirtual = new Visualisation3D();
-            vVirtual.Width = 600;
-            vVirtual.Height = 600;
-            vVirtual.AnglePrimaryAxis = 0;
-            vVirtual.AngleSecondaryAxis = 0;
-            vVirtual.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            vEdubot = new VisualisationEdubot();
-            vEdubot.Width = 600;
-            vEdubot.Height = 600;
-            vEdubot.AnglePrimaryAxis = 0;
-            vEdubot.AngleSecondaryAxis = 0;
-            vEdubot.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            visualisation2D.AnglePrimaryAxis = 0;
-            visualisation2D.AngleSecondaryAxis = 0;
+            InitializeSettings();
+            InitializeDrawingArea();
+            InitializeCLI();
+            InitializeManual();
         }
 
         #region -----------------------------Static Properties-----------------------------
@@ -150,22 +122,13 @@ namespace HTL.Grieskirchen.Edubot
         {
             edubot = API.Edubot.GetInstance();
             edubot.OnFailure += ShowError;
+            edubot.OnStateChanged += UpdateButtons;
             parser = new CommandParser();
             currentFile = null;                      
             saved = true;
-        }
+        }   
 
-        public void InitializeLists() {
-            List<AdapterType> allTypes = new List<AdapterType>();
-            foreach (AdapterType type in (Enum.GetValues(typeof(AdapterType)).AsQueryable()))
-                allTypes.Add(type);
-            //cbVisualizedAdapter.ItemsSource = edubot.RegisteredAdapters.Keys;
-            //cbDASelectedTool.ItemsSource = new List<string>() { "Virtuell" };
-            //cbKESelectedTool.ItemsSource = new List<string>() { "Virtuell" };
-            //cbVisualizedAdapter.Items.Add(AdapterType.KEBA);
-        }
-
-        public void LoadSettings()
+        public void InitializeSettings()
         {
            
 
@@ -242,8 +205,43 @@ namespace HTL.Grieskirchen.Edubot
             //visualizationConfig.Reset();
         }
 
+        private void InitializeCLI()
+        {
+            puAutocomplete.Visibility = Visibility.Visible;
+            puAutocomplete.KeyDown += AppendText;
+        }
 
+        private void InitializeDrawingArea()
+        {
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, new ExecutedRoutedEventHandler(Undo), new CanExecuteRoutedEventHandler(CanUndo)));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, new ExecutedRoutedEventHandler(Redo), new CanExecuteRoutedEventHandler(CanRedo)));
+        }
 
+        private void InitializeVisualization()
+        {
+            vVirtual = new Visualisation3D();
+            vVirtual.Width = 600;
+            vVirtual.Height = 600;
+            vVirtual.AnglePrimaryAxis = 0;
+            vVirtual.AngleSecondaryAxis = 0;
+            vVirtual.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            vEdubot = new VisualisationEdubot();
+            vEdubot.Width = 600;
+            vEdubot.Height = 600;
+            vEdubot.AnglePrimaryAxis = 0;
+            vEdubot.AngleSecondaryAxis = 0;
+            vEdubot.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            visualisation2D.AnglePrimaryAxis = 0;
+            visualisation2D.AngleSecondaryAxis = 0;
+        }
+
+        private void InitializeManual()
+        {
+            string path = Environment.CurrentDirectory.Replace('\\', '/').Replace("C:", "file://127.0.0.1/c$");
+            wbManual.Source = new Uri(path + "/doc/Edubot.html");
+        }
 
         private void ApplyConfiguration(object sender, PropertyChangedEventArgs args) {
             if (args.PropertyName == "IsEdubotModelSelected") {
@@ -253,45 +251,36 @@ namespace HTL.Grieskirchen.Edubot
                     vb3DVisualisation.Child = vVirtual;
             }
         }
-        //public void ActualizeEdubotSettings() {
-        //    //tbDALength.Text = settings.EdubotConfig.Length.ToString();
-        //    //tbDALength2.Text = settings.EdubotConfig.Length2.ToString();
-        //    //tbEdubotIPAddress.Text = settings.EdubotConfig.IpAddress;
-        //    //tbEdubotPort.Text = settings.EdubotConfig.Port.ToString();
-        //}
-
+        
         #endregion
-
-
                
-
         #region -----------------------------Toolbar Commands-----------------------------
 
-        public bool UndoPossible
-        {
-            get
-            {
-                switch (tcNavigation.SelectedIndex)
-                {
-                    case 0: return tbCodeArea.CanUndo;
-                    case 1: return icDrawing.CanUndo;
-                    default: return false;
-                }
-            }
-        }
+        //public bool UndoPossible
+        //{
+        //    get
+        //    {
+        //        switch (tcNavigation.SelectedIndex)
+        //        {
+        //            case 0: return tbCodeArea.CanUndo;
+        //            case 1: return icDrawing.CanUndo;
+        //            default: return false;
+        //        }
+        //    }
+        //}
 
-        public bool RedoPossible
-        {
-            get
-            {
-                switch (tcNavigation.SelectedIndex)
-                {
-                    case 0: return tbCodeArea.CanRedo;
-                    case 1: return icDrawing.CanRedo;
-                    default: return false;
-                }
-            }
-        }
+        //public bool RedoPossible
+        //{
+        //    get
+        //    {
+        //        switch (tcNavigation.SelectedIndex)
+        //        {
+        //            case 0: return tbCodeArea.CanRedo;
+        //            case 1: return icDrawing.CanRedo;
+        //            default: return false;
+        //        }
+        //    }
+        //}
 
         private void Create(object sender, RoutedEventArgs e)
         {
@@ -300,6 +289,7 @@ namespace HTL.Grieskirchen.Edubot
             {
                 tbCodeArea.Clear();
                 currentFile = null;
+                tcNavigation.SelectedIndex = 0;
             }
         }
 
@@ -320,7 +310,7 @@ namespace HTL.Grieskirchen.Edubot
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.AddExtension = true;
             dialog.DefaultExt = ".txt";
-            dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
+            dialog.Filter = "Textdateien (*.txt)|*.txt";
 
             if ((bool)dialog.ShowDialog())
             {
@@ -346,11 +336,15 @@ namespace HTL.Grieskirchen.Edubot
                 
                 dialog.AddExtension = true;
                 dialog.DefaultExt = ".txt";
-                dialog.Filter = "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
+                dialog.Filter = "Textdateien (*.txt)|*.txt";
 
                 if ((bool)dialog.ShowDialog())
                 {
-                   tbCodeArea.Text = Open(dialog.FileName);
+                    tbCodeArea.Text = Open(dialog.FileName);
+                    tbCodeArea.UndoLimit = 0;
+                    tbCodeArea.UndoLimit = -1;
+                    tcNavigation.SelectedIndex = 0;
+                    saved = true;
                 }
             }
         }
@@ -408,6 +402,7 @@ namespace HTL.Grieskirchen.Edubot
                         {
                             edubot.Execute(command);
                         }
+                        adaptersReady = 0;
                     }
                     catch (Exception ex)
                     {
@@ -421,8 +416,8 @@ namespace HTL.Grieskirchen.Edubot
                     //tbbExecute.IsEnabled = false;
                     //tbbAbort.IsEnabled = true;
                     
-                        tbConsole.Clear();
-                        tbConsole.AppendText(">Translating Drawing...\n");
+                    tbConsole.Clear();
+                    tbConsole.AppendText(">Translating Drawing...\n");
                     edubot.Execute(new InitCommand());
                     visualisation2D.ClearDrawing();
                     foreach (API.Commands.ICommand command in icDrawing.GenerateMovementCommands())
@@ -430,10 +425,42 @@ namespace HTL.Grieskirchen.Edubot
                         edubot.Execute(command);
                     }
                     edubot.Execute(new ShutdownCommand());
+                    tbConsole.AppendText(">Executing...\n");
+                    adaptersReady = 0;
                     break;
             }
 
         }
+
+        private void CanUndo(object sender, CanExecuteRoutedEventArgs e) {
+            switch (tcNavigation.SelectedIndex) {
+                case 0:
+                    e.CanExecute = tbCodeArea.CanUndo;
+                    Console.WriteLine("TB:" + tbCodeArea.CanUndo);
+                    if (e.CanExecute)
+                    {
+                        tbbUndo.Opacity = 1.0;
+                    }
+                    else {
+                        tbbUndo.Opacity = 0.2;
+                    }
+                    break;
+                case 1:
+                    e.CanExecute = icDrawing.CanUndo;
+                    Console.WriteLine("DC:" + icDrawing.CanUndo);
+                    if (e.CanExecute)
+                    {
+                        tbbUndo.Opacity = 1.0;
+                    }
+                    else {
+                        tbbUndo.Opacity = 0.2;
+                    }
+                    break;
+                default:
+                    e.CanExecute = false;
+                    break;
+            }
+        }   
 
         private void Undo(object sender, RoutedEventArgs e)
         {
@@ -447,6 +474,38 @@ namespace HTL.Grieskirchen.Edubot
                     break;
             }
         }
+
+        private void CanRedo(object sender, CanExecuteRoutedEventArgs e)
+        {
+            switch (tcNavigation.SelectedIndex)
+            {
+                case 0:
+                    e.CanExecute = tbCodeArea.CanRedo;
+                    if (e.CanExecute)
+                    {
+                        tbbRedo.Opacity = 1.0;
+                    }
+                    else
+                    {
+                        tbbRedo.Opacity = 0.2;
+                    }
+                    break;
+                case 1:
+                    e.CanExecute = icDrawing.CanRedo;
+                    if (e.CanExecute)
+                    {
+                        tbbRedo.Opacity = 1.0;
+                    }
+                    else
+                    {
+                        tbbRedo.Opacity = 0.2;
+                    }
+                    break;
+                default:
+                    e.CanExecute = false;
+                    break;
+            }
+        }  
 
         private void Redo(object sender, RoutedEventArgs e)
         {
@@ -463,11 +522,6 @@ namespace HTL.Grieskirchen.Edubot
 
         #endregion
 
-        private void ExtVis_Click(object sender, RoutedEventArgs e)
-        {
-            //windowVisualisation.Show();
-        }
-
         private void tbCodeArea_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (puAutocomplete.IsOpen) {
@@ -481,6 +535,7 @@ namespace HTL.Grieskirchen.Edubot
             switch (operation) { 
                 case "select":
                     icDrawing.EditingMode = InkCanvasEditingMode.Select;
+                    icDrawing.DrawingMode = InkCanvasDrawingMode.None;
                     break;
                 case "draw":
                     icDrawing.EditingMode = InkCanvasEditingMode.Ink;
@@ -604,34 +659,6 @@ namespace HTL.Grieskirchen.Edubot
 
         #region -----------------------------Settings Tab-----------------------------
 
-
-
-
-
-        #endregion
-
-
-
-        delegate void AppendTextDelegate(String text);
-        AppendTextDelegate appendTextDelegate;
-        public void AppendText(String text) {
-            tbConsole.AppendText(text+Environment.NewLine);
-            tbConsole.ScrollToEnd();
-        }
-
-        public void ShowError(object sender, EventArgs args) {
-            FailureEventArgs fea = (FailureEventArgs)args;
-            appendTextDelegate = AppendText;
-            
-            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate, fea.ThrownException.Message);
-        }
-
-        
-        private void Abort(object sender, RoutedEventArgs e)
-        {
-            edubot.Execute(new AbortCommand());
-        }
-
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
             if (btConnect.Content.ToString() == "Verbinden")
@@ -647,21 +674,22 @@ namespace HTL.Grieskirchen.Edubot
                         MessageBox.Show("Es konnte keine Verbindung mit der ausgewählten Steuerung hergestellt werden.", "Verbindungstest fehlgeschlagen", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-                        btConnect.Content = "Trennen";
-                        edubot.RegisterAdapter("Edubot", adapter);
-                        //settings.EdubotConfig.Apply();
-                        if (!visualizationConfig.IsEdubotModelSelected)
-                            visualizationConfig.IsEdubotModelSelected = true;
-                        rbVirtualModel.IsEnabled = false;
+                    btConnect.Content = "Trennen";
+                    edubot.RegisterAdapter("Edubot", adapter);
+                    //settings.EdubotConfig.Apply();
+                    if (!visualizationConfig.IsEdubotModelSelected)
+                        visualizationConfig.IsEdubotModelSelected = true;
+                    rbVirtualModel.IsEnabled = false;
                 }
-                else {
-                    KebaAdapter adapter = new KebaAdapter(Tool.VIRTUAL,200,200,float.MaxValue,float.MinValue,float.MaxValue,float.MinValue, IPAddress.Parse(kebaConfig.IpAddress), kebaConfig.ReceiverPort, kebaConfig.SenderPort);
+                else
+                {
+                    KebaAdapter adapter = new KebaAdapter(Tool.VIRTUAL, 200, 200, float.MaxValue, float.MinValue, float.MaxValue, float.MinValue, IPAddress.Parse(kebaConfig.IpAddress), kebaConfig.ReceiverPort, kebaConfig.SenderPort);
                     ConnectingScreen screen = new ConnectingScreen(adapter);
                     screen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
                     screen.ShowDialog();
                     if (screen.DialogResult == false)
                     {
-                        MessageBox.Show("Es konnte keine Verbindung mit der ausgewählten Steuerung hergestellt werden.","Verbindungstest fehlgeschlagen", MessageBoxButton.OK,MessageBoxImage.Error);
+                        MessageBox.Show("Es konnte keine Verbindung mit der ausgewählten Steuerung hergestellt werden.", "Verbindungstest fehlgeschlagen", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                     btConnect.Content = "Trennen";
@@ -676,8 +704,9 @@ namespace HTL.Grieskirchen.Edubot
                 rbEdubot.IsEnabled = false;
                 rbKeba.IsEnabled = false;
             }
-            else {
-                
+            else
+            {
+
                 btConnect.Content = "Verbinden";
                 if ((bool)rbEdubot.IsChecked)
                 {
@@ -702,12 +731,13 @@ namespace HTL.Grieskirchen.Edubot
 
         private void btSaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettings();  
+            SaveSettings();
             //settings.Save();
         }
 
-        private void SaveSettings() {
-            
+        private void SaveSettings()
+        {
+
             Cursor = Cursors.AppStarting;
             try
             {
@@ -724,7 +754,8 @@ namespace HTL.Grieskirchen.Edubot
                 serializer.Serialize(stream, kebaConfig);
                 stream.Close();
             }
-            catch (UnauthorizedAccessException) {
+            catch (UnauthorizedAccessException)
+            {
                 MessageBox.Show("Speichern nicht möglich, da der Zugriff auf den Anwendungsordner verweigert wurde.\nStarten Sie die Anwendung als Administrator und versuchen es erneut.", "Zugriff verweigert", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Cursor = Cursors.Arrow;
@@ -739,7 +770,101 @@ namespace HTL.Grieskirchen.Edubot
         }
 
 
-       
+
+
+        #endregion
+
+        delegate void AppendTextDelegate(String text);
+        AppendTextDelegate appendTextDelegate;
+        public void AppendText(String text) {
+            tbConsole.AppendText(text+Environment.NewLine);
+            tbConsole.ScrollToEnd();
+        }
+
+        public void ShowError(object sender, EventArgs args) {
+            FailureEventArgs fea = (FailureEventArgs)args;
+            appendTextDelegate = AppendText;
+            
+            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate, fea.ThrownException.Message);
+        }
+
+        
+        private void Abort(object sender, RoutedEventArgs args)
+        {
+            edubot.Execute(new AbortCommand());
+        }
+
+        
+        private void tcNavigation_SelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            UpdateExecuteButton();
+        }
+
+
+        public void UpdateExecuteButton()
+        {
+            
+            if(!executing && (tcNavigation.SelectedIndex == 0 || tcNavigation.SelectedIndex == 1)){
+                tbbExecute.IsEnabled = true;
+                tbbExecute.Opacity = 1.0f;
+                tbbAbort.IsEnabled = false;
+                tbbAbort.Opacity = 0.2f;
+                cbEnableVisualization.IsEnabled = true;
+                cbShowPath.IsEnabled = true;
+                spModels.IsEnabled = true;
+                btResetSettings.IsEnabled = true;
+            }
+            else{
+                tbbExecute.IsEnabled = false;
+                tbbExecute.Opacity = 0.2f;
+                if (executing)
+                {
+                    tbbAbort.IsEnabled = true;
+                    tbbAbort.Opacity = 1.0f;
+                    cbEnableVisualization.IsEnabled = false;
+                    cbShowPath.IsEnabled = false;
+                    spModels.IsEnabled = false;
+                    btResetSettings.IsEnabled = false;
+                    
+                }
+            }
+
+        }
+
+        bool executing = false;
+        int adaptersReady = 0;
+
+
+
+        private void UpdateButtons(object source, EventArgs args)
+        {
+            IAdapter adapter = (IAdapter)source;
+            StateChangedEventArgs scArgs = (StateChangedEventArgs)args;
+            if ((scArgs.NewState == State.SHUTDOWN || scArgs.NewState == State.READY)&&adapter.CmdQueue.Count == 0)
+            {
+                adaptersReady++;
+                if(adaptersReady == edubot.RegisteredAdapters.Count)
+                    executing = false;
+            }
+            else
+            {
+                executing = true;
+            }
+            Dispatcher.Invoke(new Action(UpdateExecuteButton));
+        }
+
+        private void ChangeView(object source, EventArgs args) {
+            string tag = ((Control)source).Tag.ToString();
+            tcNavigation.SelectedIndex=int.Parse(tag);
+            foreach (MenuItem item in miView.Items) {
+                if (item.Tag.ToString() != tag) {
+                    item.IsChecked = false;
+                }
+            }
+
+        }
+
+
 
     }
 }

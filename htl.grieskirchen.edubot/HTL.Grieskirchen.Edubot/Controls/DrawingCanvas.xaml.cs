@@ -16,6 +16,8 @@ using HTL.Grieskirchen.Edubot.API.Commands;
 using HTL.Grieskirchen.Edubot.API.Adapters;
 using HTL.Grieskirchen.Edubot.Settings;
 using System.ComponentModel;
+using HTL.Grieskirchen.Edubot.API.Interpolation;
+using HTL.Grieskirchen.Edubot.API;
 
 namespace HTL.Grieskirchen.Edubot.Controls
 {
@@ -129,7 +131,8 @@ namespace HTL.Grieskirchen.Edubot.Controls
         bool addMemento;
         int index;
 
-        class Memento{
+        class Memento
+        {
             string operation;
 
             public string Operation
@@ -153,26 +156,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
 
         public bool CanRedo {
             get { return redoBuffer.Count > 0; }
-        }
-
-        internal void CanUndoDelegate(object sender, CanExecuteRoutedEventArgs e)
-        {
-
-            e.CanExecute = CanUndo;
-        }
-
-        internal void CanRedoDelegate(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = CanRedo;
-        }
-
-        internal void UndoExecuted(object sender, ExecutedRoutedEventArgs e) {
-            Undo();
-        }
-
-        internal void RedoExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            Redo();
         }
 
         private void AddMemento(object src, EventArgs e) {
@@ -354,23 +337,44 @@ namespace HTL.Grieskirchen.Edubot.Controls
             List<API.Commands.ICommand> commands = new List<API.Commands.ICommand>();
             bool firstPoint;
             int sizePerQuadrant = (int)ActualHeight/2;
-            
+            Point3D prevPoint = visualisationAdapter.HomePoint;
+            InterpolationStep[] kinResult;
+            visualisationAdapter.AxisConfiguration = AxisConfiguration.Lefty;
             foreach (Stroke stroke in Strokes) {
                 firstPoint = true;
                 foreach (StylusPoint point in stroke.StylusPoints)
                 {
                     int x = (int) point.X - sizePerQuadrant;
                     int y = (int)((ActualHeight - point.Y) - sizePerQuadrant);// -sizePerQuadrant;
+                    kinResult = Kinematics.CalculateInverse(new Point3D(x, y, 0), visualisationAdapter.Length, visualisationAdapter.Length2, visualisationAdapter.VerticalToolRange, visualisationAdapter.Transmission);
+                    if (!visualisationAdapter.AreAnglesValid(kinResult[(int)visualisationAdapter.AxisConfiguration].Alpha1, kinResult[(int)visualisationAdapter.AxisConfiguration].Alpha2, kinResult[(int)visualisationAdapter.AxisConfiguration].Alpha3)) {
+                        AxisConfiguration otherConfig;
+                        if (visualisationAdapter.AxisConfiguration == AxisConfiguration.Lefty)
+                        {
+                            otherConfig = AxisConfiguration.Righty;
+                        }
+                        else {
+                            otherConfig = AxisConfiguration.Lefty;
+                        }
+                        if (visualisationAdapter.AreAnglesValid(kinResult[(int)otherConfig].Alpha1, kinResult[(int)otherConfig].Alpha2, kinResult[(int)otherConfig].Alpha3))
+                        {
+                            visualisationAdapter.AxisConfiguration = otherConfig;
+                            commands.Add(new UseToolCommand(false));
+                            commands.Add(new ChangeConfigurationCommand(otherConfig));
+                            if (!firstPoint)
+                                commands.Add(new UseToolCommand(true));
+                        }
+                    }
                     if (firstPoint)
                     {
                         //move to starting pointn of stroke without drawing a line --> Z = 0
-                        commands.Add(new UseToolCommand(false));
-                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 0)));
+                        commands.Add(new UseToolCommand(false));                        
+                        commands.Add(new MVSCommand(new Point3D(x, y, 0)));
                         commands.Add(new UseToolCommand(true));
                         firstPoint = false;
                     }
                     else {
-                        commands.Add(new MVSCommand(new API.Interpolation.Point3D(x, y, 0)));
+                        commands.Add(new MVSCommand(new Point3D(x, y, 0)));
                     }
                 }
             }
@@ -422,32 +426,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
         protected void RenderLine(DrawingContext drawingContext)
         {
             Point currentPosition = Mouse.GetPosition(this);
-            //if (Keyboard.IsKeyDown(Key.LeftShift))
-            //{
-            //    int x = (int)(currentPosition.X - origin.X);
-            //    int y = (int)(currentPosition.Y - origin.Y);
-            //    double angle;
-            //    if (y != 0)
-            //    {
-            //        angle = Math.Acos(x / Math.Abs(y)) * 180 / Math.PI;
-            //    }
-            //    else
-            //    {
-            //        if (x > 0)
-            //            angle = 0;
-            //        else
-            //            angle = 180;
-            //    }
-
-            //    if ((angle > 60 && angle < 120) || (angle > 240 && angle < 300))
-            //    {
-            //        currentPosition.X = origin.X;
-            //    }
-            //    else
-            //    {
-            //        currentPosition.Y = origin.Y;
-            //    }
-            //}
             drawingContext.DrawLine(new Pen(Brushes.Black, DefaultDrawingAttributes.Width), origin, currentPosition);
         }
 
@@ -483,6 +461,7 @@ namespace HTL.Grieskirchen.Edubot.Controls
                 if (visualisationAdapter.MaxPrimaryAngle == float.MaxValue && visualisationAdapter.MaxSecondaryAngle == float.MaxValue && visualisationAdapter.MinPrimaryAngle == float.MinValue &&visualisationAdapter.MinSecondaryAngle == float.MinValue)
                 {
                     drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(radius, radius), radius, radius);
+                    drawingContext.DrawEllipse(null, new Pen(Brushes.Gray, 1), new Point(radius, radius), visualisationAdapter.Length - visualisationAdapter.Length2, visualisationAdapter.Length - visualisationAdapter.Length2);
                 }
                 else
                 {
@@ -510,8 +489,6 @@ namespace HTL.Grieskirchen.Edubot.Controls
             }
         }
 
-
-        //http://blogs.vertigo.com/personal/ralph/Blog/Lists/Posts/Post.aspx?ID=5
         void DrawArc(DrawingContext drawingContext, Brush brush,
     Pen pen, Point start, Point end, Size radius, bool isLargeArc, SweepDirection direction)
         {

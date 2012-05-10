@@ -18,6 +18,7 @@ namespace HTL.Grieskirchen.Edubot.Commands
                 case "USETOOL": return BuildUseToolCommand(parameters);
                 case "INIT": return BuildInitCommand(parameters);
                 case "SHUTDOWN": return BuildShutdownCommand(parameters);
+                case "SETCONFIG": return BuildChangeConfigurationCommand(parameters);
                 default: throw new UnknownCommandException("Befehl \"" + cmd + "\" unbekannt");
             }
         }
@@ -60,9 +61,9 @@ namespace HTL.Grieskirchen.Edubot.Commands
         {
             bool activate;
             if (parameters.Length != 1)
-                throw new InvalidSyntaxException("Das UseTool-Command übernimmt nur 1 Parameter(activate)");
+                throw new InvalidSyntaxException("Das UseTool-Command übernimmt genau einen Parameter");
             if (!bool.TryParse(parameters[0], out activate))
-                throw new InvalidParameterException("Ungültiger x-Parameter \"" + parameters[0] + "\"");
+                throw new InvalidParameterException("Ungültiger activate-Parameter \"" + parameters[0] + "\"");
             return new UseToolCommand(activate);
         }
 
@@ -78,6 +79,27 @@ namespace HTL.Grieskirchen.Edubot.Commands
             if (!String.IsNullOrWhiteSpace(parameters[0]))
                 throw new InvalidSyntaxException("Das Shutdown-Command übernimmt keinen Parameter");
             return new ShutdownCommand();
+        }
+
+        private static ChangeConfigurationCommand BuildChangeConfigurationCommand(string[] parameters)
+        {
+            if (parameters.Length != 1)
+                throw new InvalidSyntaxException("Das SetConfig-Command übernimmt genau einen Parameter");
+            int input;
+            AxisConfiguration config;
+            if (!int.TryParse(parameters[0], out input))
+                throw new InvalidParameterException("Ungültiger configuration-Parameter \"" + parameters[0] + "\"");
+            switch (input) {
+                case (int)AxisConfiguration.Lefty:
+                    config = AxisConfiguration.Lefty;
+                    break;
+                case (int)AxisConfiguration.Righty:
+                    config = AxisConfiguration.Righty;
+                    break;
+                default:
+                    throw new InvalidParameterException("Unbekannte Konfiguration: \""+input.ToString()+"\". Gültige Konfigurationen sind: 0(Lefty) und 1(Righty)");
+            }
+            return new ChangeConfigurationCommand(config);
         }
 
         //private static ChangeInterpolationCommand BuildChangeInterpolationCommand(string[] parameters)

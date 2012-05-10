@@ -64,7 +64,12 @@
                 <MenuItem Header="Kopieren" Name="miCopy" InputGestureText="Strg + C" Command="Copy"></MenuItem>
                 <MenuItem Header="Einfügen" Name="miPaste" InputGestureText="Strg + V" Command="Paste"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Ansicht"></MenuItem>
+            <MenuItem Header="Ansicht" Name="miView">
+                <MenuItem Tag="0" IsCheckable="True" IsChecked="True" Click="ChangeView" Header="Kommandozeile"></MenuItem>
+                <MenuItem Tag="1" IsCheckable="True"  Click="ChangeView" Header="Zeichenfläche"></MenuItem>
+                <MenuItem Tag="2" IsCheckable="True"  Click="ChangeView" Header="Einstellungen"></MenuItem>
+                <MenuItem Tag="3" IsCheckable="True"  Click="ChangeView" Header="Handbuch"></MenuItem>
+            </MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" Grid.ColumnSpan="2">
             <ToolBar>
@@ -83,7 +88,7 @@
                 <Button Width="30" Height="30" Name="tbbRedo" ToolTip="Wiederholen" Command="Redo">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/RedoButton.png"></Image>
                 </Button>
-                <Button Width="30" Height="30" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute">
+                <Button Width="30" Height="30" Name="tbbExecute" ToolTip="Skript ausführen" Click="Execute" IsEnabled="{Binding CanExecute}" Opacity="{Binding ExecuteOpacity}">
                     <Image Source="/HTL.Grieskirchen.Edubot;component/Images/ExecuteButton.png"></Image>
                 </Button>
                 <!--<Button Width="30" Height="30" Name="tbbExecuteWindow" ToolTip="Skript in eigenem Fenster ausführen" Click="Execute">
@@ -94,7 +99,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <TabControl Grid.RowSpan="2" Grid.Row="2" Name="tcNavigation">
+        <TabControl Grid.RowSpan="2" Grid.Row="2" Name="tcNavigation" SelectionChanged="tcNavigation_SelectionChanged">
             <TabItem Header="CLI">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -323,12 +328,12 @@
                                 </Grid.RowDefinitions>
                                 <CheckBox Content="Visualisierung ein" VerticalAlignment="Center" Margin="5" Name="cbEnableVisualization" IsChecked="{Binding Path=VisualizationEnabled}"></CheckBox>
                                 <Label Grid.Row="1" Content="Modell:"  VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
-                                <StackPanel Grid.Column="1" Grid.Row="1">
+                                <StackPanel Grid.Column="1" Grid.Row="1" Name="spModels">
                                     <RadioButton Name="rbEdubotModel" Margin="5" IsChecked="{Binding IsEdubotModelSelected}" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}">
                                         <Label Content="Edubot Modell"></Label>
                                     </RadioButton>
                                     <RadioButton Name="rbVirtualModel" Grid.Column="1" IsChecked="{Binding IsVirtualModelSelected}" Grid.Row="2" Margin="5,0,0,5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}">
-                                    <Grid>
+                                    <Grid Name="gVirtualModel">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -342,7 +347,7 @@
                                                 <TextBox.Text>
                                                     <Binding Path="RelationLength" UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
-                                                            <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                            <validators:RelationValidationRule></validators:RelationValidationRule>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
@@ -352,7 +357,7 @@
                                                 <TextBox.Text>
                                                     <Binding Path="RelationLength2" UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
-                                                            <validators:LengthValidationRule></validators:LengthValidationRule>
+                                                            <validators:RelationValidationRule></validators:RelationValidationRule>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
@@ -362,8 +367,8 @@
                                 </StackPanel>
                                 <CheckBox Grid.Row="2" Grid.Column="0" Content="Raster ein" VerticalAlignment="Center" Margin="5" Name="cbShowGrid" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowGrid}"></CheckBox>
                                 <CheckBox Grid.Row="2" Grid.Column="1" Content="Beschriftung ein" VerticalAlignment="Center" Margin="5" Name="cbShowLabels" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowLabels}"></CheckBox>
-                                <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Homing animieren" VerticalAlignment="Center" Margin="5" Name="cbAnimateHoming" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=AnimateHoming}"></CheckBox>
-
+                                <CheckBox Grid.Row="3" Grid.Column="0" Content="Homing animieren" VerticalAlignment="Center" Margin="5" Name="cbAnimateHoming" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=AnimateHoming}"></CheckBox>
+                                <CheckBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Pfad einzeichnen" VerticalAlignment="Center" Margin="5" Name="cbShowPath" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}" IsChecked="{Binding Path=ShowPath}"></CheckBox>
                                 <Label Grid.Row="4" Content="Geschwindigkeit:" VerticalAlignment="Top" Margin="5" IsEnabled="{Binding ElementName=cbEnableVisualization, Path=IsChecked}"></Label>
                                 <Grid Grid.Row="4" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
