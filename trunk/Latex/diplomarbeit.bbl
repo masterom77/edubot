@@ -16,6 +16,265 @@
   {}
 \endgroup
 
+\entry{codesys}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{3S Software}}{S.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{S1}
+  \strng{fullhash}{S1}
+  \field{sortinit}{3}
+  \field{note}{Online im Internet:
+  \\http://www.3s-software.com/index.shtml?de\_homepage [Stand 01.05.2012]}
+  \field{title}{CoDeSys Einführung}
+  \field{year}{2012}
+\endentry
+
+\entry{sketchupchip}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Chip.de}}{C.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{C1}
+  \strng{fullhash}{C1}
+  \field{sortinit}{C}
+  \field{note}{Online im Internet:
+  \\http://www.chip.de/downloads/Google-SketchUp\_19028747.html [Stand
+  09.05.2012]}
+  \field{title}{Google SketchUp}
+  \field{year}{2012}
+\endentry
+
+\entry{latexpfort}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{FH Pfortsheim}}{F.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{F1}
+  \strng{fullhash}{F1}
+  \field{sortinit}{F}
+  \field{note}{Online im Internet:
+  \\http://automatisierungstechnik.fh-pforzheim.de/index.php?id=348 [Stand
+  20.03.2012]}
+  \field{title}{Was ist Latex?}
+  \field{year}{2012}
+\endentry
+
+\entry{googlecode}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Google}}{G.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{G1}
+  \strng{fullhash}{G1}
+  \field{sortinit}{G}
+  \field{note}{Online im Internet:
+  \\http://code.google.com/p/support/wiki/GettingStarted\#Getting\_Started
+  [Stand 19.04.2012]}
+  \field{title}{Getting Started}
+  \field{year}{2012}
+\endentry
+
+\entry{helpndoc}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{IBE Software}}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{sortinit}{I}
+  \field{note}{Online im Internet: \\http://www.helpndoc.com/ [Stand
+  09.05.2012]}
+  \field{title}{HelpNDoc}
+  \field{year}{2012}
+\endentry
+
+\entry{expressionblend}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Microsoft}}{M.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{M1}
+  \strng{fullhash}{M1}
+  \field{sortinit}{M}
+  \field{note}{Online im Internet:
+  \\http://www.microsoft.com/germany/expression/products/StudioUltimate\_Overview.aspx/
+  [Stand 01.05.2012]}
+  \field{title}{Expression 4 Studio Ultimate Überblick}
+  \field{year}{2012}
+\endentry
+
+\entry{micromicro}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Microsoft}}{M.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{M1}
+  \strng{fullhash}{M1}
+  \field{sortinit}{M}
+  \field{note}{Online im Internet:
+  \\http://www.microsoft.com/en-us/netmf/default.aspx [Stand 25.04.2012]}
+  \field{title}{.NET Micro Framework}
+  \field{year}{2012}
+\endentry
+
+\entry{latexgraz}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{TU Graz}}{T.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{T1}
+  \strng{fullhash}{T1}
+  \field{sortinit}{T}
+  \field{note}{Online im Internet: \\http://latex.tugraz.at/latex/warum [Stand
+  09.05.2012]}
+  \field{title}{Latex - Warum?}
+  \field{year}{2012}
+\endentry
+
+\entry{apache}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/Apache\_Subversion [Stand 25.04.2012]}
+  \field{title}{Apache Subversion}
+  \field{year}{2012}
+\endentry
+
+\entry{csharp}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/Csharp [Stand
+  08.05.2012]}
+  \field{title}{C-Sharp}
+  \field{year}{2012}
+\endentry
+
+\entry{git}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/Scrum [Stand
+  25.04.2012]}
+  \field{title}{GIT}
+  \field{year}{2012}
+\endentry
+
+\entry{googledocs}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/Google\_Docs
+  [Stand 25.04.2012]}
+  \field{title}{Google Docs}
+  \field{year}{2012}
+\endentry
+
+\entry{sketchupwiki}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/Google\_Sketchup [Stand 09.05.2012]}
+  \field{title}{Google SketchUp}
+  \field{year}{2012}
+\endentry
+
+\entry{latex}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/LaTeX [Stand
+  20.03.2012]}
+  \field{title}{LaTeX}
+  \field{year}{2012}
+\endentry
+
+\entry{vs}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/Microsoft\_Visual\_Studio [Stand 30.04.2012]}
+  \field{title}{Microsoft Visual Studio}
+  \field{year}{2012}
+\endentry
+
 \entry{mvvm}{misc}{}
   \name{author}{1}{}{%
     {{}%
@@ -30,6 +289,91 @@
   \field{note}{Online im Internet:
   \\http://de.wikipedia.org/wiki/Model\_View\_ViewModel [Stand 08.03.2012]}
   \field{title}{Model View Viewmodel}
+  \field{year}{2012}
+\endentry
+
+\entry{dotnetwiki}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/.NET [Stand
+  13.04.2012]}
+  \field{title}{.NET}
+  \field{year}{2012}
+\endentry
+
+\entry{microwiki}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/.NET\_Micro\_Framework [Stand 25.04.2012]}
+  \field{title}{.NET Micro Framework}
+  \field{year}{2012}
+\endentry
+
+\entry{scrum}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/Scrum [Stand
+  01.05.2012]}
+  \field{title}{Scrum}
+  \field{year}{2012}
+\endentry
+
+\entry{tfs}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://de.wikipedia.org/wiki/Team\_Foundation\_Server [Stand 25.04.2012]}
+  \field{title}{Team Foundation Server}
+  \field{year}{2012}
+\endentry
+
+\entry{tsvn}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Wikipedia}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W1}
+  \strng{fullhash}{W1}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet: \\http://de.wikipedia.org/wiki/TortoiseSVN
+  [Stand 25.04.2012]}
+  \field{title}{TortoiseSVS}
   \field{year}{2012}
 \endentry
 
@@ -48,6 +392,24 @@
   Internet:\\http://de.wikipedia.org/wiki/Windows\_Presentation\_Foundationl
   [Stand 08.03.2012]}
   \field{title}{Windows Presentation Foundationl}
+  \field{year}{2012}
+\endentry
+
+\entry{dotnetalternative}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{Workshop.ch}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{W2}
+  \strng{fullhash}{W2}
+  \field{sortinit}{W}
+  \field{note}{Online im Internet:
+  \\http://www.workshop.ch/openmind/2009/02/12/mono-und-moonlight-freie-alternativen-zu-net-und-silverlight/
+  [Stand 08.05.2012]}
+  \field{title}{Freie Alternativen zu .Net}
   \field{year}{2012}
 \endentry
 

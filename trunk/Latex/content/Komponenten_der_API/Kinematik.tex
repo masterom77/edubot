@@ -5,14 +5,15 @@
 Die Kinematik dient als Grundstein für die Pfadberechnung erfüllt zwei elementare Aufgaben. Mit Hilfe der direkten Kinematik kann, bei gegebenen Winkelstellungen und Achsenlängen, die aktuelle Position des Werkzeugs im Koordinatensystem berechnet werden. Für die Interpolation von wesentlich größerer Bedeutung, ist jedoch die inverse Kinematik mit welcher die Winkelstellungen der Achsen, bei gegebenen Zielpunkt und Achsenlängen, berechnet werden können.
 
 \subsubsection{Aufbau}
-Die Verfahren zur direkten beziehungsweise indirekten Kinematik sind in der Klasse Kinematics als statische Methoden \textit{CalculateDirect} und \textit{CalculateInverse} implementiert. Da diese Methoden unabhängig von der API arbeiten, können sie universell angewendet werden. So könnten sie beispielsweise auch in der Spieleentwicklung zur Animation von Grafiken verwendet werden.
+Die Verfahren zur direkten beziehungsweise indirekten Kinematik sind in der Klasse Kinematics als statische Methoden \textit{CalculateDirect} und \textit{CalculateInverse} implementiert.
 
 \subsubsection{Umsetzung}
+
 \textbf{Kinematics}\\
 Die im Aufbau erwähnten Methoden der Kinematics-Klasse sind wie folgt implementiert:
 \begin{itemize}
 \item \textbf{CalculateDirect}\\
-Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr die Winkelstellungen der ersten Achse $\alpha_1$ und der zeiten Achse $\alpha_2$, sowie die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, als \textit{float}-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.\\
+Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den angegebenen Parametern die Position des Werkzeugs, bei gegebenen Winkelstellungen und Achsenlängen berechnet. Als Parameter werden ihr die Winkelstellungen der ersten Achse $\alpha_1$ und der zweiten Achse $\alpha_2$, die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, sowie die Werkzeugreichweite $d_w$ und die Übersetzung der transversalen Achse $\omega$ als \textit{float}-Werte übergeben. Mit diesen Informationen kann nun berechnet werden an welchem Punkt sich das Werkzeug im Koordinatensystem befindet.
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -21,12 +22,13 @@ Bei Aufruf dieser Methode wird mit dem Verfahren der direkten Kinematik und den 
     \caption{Skizze zur direkten Kinematik}
   \end{minipage}
 \end{figure}
+\newpage
 Der Punkt wird nach folgendem Schema berechnet:
 \begin{enumerate}
 \item Berechnung des Winkels $\beta$\\
-Der Winkel $\beta$ kann bei gegebenenen $\alpha_2$ relativ einfach berechnet werden (siehe Skizze) und ist nötig um anschließend die Distanz $d$ zu berechnen\\
+Der Winkel $\beta$ kann bei gegebenenen $\alpha_2$ relativ einfach berechnet werden (siehe Skizze) und ist nötig um anschließend die Distanz $d$ zu berechnen. Es wird der Betrag von $\alpha_2$ verwendet, da dieser Winkel je nach Achskonfiguration negativ sein kann.
 \begin{align*}
-\beta = 180^\circ - \alpha_2
+\beta = 180^\circ - |\alpha_2|
 \end{align*}
 \item Berechnung der Distanz $d$\\
 Um $d$ zu berechnen wird der Kosinussatz für $\beta$ verwendet:
@@ -50,20 +52,30 @@ Angepasst an unsere Variablen entsteht daraus die Formel:
 \begin{align*}
 \alpha = \arccos \frac{d^2 + l_1^2 - l_2^2}{2dl_1}
 \end{align*}
-\item Berechnung des Referenzwinkels $\varphi$\\:
+\newpage
+\item Berechnung des Referenzwinkels $\varphi$\\
+Über den Winkel $\alpha_2$ kann auf die Achskonfiguration geschlossen werden.
+Bei Achskonfiguration "'Lefty"':
 \begin{align*}
-\varphi = \alpha + \alpha_1
+\varphi = \alpha_1 + \alpha
+\end{align*}
+Bei Achskonfiguration "'Righty"':
+\begin{align*}
+\varphi = \alpha_1 - \alpha
 \end{align*}
 \item Berechnung des gesuchten Punkts\\
-Mit dem nun vorhandenen Zahlenmaterial kann nun der gesuchte Punkte über die Sinus beziehungsweise Kosinus-Funktion im rechtwinkeligen Dreieck berechnet werden.
+Mit dem nun vorhandenen Zahlenmaterial kann nun der gesuchte Punkte über die Sinus beziehungsweise Kosinus-Funktion im rechtwinkeligen Dreieck berechnet werden.\\
+Die z-Koordinate kann über $\alpha3$, die Übersetzung $\omega$ und die Werkzeugreichweite $d_w$ hergeleitet werden.
 \begin{align*}
 x &= d * \cos \varphi \\
-y &= d * \sin \varphi
+y &= d * \sin \varphi \\
+z &= d_w - (\frac{\alpha3}{\omega})
 \end{align*}
 \end{enumerate}
-
-\item \textbf{CalcualteInverse}\\
-Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den angegebenen Parametern ein Winkelstellungen der Achsen am angegeben Zielpunkt berechnet. Als Parameter werden ihr der Zielpunkt als \textit{Point3D}-Objekt, sowie die Länge der ersten zweiten Achse als \textit{float}-Wert übergeben. Mit diesen Informationen kann nun berechnet werden welchen Winkel die Achsen einnehmen müssen, damit  sich der Werkzeugmittelpunkt am Zielpunkt befindet.\\
+\newpage
+\item \textbf{CalculateInverse}\\
+Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den angegebenen Parametern eine Menge an möglichen Winkelstellungen der Achsen am angegeben Zielpunkt berechnet. Als Parameter werden ihr der Zielpunkt als \textit{Point3D}-Objekt, die Länge der ersten und zweiten Achse, $l_1$ und $l_2$, sowie die Werkzeugreichweite $d_w$ und die Übersetzung der transversalen Achse $\omega$ als \textit{float}-Werte übergeben.\\
+Aus diesen Informationen berechnet die Methode die möglichen Gelenkstellungen und gibt diese in Form eines \textit{InterpolationStep}-Arrays zurück.
 \begin{figure}[H]
   \centering
   \begin{minipage}[t]{12 cm}
@@ -72,7 +84,7 @@ Bei Aufruf dieser Methode wird mit dem Verfahren der inversen Kinematik und den 
     \caption{Skizze zur inversen Kinematik}
   \end{minipage}
 \end{figure}
-Die Berechnung der Winkel läuft nach folgendem Schema ab:
+Die Berechnung der möglichen Gelenkstellungen läuft nach folgendem Schema ab:
 \begin{enumerate}
 \item Deklarieren der Hilfsvariablen\\
 Zur Vereinfachung der Berechnung werden zuerst die Variablen $x$,$y$,$z$ vom Typ \textit{float} definiert. Diesen Variablen werden entsprechend die X-,Y- und Z-Koordinaten des Zielpunkts zugewiesen.
@@ -81,16 +93,7 @@ Zur Berechnung der Winkel werden die Seitenlängen des allgemeinen Dreiecks, wel
 \begin{equation*}
 d = \sqrt{x^2 + y^2}
 \end{equation*}
-\item Auf Spezialfall prüfen\\
-Als Spezialfall wird in diesem Kontext ein vollkommen ausgestreckter Roboterarm am Zielpunkt betrachtet. Da bei dieser Konstellation kein Dreieck entsteht, können die Winkel nicht auf herkömmlichen Weg berechnet werden. In diesem Fall können die Winkel jedoch durch logische Überlegung bestimmt werden, da der Winkel der zweiten Achse $\alpha_2$ dabei immer 0$^\circ$ beträgt.\\
-Die Winkelstellung der ersten Achs $\alpha_1$ e kann durch die x- und y-Koordinate folgendermaßen bestimmt werden.
-\begin{align*}
-x & = l_1+l_2 &\wedge && y & = 0 & \alpha_1 & = 0^\circ \\
-x & = -(l_1+l_2) &\wedge && y & = 0 & \alpha_1 & = 180^\circ \\ 
-x & = 0 &\wedge && y & = l_1+l_2 & \alpha_1 & = 90^\circ \\
-x & = 0 &\wedge && y & = -(l_1+l_2) & \alpha_1 & = 270^\circ
-\end{align*}
-Da nun beide Winkel bestimmt sind, wird ein InterpolationStep mit den soeben berechneten Werten erzeugt und zurückgegeben.
+\newpage
 \item Berechnung der Innenwinkel\\
 Da nun alle drei Seitenlängen bekannt sind, können die Innenwinkel $\alpha$, $\beta$, $\gamma$ über den Kosinussatz berechnet werden.\\
 \\
@@ -121,27 +124,55 @@ Auf unsere Variablen angepasst sehen die Formeln für die Berechnung der Winkel 
 \beta = \arccos \frac{l_2^2 + l_1^2 - d^2}{2l_1l_2} \\
 \gamma = \arccos \frac{d^2 + l_2^2 - l_1^2}{2dl_2}
 \end{align*}
+\newpage
 \item Berechnung des Referenzwinkels $\varphi$:\\
 Im nächsten Schritt wird noch der Referenzwinkel $\varphi$, welcher die Position des Dreiecks im Koordinatensystem festlegt, berechnet. Dieser Winkel befindet sich in einem rechtwinkeligen Dreieck, welches durch $d$, $x$ und $y$ definiert wird und kann durch Umformung der Sinusfunktion im rechtwinkeligen Dreieck berechnet werden:
 \begin{align*}
 \varphi = \arccos \frac{x}{d}
 \end{align*}
 \item Überprüfen des Quadranten:\\
-Da die Arkussinus-Funktion lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Zielpunkt befindet überprüft werden. Befindet sich dieser im 3. oder 4. Quadranten, so wird das Vorzeichen des Referenzwinkels $\varphi$ umgedreht. Alternativ könnte man auch 180$^\circ$ zum Referenzwinkel addieren.
-\item Berechnung von $\alpha_1$ und $\alpha_2$\\
+Da die Arkussinus-Funktion lediglich einen Winkel zwischen 0$^\circ$ und 180$^\circ$ liefert, muss der Quadrant in dem sich der Zielpunkt befindet überprüft werden. Befindet sich dieser im 3. oder 4. Quadranten, so wird das Vorzeichen des Referenzwinkels $\varphi$ umgedreht. 
+\item Berechnung von $\alpha_1$,$\alpha_2$ und $\alpha3$\\
 Mit dem nun vorhandenen Zahlenmaterial können die gesuchten Winkel der ersten und zweiten Achse folgendermaßen berechnet werden:
 \begin{itemize}
 \item Berechnung von $\alpha_1$:\\
-Der Winkel der ersten Achse ergibt sich aus der Differenz zwischen dem Referenzwinkel $\varphi$ und dem Innenwinkel $\alpha$
+Die möglichen Winkel der ersten Achse ergeben sich aus der Differenz beziehungsweise Summe des Referenzwinkels $\varphi$ und des Innenwinkels $\alpha$
 \begin{align*}
-\alpha_1 = \varphi - \alpha
+1. Gelenkstellung: \alpha_1 &= \varphi - \alpha \\
+2. Gelenkstellung: \alpha_1 &= \varphi + \alpha
 \end{align*}
 \item Berechnung von $\alpha_2$:\\
-Der Winkel der zweiten Achse ergibt sich aus der Differenz zwischen 180$^\circ$ und dem Innenwinkel $\beta$
+Der möglichen Winkel der zweiten Achse ergeben sich aus der Differenz zwischen 180$^\circ$ und dem Innenwinkel $\beta$
 \begin{align*}
-\alpha_2 = 180 - \beta
+1. Gelenkstellung: \alpha_2 = 180 - \beta \\
+2. Gelenkstellung: \alpha_2 = \beta - 180
+\end{align*}
+\item Berechnung von $\alpha_3$:\\
+Da die Position der transversalen Achse ein Zusammenspiel aus der Winkelstellung des entsprechenden Motors, der Reichweite des Werkzeugs $d_w$ und der Übersetzung $\omega$ ist gibt es nur eine einzige Lösung.
+\begin{align*}
+\alpha_3 = (d_w-z)\omega
 \end{align*}
 \end{itemize}
 
 \end{enumerate}
+Aus den berechneten Werten, werden zwei \textit{InterpolationStep}-Objekt erzeugt, welche die möglichen Gelenkstellungen an diesem Punkt enthalten. Letztere werden als \textit{InterpolationStep}-Array zurückgegeben, wobei sich die 1.Gelenkstellung am Index 0 und die 2.Gelenkstellung am Index 1 befindet.
 \end{itemize}
+
+\textbf{AxisConfiguration}\\
+Diese Enumeration definiert zwei Konfigurationen, welche bei der Auswahl der, von der Inverskinematik berechneten, zum Einsatz kommen. Jeder Adapter enthält ein Property \textit{AxisConfiguration}, welche die aktuelle Konfiguration des Adapters festlegt. Kann ein Punkt im Koordinatensystem mit der aktuellen Konfiguration nicht erreicht werden, so kann diese mit einem \textit{ChangeConfigurationCommand} geändert werden.
+Bei dem, in dieser Diplomarbeit angenommenen, Robotermodell gibt es zwei Konfigurationsmöglichkeiten:
+\begin{itemize}
+\item \textbf{Lefty}\\
+Die zweite Achse ist immer nach links gerichtet, daher der Winkel $\alpha_2$ in diesem Fall immer positiv.
+\item \textbf{Righty}\\
+Die zweite Achse ist immer nach rechts gerichtet, daher der Winkel $\alpha_2$ in diesem Fall immer negativ.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{12 cm}
+  	\centering
+  	\includegraphics[width=8cm]{images/AxisConfiguration} 
+    \caption{Darstellung der Achskonfigurationen}
+  \end{minipage}
+\end{figure}

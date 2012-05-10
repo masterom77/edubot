@@ -9,15 +9,15 @@ Um diese Aufgabe umsetzen zu können, besitzt jeder Adapter eine Variable \texti
 
 \subsubsection{Umsetzung}
 Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, welche eine vorgegeben Anzahl an Zuständen enthält. Die Bedeutung dieser Zustände kann der folgenden Tabelle entnommen werden.
-\newline
+\newpage
 \begin{table}
 \begin{tabular}{|p{4cm}|p{10cm}|}
 \hline \rowcolor{lightgray}
 \textbf{Zustand} & \textbf{Bedeutung}\\
 \hline
-\textit{SHUTDOWN} & Der Roboter ist ausgeschaltet und kann derzeit keine Befehle ausführen. Lediglich ein Start-Befehl wird vom Adapter in diesem Zustand akzeptiert.\\
+\textit{SHUTDOWN} & Der Roboter ist ausgeschaltet und kann derzeit keine Befehle ausführen. Lediglich ein Init-Befehl wird vom Adapter in diesem Zustand akzeptiert.\\
 \hline
-\textit{HOMING} & Der Roboter hat einen Start-Befehl erhalten und beginnt nun mit der initialen Kalibrierung der Achsen. Dieser Zustand wird als “Homing” bezeichnet, da der Roboter zu einem vorgegebenen Startpunkt (seinem “Home”-Punkt) fährt. Zu diesem Zeitpunkt kann kein neuer Befehl durchgeführt werden.\\
+\textit{HOMING} & Der Roboter hat einen Init-Befehl erhalten und beginnt nun mit der initialen Kalibrierung der Achsen. Dieser Zustand wird als “Homing” bezeichnet, da der Roboter zu einem vorgegebenen Startpunkt (seinem “Home”-Punkt) fährt. Zu diesem Zeitpunkt kann kein neuer Befehl durchgeführt werden.\\
 \hline
 \textit{READY} & Der Roboter ist bereit den nächsten Befehl durchzuführen. Dieser Zustand besteht nach jedem erfolgreich durchgeführten Befehl mit Ausnahme des Shutdown-Befehls \\
 \hline
@@ -28,21 +28,16 @@ Zur Umsetzung wird wie oben erwähnt die Enumeration \textit{State} verwendet, w
 \end{tabular}
 \caption{Übersicht über die Zustände}
 \end{table}
-\newline
-\newline
-Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Die \textit{state}-Variable sollte grundsätzlich nur mit der, im Kapitel "'Adapter-System"' vorgestellten, SetState-Methode gesetzt werden, da in den meisten Fällen Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der, im Kapitel "'Listener-System"'; beschriebenen Listener verarbeitet werden. Weiters wird in den CanExecute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand ein OnFailure-Event ausgelöst.
-\newline
+Anhand der Tabelle kann die grundsätzliche Funktionsweise des System bereits nachvollzogen werden. Die \textit{state}-Variable sollte grundsätzlich nur mit der, im Kapitel "'Adapter-System"' vorgestellten, SetState-Methode gesetzt werden, da in den meisten Fällen Informationen über den Zustand des Roboters von der Steuerung gesendet und von einem der, im Kapitel "'Listener-System"'; beschriebenen Listener verarbeitet werden. Weiters wird in den CanExecute-Methoden der verschiedenen Befehle der Zustand des Adapters geprüft und bei ungültigem Zustand ein OnFailure-Event ausgelöst.\\
 Das folgende Beispiel demonstriert einen Standard-Ablauf und veranschaulicht die Funktionsweise des Zustand-Systems.
-\newline
-\newline
-\begin{table}
+\begin{table}[H]
 \begin{tabular}{|p{10cm}|p{4cm}|}
 \hline \rowcolor{lightgray} \hline
 \textbf{Situation} & \textbf{Zustand}\\
 \hline
 Der Roboter befindet sich im ausgeschalteten Zustand. Der Anwender startet ein beliebiges Programm das mit der Edubot-API arbeitet. & \textit{SHUTDOWN}\\
 \hline
-Die Anwendung übergibt mit der Execute-Methode eine Befehlsfolge (Start, MoveStraight, Shutdown) an die Edubot-Klasse der API, welche die Befehle an die registrierten Adapter weiterleitet. Der Adapter führt den ersten Befehl (Start) aus. & \textit{HOMING}\\
+Die Anwendung übergibt mit der Execute-Methode eine Befehlsfolge (Init, MoveStraight, Shutdown) an die Edubot-Klasse der API, welche die Befehle an die registrierten Adapter weiterleitet. Der Adapter führt den ersten Befehl (Init) aus. & \textit{HOMING}\\
 \hline
 Das Homing-Verfahren ist abgeschlossen und die Steuerung sendet diese Information an die API. Der Roboter ist nun bereit den nächsten Befehl durchzuführen. & \textit{HOMING}\\
 \hline
@@ -63,3 +58,4 @@ Nach Erhalt dieser Information, werden vom Listener neben dem Aktualisieren des 
 \end{tabular}
 \caption{Beispielablauf im Zustandssystem}
 \end{table}
+\newpage

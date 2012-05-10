@@ -24,6 +24,7 @@ In der \textit{INetworkStateListener}-Klasse sind folgende Methoden implementier
 Bei Aufruf der \textit{Start}-Methode wird der Listener-Thread neu instanziert und gestartet. Der  \textit{INetworkStateListener} beginnt ab diesem Zeitpunkt mit dem Empfangen und Weiterleiten von Daten. 
 \item \textbf{Stop}\\
 Bei Aufruf der \textit{Stop}-Methode wird der aktuell laufende Thread mit Hilfe der  \textit{Abort}-Methode gestoppt und das zugehörige Thread-Objekt auf null gesetzt. Von der Gegenseite gesendete Nachrichten werden nun nicht mehr verarbeitet.
+\newpage
 \item \textbf{ListenOnState}\\
 \begin{lstlisting}[language = CSharp, captionpos=b, caption={Die ListenOnState-Methode}]
 private void ListenOnState()

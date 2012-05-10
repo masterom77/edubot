@@ -23,7 +23,6 @@ Unter den Namen dieser Steuerungen, befinden sich entsprechende Eingabefelder. I
 Klickt der Benutzer nun auf diesen Button, versucht die Anwendung eine Verbindung mit der Steuerung herzustellen. Dieser Vorgang wird in einem Fenster dargestellt. Ist er erfolgreich so werden alle Elemente des Bereichs "'Roboter"', bis auf den Button dessen Aufschrift nun "'Trennen"' lautet, deaktiviert. \\
 Wurde der Edubot-Roboter verbunden, so wird das 3D-Modell entsprechend umgestellt und die Visualisierung auf die Längen des echten Modells angepasst. Solange der Edubot-Roboter verbunden ist, kann nicht auf ein anderes 3D-Modell umgestellt werden.\\
 Erst durch einen Klick auf "'Trennen"' werden die deaktivierten Felder wieder aktiviert und es kann eine andere Steuerung verbunden beziehungsweise die 3D-Ansicht geändert werden.\\
-\\
 Im unteren Bereich die Sektion "'Visualisierung"', in welcher letztere auf die Bedürfnisse des Benutzers angepasst werden kann. Über mehrere Checkboxen kann die Visualiserung, die Homing-Animation sowie entsprechende Beschriftungen und Raster aktiviert oder deaktiviert werden. \\
 Weiters kann über zwei Radio-Buttons ein 3D-Modell ausgewählt werden. Falls das virtuelle 3D-Modell ausgewählt wird, so werden zwei Textfelder aktiviert in welcher die Relation der Achsen eingegeben werden kann. Die Gesamtlänge der Achsen beträgt dabei konstant 400, lediglich die Längen der beiden Achsen werden in der angegebenen Relation geändert. Wird das Edubot-3D-Modell ausgewählt, so werden die Achsenlängen beziehungsweise deren Relation getreu dem echten Modell festgelegt.\\
 Mit Hilfe von zwei Slidern kann die Genauigkeit des Rasters beziehungsweise der Beschriftung festgelegt und die Geschwindigkeit der Animation geregelt werden.\\
@@ -119,6 +118,6 @@ Das Property Speed enthält einen Wert zwischen 1 und 100 und definiert die Gesc
 Das Steps-Property gibt an, in wieviele Teile jeder Quadrant des Koordinatensystems der 2D-Animation bei der Anzeige geteilt ist. Dieses Property ist an einen Slider im Einstellungen-Tab gebunden.
 \item \textbf{IsEdubotModelSelected}\\
 Dieses Property vom Typ Boolean definiert, welches 3D-Model ausgewählt ist. Ist es auf true gesetzt, so wird derzeit die Visualisierung des Edubot-Modells verwendet, andernfalls eine abstrakte dreidimensionale Darstellung eines Roboters. Dieses Property ist an einen Radiobutton im Einstellungen-Tab gebunden.
-\item textbf{AnimateHoming}\\
+\item \textbf{AnimateHoming}\\
 Je nach Vorliebe des Benutzers kann die Animation vor Durchführung der Befehle die Homing-Phase eines Roboters animieren. Ist dieser Wert auf false gesetzt so startet die Animation bei einem Klick auf "Ausführen" sofort am Startpunkt, andernfalls fährt der Roboter erst zum Anfangspunkt und beginnt erst danach mit der Ausführung der Befehle. Dieses Property ist an eine Checkbox im Einstellungen-Tab gebunden.
 \end{itemize}
