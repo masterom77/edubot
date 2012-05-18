@@ -6,17 +6,39 @@ using System.Globalization;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
+    /// <summary>
+    /// Represents a single interpolation steps
+    /// </summary>
     public class InterpolationStep
     {
+        /// <summary>
+        /// Adds to interpolation steps together
+        /// </summary>
+        /// <param name="step1">The first step</param>
+        /// <param name="step2">The second step</param>
+        /// <returns>An interpolation step containing the sum of the given steps</returns>
         public static InterpolationStep operator +(InterpolationStep step1, InterpolationStep step2) {
             return new InterpolationStep(step1.Target+step2.Target, step1.Alpha1 + step2.Alpha1,step1.Alpha2+step2.Alpha2,step1.Alpha3+step2.Alpha3);
         }
 
+        /// <summary>
+        /// Subtracts the second from the first interpolation step
+        /// </summary>
+        /// <param name="step1">The first step</param>
+        /// <param name="step2">The second step</param>
+        /// <returns>An interpolation step containing the difference between the first and the second step</returns>
         public static InterpolationStep operator - (InterpolationStep step1, InterpolationStep step2)
         {
             return new InterpolationStep(step1.Target - step2.Target, step1.Alpha1 - step2.Alpha1, step1.Alpha2 - step2.Alpha2, step1.Alpha3 - step2.Alpha3);
         }
 
+        /// <summary>
+        /// Creates a new instance of the InterpolationStep class
+        /// </summary>
+        /// <param name="target">The point, which is reached by using the given angles</param>
+        /// <param name="alpha1">The angle of the primary axis</param>
+        /// <param name="alpha2">The angle of the secondary axis</param>
+        /// <param name="alpha3">The angle of the tertiary axis</param>
         public InterpolationStep(Point3D target, float alpha1, float alpha2, float alpha3) {
             this.target = target;
             this.alpha1 = alpha1;
@@ -25,7 +47,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         Point3D target;
-
+        /// <summary>
+        /// Gets or sets the point, which is reached by using the given angles
+        /// </summary>
         public Point3D Target
         {
             get { return target; }
@@ -34,7 +58,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         float alpha1;
         /// <summary>
-        /// The alpha1-angle
+        /// Gets or sets the angle of the primary axis
         /// </summary>
         public float Alpha1
         {
@@ -44,7 +68,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         float alpha2;
         /// <summary>
-        /// The alpha2-angle
+        /// Gets or sets the angle of the secondary axis
         /// </summary>
         public float Alpha2
         {
@@ -54,7 +78,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         float alpha3;
         /// <summary>
-        /// The alpha3-angle
+        /// Gets or sets the angle of the tertiary axis
         /// </summary>
         public float Alpha3
         {
@@ -62,22 +86,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             set { alpha3 = value; }
         }
 
-        int alpha1Sleep;
-
-        public int Alpha1Sleep
-        {
-            get { return alpha1Sleep; }
-            set { alpha1Sleep = value; }
-        }
-
-        int alpha2Sleep;
-
-        public int Alpha2Sleep
-        {
-            get { return alpha2Sleep; }
-            set { alpha2Sleep = value; }
-        }
-        
         /// <summary>
         /// Converts the content into a sendable format
         /// </summary>

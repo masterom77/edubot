@@ -5,10 +5,14 @@ using System.Text;
 
 namespace HTL.Grieskirchen.Edubot.API.Adapters
 {
+    /// <summary>
+    /// Contains an enumeration of supported Tools
+    /// </summary>
     public enum Tool
     {
-        VIRTUAL,
-        LASER ,
-        PENCIL
+        /// <summary>
+        /// A virtual tool should be used when there's no actual tool installed
+        /// </summary>
+        VIRTUAL
     }
 }

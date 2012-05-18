@@ -29,21 +29,12 @@ namespace TestClient
         public MainWindow()
         {
             InitializeComponent();
-            
-            edubot = Edubot.GetInstance();
-            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200, 70, 3, 145, -145, 135, -135);
-            adapter.OnFailure += ShowError;
-            //EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
-            //KebaAdapter adapter3 = new KebaAdapter(Tool.VIRTUAL, 1000, 1000, 300, 360, float.MaxValue, float.MinValue, float.MaxValue, float.MinValue, System.Net.IPAddress.Parse("192.168.0.40"), 0,400);
-           
-            v2d.VisualisationAdapter = adapter;
-            edubot.RegisterAdapter("demo", adapter);
-            //edubot.RegisterAdapter("demo2", adapter2);
-            adapter.OnMovementStarted += NotifyVisualisation;
-            edubot.Execute(new InitCommand());
-            InterpolationStep[] kinRes = Kinematics.CalculateInverse(new Point3D(100, -300, 0), adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
-            Point3D point = Kinematics.CalculateDirect(kinRes[0].Alpha1, kinRes[0].Alpha2, kinRes[0].Alpha3, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
-            Point3D point2 = Kinematics.CalculateDirect(kinRes[1].Alpha1, kinRes[1].Alpha2, kinRes[1].Alpha3, adapter.Length, adapter.Length2, adapter.VerticalToolRange, adapter.Transmission);
+
+            EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 200, 135, -135, 145, -145, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            Edubot.GetInstance().RegisterAdapter("edu", adapter);
+            Edubot.GetInstance().Execute(new InitCommand());
+            Edubot.GetInstance().Execute(new UseToolCommand(true));
+            Edubot.GetInstance().Execute(new MVSCommand(new Point3D(200,250,0)));
            
         }
 
@@ -108,7 +99,7 @@ namespace TestClient
 
         private void SendAngle(object sender, RoutedEventArgs e)
         {
-            EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 225, 135,-135,160,-160,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
+            EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 225, 135,-135,145,-145,System.Net.IPAddress.Parse("192.168.0.40"), 12000);
             adapter.InterpolationResult = new InterpolationResult(InterpolationType.Linear) { Steps = new List<InterpolationStep> { new InterpolationStep(new Point3D(0, 0, 0), float.Parse(tbAlpha1.Text), float.Parse(tbAlpha2.Text), 0) } };
             adapter.Initialize(0.1125f);
             System.Threading.Thread.Sleep(1000);

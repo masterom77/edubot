@@ -12,35 +12,20 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
     /// </summary>
     public class Kinematics
     {
-        private static float precision;
 
-        public static float Precision
-        {
-            get { return Kinematics.precision; }
-            set { Kinematics.precision = value; }
-        }
 
         /// <summary>
-        /// Initializes the Kinematics class
+        /// Calculates the point of the tool, if axes have adopted the given angles
         /// </summary>
-        static Kinematics() {
-            displayResults = false;
-            precision = 1;
-        }
-
-        private static bool displayResults;
-
-        /// <summary>
-        /// Gets or sets a value, indicating wether the results should be printed in console.
-        /// CAUTION: Should only be used for debugging since it slows the calculation drastically.
-        /// </summary>
-        public static bool DisplayResults
-        {
-            get { return Kinematics.displayResults; }
-            set { Kinematics.displayResults = value; }
-        }
-
-        public static Point3D CalculateDirect(float alpha1, float alpha2, float alpha3, float length, float length2, float verticalToolRange, float transmission) {
+        /// <param name="alpha1">The angle of the primary axis</param>
+        /// <param name="alpha2">The angle of the secondary axis</param>
+        /// <param name="alpha3">The angle of the third axis</param>
+        /// <param name="length">The length of first axis, measured between the center of the primary and secondary engine</param>
+        /// <param name="length2">The length of second axis, measured between the center of the secondary engine and the toolcenter point</param>
+        /// <param name="verticalToolRange">The distance between the toolcenter point and the working area, measured when the tool has adopted the highest position</param>
+        /// <param name="transmission">The transmission, which defines how many degrees the third engine has to rotate, to move the tertiary axis down one unit</param>
+        /// <returns>Returns the point of the tool as Point3D object, if axes have adopted the given angles</returns>
+        public static Point3D CalculateDirect(float alpha1, float alpha2, float alpha3, float length, float length2, float verticalToolRange, float transmission) { 
             double beta = 180 - Math.Abs(alpha2);
             double d = Math.Sqrt((length * length + length2 * length2) - 2 * length * length2 * Math.Cos(MathHelper.ConvertToRadians(beta)));
             
@@ -59,107 +44,14 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         /// <summary>
-        /// Calculates the angles using the specified point and lengths
+        /// Calculates the possible angles of the axes, which are necessary to reach the given target point.
         /// </summary>
-        /// <param name="target">A specific point</param>
-        /// <param name="length">The length of the first axis</param>
-        /// <param name="length2">The length of the second axis</param>
-        /// <returns></returns>
-        //public static InterpolationStep CalculateInverse(Point3D target, float length, float length2)
-        //{
-        //    float x = target.X;
-        //    float y = target.Y;
-        //    float z = target.Z;
-        //    float d = (float)Math.Round(Math.Sqrt(x * x + y * y),4);
-
-            
-        //    double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
-        //    double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
-        //    double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
-
-            
-        //    double cosine = x / d;
-        //    if (Math.Abs(cosine) > 1 && Math.Abs(cosine) - 1 <= 0.005) {
-        //        cosine = Math.Round(cosine,0);
-        //    }
-        //    double temp = MathHelper.ConvertToDegrees(Math.Acos(cosine));
-           
-        //    int quadrant = MathHelper.GetQuadrant(x, y);
-        //    if (quadrant == 3 || quadrant == 4) {
-        //        temp = -temp;
-        //    }
-            
-
-        //    return new InterpolationStep(target,(float)(temp - alpha),(float)(180 - beta),0); 
-        //}
-
-        //public static InterpolationStep CalculateInverse(Point3D target, float length, float length2, float transmission)
-        //{
-        //    float x = target.X;
-        //    float y = target.Y;
-        //    float z = target.Z;
-        //    float d = (float)Math.Round(Math.Sqrt(x * x + y * y),2);
-        //    #region ------------------------Point Validation------------------------
-        //    //if (Math.Round(d) > (length + length2) ||
-        //    //    (d < Math.Abs(length - length2))
-        //    //    )
-        //    //    throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "/" + Math.Round(y) + "/0) befindet sich nicht im Arbeitsbereichs des Roboters");
-        //    //if (length != length2) {
-        //    //    float difLength = Math.Abs(length - length2);
-        //    //    if (r <= difLength)
-        //    //        throw new OutOfRangeException(new Point3D(Convert.ToInt32(x), Convert.ToInt32(y), 0), "Der Punkt (" + Math.Round(x) + "," + Math.Round(y) + ",0) befindet sich nicht im Arbeitsbereichs des Roboters");
-        //    //}
-        //    #endregion
-
-        //    #region ------------------------Special Cases------------------------
-        //    //if (Math.Round(x) == 0 && Math.Round(y) == 0)
-        //    //{
-        //    //    return new InterpolationStep(target, -90, 180, z * transmission);
-        //    //}
-        //    //if (Math.Round(x) == length + length2 && Math.Round(y) == 0)
-        //    //{
-        //    //    return new InterpolationStep(target, 0, 0, z*transmission);
-        //    //}
-        //    //if (Math.Round(x) == -(length + length2) && Math.Round(y) == 0)
-        //    //{
-        //    //    return new InterpolationStep(target, 180, 0, z * transmission);
-        //    //}
-        //    //if (Math.Round(x) == 0 && Math.Round(y) == length + length2)
-        //    //{
-        //    //    return new InterpolationStep(target, 90, 0, z * transmission);
-        //    //}
-        //    //if (Math.Round(x) == 0 && Math.Round(y) == -(length + length2))
-        //    //{
-        //    //    return new InterpolationStep(target, -90, 0, z * transmission);
-        //    //}
-        //    #endregion
-
-
-
-        //    double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
-        //    double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
-        //    double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
-
-        //    double cosine = x / d;
-        //    if (Math.Abs(cosine) > 1 && Math.Abs(cosine) - 1 <= 0.005)
-        //    {
-        //        cosine = Math.Round(cosine, 0);
-        //    }
-        //    double temp = MathHelper.ConvertToDegrees(Math.Acos(cosine));
-
-        //    int quadrant = MathHelper.GetQuadrant(x, y);
-        //    if (quadrant == 3 || quadrant == 4)
-        //    {
-        //        temp = -temp;
-
-        //    }
-
-
-        //    return new InterpolationStep(target, (float)(temp - alpha), (float)(180 - beta), z * transmission);
-        //}
-
-        
-
+        /// <param name="target">The target point</param>
+        /// <param name="length">The length of first axis, measured between the center of the primary and secondary engine</param>
+        /// <param name="length2">The length of second axis, measured between the center of the secondary engine and the toolcenter point</param>
+        /// <param name="verticalToolRange">The distance between the toolcenter point and the working area, measured when the tool has adopted the highest position</param>
+        /// <param name="transmission">The transmission, which defines how many degrees the third engine has to rotate, to move the tertiary axis down one unit</param>
+        /// <returns>Returns an array of InterpolationStep objects, containing the possible angles</returns>
         public static InterpolationStep[] CalculateInverse(Point3D target, float length, float length2, float verticalToolRange, float transmission)
         {
             InterpolationStep[] result = new InterpolationStep[2];
@@ -168,9 +60,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
             float z = target.Z;
             float d = (float)Math.Round(Math.Sqrt(x * x + y * y), 2);
             
-            
-
-
             double alpha = MathHelper.ConvertToDegrees(Math.Acos((d * d + length * length - length2 * length2) / (2 * d * length)));
             double beta = MathHelper.ConvertToDegrees(Math.Acos((length2 * length2 + length * length - d * d) / (2 * length2 * length)));
             double gamma = MathHelper.ConvertToDegrees(Math.Acos((d * d + length2 * length2 - length * length) / (2 * d * length2)));
