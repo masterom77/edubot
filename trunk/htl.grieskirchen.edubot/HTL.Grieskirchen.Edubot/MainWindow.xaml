@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:HTL.Grieskirchen.Edubot.Controls"
         xmlns:validators="clr-namespace:HTL.Grieskirchen.Edubot.Validation" 
-        Title="Edubot" Height="800" Width="1200" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" SizeChanged="ClosePopup" LocationChanged="ClosePopup">
+        Title="Edubot" Height="800" Width="1200" xmlns:my="clr-namespace:HTL.Grieskirchen.Edubot" Icon="/HTL.Grieskirchen.Edubot;component/Images/Logo512.png" SizeChanged="ClosePopup" LocationChanged="ClosePopup" Closing="CloseApplication">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Validation.ErrorTemplate">

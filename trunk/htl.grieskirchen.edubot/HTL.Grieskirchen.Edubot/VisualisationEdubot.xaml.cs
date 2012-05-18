@@ -351,7 +351,7 @@ namespace HTL.Grieskirchen.Edubot
                     //Visualiserungsmodell Edubot wurde ausgewählt
                     //Edubot-Modell hat fixe Längen und Winkelbeschränkungen
                     configuration.Length = 200;
-                    configuration.Length2 = 230;
+                    configuration.Length2 = 200;
                     configuration.VerticalToolRange = "80";
                     configuration.Transmission = "5";
                     configuration.MaxPrimaryAngle = "145";
