@@ -28,6 +28,8 @@ using HTL.Grieskirchen.Edubot.API.Interpolation;
 using HTL.Grieskirchen.Edubot.Settings;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -411,20 +413,19 @@ namespace HTL.Grieskirchen.Edubot
                     }
                     break;
                 case 1:
-                      
-                    //executedCommands = 0;
-                    //tbbExecute.IsEnabled = false;
-                    //tbbAbort.IsEnabled = true;
                     
                     tbConsole.Clear();
                     tbConsole.AppendText(">Translating Drawing...\n");
-                    edubot.Execute(new InitCommand());
+                    foreach (KeyValuePair<string, IAdapter> entry in edubot.RegisteredAdapters) {
+                        if (entry.Value.GetState() == State.SHUTDOWN) {
+                            entry.Value.Execute(new InitCommand());
+                        }
+                    }
                     visualisation2D.ClearDrawing();
                     foreach (API.Commands.ICommand command in icDrawing.GenerateMovementCommands())
                     {
                         edubot.Execute(command);
                     }
-                    edubot.Execute(new ShutdownCommand());
                     tbConsole.AppendText(">Executing...\n");
                     adaptersReady = 0;
                     break;
@@ -785,7 +786,7 @@ namespace HTL.Grieskirchen.Edubot
             FailureEventArgs fea = (FailureEventArgs)args;
             appendTextDelegate = AppendText;
             
-            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate, fea.ThrownException.Message);
+            tbConsole.Dispatcher.BeginInvoke(appendTextDelegate,fea.ThrownException.GetType().Name+": "+ fea.ThrownException.Message);
         }
 
         
@@ -862,6 +863,13 @@ namespace HTL.Grieskirchen.Edubot
                 }
             }
 
+        }
+
+        private void CloseApplication(object sender, CancelEventArgs e)
+        {
+            edubot.Execute(new AbortCommand());
+            Application.Current.Shutdown();
+            Process.GetCurrentProcess().Kill();
         }
 
 
