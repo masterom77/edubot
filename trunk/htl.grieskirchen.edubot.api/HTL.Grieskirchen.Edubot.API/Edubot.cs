@@ -17,26 +17,7 @@ namespace HTL.Grieskirchen.Edubot.API
     public class Edubot
     {
         private Edubot() {
-
-            //InitAxis();
-            //interpolation = new LinearInterpolation();
             registeredAdapters = new Dictionary<string, IAdapter>();
-            //state = State.SHUTDOWN;
-            //tool = new VirtualTool();
-            //tool.X = 300;
-            //tool.Y = 0;
-            
-        }
-        /// <summary>
-        /// Initializes the robot's axis
-        /// </summary>
-        private void InitAxis() {
-            //float length = 15f;
-            //primaryAxis = new Axis(0 ,0 ,50, 0);
-            //secondaryAxis = new Axis((int)length*10, 0, 60, 0);
-            //verticalAxis = new Axis((int)length*20, 0, 40, 0);
-            //toolAxis = new Axis(60, 20, 0, 0);
-            
         }
 
         /// <summary>
@@ -49,7 +30,7 @@ namespace HTL.Grieskirchen.Edubot.API
 
         /// <summary>
         /// This class is used for creating the instance of Edubot object. Since the
-        /// Edubot class is a designed as a Singleton, there is only one instance of the
+        /// Edubot class is designed as a Singleton, there is only one instance of the
         /// Edubot available.
         /// </summary>
         class EdubotCreator
@@ -94,6 +75,10 @@ namespace HTL.Grieskirchen.Edubot.API
 
         #region ------------------Public Methods-------------------
 
+        /// <summary>
+        /// Executes the given command, by passing it to the registered adapters 
+        /// </summary>
+        /// <param name="cmd">The command which should be executed</param>
         public void Execute(ICommand cmd)
         {
             foreach (KeyValuePair<string, IAdapter> entry in registeredAdapters)
@@ -103,6 +88,12 @@ namespace HTL.Grieskirchen.Edubot.API
             }
         }
 
+        /// <summary>
+        /// Registers a new adapters and adds event handlers on its events
+        /// </summary>
+        /// <param name="name">An arbitrary name, which is used to identify the adapter</param>
+        /// <param name="adapter">The adapter, which should registered</param>
+        /// <returns>Returns a boolean value, indicating wether the registration was successful or not</returns>
         public bool RegisterAdapter(string name, IAdapter adapter)
         {
             if (registeredAdapters.ContainsKey(name) || registeredAdapters.ContainsValue(adapter))
@@ -120,7 +111,11 @@ namespace HTL.Grieskirchen.Edubot.API
             return true;
         }
 
-
+        /// <summary>
+        /// Deregisteres a adapter and removes event handlers from its events
+        /// </summary>
+        /// <param name="name">The name of the adapter</param>
+        /// <returns>Returns a value indicating wether the removal was successful or not</returns>
         public bool DeregisterAdapter(string name)
         {
             IAdapter adapter;
@@ -134,6 +129,7 @@ namespace HTL.Grieskirchen.Edubot.API
                 adapter.OnShuttingDown -= RaiseShuttingDownEvent;
                 adapter.OnToolUsed -= RaiseToolUsedEvent;
                 adapter.OnStateChanged -= RaiseStateChangedEvent;
+                adapter.Execute(new AbortCommand());
             }
             return registeredAdapters.Remove(name);
         }

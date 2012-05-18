@@ -7,12 +7,15 @@ using System.Collections;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
+    /// <summary>
+    /// Used for managing and converting data about a calculated path
+    /// </summary>
     public class InterpolationResult
     {
         List<InterpolationStep> angles;
-
+        
         /// <summary>
-        /// The calculated interpolation-steps
+        /// The calculated interpolation-steps, represented through absolute angles
         /// </summary>
         public List<InterpolationStep> Angles
         {
@@ -23,7 +26,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         List<InterpolationStep> steps;
 
         /// <summary>
-        /// The calculated interpolation-steps
+        /// The calculated interpolation-steps, represented through relative angles
         /// </summary>
         public List<InterpolationStep> Steps
         {
@@ -34,7 +37,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
         List<Point3D> points;
         /// <summary>
-        /// The calculated interplation points
+        /// The calculated interpolation points
         /// </summary>
         public List<Point3D> Points
         {
@@ -43,7 +46,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         InterpolationType interpolationType;
-
+        /// <summary>
+        /// Gets or sets the type of interpolation used for calculating this result
+        /// </summary>
         public InterpolationType InterpolationType
         {
             get { return interpolationType; }
@@ -51,7 +56,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
         }
 
         Hashtable metaData;
-
+        /// <summary>
+        /// Gets or sets a table of additional data concerning the calculation. Contains the keys "Clockwise" and "Radius", when circular interpolation is used
+        /// </summary>
         public Hashtable MetaData
         {
             get { return metaData; }
@@ -73,9 +80,9 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
 
         /// <summary>
-        /// Converts the content into a sendable format
+        /// Converts the content into a sendable format, representing the angles in degrees
         /// </summary>
-        /// <returns>A string with format "primarySpeed;secondarySpeed|step1&step2&step3..."</returns>
+        /// <returns>A string with format "step1&step2&step3..."</returns>
         public override string ToString()
         {
             string result = "";
@@ -92,66 +99,77 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
 
 
         /// <summary>
-        /// Converts Angles into Steps and returns a sendable String
+        /// Converts Angles into Steps and returns a sendable String, representing the angles in steps, required by the edubot model's stepper motor
         /// </summary>
-        /// <returns>A string with format "primarySpeed;secondarySpeed|step1&step2&step3..."</returns>
+        /// <returns>A string with format "step1&step2&step3..."</returns>
         public string ConverToStepString() {
             string result = "";
 
             double[] curSteps = new double[3];
-
             foreach (InterpolationStep step in steps) {
                 curSteps[0] += step.Alpha1 / 0.1125;
                 curSteps[1] += step.Alpha2 / 0.1125;
                 curSteps[2] += step.Alpha3 / 0.1125;
+                result += ((int)curSteps[0]) + ";" + ((int)curSteps[1]) + ";" + ((int)curSteps[2]) + "&";
 
-                if (curSteps[0]%1 > 0.5) {
-                    curSteps[0] += 1;
-                }
-                if (curSteps[1] % 1 > 0.5)
-                {
-                    curSteps[1] += 1;
-                }
-                if (curSteps[2] % 1 > 0.5)
-                {
-                    curSteps[2] += 1;
-                }
+                curSteps[0] = curSteps[0] % 1;
+                curSteps[1] = curSteps[1] % 1;
+                curSteps[2] = curSteps[2] % 1;
+            }
 
-                result += ((int)curSteps[0]) + ";" + ((int)curSteps[1]) + ";" + ((int)curSteps[2])+"&";
+            //foreach (InterpolationStep step in steps) {
+            //    curSteps[0] += step.Alpha1 / 0.1125;
+            //    curSteps[1] += step.Alpha2 / 0.1125;
+            //    curSteps[2] += step.Alpha3 / 0.1125;
 
-                if (curSteps[0] % 1 > 0.5)
-                {
-                    curSteps[0] = (curSteps[0] % 1) - 1;
-                }
-                else {
-                    curSteps[0] = curSteps[0] % 1;
-                }
+            //    if (curSteps[0]%1 > 0.5) {
+            //        curSteps[0] += 1;
+            //    }
+            //    if (curSteps[1] % 1 > 0.5)
+            //    {
+            //        curSteps[1] += 1;
+            //    }
+            //    if (curSteps[2] % 1 > 0.5)
+            //    {
+            //        curSteps[2] += 1;
+            //    }
 
-                if (curSteps[1] % 1 > 0.5)
-                {
-                    curSteps[1] = (curSteps[1] % 1) - 1;
-                }
-                else
-                {
-                    curSteps[1] = curSteps[1] % 1;
-                }
+            //    result += ((int)curSteps[0]) + ";" + ((int)curSteps[1]) + ";" + ((int)curSteps[2])+"&";
 
-                if (curSteps[2] % 1 > 0.5)
-                {
-                    curSteps[2] = (curSteps[2] % 1) - 1;
-                }
-                else
-                {
-                    curSteps[2] = curSteps[2] % 1;
-                }
+            //    if (curSteps[0] % 1 > 0.5)
+            //    {
+            //        curSteps[0] = (curSteps[0] % 1) - 1;
+            //    }
+            //    else {
+            //        curSteps[0] = curSteps[0] % 1;
+            //    }
+
+            //    if (curSteps[1] % 1 > 0.5)
+            //    {
+            //        curSteps[1] = (curSteps[1] % 1) - 1;
+            //    }
+            //    else
+            //    {
+            //        curSteps[1] = curSteps[1] % 1;
+            //    }
+
+            //    if (curSteps[2] % 1 > 0.5)
+            //    {
+            //        curSteps[2] = (curSteps[2] % 1) - 1;
+            //    }
+            //    else
+            //    {
+            //        curSteps[2] = curSteps[2] % 1;
+            //    }
                 
-            }
+            //}
 
-            if (result.Length > 0)
-            {
-                result = result.Remove(result.Length - 1);
-            }
-
+            //if (result.Length > 0)
+            //{
+            //    result = result.Remove(result.Length - 1);
+            //}
+            //Console.WriteLine(ToString());
+            //Console.WriteLine(result);
             return result;
         }
     }

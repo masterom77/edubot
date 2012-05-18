@@ -6,65 +6,40 @@ using System.Drawing;
 
 namespace HTL.Grieskirchen.Edubot.API.Interpolation
 {
+    /// <summary>
+    /// Used for different mathemical conversions and calculations
+    /// </summary>
     public static class MathHelper
     {
-        public const int BETWEEN_1_AND_2 = 5;
-        public const int BETWEEN_2_AND_3 = 6;
-        public const int BETWEEN_3_AND_4 = 7;
-        public const int BETWEEN_4_AND_1 = 8;
-
+        /// <summary>
+        /// Converts the given angle from radians to degrees
+        /// </summary>
+        /// <param name="rad">The angle in radians</param>
+        /// <returns>Return the given angle in degrees</returns>
         public static float ConvertToDegrees(double rad)
         {
             return (float)(rad * 180 / Math.PI);
         }
 
+        /// <summary>
+        /// Converts the given angle from degrees to radians
+        /// </summary>
+        /// <param name="rad">The angle in degrees</param>
+        /// <returns>Return the given angle in radians</returns>
         public static float ConvertToRadians(double degrees)
         {
             return (float)(degrees * Math.PI / 180);
         }
 
-        public static long ConvertToTicks(float degrees) {
-            return (long) (degrees / Configuration.AnglePerStep);
-        }
-
-        public static float ConvertToDegrees(long steps)
-        {
-            return steps * Configuration.AnglePerStep;
-        }
-
-        public static Point CalculateCoordinates(float alpha1, float alpha2, float length) {
-            int x = (int) Math.Round(length * Math.Cos(ConvertToRadians(alpha1)) + length * Math.Cos(ConvertToRadians(alpha1 + alpha2)));
-            int y = (int) Math.Round(length * Math.Sin(ConvertToRadians(alpha1)) + length * Math.Sin(ConvertToRadians(alpha1 + alpha2)));
-            return new Point(x, y);
-        }
-
-        public static float CalculateDistance(float num1, float num2) {
-            if (num2 > num1)
-            {
-                return num2 - num1;
-            }
-            else {
-                return num1 - num2;
-            }
-        }
-
+        /// <summary>
+        /// Determines in which quadrant of a cartesian coordinate system the given point lies
+        /// </summary>
+        /// <param name="x">The x-coordinate</param>
+        /// <param name="y">The y-coordinate</param>
+        /// <returns>An integer between 1 and 4, indicating the quadrant</returns>
         public static int GetQuadrant(float x, float y)
         {
-            //if (x == 0 && y > 0) {
-            //    return BETWEEN_1_AND_2;
-            //}
-            //if (x == 0 && y < 0)
-            //{
-            //    return BETWEEN_3_AND_4;
-            //}
-            //if (x > 0 && y == 0)
-            //{
-            //    return BETWEEN_4_AND_1;
-            //}
-            //if (x < 0 && y == 0)
-            //{
-            //    return BETWEEN_2_AND_3;
-            //}
+            
             if (x >= 0 && y >= 0)
                 return 1;
             if (x <= 0 && y >= 0)

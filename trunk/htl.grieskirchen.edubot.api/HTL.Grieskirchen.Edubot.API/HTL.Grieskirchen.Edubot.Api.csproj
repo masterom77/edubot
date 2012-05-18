@@ -54,7 +54,6 @@
     <Compile Include="Adapters\Tool.cs" />
     <Compile Include="Adapters\Listeners\INetworkStateListener.cs" />
     <Compile Include="Adapters\Listeners\EdubotStateListener.cs" />
-    <Compile Include="Adapters\AdapterType.cs" />
     <Compile Include="Adapters\IAdapter.cs" />
     <Compile Include="Adapters\KebaAdapter.cs" />
     <Compile Include="Adapters\EdubotAdapter.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Commands\InitCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Adapters\VirtualAdapter.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="EventArgs\FailureEventArgs.cs" />
     <Compile Include="EventArgs\HomingEventArgs.cs" />
     <Compile Include="EventArgs\MovementStartedEventArgs.cs" />
@@ -79,7 +77,6 @@
     <Compile Include="Exceptions\InvalidCenterPointException.cs" />
     <Compile Include="Exceptions\NetworkException.cs" />
     <Compile Include="Exceptions\PointOutOfRangeException.cs" />
-    <Compile Include="Exceptions\IllegalStateUpdateException.cs" />
     <Compile Include="Exceptions\InvalidStateException.cs" />
     <Compile Include="Interpolation\Interpolation.cs" />
     <Compile Include="Interpolation\InterpolationResult.cs" />

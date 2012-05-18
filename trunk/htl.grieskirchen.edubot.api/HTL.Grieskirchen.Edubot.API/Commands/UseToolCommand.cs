@@ -9,13 +9,13 @@ using HTL.Grieskirchen.Edubot.API.EventArgs;
 namespace HTL.Grieskirchen.Edubot.API.Commands
 {
     /// <summary>
-    /// The UseToolCommand class represents a command which tells the robot to wether activate or deactivate its tool
+    /// Used for activating or deactivating a tool
     /// </summary>
     public class UseToolCommand : ICommand
     {
         bool activate;
         /// <summary>
-        /// The Activate Property tells if the tool should be activated or deactivated
+        /// Gets or sets the value, indicating wether the tool should activated or deactivated
         /// </summary>
         public bool Activate
         {
@@ -24,9 +24,9 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         }
 
         /// <summary>
-        /// Creates a new UseToolCommand-Object using the given parameters
+        /// Creates a new instance of the UseToolCommand with the given values
         /// </summary>
-        /// <param name="activate">Indicates if the tool should be activated of deactivated</param>
+        /// <param name="activate">A value indicating wether the tool should be activated or deactivated</param>
         public UseToolCommand(bool activate)
         {
             this.activate = activate;
@@ -38,12 +38,16 @@ namespace HTL.Grieskirchen.Edubot.API.Commands
         /// <param name="adapter">The adapter which should be used for execution</param>
         public void Execute(IAdapter adapter)
         {
-            adapter.SetState(State.MOVING);
+            adapter.SetState(State.MOVING, true);
             adapter.RaiseToolUsed(new ToolUsedEventArgs(activate));
             new System.Threading.Thread(adapter.UseTool).Start(activate);
         }
 
-
+        /// <summary>
+        /// Determines wether the command can be executed or not by the given the adapter
+        /// </summary>
+        /// <param name="adapter">The adapter which should be used for execution</param>
+        /// <returns>Returns a FailureEventArgs object if execution is not possible else returns null</returns>
         public FailureEventArgs CanExecute(IAdapter adapter)
         {
             if (adapter.GetState() == State.SHUTDOWN){
