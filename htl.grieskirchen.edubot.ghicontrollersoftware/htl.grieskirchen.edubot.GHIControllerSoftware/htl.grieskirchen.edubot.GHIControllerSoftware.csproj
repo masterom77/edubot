@@ -36,10 +36,7 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
-    <Compile Include="CalculationManager.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="NetworkManager.cs" />
-    <Compile Include="ProcessClientRequest.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
