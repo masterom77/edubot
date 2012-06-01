@@ -88,6 +88,40 @@ namespace HTL.Grieskirchen.Edubot.API
             }
         }
 
+        
+            
+        
+
+        private void Synchronize(object sender, System.EventArgs e) {
+            StateChangedEventArgs args = (StateChangedEventArgs)e;
+            IAdapter adapter = (IAdapter)sender;
+            List<IAdapter> synchronizedAdapters = new List<IAdapter>();
+            if (adapter.Synchronized) {
+                if (args.NewState == State.READY || args.NewState == State.SHUTDOWN) {
+                    //Get all adapters which should be synchronized
+                    foreach (KeyValuePair<string, IAdapter> entry in registeredAdapters) {
+                        if (entry.Value.Synchronized) {
+                           synchronizedAdapters.Add(entry.Value);
+                        }
+                    }
+                    //Check if all of them have the same state and queue length
+                    foreach (IAdapter entry in synchronizedAdapters) {
+                        
+                        if (entry.GetState() != args.NewState || entry.CmdQueue.Count != adapter.CmdQueue.Count)
+                        {
+                            return;
+                        }
+                    }
+                    //At this point, all states are the same
+                    //Tell the synchronized adapters to execute the next command
+                    foreach (IAdapter entry in synchronizedAdapters)
+                    {
+                        entry.ExecuteNextCommand();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Registers a new adapters and adds event handlers on its events
         /// </summary>
@@ -107,7 +141,10 @@ namespace HTL.Grieskirchen.Edubot.API
             adapter.OnShuttingDown += RaiseShuttingDownEvent;
             adapter.OnToolUsed += RaiseToolUsedEvent;
             adapter.OnStateChanged += RaiseStateChangedEvent;
+            adapter.OnStateChanged += Synchronize;
+            adapter.OnCommandEnqueued += Synchronize;
             registeredAdapters.Add(name, adapter);
+            adapter.RaiseStateChangedEvent(new StateChangedEventArgs(adapter.GetState(), adapter.GetState()));
             return true;
         }
 
@@ -129,6 +166,8 @@ namespace HTL.Grieskirchen.Edubot.API
                 adapter.OnShuttingDown -= RaiseShuttingDownEvent;
                 adapter.OnToolUsed -= RaiseToolUsedEvent;
                 adapter.OnStateChanged -= RaiseStateChangedEvent;
+                adapter.OnStateChanged -= Synchronize;
+                adapter.OnCommandEnqueued -= Synchronize;
                 adapter.Execute(new AbortCommand());
             }
             return registeredAdapters.Remove(name);

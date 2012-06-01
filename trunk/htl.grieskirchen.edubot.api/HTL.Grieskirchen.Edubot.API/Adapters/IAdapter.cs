@@ -148,6 +148,24 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             get { return new Point3D(Length + Length2, 0, 0); }
         }
 
+        protected bool synchronized;
+
+        public bool Synchronized
+        {
+            get { return synchronized; }
+            set { synchronized = value;
+            RaiseStateChangedEvent(new StateChangedEventArgs(state, state));
+            }
+        }
+
+        protected bool executeNext;
+
+        public bool ExecuteNext
+        {
+            get { return executeNext; }
+            set { executeNext = value; }
+        }
+
         protected float length;
         /// <summary>
         /// Gets or sets the length of first axis, measured between the center of the primary and secondary engine
@@ -239,21 +257,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         }
 
         protected State state;
-        /// <summary>
-        /// Gets or sets the state of the adapter
-        /// </summary>
-        protected State State
-        {
-            get { return state; }
-            set {
-                if (OnStateChanged != null)
-                {
-                    OnStateChanged(this, new EventArgs.StateChangedEventArgs(state, value));
-                }
-                state = value;
-                CheckState();
-            }
-        }
+        
 
 
         protected Queue<ICommand> cmdQueue;
@@ -278,7 +282,11 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         #endregion
 
         #region Events
-        
+        /// <summary>
+        /// Triggered if a command has been enqueued - used for synchronisation
+        /// </summary>
+        internal event Event OnCommandEnqueued;
+
         /// <summary>
         /// Triggered if the state of the robot has been changed
         /// </summary>
@@ -403,6 +411,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
             else
             {
                 cmdQueue.Enqueue(cmd);
+                OnCommandEnqueued(this, new StateChangedEventArgs(state, state));
                 CheckState();
             }
         }
@@ -420,11 +429,14 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// </summary>
         /// <param name="newState">The new state of the robot</param>
         private void UpdateState(State newState) {
+
+            State oldState = state;
+            state = newState;
             if (OnStateChanged != null)
             {
-                OnStateChanged(this, new EventArgs.StateChangedEventArgs(state, newState));
+                OnStateChanged(this, new EventArgs.StateChangedEventArgs(oldState, newState));
             }
-            state = newState;
+
             CheckState();
         }
 
@@ -460,15 +472,34 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
         /// <summary>
         /// Checks the current state and executes the next command if the state is READY or SHUTDOWN.
         /// </summary>
-        private void CheckState()
+        public void CheckState()
         {
-            if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
+            if (!synchronized)
+            {
+                if ((state == State.READY || state == State.SHUTDOWN) && cmdQueue.Count > 0)
+                {
+                    ICommand nextCmd = cmdQueue.Dequeue();
+                    FailureEventArgs failureArgs = nextCmd.CanExecute(this);
+                    if (failureArgs == null)
+                    {
+                        nextCmd.Execute(this);
+                    }
+                    else
+                    {
+                        RaiseFailureEvent(failureArgs);
+                    }
+                }
+            }
+        }
+
+        public void ExecuteNextCommand() {
+            if (cmdQueue.Count > 0)
             {
                 ICommand nextCmd = cmdQueue.Dequeue();
                 FailureEventArgs failureArgs = nextCmd.CanExecute(this);
                 if (failureArgs == null)
                 {
-                    nextCmd.Execute(this);
+                   nextCmd.Execute(this);
                 }
                 else
                 {
@@ -476,6 +507,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 }
             }
         }
+        
 
         /// <summary>
         /// Raises the OnFailureEvent of the robot

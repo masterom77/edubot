@@ -117,59 +117,6 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 curSteps[2] = curSteps[2] % 1;
             }
 
-            //foreach (InterpolationStep step in steps) {
-            //    curSteps[0] += step.Alpha1 / 0.1125;
-            //    curSteps[1] += step.Alpha2 / 0.1125;
-            //    curSteps[2] += step.Alpha3 / 0.1125;
-
-            //    if (curSteps[0]%1 > 0.5) {
-            //        curSteps[0] += 1;
-            //    }
-            //    if (curSteps[1] % 1 > 0.5)
-            //    {
-            //        curSteps[1] += 1;
-            //    }
-            //    if (curSteps[2] % 1 > 0.5)
-            //    {
-            //        curSteps[2] += 1;
-            //    }
-
-            //    result += ((int)curSteps[0]) + ";" + ((int)curSteps[1]) + ";" + ((int)curSteps[2])+"&";
-
-            //    if (curSteps[0] % 1 > 0.5)
-            //    {
-            //        curSteps[0] = (curSteps[0] % 1) - 1;
-            //    }
-            //    else {
-            //        curSteps[0] = curSteps[0] % 1;
-            //    }
-
-            //    if (curSteps[1] % 1 > 0.5)
-            //    {
-            //        curSteps[1] = (curSteps[1] % 1) - 1;
-            //    }
-            //    else
-            //    {
-            //        curSteps[1] = curSteps[1] % 1;
-            //    }
-
-            //    if (curSteps[2] % 1 > 0.5)
-            //    {
-            //        curSteps[2] = (curSteps[2] % 1) - 1;
-            //    }
-            //    else
-            //    {
-            //        curSteps[2] = curSteps[2] % 1;
-            //    }
-                
-            //}
-
-            //if (result.Length > 0)
-            //{
-            //    result = result.Remove(result.Length - 1);
-            //}
-            //Console.WriteLine(ToString());
-            //Console.WriteLine(result);
             return result;
         }
     }

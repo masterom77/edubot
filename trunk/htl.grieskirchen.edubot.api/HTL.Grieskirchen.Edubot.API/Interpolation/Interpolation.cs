@@ -307,6 +307,7 @@ namespace HTL.Grieskirchen.Edubot.API.Interpolation
                 result.Points.Add(nextPoint);
                 result.Angles.Add(step);
                 result.Steps.Add(step - prevStep);
+                prevStep = step;
 
             }
 

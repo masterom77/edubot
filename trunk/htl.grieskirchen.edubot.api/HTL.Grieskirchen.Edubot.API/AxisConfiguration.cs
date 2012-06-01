@@ -11,7 +11,7 @@ namespace HTL.Grieskirchen.Edubot.API
     public enum AxisConfiguration
     {
         /// <summary>
-        /// Represents a lefty axis configuration, where the angle of the secondary axis is positive
+        /// Represents a lefty axis configuration, where the angle of the secondary axis is always positive
         /// </summary>
         Lefty = 0,
         /// <summary>

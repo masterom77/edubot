@@ -172,7 +172,7 @@ namespace HTL.Grieskirchen.Edubot.API.Adapters
                 Point3D[] parameters = (Point3D[])param;
                 Point3D target = parameters[0];
                 Point3D center = parameters[1];
-                byte[] content = Encoding.UTF8.GetBytes("mvc:" + InterpolationResult.ToString());
+                byte[] content = Encoding.UTF8.GetBytes("mvc:" + InterpolationResult.ConverToStepString());
                 socket.Send(content);
                 toolCenterPoint = target;
             }
