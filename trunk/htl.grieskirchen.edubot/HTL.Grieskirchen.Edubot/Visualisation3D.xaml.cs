@@ -19,6 +19,7 @@ using HTL.Grieskirchen.Edubot.Settings;
 using HTL.Grieskirchen.Edubot.API.EventArgs;
 using HTL.Grieskirchen.Edubot.API;
 using System.Threading;
+using HTL.Grieskirchen.Edubot.API.Commands;
 
 namespace HTL.Grieskirchen.Edubot
 {
@@ -462,6 +463,7 @@ namespace HTL.Grieskirchen.Edubot
                     visualisationAdapter.OnShuttingDown += Shutdown;
                     AnglePrimaryAxis = 0;
                     AngleSecondaryAxis = 0;
+                    visualisationAdapter.Synchronized = true;
                     API.Edubot.GetInstance().RegisterAdapter("3DVisualization", visualisationAdapter);
                 }
                 else

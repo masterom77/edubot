@@ -369,6 +369,7 @@ namespace HTL.Grieskirchen.Edubot
                     AnglePrimaryAxis = 0;
                     AngleSecondaryAxis = 0;
                     //Adapter registrieren
+                    visualisationAdapter.Synchronized = true;
                     API.Edubot.GetInstance().RegisterAdapter("EdubotVisualization", visualisationAdapter);
                 }
                 else

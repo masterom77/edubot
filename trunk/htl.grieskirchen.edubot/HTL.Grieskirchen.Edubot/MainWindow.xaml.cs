@@ -399,6 +399,7 @@ namespace HTL.Grieskirchen.Edubot
                         List<API.Commands.ICommand> commands = CommandParser.Parse(tbCodeArea.Text);
                         tbConsole.AppendText(">Build succeeded\n");
                         tbConsole.AppendText(">Executing...\n");
+                        
                         visualisation2D.ClearDrawing();
                         foreach (API.Commands.ICommand command in commands)
                         {
@@ -676,6 +677,7 @@ namespace HTL.Grieskirchen.Edubot
                         return;
                     }
                     btConnect.Content = "Trennen";
+                    adapter.Synchronized = true;
                     edubot.RegisterAdapter("Edubot", adapter);
                     //settings.EdubotConfig.Apply();
                     if (!visualizationConfig.IsEdubotModelSelected)
@@ -694,6 +696,7 @@ namespace HTL.Grieskirchen.Edubot
                         return;
                     }
                     btConnect.Content = "Trennen";
+                    adapter.Synchronized = true;
                     edubot.RegisterAdapter("Keba", adapter);
                     //settings.EdubotConfig.Apply();
                     if (visualizationConfig.VisualizationEnabled)
