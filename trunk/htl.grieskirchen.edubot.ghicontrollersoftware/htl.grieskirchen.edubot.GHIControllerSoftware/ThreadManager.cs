@@ -48,8 +48,7 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
             int[] secondarySteps = Executer.secondarySteps;
             bool[] primaryDir = Executer.primaryDir;
             bool[] secondaryDir = Executer.secondaryDir;
-            int curPrimarySteps = 0;
-            int curSecondarySteps = 0;
+            
 
             //Split the message into steps
             for (int i = 0; i < positions.Length; i++)
@@ -58,7 +57,7 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
 
                 stepcontainer = s.Split(';');
 
-                if (stepcontainer.Length < 1)
+                if (stepcontainer.Length <= 1)
                 {
                     break;
                 }
@@ -67,6 +66,10 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
                 if (primarySteps[i] < 0) {
                     primaryDir[i] = true;
                     primarySteps[i] *= -1;
+                }
+                else
+                {
+                    primaryDir[i] = false;
                 }
 
                 secondarySteps[i] = int.Parse(stepcontainer[1]);
@@ -161,93 +164,122 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
 
         }
 
-        private void ListenForData() { 
-          Socket  m_clientSocket = Executer.clientSocket;
-          while (!Executer.acceptNewClient)
-          {
-              Byte[] buffer = new Byte[100000];
-              Byte[] readBuffer = new Byte[512];
-              int curBufferIndex = 0;
-              //try
-              //{
+        private void ListenForData() {
+            try
+            {
+                Socket m_clientSocket = Executer.clientSocket;
+                while (!Executer.acceptNewClient)
+                {
+                    Byte[] buffer = new Byte[100000];
+                    Byte[] readBuffer = new Byte[512];
+                    int curBufferIndex = 0;
+                    //try
+                    //{
 
-              //    m_clientSocket.Send(Encoding.UTF8.GetBytes("hello"));
-              //}
-              //catch (System.Net.Sockets.SocketException)
-              //{
-              //    m_clientSocket.Close();
-              //    MySocketServer.acceptNewClient = true;
-              //    continue;
-              //}
-             
-              //string message = "";
-              //int available = m_clientSocket.Available;
-              int bytesRead = 0;
-              double[] primStepBuffer = new double[2];
-              double[] secStepBuffer = new double[2];
+                    //    m_clientSocket.Send(Encoding.UTF8.GetBytes("hello"));
+                    //}
+                    //catch (System.Net.Sockets.SocketException)
+                    //{
+                    //    m_clientSocket.Close();
+                    //    MySocketServer.acceptNewClient = true;
+                    //    continue;
+                    //}
 
-              while (m_clientSocket.Available > 0)
-              {
+                    //string message = "";
+                    //int available = m_clientSocket.Available;
+                    int bytesRead = 0;
+                    double[] primStepBuffer = new double[2];
+                    double[] secStepBuffer = new double[2];
 
-                  bytesRead = m_clientSocket.Receive(readBuffer);
-                  for (int i = 0; i < bytesRead; i++)
-                  {
-                      buffer[curBufferIndex] = readBuffer[i];
-                      curBufferIndex++;
-                  }
-              }
+                    while (m_clientSocket.Available > 0)
+                    {
 
-              if (curBufferIndex > 0)
-              {
-                  message = new String(System.Text.UTF8Encoding.UTF8.GetChars(buffer));
-                  Debug.Print(message);
+                        bytesRead = m_clientSocket.Receive(readBuffer);
+                        for (int i = 0; i < bytesRead; i++)
+                        {
+                            buffer[curBufferIndex] = readBuffer[i];
+                            curBufferIndex++;
+                        }
+                    }
+
+                    if (curBufferIndex > 0)
+                    {
+                        message = new String(System.Text.UTF8Encoding.UTF8.GetChars(buffer));
+                        Debug.Print(message);
 
 
-                  if (message.Substring(0, 3) == "mvs")
-                  {
-                      Debug.Print("LinearMovementInitiated");
-                      message = message.Substring(4, message.Length - 4);
-                      calculator = new Thread(Calculate);
-                      calculator.Priority = ThreadPriority.BelowNormal;
-                      calculator.Start();
-                      Executer.action = 3;
-                  }
-                  else
-                  {
-                      if (message.Substring(0, 3) == "mvc")
-                      {
-                          Debug.Print("CircularMovementInitiates");
-                          calculator = new Thread(Calculate);
-                          calculator.Priority = ThreadPriority.BelowNormal;
-                          calculator.Start();
-                          Executer.action = 4;
-                          message = message.Substring(4, message.Length - 4);
-                      }
-                      else
-                      {
-                          if (message.Substring(0, 3) == "hom")
-                          {
-                              Debug.Print("HomingInitiated");
-                              Executer.action = 1;
-                              //m_clientSocket.Send(Encoding.UTF8.GetBytes("ready"));
-                              message = "";
-                          }
-                          else
-                          {
-                              if (message.Substring(0, 3) == "sht")
-                              {
-                                  Debug.Print("ShutDown");
-                                  Executer.action = 2;
-                                  m_clientSocket.Send(Encoding.UTF8.GetBytes("shutdown"));
-                                  m_clientSocket.Close();
-                                  Executer.acceptNewClient = true;
-                                  message = "";
-                              }
-                          }
-                      }
-                  }
-              }
-          }
+                        if (message.Substring(0, 3) == "mvs")
+                        {
+                            Debug.Print("LinearMovementInitiated");
+                            message = message.Substring(4, message.Length - 4);
+                            calculator = new Thread(Calculate);
+                            calculator.Priority = ThreadPriority.BelowNormal;
+                            calculator.Start();
+                            Executer.action = 3;
+                        }
+                        else
+                        {
+                            if (message.Substring(0, 3) == "mvc")
+                            {
+                                Debug.Print("CircularMovementInitiates");
+                                message = message.Substring(4, message.Length - 4);
+                                calculator = new Thread(Calculate);
+                                calculator.Priority = ThreadPriority.BelowNormal;
+                                calculator.Start();
+                                Executer.action = 3;
+                            }
+                            else
+                            {
+                                if (message.Substring(0, 3) == "hom")
+                                {
+                                    Debug.Print("HomingInitiated");
+                                    Executer.action = 1;
+                                    //m_clientSocket.Send(Encoding.UTF8.GetBytes("ready"));
+                                    message = "";
+                                }
+                                else
+                                {
+                                    if (message.Substring(0, 3) == "sht")
+                                    {
+                                        Debug.Print("ShutDown");
+                                        Executer.action = 2;
+                                        m_clientSocket.Send(Encoding.UTF8.GetBytes("shutdown"));
+                                        m_clientSocket.Close();
+                                        Executer.acceptNewClient = true;
+                                        message = "";
+                                    }
+                                    else
+                                    {
+                                        if (message.Substring(0, 3) == "abo")
+                                        {
+                                            Debug.Print("Aborting");
+                                            Executer.action = 6;
+                                            m_clientSocket.Send(Encoding.UTF8.GetBytes("shutdown"));
+                                            Executer.abort = true;
+                                            m_clientSocket.Close();
+                                            Executer.acceptNewClient = true;
+                                            message = "";
+                                        }
+                                        else
+                                        {
+                                            if (message.Substring(0, 3) == "ust")
+                                            {
+                                                Debug.Print("USETool");
+                                                Executer.action = 5;
+                                                m_clientSocket.Send(Encoding.UTF8.GetBytes("ready"));
+                                                message = "";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }catch(SocketException ex){
+                Executer.clientSocket.Close();
+                Executer.acceptNewClient = true;
+            }
         }
 
         private void ListenForClients() {
@@ -261,7 +293,9 @@ namespace htl.grieskirchen.edubot.GHIControllerSoftware
                     //if(Executer.clientSocket.
                     Executer.newClientRequest = true;
                     Executer.acceptNewClient = false;
-                    dataListener = new Thread(ListenForData);
+                    
+                        dataListener = new Thread(ListenForData);
+                    
                     dataListener.Priority = ThreadPriority.BelowNormal;
                     dataListener.Start();
                 }
