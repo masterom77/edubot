@@ -30,8 +30,14 @@ namespace TestClient
         {
             InitializeComponent();
 
-            EdubotAdapter adapter = new EdubotAdapter(Tool.VIRTUAL, 200, 200, 135, -135, 145, -145, System.Net.IPAddress.Parse("192.168.0.40"), 12000);
-            Edubot.GetInstance().RegisterAdapter("edu", adapter);
+            VirtualAdapter adapter = new VirtualAdapter(Tool.VIRTUAL, 200, 200, 145,-145,135,-135);
+            EdubotAdapter adapter2 = new EdubotAdapter(Tool.VIRTUAL, 200, 200, 145, -145, 135, -135, System.Net.IPAddress.Parse("127.0.0.1"), 12000);
+            adapter.Synchronized = true;
+            adapter2.Synchronized = true;
+            Edubot.GetInstance().RegisterAdapter("adapter", adapter);
+            Edubot.GetInstance().RegisterAdapter("adapter2", adapter2);
+            adapter.OnHoming += NotifyVisualisation;
+            adapter.OnMovementStarted += NotifyVisualisation;
             Edubot.GetInstance().Execute(new InitCommand());
             Edubot.GetInstance().Execute(new UseToolCommand(true));
             Edubot.GetInstance().Execute(new MVSCommand(new Point3D(200,250,0)));
@@ -44,7 +50,8 @@ namespace TestClient
         }
 
         public void NotifyVisualisation(object sender, EventArgs e){
-            v2d.Angles = ((MovementStartedEventArgs)e).Result.Angles;
+            ((IAdapter)sender).SetState(State.READY);
+            //v2d.Angles = ((MovementStartedEventArgs)e).Result.Angles;
             //((MovementStartedEventArgs)e).Result.ToString();
         }
 

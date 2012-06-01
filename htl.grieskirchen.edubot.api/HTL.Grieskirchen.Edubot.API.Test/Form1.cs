@@ -81,16 +81,16 @@ namespace EduBot
                 {
                     string message = Encoding.UTF8.GetString(bytes.ToArray());
                     bytes.Clear();
-                    if (message.StartsWith("start")) {
+                    if (message.StartsWith("hom:")) {
                         Console.WriteLine("Controller: start received");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(12000);
                         writeBuffer = Encoding.UTF8.GetBytes("ready");
                         client.GetStream().Write(Encoding.UTF8.GetBytes("ready"),0,writeBuffer.Length);
                     }
                     if (message.StartsWith("mvs:") || message.StartsWith("mvc:"))
                     {
                         Console.WriteLine("Controller: move received");
-                        Thread.Sleep(message.Length);
+                        Thread.Sleep(new Random().Next(7000,20000));
                         writeBuffer = Encoding.UTF8.GetBytes("ready");
                         client.GetStream().Write(Encoding.UTF8.GetBytes("ready"), 0, writeBuffer.Length);
                     }
