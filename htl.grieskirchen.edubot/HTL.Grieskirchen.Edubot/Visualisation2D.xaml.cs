@@ -168,6 +168,7 @@ namespace HTL.Grieskirchen.Edubot
             if (property.PropertyName == "IsEdubotModelSelected") {
                 AnglePrimaryAxis = 0;
                 AngleSecondaryAxis = 0;
+                visualisationAdapter.SetState(State.SHUTDOWN);
                 ClearDrawing();
             }
             if (property.PropertyName == "VisualizationEnabled")
@@ -180,6 +181,7 @@ namespace HTL.Grieskirchen.Edubot
                     visualisationAdapter.OnHoming += StartHoming;
                     visualisationAdapter.OnToolUsed += UseTool;
                     visualisationAdapter.OnShuttingDown += Shutdown;
+                    visualisationAdapter.Synchronized = true;
                     API.Edubot.GetInstance().RegisterAdapter("2DVisualization", visualisationAdapter);
                 }
                 else
