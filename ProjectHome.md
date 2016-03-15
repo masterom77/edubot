@@ -1,0 +1,1 @@
+The target of this project is to build a small robot and to develope an appropriate software which controls the robot. This software will then be used for educational purposes.
